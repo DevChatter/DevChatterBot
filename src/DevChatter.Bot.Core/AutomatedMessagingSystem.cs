@@ -11,5 +11,6 @@ namespace DevChatter.Bot.Core
         {
             ManagedMessages.Add(intervalTriggeredMessage);
         }
+
     }
 }
