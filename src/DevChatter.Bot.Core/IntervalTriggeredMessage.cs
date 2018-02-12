@@ -16,5 +16,11 @@ namespace DevChatter.Bot.Core
         {
             return _previousRunTime.AddMinutes(DelayInMinutes) <= currentTime;
         }
+
+        public string GetMessageInstance(DateTime currentTime)
+        {
+            _previousRunTime = currentTime;
+            return Message;
+        }
     }
 }

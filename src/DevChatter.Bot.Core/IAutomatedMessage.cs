@@ -6,5 +6,6 @@ namespace DevChatter.Bot.Core
     {
         void Initialize(DateTime currentTime);
         bool IsItYourTimeToDisplay(DateTime currentTime);
+        string GetMessageInstance(DateTime currentTime);
     }
 }
