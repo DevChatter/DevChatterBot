@@ -17,7 +17,7 @@ namespace UnitTests.AutomatedMessagingTests
 
             messagingSystem.Publish(automatedMessage);
 
-            Assert.Contains(automatedMessage, messagingSystem.ManagedAutomatedMessages);
+            Assert.Contains(automatedMessage, messagingSystem.ManagedMessages);
         }
     }
 }
