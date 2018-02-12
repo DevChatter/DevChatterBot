@@ -4,12 +4,12 @@ namespace DevChatter.Bot.Core
 {
     public class AutomatedMessagingSystem
     {
-        public List<AutomatedMessage> ManagedMessages { get; set; } = new List<AutomatedMessage>();
+        public List<IntervalTriggeredMessage> ManagedMessages { get; set; } = new List<IntervalTriggeredMessage>();
         public List<string> QueuedMessages { get; set; } = new List<string>();
 
-        public void Publish(AutomatedMessage automatedMessage)
+        public void Publish(IntervalTriggeredMessage intervalTriggeredMessage)
         {
-            ManagedMessages.Add(automatedMessage);
+            ManagedMessages.Add(intervalTriggeredMessage);
         }
     }
 }
