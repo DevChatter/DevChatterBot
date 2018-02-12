@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DevChatter.Bot.Core\DevChatter.Bot.Core.csproj" />
+  </ItemGroup>
+
 </Project>

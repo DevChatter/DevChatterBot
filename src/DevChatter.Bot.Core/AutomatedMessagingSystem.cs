@@ -6,11 +6,12 @@ namespace DevChatter.Bot.Core
 {
     public class AutomatedMessagingSystem
     {
-        public List<IAutomatedMessage> ManagedMessages { get; set; } = new List<IAutomatedMessage>();
-        public List<string> QueuedMessages { get; set; } = new List<string>();
+        public List<IAutomatedMessage> ManagedMessages { get; set; } = new List<IAutomatedMessage>(); // TODO: Lock down access to this
+        public List<string> QueuedMessages { get; set; } = new List<string>(); // TODO: Lock down access to this
 
         public void Publish(IAutomatedMessage automatedMessage)
         {
+            automatedMessage.Initialize(DateTime.Now);
             ManagedMessages.Add(automatedMessage);
         }
 
@@ -19,6 +20,17 @@ namespace DevChatter.Bot.Core
             var messagesToQueue = ManagedMessages.Where(m => m.IsItYourTimeToDisplay(currentTime)).Select(m => m.GetMessageInstance(currentTime));
 
             QueuedMessages.AddRange(messagesToQueue);
+        }
+
+        public bool DequeueMessage(out string message)
+        {
+            message = default(string);
+            if (!QueuedMessages.Any()) return false;
+
+            message = QueuedMessages.First();
+            QueuedMessages.RemoveAt(0);
+
+            return true;
         }
     }
 }
