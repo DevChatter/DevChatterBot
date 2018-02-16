@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DevChatter.Bot.Core;
 using TwitchLib;
 using TwitchLib.Events.Client;
@@ -13,10 +12,10 @@ namespace DevChatter.Bot.Infra.Twitch
         private readonly TaskCompletionSource<bool> _connectionCompletionTask = new TaskCompletionSource<bool>();
         private bool _isReady = false;
 
-        public TwitchChatClient()
+        public TwitchChatClient(TwitchClientSettings settings)
         {
-            ConnectionCredentials connectionCredentials = Hidden.GetCredentials();
-            _twitchClient = new TwitchClient(connectionCredentials, "devchatter");
+            var credentials = new ConnectionCredentials(settings.Username, settings.OAuth);
+            _twitchClient = new TwitchClient(credentials, settings.Channel);
         }
 
         private void TwitchClientConnected(object sender, OnConnectedArgs onConnectedArgs)
