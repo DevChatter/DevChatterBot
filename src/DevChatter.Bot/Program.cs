@@ -18,7 +18,11 @@ namespace DevChatter.Bot
                 .GetSection(nameof(TwitchClientSettings))
                 .Get<TwitchClientSettings>();
 
-            var chatClients = new List<IChatClient> { new ConsoleChatClient(), new TwitchChatClient(clientSettings) };
+            var chatClients = new List<IChatClient>
+            {
+                new ConsoleChatClient(),
+                new TwitchChatClient(clientSettings),
+            };
 
             Console.WriteLine("To exit, press [Ctrl]+c");
 
