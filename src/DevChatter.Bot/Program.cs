@@ -1,6 +1,9 @@
 ﻿using System;
-using System.Threading;
+using System.Collections.Generic;
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Infra.Twitch;
+using Microsoft.Extensions.Configuration;
+
 
 namespace DevChatter.Bot
 {
@@ -9,23 +12,27 @@ namespace DevChatter.Bot
         static void Main(string[] args)
         {
             Console.WriteLine("Initializing the Bot...");
+            IConfigurationRoot configuration = InitializeConfiguration();
+
+            var clientSettings = configuration
+                .GetSection(nameof(TwitchClientSettings))
+                .Get<TwitchClientSettings>();
+
+            var chatClients = new List<IChatClient> { new ConsoleChatClient(), new TwitchChatClient(clientSettings) };
+
             Console.WriteLine("To exit, press [Ctrl]+c");
-            var automatedMessagingSystem = new AutomatedMessagingSystem();
 
-            var intervalTriggeredMessage = new IntervalTriggeredMessage {DelayInMinutes = 1, Message = "Hello, everyone! I am the bot!"};
-            automatedMessagingSystem.Publish(intervalTriggeredMessage);
+            var botMain = new BotMain(chatClients);
+            botMain.Run();
+        }
 
-            while (true)
-            {
-                Thread.Sleep(1000);
+        private static IConfigurationRoot InitializeConfiguration()
+        {
+            Console.WriteLine("Initializing configuration...");
 
-                automatedMessagingSystem.CheckMessages(DateTime.Now);
-
-                while (automatedMessagingSystem.DequeueMessage(out string theMessage))
-                {
-                    Console.WriteLine($"{DateTime.Now.ToShortTimeString()} - {theMessage}");
-                }
-            }
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json");
+            return builder.Build();
         }
     }
 }
