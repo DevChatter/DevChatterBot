@@ -1,5 +1,5 @@
 ﻿using System;
-using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Messaging;
 using UnitTests.Fakes;
 using Xunit;
 

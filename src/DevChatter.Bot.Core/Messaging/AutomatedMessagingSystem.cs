@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevChatter.Bot.Core
+namespace DevChatter.Bot.Core.Messaging
 {
     public class AutomatedMessagingSystem
     {
