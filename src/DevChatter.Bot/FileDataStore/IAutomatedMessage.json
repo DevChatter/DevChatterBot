@@ -1,0 +1,20 @@
+[
+  {
+    "$type": "DevChatter.Bot.Core.Messaging.IntervalTriggeredMessage, DevChatter.Bot.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "DelayInMinutes": 1,
+    "Message": "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!",
+    "DataItemStatus": 1
+  },
+  {
+    "$type": "DevChatter.Bot.Core.Messaging.IntervalTriggeredMessage, DevChatter.Bot.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "DelayInMinutes": 1,
+    "Message": "foo",
+    "DataItemStatus": 0
+  },
+  {
+    "$type": "DevChatter.Bot.Core.Messaging.IntervalTriggeredMessage, DevChatter.Bot.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "DelayInMinutes": 2,
+    "Message": "bar",
+    "DataItemStatus": 2
+  }
+]

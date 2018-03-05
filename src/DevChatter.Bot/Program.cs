@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Infra.Json;
 using DevChatter.Bot.Infra.Twitch;
 using Microsoft.Extensions.Configuration;
@@ -41,7 +43,10 @@ namespace DevChatter.Bot
 
             Console.WriteLine("To exit, press [Ctrl]+c");
 
-            var botMain = new BotMain(chatClients, new GenericJsonFileRepository());
+            var genericJsonFileRepository = new GenericJsonFileRepository();
+            List<ICommandMessage> commandMessages = genericJsonFileRepository.List(new ActiveMessagePolicy<ICommandMessage>());
+            var commandHandler = new CommandHandler(chatClients, commandMessages);
+            var botMain = new BotMain(chatClients, genericJsonFileRepository, commandHandler);
             botMain.Run();
         }
 

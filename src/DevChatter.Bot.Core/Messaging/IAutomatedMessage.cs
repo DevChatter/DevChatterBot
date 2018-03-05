@@ -2,11 +2,10 @@
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public interface IAutomatedMessage
+    public interface IAutomatedMessage : IDataItem
     {
         void Initialize(DateTime currentTime);
         bool IsItYourTimeToDisplay(DateTime currentTime);
         string GetMessageInstance(DateTime currentTime);
-        DataItemStatus DataItemStatus { get; }
     }
 }

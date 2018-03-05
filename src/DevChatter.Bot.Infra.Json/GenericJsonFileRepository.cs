@@ -12,15 +12,15 @@ namespace DevChatter.Bot.Infra.Json
     {
         public List<T> List<T>(ISpecification<T> spec)
         {
-            var serializer = new JsonSerializer();
             string filePath = $"FileDataStore\\{typeof(T).Name}.json";
-            using (StreamReader file = File.OpenText(filePath))
-            {
-                var jsonTextReader = new JsonTextReader(file);
-                var list = serializer.Deserialize<List<T>>(jsonTextReader);
+            string fullText = File.ReadAllText(filePath);
 
-                return list.Where(x => spec.Criteria.Compile().Invoke(x)).ToList();
-            }
+            var list = JsonConvert.DeserializeObject<List<T>>(fullText, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            });
+
+            return list?.Where(x => spec.Criteria.Compile().Invoke(x))?.ToList();
         }
     }
 }
