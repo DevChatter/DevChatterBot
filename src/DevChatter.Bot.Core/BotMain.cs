@@ -25,7 +25,30 @@ namespace DevChatter.Bot.Core
 
             ConnectChatClients();
 
+            WireUpEventHandlers();
+
             BeginLoop();
+        }
+
+        private void WireUpEventHandlers()
+        {
+            foreach (var chatClient in _chatClients)
+            {
+                chatClient.OnCommandReceived += CommandReceivedHandler;
+            }
+        }
+
+        private void CommandReceivedHandler(object sender, CommandReceivedEventArgs e)
+        {
+            if (sender is IChatClient chatClient)
+            {
+                switch (e.CommandWord)
+                {
+                    case "coins":
+                        chatClient.SendMessage("Coins?!?! I think you meant points!");
+                        break;
+                }
+            }
         }
 
         private void BeginLoop()
@@ -47,9 +70,10 @@ namespace DevChatter.Bot.Core
             }
         }
 
+        // TODO: Fix this method's name
         private void PublishMessages()
         {
-            var messages = _repository.List<IAutomatedMessage>(new ActiveMessagePolicy());
+            var messages = _repository.List<IntervalTriggeredMessage>(new ActiveMessagePolicy());
             foreach (var message in messages)
             {
                 _autoMsgSystem.Publish(message);

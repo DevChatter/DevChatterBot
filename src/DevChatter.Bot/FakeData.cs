@@ -9,9 +9,9 @@ namespace DevChatter.Bot
 {
     public static class FakeData
     {
-        private static List<IAutomatedMessage> GetIAutomatedMessage()
+        private static List<IntervalTriggeredMessage> GetIAutomatedMessage()
         {
-            var automatedMessages = new List<IAutomatedMessage> {
+            var automatedMessages = new List<IntervalTriggeredMessage> {
                 new IntervalTriggeredMessage(15, "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!", DataItemStatus.Active),
                 new IntervalTriggeredMessage(1,"foo", DataItemStatus.Draft),
                 new IntervalTriggeredMessage(2,"bar", DataItemStatus.Disabled),
@@ -23,11 +23,11 @@ namespace DevChatter.Bot
         {
             var jsonSerializer = new JsonSerializer{TypeNameHandling = TypeNameHandling.Auto};
 
-            List<IAutomatedMessage> automatedMessages = GetIAutomatedMessage();
+            List<IntervalTriggeredMessage> automatedMessages = GetIAutomatedMessage();
             var stringBuilder = new StringBuilder();
             var stringWriter = new StringWriter(stringBuilder);
             jsonSerializer.Serialize(stringWriter, automatedMessages);
-            string filePath = $"FileDataStore\\{nameof(IAutomatedMessage)}.json";
+            string filePath = $"FileDataStore\\{nameof(IntervalTriggeredMessage)}.json";
             if (!Directory.Exists("FileDataStore"))
             {
                 Directory.CreateDirectory("FileDataStore");

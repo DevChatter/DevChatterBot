@@ -16,7 +16,6 @@ namespace DevChatter.Bot
 
             FakeData.Initialize();
 
-            throw new Exception("stop");
             var clientSettings = configuration
                 .GetSection(nameof(TwitchClientSettings))
                 .Get<TwitchClientSettings>();
@@ -24,8 +23,21 @@ namespace DevChatter.Bot
             var chatClients = new List<IChatClient>
             {
                 new ConsoleChatClient(),
-                //new TwitchChatClient(clientSettings),
+                new TwitchChatClient(clientSettings),
             };
+
+            foreach (IChatClient chatClient in chatClients)
+            {
+                switch (chatClient)
+                {
+                    case TwitchChatClient twitchChatClient:
+                        Console.WriteLine("twitch client ready");
+                        break;
+                    case ConsoleChatClient consoleChatClient:
+                        Console.WriteLine("console client ready");
+                        break;
+                }
+            }
 
             Console.WriteLine("To exit, press [Ctrl]+c");
 
