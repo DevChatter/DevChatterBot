@@ -2,38 +2,64 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Messaging;
 
 namespace DevChatter.Bot.Core
 {
     public class BotMain
     {
         private readonly List<IChatClient> _chatClients;
+        private readonly IRepository _repository;
+        private readonly AutomatedMessagingSystem _autoMsgSystem = new AutomatedMessagingSystem();
 
-        public BotMain(List<IChatClient> chatClients)
+        public BotMain(List<IChatClient> chatClients, IRepository repository)
         {
             _chatClients = chatClients;
+            _repository = repository;
         }
 
         public void Run()
         {
-            var automatedMessagingSystem = new AutomatedMessagingSystem();
-
-            PublishMessages(automatedMessagingSystem);
+            PublishMessages();
 
             ConnectChatClients();
 
-            BeginLoop(automatedMessagingSystem);
+            WireUpEventHandlers();
+
+            BeginLoop();
         }
 
-        private void BeginLoop(AutomatedMessagingSystem automatedMessagingSystem)
+        private void WireUpEventHandlers()
+        {
+            foreach (var chatClient in _chatClients)
+            {
+                chatClient.OnCommandReceived += CommandReceivedHandler;
+            }
+        }
+
+        private void CommandReceivedHandler(object sender, CommandReceivedEventArgs e)
+        {
+            if (sender is IChatClient chatClient)
+            {
+                switch (e.CommandWord)
+                {
+                    case "coins":
+                        chatClient.SendMessage("Coins?!?! I think you meant points!");
+                        break;
+                }
+            }
+        }
+
+        private void BeginLoop()
         {
             while (true)
             {
                 Thread.Sleep(1000);
 
-                automatedMessagingSystem.CheckMessages(DateTime.Now);
+                _autoMsgSystem.CheckMessages(DateTime.Now);
 
-                while (automatedMessagingSystem.DequeueMessage(out string theMessage))
+                while (_autoMsgSystem.DequeueMessage(out string theMessage))
                 {
                     var message = $"{DateTime.Now.ToShortTimeString()} - {theMessage}";
                     foreach (var chatClient in _chatClients)
@@ -44,14 +70,14 @@ namespace DevChatter.Bot.Core
             }
         }
 
-        private static void PublishMessages(AutomatedMessagingSystem automatedMessagingSystem)
+        // TODO: Fix this method's name
+        private void PublishMessages()
         {
-            var intervalTriggeredMessage = new IntervalTriggeredMessage
+            var messages = _repository.List<IntervalTriggeredMessage>(new ActiveMessagePolicy());
+            foreach (var message in messages)
             {
-                DelayInMinutes = 1,
-                Message = "Hello, everyone! I am the bot!"
-            };
-            automatedMessagingSystem.Publish(intervalTriggeredMessage);
+                _autoMsgSystem.Publish(message);
+            }
         }
 
         private void ConnectChatClients()

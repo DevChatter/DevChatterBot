@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DevChatter.Bot.Core\DevChatter.Bot.Core.csproj" />
+    <ProjectReference Include="..\DevChatter.Bot.Infra.Twitch\DevChatter.Bot.Infra.Twitch.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DevChatter.Bot.Core;
 using TwitchLib;
 using TwitchLib.Events.Client;
@@ -16,14 +17,26 @@ namespace DevChatter.Bot.Infra.Twitch
         {
             var credentials = new ConnectionCredentials(settings.Username, settings.OAuth);
             _twitchClient = new TwitchClient(credentials, settings.Channel);
+            _twitchClient.OnChatCommandReceived += ChatCommandReceived;
+        }
+
+        private void ChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
+        {
+            OnCommandReceived?.Invoke(this, e.ToCommandReceivedEventArgs());
         }
 
         private void TwitchClientConnected(object sender, OnConnectedArgs onConnectedArgs)
         {
             _isReady = true;
             _connectionCompletionTask.SetResult(true);
+
+            _twitchClient.OnUserJoined += TwitchClientOnOnUserJoined;
         }
 
+        private void TwitchClientOnOnUserJoined(object sender, OnUserJoinedArgs onUserJoinedArgs)
+        {
+            // Hey! Welcome back, it's your #th day here!
+        }
 
         public async Task Connect()
         {
@@ -40,5 +53,7 @@ namespace DevChatter.Bot.Infra.Twitch
                 _twitchClient.SendMessage(message);
             }
         }
+
+        public event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Messaging;
 
 namespace UnitTests.Fakes
 {
@@ -18,5 +19,7 @@ namespace UnitTests.Fakes
         {
             return "Always Ready";
         }
+
+        public DataItemStatus DataItemStatus => DataItemStatus.Active;
     }
 }

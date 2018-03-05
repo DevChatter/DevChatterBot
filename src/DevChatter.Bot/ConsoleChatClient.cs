@@ -15,5 +15,7 @@ namespace DevChatter.Bot
         {
             Console.WriteLine(message);
         }
+
+        public event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
     }
 }

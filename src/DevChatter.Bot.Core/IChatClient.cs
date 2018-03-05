@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace DevChatter.Bot.Core
 {
@@ -6,5 +7,6 @@ namespace DevChatter.Bot.Core
     {
         Task Connect();
         void SendMessage(string message);
+        event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
     }
 }

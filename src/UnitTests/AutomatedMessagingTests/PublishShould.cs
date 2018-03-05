@@ -1,4 +1,4 @@
-﻿using DevChatter.Bot.Core;
+﻿using DevChatter.Bot.Core.Messaging;
 using Xunit;
 
 namespace UnitTests.AutomatedMessagingTests
@@ -9,11 +9,7 @@ namespace UnitTests.AutomatedMessagingTests
         public void AddAutomatedMessageToManagedMessages()
         {
             var messagingSystem = new AutomatedMessagingSystem();
-            var automatedMessage = new IntervalTriggeredMessage
-            {
-                DelayInMinutes = 1,
-                Message = "Welcome! If you are enjoying the content, please follow DevChatter for more!"
-            };
+            var automatedMessage = new IntervalTriggeredMessage(1, "Welcome! If you are enjoying the content, please follow DevChatter for more!");
 
             messagingSystem.Publish(automatedMessage);
 

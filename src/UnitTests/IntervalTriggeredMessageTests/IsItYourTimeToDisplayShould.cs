@@ -1,5 +1,5 @@
 ﻿using System;
-using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Messaging;
 using Xunit;
 
 namespace UnitTests.IntervalTriggeredMessageTests
@@ -13,10 +13,16 @@ namespace UnitTests.IntervalTriggeredMessageTests
             _currentTime = DateTime.Now;
         }
 
+        private static IntervalTriggeredMessage GetTestMessage()
+        {
+            return new IntervalTriggeredMessage(1, "Hello there!");
+        }
+
         [Fact]
         public void ReturnFalse_AtInitialCreation()
         {
-            var intervalTriggeredMessage = new IntervalTriggeredMessage { DelayInMinutes = 1, Message = "Hello there!" };
+            var intervalTriggeredMessage = GetTestMessage();
+
             intervalTriggeredMessage.Initialize(_currentTime);
 
             Assert.False(intervalTriggeredMessage.IsItYourTimeToDisplay(_currentTime));
@@ -25,16 +31,16 @@ namespace UnitTests.IntervalTriggeredMessageTests
         [Fact]
         public void ReturnTrue_GivenTimeEqualToDelayInMinutes()
         {
-            var intervalTriggeredMessage = new IntervalTriggeredMessage { DelayInMinutes = 1, Message = "Hello there!" };
+            var intervalTriggeredMessage = GetTestMessage();
             intervalTriggeredMessage.Initialize(_currentTime);
 
-            Assert.True(intervalTriggeredMessage.IsItYourTimeToDisplay(_currentTime.AddMinutes(intervalTriggeredMessage.DelayInMinutes)));
+            Assert.True(intervalTriggeredMessage.IsItYourTimeToDisplay(_currentTime.AddMinutes(1)));
         }
 
         [Fact]
         public void ReturnFalse_ImmediatelyAfterSendingMessage()
         {
-            var intervalTriggeredMessage = new IntervalTriggeredMessage { DelayInMinutes = 1, Message = "Hello there!" };
+            var intervalTriggeredMessage = GetTestMessage();
             intervalTriggeredMessage.Initialize(_currentTime.AddMinutes(-1));
 
             intervalTriggeredMessage.GetMessageInstance(_currentTime);
@@ -47,7 +53,7 @@ namespace UnitTests.IntervalTriggeredMessageTests
         [Fact]
         public void ReturnTrue_OnSecondInterval()
         {
-            var intervalTriggeredMessage = new IntervalTriggeredMessage { DelayInMinutes = 1, Message = "Hello there!" };
+            var intervalTriggeredMessage = GetTestMessage();
             intervalTriggeredMessage.Initialize(_currentTime.AddMinutes(-1));
 
             intervalTriggeredMessage.GetMessageInstance(_currentTime);

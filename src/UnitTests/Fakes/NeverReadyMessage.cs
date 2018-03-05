@@ -1,5 +1,5 @@
 ﻿using System;
-using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Messaging;
 
 namespace UnitTests.Fakes
 {
@@ -18,5 +18,7 @@ namespace UnitTests.Fakes
         {
             throw new NotImplementedException("How did you do this?!?!");
         }
+
+        public DataItemStatus DataItemStatus => DataItemStatus.Active;
     }
 }
