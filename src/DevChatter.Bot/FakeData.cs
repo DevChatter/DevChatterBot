@@ -2,17 +2,25 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Messaging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace DevChatter.Bot
 {
-    public static class FakeData
+    public class FakeData
     {
-        private static List<IAutomatedMessage> GetIAutomatedMessage()
+        private readonly IRepository _repository;
+
+        public FakeData(IRepository repository)
         {
-            var automatedMessages = new List<IAutomatedMessage> {
+            _repository = repository;
+        }
+
+        private static List<IntervalTriggeredMessage> GetIAutomatedMessage()
+        {
+            var automatedMessages = new List<IntervalTriggeredMessage> {
                 new IntervalTriggeredMessage(1, "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!", DataItemStatus.Active),
                 new IntervalTriggeredMessage(1,"foo", DataItemStatus.Draft),
                 new IntervalTriggeredMessage(2,"bar", DataItemStatus.Disabled),
@@ -20,30 +28,31 @@ namespace DevChatter.Bot
             return automatedMessages;
         }
 
-        private static List<ICommandMessage> GetICommandMessages()
+        private static List<StaticCommandResponseMessage> GetICommandMessages()
         {
-            return new List<ICommandMessage>
+            return new List<StaticCommandResponseMessage>
             {
                 new StaticCommandResponseMessage("coins", "Coins?!?! I think you meant !points", DataItemStatus.Active),
             };
         }
 
-        public static void Initialize()
+        public void Initialize()
         {
-            StoreData(GetIAutomatedMessage());
+            _repository.Create(GetIAutomatedMessage());
 
-            StoreData(GetICommandMessages());
+            _repository.Create(GetICommandMessages());
         }
 
-        private static void StoreData<T>(List<T> dataToStore)
+        private void StoreData<T>(List<T> dataToStore)
         {
-            string serializedJson = JsonConvert.SerializeObject(dataToStore, Formatting.Indented, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full,
-            });
 
-            WriteDataToFilesystem(typeof(T).Name, serializedJson);
+            //string serializedJson = JsonConvert.SerializeObject(dataToStore, Formatting.Indented, new JsonSerializerSettings
+            //{
+            //    TypeNameHandling = TypeNameHandling.Objects,
+            //    TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full,
+            //});
+
+            //WriteDataToFilesystem(typeof(T).Name, serializedJson);
         }
 
         private static void WriteDataToFilesystem(string dataTypeName, string textToWrite)

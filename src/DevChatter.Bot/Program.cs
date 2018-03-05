@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Messaging;
-using DevChatter.Bot.Infra.Json;
+using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.Twitch;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace DevChatter.Bot
@@ -16,7 +17,13 @@ namespace DevChatter.Bot
             Console.WriteLine("Initializing the Bot...");
             IConfigurationRoot configuration = InitializeConfiguration();
 
-            FakeData.Initialize();
+            var options = new DbContextOptionsBuilder<AppDataContext>()
+                .UseInMemoryDatabase(databaseName: "fake-data-db")
+                .Options;
+
+            var efGenericRepo = new EfGenericRepo(new AppDataContext(options));
+
+            new FakeData(efGenericRepo).Initialize();
 
             var clientSettings = configuration
                 .GetSection(nameof(TwitchClientSettings))
@@ -30,10 +37,9 @@ namespace DevChatter.Bot
 
             Console.WriteLine("To exit, press [Ctrl]+c");
 
-            var genericJsonFileRepository = new GenericJsonFileRepository();
-            var commandMessages = genericJsonFileRepository.List(new ActiveMessagePolicy<StaticCommandResponseMessage>());
+            var commandMessages = efGenericRepo.List(new ActiveMessagePolicy<StaticCommandResponseMessage>());
             var commandHandler = new CommandHandler(chatClients, commandMessages);
-            var botMain = new BotMain(chatClients, genericJsonFileRepository, commandHandler);
+            var botMain = new BotMain(chatClients, efGenericRepo, commandHandler);
             botMain.Run();
         }
 

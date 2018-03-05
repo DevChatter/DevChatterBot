@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DevChatter.Bot.Core\DevChatter.Bot.Core.csproj" />
-    <ProjectReference Include="..\DevChatter.Bot.Infra.Json\DevChatter.Bot.Infra.Json.csproj" />
+    <ProjectReference Include="..\DevChatter.Bot.Infra.Ef\DevChatter.Bot.Infra.Ef.csproj" />
     <ProjectReference Include="..\DevChatter.Bot.Infra.Twitch\DevChatter.Bot.Infra.Twitch.csproj" />
   </ItemGroup>
 
@@ -21,10 +21,6 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="FileDataStore\" />
   </ItemGroup>
 
 </Project>

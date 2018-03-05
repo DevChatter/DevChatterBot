@@ -18,5 +18,21 @@ namespace DevChatter.Bot.Infra.Ef
         {
             return _db.Set<T>().Where(spec.Criteria).ToList();
         }
+
+        public T Create<T>(T dataItem) where T : DataItem
+        {
+            _db.Set<T>().Add(dataItem);
+            _db.SaveChanges();
+
+            return dataItem;
+        }
+
+        public List<T> Create<T>(List<T> dataItemList) where T : DataItem
+        {
+            _db.Set<T>().AddRange(dataItemList);
+            _db.SaveChanges();
+
+            return dataItemList;
+        }
     }
 }
