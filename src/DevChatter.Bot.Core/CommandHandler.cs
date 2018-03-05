@@ -6,9 +6,9 @@ namespace DevChatter.Bot.Core
 {
     public class CommandHandler
     {
-        private readonly List<ICommandMessage> _commandMessages;
+        private readonly List<StaticCommandResponseMessage> _commandMessages;
 
-        public CommandHandler(List<IChatClient> chatClients, List<ICommandMessage> commandMessages)
+        public CommandHandler(List<IChatClient> chatClients, List<StaticCommandResponseMessage> commandMessages)
         {
             _commandMessages = commandMessages;
             foreach (var chatClient in chatClients)

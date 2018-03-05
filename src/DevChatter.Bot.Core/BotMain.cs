@@ -52,7 +52,7 @@ namespace DevChatter.Bot.Core
         // TODO: Fix this method's name
         private void PublishMessages()
         {
-            var messages = _repository.List(new ActiveMessagePolicy<IAutomatedMessage>());
+            var messages = _repository.List(new ActiveMessagePolicy<IntervalTriggeredMessage>());
             foreach (var message in messages)
             {
                 _autoMsgSystem.Publish(message);

@@ -1,7 +1,0 @@
-[
-  {
-    "$type": "DevChatter.Bot.Core.Messaging.StaticCommandResponseMessage, DevChatter.Bot.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "CommandText": "coins",
-    "DataItemStatus": 1
-  }
-]

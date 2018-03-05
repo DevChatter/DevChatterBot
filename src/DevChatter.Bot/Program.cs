@@ -31,7 +31,7 @@ namespace DevChatter.Bot
             Console.WriteLine("To exit, press [Ctrl]+c");
 
             var genericJsonFileRepository = new GenericJsonFileRepository();
-            List<ICommandMessage> commandMessages = genericJsonFileRepository.List(new ActiveMessagePolicy<ICommandMessage>());
+            var commandMessages = genericJsonFileRepository.List(new ActiveMessagePolicy<StaticCommandResponseMessage>());
             var commandHandler = new CommandHandler(chatClients, commandMessages);
             var botMain = new BotMain(chatClients, genericJsonFileRepository, commandHandler);
             botMain.Run();

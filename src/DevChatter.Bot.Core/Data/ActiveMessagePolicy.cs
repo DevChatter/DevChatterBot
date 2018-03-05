@@ -4,7 +4,7 @@ using DevChatter.Bot.Core.Messaging;
 
 namespace DevChatter.Bot.Core.Data
 {
-    public class ActiveMessagePolicy<T> : ISpecification<T> where T : IDataItem
+    public class ActiveMessagePolicy<T> : ISpecification<T> where T : DataItem
     {
         public ActiveMessagePolicy()
         {

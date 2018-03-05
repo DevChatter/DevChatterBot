@@ -5,6 +5,6 @@ namespace DevChatter.Bot.Core
 {
     public interface IRepository
     {
-        List<T> List<T>(ISpecification<T> spec);
+        List<T> List<T>(ISpecification<T> spec) where T : DataItem;
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
+using DevChatter.Bot.Core.Data;
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public class StaticCommandResponseMessage : ICommandMessage
+    public class StaticCommandResponseMessage : DataItem, ICommandMessage
     {
         private readonly string _staticResponse;
         public string CommandText { get; }
