@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using DevChatter.Bot.Core.Data;
 
-namespace DevChatter.Bot.Core
+namespace DevChatter.Bot.Core.Data
 {
     public interface IRepository
     {

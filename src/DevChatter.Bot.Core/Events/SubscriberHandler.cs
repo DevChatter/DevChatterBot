@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevChatter.Bot.Core
+namespace DevChatter.Bot.Core.Events
 {
     public class SubscriberHandler
     {

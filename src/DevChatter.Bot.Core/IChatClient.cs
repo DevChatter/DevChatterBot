@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.Events;
 
 namespace DevChatter.Bot.Core
 {

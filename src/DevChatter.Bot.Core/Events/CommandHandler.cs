@@ -2,7 +2,7 @@
 using System.Linq;
 using DevChatter.Bot.Core.Messaging;
 
-namespace DevChatter.Bot.Core
+namespace DevChatter.Bot.Core.Events
 {
     public class CommandHandler
     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.Twitch;

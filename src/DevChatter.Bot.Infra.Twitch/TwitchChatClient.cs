@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Events;
 using TwitchLib;
 using TwitchLib.Events.Client;
 using TwitchLib.Models.Client;
