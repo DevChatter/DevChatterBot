@@ -2,6 +2,7 @@
 using System.Linq;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevChatter.Bot.Infra.Ef
 {
@@ -22,6 +23,14 @@ namespace DevChatter.Bot.Infra.Ef
         public T Create<T>(T dataItem) where T : DataItem
         {
             _db.Set<T>().Add(dataItem);
+            _db.SaveChanges();
+
+            return dataItem;
+        }
+
+        public T Update<T>(T dataItem) where T : DataItem
+        {
+            _db.Set<T>().Update(dataItem);
             _db.SaveChanges();
 
             return dataItem;

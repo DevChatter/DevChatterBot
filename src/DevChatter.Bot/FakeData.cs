@@ -1,11 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Messaging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace DevChatter.Bot
 {
@@ -41,34 +36,6 @@ namespace DevChatter.Bot
             _repository.Create(GetIAutomatedMessage());
 
             _repository.Create(GetICommandMessages());
-        }
-
-        private void StoreData<T>(List<T> dataToStore)
-        {
-
-            //string serializedJson = JsonConvert.SerializeObject(dataToStore, Formatting.Indented, new JsonSerializerSettings
-            //{
-            //    TypeNameHandling = TypeNameHandling.Objects,
-            //    TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full,
-            //});
-
-            //WriteDataToFilesystem(typeof(T).Name, serializedJson);
-        }
-
-        private static void WriteDataToFilesystem(string dataTypeName, string textToWrite)
-        {
-            string filePath = $"FileDataStore\\{dataTypeName}.json";
-            if (!Directory.Exists("FileDataStore"))
-            {
-                Directory.CreateDirectory("FileDataStore");
-            }
-
-            if (!File.Exists(filePath))
-            {
-                File.Create(filePath);
-            }
-
-            File.WriteAllText(filePath, textToWrite);
         }
     }
 }

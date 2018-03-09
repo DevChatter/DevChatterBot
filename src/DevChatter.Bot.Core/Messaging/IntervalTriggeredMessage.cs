@@ -5,6 +5,10 @@ namespace DevChatter.Bot.Core.Messaging
 {
     public class IntervalTriggeredMessage : DataItem, IAutomatedMessage
     {
+        public IntervalTriggeredMessage()
+        {
+        }
+
         public IntervalTriggeredMessage(int delayInMinutes, string message, 
             DataItemStatus dataItemStatus = DataItemStatus.Draft)
         {
