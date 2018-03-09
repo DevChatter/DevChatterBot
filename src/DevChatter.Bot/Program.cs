@@ -17,8 +17,8 @@ namespace DevChatter.Bot
             Console.WriteLine("Initializing the Bot...");
             IConfigurationRoot configuration = InitializeConfiguration();
 
-            var options = new DbContextOptionsBuilder<AppDataContext>()
-                .UseInMemoryDatabase(databaseName: "fake-data-db")
+            DbContextOptions<AppDataContext> options = new DbContextOptionsBuilder<AppDataContext>()
+                .UseInMemoryDatabase("fake-data-db")
                 .Options;
 
             var efGenericRepo = new EfGenericRepo(new AppDataContext(options));
@@ -37,7 +37,7 @@ namespace DevChatter.Bot
 
             Console.WriteLine("To exit, press [Ctrl]+c");
 
-            var commandMessages = efGenericRepo.List(DataItemPolicy<StaticCommandResponseMessage>.ActiveOnly()); 
+            var commandMessages = efGenericRepo.List(DataItemPolicy<StaticCommandResponseMessage>.ActiveOnly());
             var commandHandler = new CommandHandler(chatClients, commandMessages);
             var botMain = new BotMain(chatClients, efGenericRepo, commandHandler);
             botMain.Run();
@@ -47,7 +47,7 @@ namespace DevChatter.Bot
         {
             Console.WriteLine("Initializing configuration...");
 
-            var builder = new ConfigurationBuilder()
+            IConfigurationBuilder builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json");
 
             builder.AddUserSecrets<Program>(); // TODO: Only do this in development

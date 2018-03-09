@@ -2,7 +2,6 @@
 using System.Linq;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace DevChatter.Bot.Infra.Ef
 {
