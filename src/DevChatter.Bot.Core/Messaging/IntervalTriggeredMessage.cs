@@ -1,9 +1,14 @@
 ﻿using System;
+using DevChatter.Bot.Core.Data;
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public class IntervalTriggeredMessage : IAutomatedMessage
+    public class IntervalTriggeredMessage : DataItem, IAutomatedMessage
     {
+        public IntervalTriggeredMessage()
+        {
+        }
+
         public IntervalTriggeredMessage(int delayInMinutes, string message, 
             DataItemStatus dataItemStatus = DataItemStatus.Draft)
         {
@@ -31,7 +36,5 @@ namespace DevChatter.Bot.Core.Messaging
             _previousRunTime = currentTime;
             return Message;
         }
-
-        public DataItemStatus DataItemStatus { get; }
     }
 }

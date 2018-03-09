@@ -4,13 +4,22 @@ using DevChatter.Bot.Core.Messaging;
 
 namespace DevChatter.Bot.Core.Data
 {
-    public class ActiveMessagePolicy : ISpecification<IntervalTriggeredMessage>
+    public class DataItemPolicy<T> : ISpecification<T> where T : DataItem
     {
-        public ActiveMessagePolicy()
+        private DataItemPolicy(Expression<Func<T, bool>> expression)
         {
-            Criteria = message => message.DataItemStatus == DataItemStatus.Active;
+            Criteria = expression;
         }
 
-        public Expression<Func<IntervalTriggeredMessage, bool>> Criteria { get; }
+        public static DataItemPolicy<T> ByStatus(DataItemStatus dataItemStatus)
+        {
+            return new DataItemPolicy<T>(x => x.DataItemStatus == dataItemStatus);
+        }
+        public static DataItemPolicy<T> ActiveOnly()
+        {
+            return ByStatus(DataItemStatus.Active);
+        }
+
+        public Expression<Func<T, bool>> Criteria { get; }
     }
 }

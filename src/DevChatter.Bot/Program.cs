@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using DevChatter.Bot.Core;
-using DevChatter.Bot.Infra.Json;
+using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.Twitch;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace DevChatter.Bot
@@ -14,10 +17,16 @@ namespace DevChatter.Bot
             Console.WriteLine("Initializing the Bot...");
             IConfigurationRoot configuration = InitializeConfiguration();
 
-            FakeData.Initialize();
+            DbContextOptions<AppDataContext> options = new DbContextOptionsBuilder<AppDataContext>()
+                .UseInMemoryDatabase("fake-data-db")
+                .Options;
+
+            var efGenericRepo = new EfGenericRepo(new AppDataContext(options));
+
+            new FakeData(efGenericRepo).Initialize();
 
             var clientSettings = configuration
-                .GetSection(nameof(TwitchClientSettings))
+                //.GetSection(nameof(TwitchClientSettings))
                 .Get<TwitchClientSettings>();
 
             var chatClients = new List<IChatClient>
@@ -26,22 +35,11 @@ namespace DevChatter.Bot
                 new TwitchChatClient(clientSettings),
             };
 
-            foreach (IChatClient chatClient in chatClients)
-            {
-                switch (chatClient)
-                {
-                    case TwitchChatClient twitchChatClient:
-                        Console.WriteLine("twitch client ready");
-                        break;
-                    case ConsoleChatClient consoleChatClient:
-                        Console.WriteLine("console client ready");
-                        break;
-                }
-            }
-
             Console.WriteLine("To exit, press [Ctrl]+c");
 
-            var botMain = new BotMain(chatClients, new GenericJsonFileRepository());
+            var commandMessages = efGenericRepo.List(DataItemPolicy<StaticCommandResponseMessage>.ActiveOnly());
+            var commandHandler = new CommandHandler(chatClients, commandMessages);
+            var botMain = new BotMain(chatClients, efGenericRepo, commandHandler);
             botMain.Run();
         }
 
@@ -49,8 +47,11 @@ namespace DevChatter.Bot
         {
             Console.WriteLine("Initializing configuration...");
 
-            var builder = new ConfigurationBuilder()
+            IConfigurationBuilder builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json");
+
+            builder.AddUserSecrets<Program>(); // TODO: Only do this in development
+
             return builder.Build();
         }
     }

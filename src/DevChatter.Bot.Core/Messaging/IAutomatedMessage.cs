@@ -7,6 +7,5 @@ namespace DevChatter.Bot.Core.Messaging
         void Initialize(DateTime currentTime);
         bool IsItYourTimeToDisplay(DateTime currentTime);
         string GetMessageInstance(DateTime currentTime);
-        DataItemStatus DataItemStatus { get; }
     }
 }
