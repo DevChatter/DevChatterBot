@@ -15,6 +15,7 @@ namespace DevChatter.Bot.Core.Data
         {
             return new DataItemPolicy<T>(x => x.DataItemStatus == dataItemStatus);
         }
+
         public static DataItemPolicy<T> ActiveOnly()
         {
             return ByStatus(DataItemStatus.Active);

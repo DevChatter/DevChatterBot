@@ -37,7 +37,7 @@ namespace DevChatter.Bot
 
             Console.WriteLine("To exit, press [Ctrl]+c");
 
-            var commandMessages = efGenericRepo.List(DataItemPolicy<StaticCommandResponseMessage>.ActiveOnly());
+            var commandMessages = efGenericRepo.List(DataItemPolicy<SimpleResponseMessage>.ActiveOnly());
             var commandHandler = new CommandHandler(chatClients, commandMessages);
             var botMain = new BotMain(chatClients, efGenericRepo, commandHandler);
             botMain.Run();
