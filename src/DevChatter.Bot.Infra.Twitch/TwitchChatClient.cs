@@ -18,6 +18,12 @@ namespace DevChatter.Bot.Infra.Twitch
             var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchOAuth);
             _twitchClient = new TwitchClient(credentials, settings.TwitchChannel);
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
+            _twitchClient.OnNewSubscriber += NewSubscriber;
+        }
+
+        private void NewSubscriber(object sender, OnNewSubscriberArgs e)
+        {
+            OnNewSubscriber?.Invoke(this, e.ToNewSubscriberEventArgs());
         }
 
         private void ChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
@@ -55,5 +61,6 @@ namespace DevChatter.Bot.Infra.Twitch
         }
 
         public event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
+        public event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
     }
 }

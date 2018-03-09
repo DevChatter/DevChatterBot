@@ -7,12 +7,22 @@ namespace DevChatter.Bot.Infra.Twitch
     {
         public static CommandReceivedEventArgs ToCommandReceivedEventArgs(this OnChatCommandReceivedArgs src)
         {
-            var commandReceivedEventArgs = new CommandReceivedEventArgs
+            var eventArgs = new CommandReceivedEventArgs
             {
                 CommandWord = src.Command.CommandText,
             };
 
-            return commandReceivedEventArgs;
+            return eventArgs;
+        }
+
+        public static NewSubscriberEventArgs ToNewSubscriberEventArgs(this OnNewSubscriberArgs src)
+        {
+            var eventArgs = new NewSubscriberEventArgs
+            {
+                SubscriberName = src.Subscriber.DisplayName,
+            };
+
+            return eventArgs;
         }
     }
 }

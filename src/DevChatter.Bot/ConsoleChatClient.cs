@@ -17,5 +17,6 @@ namespace DevChatter.Bot
         }
 
         public event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
+        public event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
     }
 }
