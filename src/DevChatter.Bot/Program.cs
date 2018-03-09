@@ -26,7 +26,7 @@ namespace DevChatter.Bot
             new FakeData(efGenericRepo).Initialize();
 
             var clientSettings = configuration
-                .GetSection(nameof(TwitchClientSettings))
+                //.GetSection(nameof(TwitchClientSettings))
                 .Get<TwitchClientSettings>();
 
             var chatClients = new List<IChatClient>
@@ -49,6 +49,9 @@ namespace DevChatter.Bot
 
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json");
+
+            builder.AddUserSecrets<Program>(); // TODO: Only do this in development
+
             return builder.Build();
         }
     }

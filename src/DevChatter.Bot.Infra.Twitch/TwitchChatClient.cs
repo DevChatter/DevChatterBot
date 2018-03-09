@@ -15,8 +15,8 @@ namespace DevChatter.Bot.Infra.Twitch
 
         public TwitchChatClient(TwitchClientSettings settings)
         {
-            var credentials = new ConnectionCredentials(settings.Username, settings.OAuth);
-            _twitchClient = new TwitchClient(credentials, settings.Channel);
+            var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchOAuth);
+            _twitchClient = new TwitchClient(credentials, settings.TwitchChannel);
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
         }
 
