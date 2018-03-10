@@ -13,6 +13,7 @@ namespace DevChatter.Bot.Infra.Twitch
             var eventArgs = new CommandReceivedEventArgs
             {
                 CommandWord = src.Command.CommandText,
+                Arguments = src.Command.ArgumentsAsList
             };
 
             return eventArgs;
