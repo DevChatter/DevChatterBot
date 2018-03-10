@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Messaging;
 
 namespace DevChatter.Bot
@@ -13,7 +15,7 @@ namespace DevChatter.Bot
             _repository = repository;
         }
 
-        private static List<IntervalTriggeredMessage> GetIAutomatedMessage()
+        private static List<IntervalTriggeredMessage> GetIntervalTriggeredMessages()
         {
             var automatedMessages = new List<IntervalTriggeredMessage>
             {
@@ -26,19 +28,24 @@ namespace DevChatter.Bot
             return automatedMessages;
         }
 
-        private static List<SimpleResponseMessage> GetICommandMessages()
+        private static List<SimpleResponseMessage> GetSimpleResponseMessages()
         {
             return new List<SimpleResponseMessage>
             {
                 new SimpleResponseMessage("coins", "Coins?!?! I think you meant !points", DataItemStatus.Active),
+                new SimpleResponseMessage("github", "Check out our GitHub repositories here https://github.com/DevChatter/", DataItemStatus.Active),
+                new SimpleResponseMessage("emotes", "These are our current emotes: devchaHype devchaDerp devchaFail ", DataItemStatus.Active),
+                new SimpleResponseMessage("so", "Hey! We love https://www.twitch.tv/{0} ! You should go check out their channel!", DataItemStatus.Active,
+                    x => x.Arguments?.FirstOrDefault().NoAt()),
+                new SimpleResponseMessage("lurk", "{0} is just lurking here, but still thinks you're all awesome!", DataItemStatus.Active, x => x.ChatUser.DisplayName)
             };
         }
 
         public void Initialize()
         {
-            _repository.Create(GetIAutomatedMessage());
+            _repository.Create(GetIntervalTriggeredMessages());
 
-            _repository.Create(GetICommandMessages());
+            _repository.Create(GetSimpleResponseMessages());
         }
     }
 }

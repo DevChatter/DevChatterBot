@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Model;
 using TwitchLib.Events.Client;
 using TwitchLib.Events.Services.FollowerService;
 
@@ -13,6 +14,8 @@ namespace DevChatter.Bot.Infra.Twitch
             var eventArgs = new CommandReceivedEventArgs
             {
                 CommandWord = src.Command.CommandText,
+                Arguments = src.Command.ArgumentsAsList,
+                ChatUser = new ChatUser { DisplayName = src.Command.ChatMessage.DisplayName }
             };
 
             return eventArgs;
