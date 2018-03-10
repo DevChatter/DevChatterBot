@@ -3,14 +3,13 @@ using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Messaging;
-using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.Twitch;
 
 namespace DevChatter.Bot.Startup
 {
     public static class SetUpBot
     {
-        public static BotMain NewBot(TwitchClientSettings clientSettings, EfGenericRepo efGenericRepo)
+        public static BotMain NewBot(TwitchClientSettings clientSettings, IRepository repository)
         {
             var chatClients = new List<IChatClient>
             {
@@ -18,12 +17,11 @@ namespace DevChatter.Bot.Startup
                 new TwitchChatClient(clientSettings),
             };
 
-
-            var commandMessages = efGenericRepo.List(DataItemPolicy<SimpleResponseMessage>.ActiveOnly());
+            var commandMessages = repository.List(DataItemPolicy<SimpleResponseMessage>.ActiveOnly());
             var commandHandler = new CommandHandler(chatClients, commandMessages);
             var subscriberHandler = new SubscriberHandler(chatClients);
             var followerHandler = new FollowerHandler(chatClients);
-            var botMain = new BotMain(chatClients, efGenericRepo, commandHandler, subscriberHandler, followerHandler);
+            var botMain = new BotMain(chatClients, repository, commandHandler, subscriberHandler, followerHandler);
             return botMain;
         }
     }
