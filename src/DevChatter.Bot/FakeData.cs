@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Messaging;
 
 namespace DevChatter.Bot

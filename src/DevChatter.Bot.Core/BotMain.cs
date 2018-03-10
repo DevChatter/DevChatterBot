@@ -14,12 +14,16 @@ namespace DevChatter.Bot.Core
         private readonly IRepository _repository;
         private readonly AutomatedMessagingSystem _autoMsgSystem = new AutomatedMessagingSystem();
         private readonly CommandHandler _commandHandler;
+        private readonly SubscriberHandler _subscriberHandler;
+        private readonly FollowerHandler _followerHandler;
 
-        public BotMain(List<IChatClient> chatClients, IRepository repository, CommandHandler commandHandler)
+        public BotMain(List<IChatClient> chatClients, IRepository repository, CommandHandler commandHandler, SubscriberHandler subscriberHandler, FollowerHandler followerHandler)
         {
             _chatClients = chatClients;
             _repository = repository;
             _commandHandler = commandHandler;
+            _subscriberHandler = subscriberHandler;
+            _followerHandler = followerHandler;
         }
 
         public void Run()

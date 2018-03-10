@@ -12,11 +12,11 @@ namespace DevChatter.Bot.Core.Events
             }
         }
 
-        private void ChatClientOnOnNewSubscriber(object sender, NewSubscriberEventArgs newSubscriberEventArgs)
+        private void ChatClientOnOnNewSubscriber(object sender, NewSubscriberEventArgs eventArgs)
         {
             if (sender is IChatClient chatClient)
             {
-                chatClient.SendMessage($"Welcome, {newSubscriberEventArgs.SubscriberName}! You are awesome! Thank you for subscribing!");
+                chatClient.SendMessage($"Welcome, {eventArgs.SubscriberName}! You are awesome! Thank you for subscribing!");
             }
         }
     }
