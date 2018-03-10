@@ -1,4 +1,6 @@
-﻿namespace DevChatter.Bot.Core.Messaging
+﻿using DevChatter.Bot.Core.Events;
+
+namespace DevChatter.Bot.Core.Messaging
 {
     public interface ICommandMessage
     {

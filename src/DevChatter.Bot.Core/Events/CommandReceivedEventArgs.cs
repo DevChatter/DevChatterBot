@@ -1,4 +1,4 @@
-﻿namespace DevChatter.Bot.Core
+﻿namespace DevChatter.Bot.Core.Events
 {
     public class CommandReceivedEventArgs
     {

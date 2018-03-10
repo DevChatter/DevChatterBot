@@ -1,14 +1,15 @@
 ﻿using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Events;
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public class StaticCommandResponseMessage : DataItem, ICommandMessage
+    public class SimpleResponseMessage : DataItem, ICommandMessage
     {
-        public StaticCommandResponseMessage()
+        public SimpleResponseMessage()
         {
         }
 
-        public StaticCommandResponseMessage(string commandText, string staticResponse, DataItemStatus dataItemStatus = DataItemStatus.Draft)
+        public SimpleResponseMessage(string commandText, string staticResponse, DataItemStatus dataItemStatus = DataItemStatus.Draft)
         {
             _staticResponse = staticResponse;
             CommandText = commandText;

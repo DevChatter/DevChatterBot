@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Events;
 
 namespace DevChatter.Bot
 {
@@ -17,5 +18,7 @@ namespace DevChatter.Bot
         }
 
         public event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
+        public event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
+        public event EventHandler<NewFollowersEventArgs> OnNewFollower;
     }
 }

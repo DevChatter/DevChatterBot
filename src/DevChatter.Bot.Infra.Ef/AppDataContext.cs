@@ -7,7 +7,7 @@ namespace DevChatter.Bot.Infra.Ef
     public class AppDataContext : DbContext
     {
         public DbSet<IntervalTriggeredMessage> IntervalTriggeredMessages { get; set; }
-        public DbSet<StaticCommandResponseMessage> StaticCommandResponseMessage { get; set; }
+        public DbSet<SimpleResponseMessage> StaticCommandResponseMessage { get; set; }
 
         public AppDataContext()
         { }
