@@ -32,7 +32,9 @@ namespace DevChatter.Bot
             return new List<SimpleResponseMessage>
             {
                 new SimpleResponseMessage("coins", "Coins?!?! I think you meant !points", DataItemStatus.Active),
-                new SimpleResponseMessage("so", "Hey! We love {0}! You should go check out their channel!", DataItemStatus.Active, x => x.Arguments?.FirstOrDefault()),
+                new SimpleResponseMessage("so", "Hey! We love {0}! You should go check out their channel!", DataItemStatus.Active,
+                    x => x.Arguments?.FirstOrDefault()),
+                new SimpleResponseMessage("lurk", "{0} is just lurking here, but still thinks you're all awesome!", DataItemStatus.Active, x => x.ChatUser.DisplayName)
             };
         }
 
