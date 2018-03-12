@@ -3,6 +3,7 @@ using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot
 {
@@ -32,13 +33,22 @@ namespace DevChatter.Bot
         {
             return new List<SimpleResponseMessage>
             {
-                new SimpleResponseMessage("coins", "Coins?!?! I think you meant !points", DataItemStatus.Active),
-                new SimpleResponseMessage("discord", "Hey! Checkout out our Discord here https://discord.gg/aQry9jG", DataItemStatus.Active),
-                new SimpleResponseMessage("github", "Check out our GitHub repositories here https://github.com/DevChatter/", DataItemStatus.Active),
-                new SimpleResponseMessage("emotes", "These are our current emotes: devchaHype devchaDerp devchaFail ", DataItemStatus.Active),
-                new SimpleResponseMessage("so", "Hey! We love https://www.twitch.tv/{0} ! You should go check out their channel!", DataItemStatus.Active,
+                new SimpleResponseMessage("coins", "Coins?!?! I think you meant !points"),
+                new SimpleResponseMessage("discord", "Hey! Checkout out our Discord here https://discord.gg/aQry9jG"),
+                new SimpleResponseMessage("github", "Check out our GitHub repositories here https://github.com/DevChatter/"),
+                new SimpleResponseMessage("emotes", "These are our current emotes: devchaHype devchaDerp devchaFail "),
+                new SimpleResponseMessage("lurk", "{0} is just lurking here, but still thinks you're all awesome!", selector: x => x.ChatUser.DisplayName)
+            };
+        }
+
+        public static List<FollowerCommand> GetFollowerCommands()
+        {
+            return new List<FollowerCommand>
+            {
+                new FollowerCommand("so", "Hey! We love https://www.twitch.tv/{0} ! You should go check out their channel!", 
+                    UserRole.Mod,
+                    DataItemStatus.Active,
                     x => x.Arguments?.FirstOrDefault()?.NoAt()),
-                new SimpleResponseMessage("lurk", "{0} is just lurking here, but still thinks you're all awesome!", DataItemStatus.Active, x => x.ChatUser.DisplayName)
             };
         }
 
@@ -47,6 +57,8 @@ namespace DevChatter.Bot
             _repository.Create(GetIntervalTriggeredMessages());
 
             _repository.Create(GetSimpleResponseMessages());
+
+            _repository.Create(GetFollowerCommands());
         }
     }
 }

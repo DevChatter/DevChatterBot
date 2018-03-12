@@ -1,6 +1,7 @@
 ﻿using System;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Messaging
 {
@@ -10,20 +11,21 @@ namespace DevChatter.Bot.Core.Messaging
         {
         }
 
-        public SimpleResponseMessage(string commandText, string staticResponse,
-            DataItemStatus dataItemStatus = DataItemStatus.Draft, 
+        public SimpleResponseMessage(string commandText, string staticResponse, UserRole roleRequired = UserRole.Everyone, DataItemStatus dataItemStatus = DataItemStatus.Active,
             Func<CommandReceivedEventArgs, string> selector = null)
         {
             _staticResponse = staticResponse;
+            RoleRequired = roleRequired;
             _selector = selector;
             CommandText = commandText;
             DataItemStatus = dataItemStatus;
         }
 
-        private readonly string _staticResponse;
-        private readonly Func<CommandReceivedEventArgs, string> _selector;
+        protected readonly string _staticResponse;
+        protected readonly Func<CommandReceivedEventArgs, string> _selector;
+        public UserRole RoleRequired { get; }
         public string CommandText { get; }
-        public void Process(IChatClient triggeringClient, CommandReceivedEventArgs eventArgs)
+        public virtual void Process(IChatClient triggeringClient, CommandReceivedEventArgs eventArgs)
         {
             string textToSend = _staticResponse;
             if (_selector != null)

@@ -10,6 +10,5 @@ namespace DevChatter.Bot.Core
         void SendMessage(string message);
         event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
         event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
-        event EventHandler<NewFollowersEventArgs> OnNewFollower;
     }
 }

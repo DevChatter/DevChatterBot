@@ -15,15 +15,15 @@ namespace DevChatter.Bot.Core
         private readonly AutomatedMessagingSystem _autoMsgSystem = new AutomatedMessagingSystem();
         private readonly CommandHandler _commandHandler;
         private readonly SubscriberHandler _subscriberHandler;
-        private readonly FollowerHandler _followerHandler;
+        private readonly IFollowerService _followerService;
 
-        public BotMain(List<IChatClient> chatClients, IRepository repository, CommandHandler commandHandler, SubscriberHandler subscriberHandler, FollowerHandler followerHandler)
+        public BotMain(List<IChatClient> chatClients, IRepository repository, CommandHandler commandHandler, SubscriberHandler subscriberHandler, IFollowerService followerService)
         {
             _chatClients = chatClients;
             _repository = repository;
             _commandHandler = commandHandler;
             _subscriberHandler = subscriberHandler;
-            _followerHandler = followerHandler;
+            _followerService = followerService;
         }
 
         public void Run()
