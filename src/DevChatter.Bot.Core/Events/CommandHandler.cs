@@ -6,11 +6,12 @@ namespace DevChatter.Bot.Core.Events
 {
     public class CommandHandler
     {
-        private readonly List<SimpleResponseMessage> _commandMessages;
+        private readonly List<ICommandMessage> _commandMessages;
 
-        public CommandHandler(List<IChatClient> chatClients, List<SimpleResponseMessage> commandMessages)
+        public CommandHandler(List<IChatClient> chatClients, List<ICommandMessage> commandMessages)
         {
             _commandMessages = commandMessages;
+
             foreach (var chatClient in chatClients)
             {
                 chatClient.OnCommandReceived += CommandReceivedHandler;
