@@ -4,7 +4,7 @@
     {
         public static string NoAt(this string src)
         {
-            return src.StartsWith("@") ? src.Substring(1) : src;
+            return src.TrimStart('@');
         }
     }
 }
