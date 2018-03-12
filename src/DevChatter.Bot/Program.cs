@@ -1,5 +1,7 @@
 ﻿using System;
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Caching;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.Twitch;
 using DevChatter.Bot.Startup;
@@ -18,13 +20,13 @@ namespace DevChatter.Bot
                 .UseInMemoryDatabase("fake-data-db")
                 .Options;
 
-            var efGenericRepo = new EfGenericRepo(new AppDataContext(options));
+            IRepository repository = new EfGenericRepo(new AppDataContext(options));
 
-            new FakeData(efGenericRepo).Initialize();
+            new FakeData(repository).Initialize();
 
             Console.WriteLine("To exit, press [Ctrl]+c");
 
-            BotMain botMain = SetUpBot.NewBot(clientSettings, efGenericRepo);
+            BotMain botMain = SetUpBot.NewBot(clientSettings, repository);
             botMain.Run();
         }
 
