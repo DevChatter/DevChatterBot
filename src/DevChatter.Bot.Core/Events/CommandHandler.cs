@@ -24,13 +24,16 @@ namespace DevChatter.Bot.Core.Events
             if (sender is IChatClient chatClient)
             {
                 ICommandMessage commandMessage = _commandMessages.FirstOrDefault(c => c.CommandText == e.CommandWord);
-                if (CanUserRunCommand(e.ChatUser, commandMessage))
+                if (commandMessage != null)
                 {
-                    commandMessage?.Process(chatClient, e);
-                }
-                else
-                {
-                    chatClient.SendMessage($"Sorry, {e.ChatUser.DisplayName}! You don't have permission to use the !{e.CommandWord} command.");
+                    if (CanUserRunCommand(e.ChatUser, commandMessage))
+                    {
+                        commandMessage.Process(chatClient, e);
+                    }
+                    else
+                    {
+                        chatClient.SendMessage($"Sorry, {e.ChatUser.DisplayName}! You don't have permission to use the !{e.CommandWord} command.");
+                    }
                 }
             }
         }
