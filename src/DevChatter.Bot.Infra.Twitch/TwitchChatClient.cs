@@ -36,13 +36,7 @@ namespace DevChatter.Bot.Infra.Twitch
         {
             _isReady = true;
             _connectionCompletionTask.SetResult(true);
-
-            _twitchClient.OnUserJoined += TwitchClientOnOnUserJoined;
-        }
-
-        private void TwitchClientOnOnUserJoined(object sender, OnUserJoinedArgs onUserJoinedArgs)
-        {
-            // Hey! Welcome back, it's your #th day here!
+            _twitchClient.SendMessage("Hello World! The bot has arrived!");
         }
 
         public async Task Connect()
