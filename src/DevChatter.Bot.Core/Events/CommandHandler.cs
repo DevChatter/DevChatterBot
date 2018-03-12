@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Events
 {
@@ -23,8 +24,20 @@ namespace DevChatter.Bot.Core.Events
             if (sender is IChatClient chatClient)
             {
                 ICommandMessage commandMessage = _commandMessages.FirstOrDefault(c => c.CommandText == e.CommandWord);
-                commandMessage?.Process(chatClient, e);
+                if (CanUserRunCommand(e.ChatUser, commandMessage))
+                {
+                    commandMessage?.Process(chatClient, e);
+                }
+                else
+                {
+                    chatClient.SendMessage($"Sorry, {e.ChatUser.DisplayName}! You don't have permission to use the !{e.CommandWord} command.");
+                }
             }
+        }
+
+        private bool CanUserRunCommand(ChatUser user, ICommandMessage command)
+        {
+            return user.Role <= command.RoleRequired;
         }
     }
 }

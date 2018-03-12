@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Messaging
 {
@@ -13,9 +14,10 @@ namespace DevChatter.Bot.Core.Messaging
         }
 
         public FollowerCommand(string commandText, string staticResponse,
+            UserRole userRole = UserRole.Everyone,
             DataItemStatus dataItemStatus = DataItemStatus.Draft,
             Func<CommandReceivedEventArgs, string> selector = null)
-            : base(commandText, staticResponse, dataItemStatus, selector)
+            : base(commandText, staticResponse, userRole, dataItemStatus, selector)
         {
         }
 
