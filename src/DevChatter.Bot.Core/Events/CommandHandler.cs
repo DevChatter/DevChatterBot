@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Commands;
-using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Events

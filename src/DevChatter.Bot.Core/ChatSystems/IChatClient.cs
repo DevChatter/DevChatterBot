@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Events;
 
-namespace DevChatter.Bot.Core
+namespace DevChatter.Bot.Core.ChatSystems
 {
     public interface IChatClient
     {
