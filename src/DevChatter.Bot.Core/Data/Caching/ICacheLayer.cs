@@ -1,6 +1,6 @@
 ﻿using DevChatter.Bot.Core.Model;
 
-namespace DevChatter.Bot.Core.Caching
+namespace DevChatter.Bot.Core.Data.Caching
 {
     public interface ICacheLayer
     {

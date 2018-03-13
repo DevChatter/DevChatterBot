@@ -1,6 +1,5 @@
 ﻿using System;
 using DevChatter.Bot.Core;
-using DevChatter.Bot.Core.Caching;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.Twitch;

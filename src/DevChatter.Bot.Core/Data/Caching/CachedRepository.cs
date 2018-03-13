@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Model;
 
-namespace DevChatter.Bot.Core.Caching
+namespace DevChatter.Bot.Core.Data.Caching
 {
     public class CachedRepository : IRepository
     {
