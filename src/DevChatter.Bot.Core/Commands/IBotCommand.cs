@@ -1,9 +1,10 @@
-﻿using DevChatter.Bot.Core.Events;
+﻿using DevChatter.Bot.Core.ChatSystems;
+using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Model;
 
-namespace DevChatter.Bot.Core.Messaging
+namespace DevChatter.Bot.Core.Commands
 {
-    public interface ICommandMessage
+    public interface IBotCommand
     {
         UserRole RoleRequired { get; }
         string CommandText { get; }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DevChatter.Bot.Core.ChatSystems;
 
 namespace DevChatter.Bot.Core.Events
 {

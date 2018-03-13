@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.ChatSystems;
+using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Messaging;
@@ -22,14 +23,14 @@ namespace DevChatter.Bot.Startup
             var twitchApi = new TwitchAPI(twitchSettings.TwitchClientId);
             var twitchFollowerService = new TwitchFollowerService(twitchApi, twitchSettings);
 
-            var simpleResponses = repository.List(DataItemPolicy<SimpleResponseMessage>.ActiveOnly());
+            var simpleResponses = repository.List(DataItemPolicy<SimpleCommand>.ActiveOnly());
             var followerCommands = repository.List(DataItemPolicy<FollowerCommand>.ActiveOnly());
             foreach (FollowerCommand followerCommand in followerCommands)
             {
                 followerCommand.Initialize(twitchFollowerService);
             }
 
-            List<ICommandMessage> allCommands = new List<ICommandMessage>();
+            List<IBotCommand> allCommands = new List<IBotCommand>();
             allCommands.AddRange(simpleResponses);
             allCommands.AddRange(followerCommands);
 

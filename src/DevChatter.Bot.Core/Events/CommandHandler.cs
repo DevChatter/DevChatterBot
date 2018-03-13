@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Core.ChatSystems;
+using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Events
 {
     public class CommandHandler
     {
-        private readonly List<ICommandMessage> _commandMessages;
+        private readonly List<IBotCommand> _commandMessages;
 
-        public CommandHandler(List<IChatClient> chatClients, List<ICommandMessage> commandMessages)
+        public CommandHandler(List<IChatClient> chatClients, List<IBotCommand> commandMessages)
         {
             _commandMessages = commandMessages;
 
@@ -23,12 +24,12 @@ namespace DevChatter.Bot.Core.Events
         {
             if (sender is IChatClient chatClient)
             {
-                ICommandMessage commandMessage = _commandMessages.FirstOrDefault(c => c.CommandText == e.CommandWord);
-                if (commandMessage != null)
+                IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.CommandText == e.CommandWord);
+                if (botCommand != null)
                 {
-                    if (CanUserRunCommand(e.ChatUser, commandMessage))
+                    if (CanUserRunCommand(e.ChatUser, botCommand))
                     {
-                        commandMessage.Process(chatClient, e);
+                        botCommand.Process(chatClient, e);
                     }
                     else
                     {
@@ -38,9 +39,9 @@ namespace DevChatter.Bot.Core.Events
             }
         }
 
-        private bool CanUserRunCommand(ChatUser user, ICommandMessage command)
+        private bool CanUserRunCommand(ChatUser user, IBotCommand botCommand)
         {
-            return user.Role <= command.RoleRequired;
+            return user.Role <= botCommand.RoleRequired;
         }
     }
 }

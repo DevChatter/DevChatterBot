@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Data
 {
@@ -23,8 +23,8 @@ namespace DevChatter.Bot.Core.Data
 
         public Expression<Func<T, bool>> Criteria { get; }
         public string CacheKey => $"{typeof(T).Name}-{Criteria}";
-        // Example: "SimpleResponseCommand-x => x.DataItemStatus == DataItemStatus.Active"
-        // Example: "SimpleResponseCommand-x => x.DataItemStatus == DataItemStatus.Draft"
-        // Example: "SimpleResponseCommand-x => x.Id == 42"
+        // Example: "SimpleCommand-x => x.DataItemStatus == DataItemStatus.Active"
+        // Example: "SimpleCommand-x => x.DataItemStatus == DataItemStatus.Draft"
+        // Example: "SimpleCommand-x => x.Id == 42"
     }
 }

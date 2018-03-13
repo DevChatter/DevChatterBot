@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Events;
 
 namespace DevChatter.Bot

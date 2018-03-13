@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Model;
+using DevChatter.Bot.Core.Streaming;
 
-namespace DevChatter.Bot.Core.Messaging
+namespace DevChatter.Bot.Core.Commands
 {
-    public class FollowerCommand : SimpleResponseMessage
+    public class FollowerCommand : SimpleCommand
     {
         private IFollowerService _followerService;
 

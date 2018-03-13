@@ -1,4 +1,4 @@
-﻿namespace DevChatter.Bot.Core.Messaging
+﻿namespace DevChatter.Bot.Core.Model
 {
     public enum DataItemStatus
     {

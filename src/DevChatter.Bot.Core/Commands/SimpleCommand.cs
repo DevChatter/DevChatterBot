@@ -1,17 +1,19 @@
 ﻿using System;
+using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Model;
 
-namespace DevChatter.Bot.Core.Messaging
+namespace DevChatter.Bot.Core.Commands
 {
-    public class SimpleResponseMessage : DataItem, ICommandMessage
+    public class SimpleCommand : DataItem, IBotCommand
     {
-        public SimpleResponseMessage()
+        public SimpleCommand()
         {
         }
 
-        public SimpleResponseMessage(string commandText, string staticResponse, UserRole roleRequired = UserRole.Everyone, DataItemStatus dataItemStatus = DataItemStatus.Active,
+        public SimpleCommand(string commandText, string staticResponse, UserRole roleRequired = UserRole.Everyone, DataItemStatus dataItemStatus = DataItemStatus.Active,
             Func<CommandReceivedEventArgs, string> selector = null)
         {
             _staticResponse = staticResponse;
