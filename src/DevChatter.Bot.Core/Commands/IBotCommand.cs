@@ -1,7 +1,7 @@
 ﻿using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Model;
 
-namespace DevChatter.Bot.Core.Messaging
+namespace DevChatter.Bot.Core.Commands
 {
     public interface IBotCommand
     {
