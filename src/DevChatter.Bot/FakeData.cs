@@ -38,7 +38,7 @@ namespace DevChatter.Bot
                 new SimpleCommand("discord", "Hey! Checkout out our Discord here https://discord.gg/aQry9jG"),
                 new SimpleCommand("github", "Check out our GitHub repositories here https://github.com/DevChatter/"),
                 new SimpleCommand("emotes", "These are our current emotes: devchaHype devchaDerp devchaFail "),
-                new SimpleCommand("lurk", "{0} is just lurking here, but still thinks you're all awesome!", selector: x => x.ChatUser.DisplayName)
+                new SimpleCommand("lurk", "[UserDisplayName] is just lurking here, but still thinks you're all awesome!")
             };
         }
 

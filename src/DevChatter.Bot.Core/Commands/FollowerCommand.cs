@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Model;
 using DevChatter.Bot.Core.Streaming;
 
@@ -11,6 +10,7 @@ namespace DevChatter.Bot.Core.Commands
     public class FollowerCommand : SimpleCommand
     {
         private IFollowerService _followerService;
+        protected readonly Func<CommandReceivedEventArgs, string> _selector;
 
         public FollowerCommand()
         {
@@ -20,8 +20,9 @@ namespace DevChatter.Bot.Core.Commands
             UserRole userRole = UserRole.Everyone,
             DataItemStatus dataItemStatus = DataItemStatus.Draft,
             Func<CommandReceivedEventArgs, string> selector = null)
-            : base(commandText, staticResponse, userRole, dataItemStatus, selector)
+            : base(commandText, staticResponse, userRole, dataItemStatus)
         {
+            _selector = selector;
         }
 
         public void Initialize(IFollowerService followerService)
