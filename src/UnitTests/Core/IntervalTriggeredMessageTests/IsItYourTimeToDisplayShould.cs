@@ -2,7 +2,7 @@
 using DevChatter.Bot.Core.Messaging;
 using Xunit;
 
-namespace UnitTests.IntervalTriggeredMessageTests
+namespace UnitTests.Core.IntervalTriggeredMessageTests
 {
     public class IsItYourTimeToDisplayShould
     {

@@ -1,7 +1,7 @@
 ﻿using DevChatter.Bot.Core.Messaging;
 using Xunit;
 
-namespace UnitTests.AutomatedMessagingTests
+namespace UnitTests.Core.AutomatedMessagingTests
 {
     public class PublishShould
     {

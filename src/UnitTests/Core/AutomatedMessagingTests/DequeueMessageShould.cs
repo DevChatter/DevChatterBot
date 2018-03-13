@@ -3,7 +3,7 @@ using DevChatter.Bot.Core.Messaging;
 using UnitTests.Fakes;
 using Xunit;
 
-namespace UnitTests.AutomatedMessagingTests
+namespace UnitTests.Core.AutomatedMessagingTests
 {
     public class DequeueMessageShould
     {
