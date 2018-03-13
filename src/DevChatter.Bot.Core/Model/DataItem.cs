@@ -1,7 +1,6 @@
 ﻿using System;
-using DevChatter.Bot.Core.Messaging;
 
-namespace DevChatter.Bot.Core.Data
+namespace DevChatter.Bot.Core.Model
 {
     public abstract class DataItem
     {

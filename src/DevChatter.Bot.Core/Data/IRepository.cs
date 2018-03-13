@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Data
 {

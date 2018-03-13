@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Data
 {
