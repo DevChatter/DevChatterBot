@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Messaging;
@@ -29,7 +29,7 @@ namespace DevChatter.Bot.Startup
                 followerCommand.Initialize(twitchFollowerService);
             }
 
-            List<ICommandMessage> allCommands = new List<ICommandMessage>();
+            List<IBotCommand> allCommands = new List<IBotCommand>();
             allCommands.AddRange(simpleResponses);
             allCommands.AddRange(followerCommands);
 

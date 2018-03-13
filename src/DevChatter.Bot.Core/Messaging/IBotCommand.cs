@@ -3,7 +3,7 @@ using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public interface ICommandMessage
+    public interface IBotCommand
     {
         UserRole RoleRequired { get; }
         string CommandText { get; }
