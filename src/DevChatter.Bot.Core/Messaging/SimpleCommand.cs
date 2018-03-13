@@ -5,13 +5,13 @@ using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public class SimpleResponseMessage : DataItem, ICommandMessage
+    public class SimpleCommand : DataItem, ICommandMessage
     {
-        public SimpleResponseMessage()
+        public SimpleCommand()
         {
         }
 
-        public SimpleResponseMessage(string commandText, string staticResponse, UserRole roleRequired = UserRole.Everyone, DataItemStatus dataItemStatus = DataItemStatus.Active,
+        public SimpleCommand(string commandText, string staticResponse, UserRole roleRequired = UserRole.Everyone, DataItemStatus dataItemStatus = DataItemStatus.Active,
             Func<CommandReceivedEventArgs, string> selector = null)
         {
             _staticResponse = staticResponse;

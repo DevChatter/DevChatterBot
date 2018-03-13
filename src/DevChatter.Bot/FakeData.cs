@@ -29,15 +29,15 @@ namespace DevChatter.Bot
             return automatedMessages;
         }
 
-        private static List<SimpleResponseMessage> GetSimpleResponseMessages()
+        private static List<SimpleCommand> GetSimpleCommands()
         {
-            return new List<SimpleResponseMessage>
+            return new List<SimpleCommand>
             {
-                new SimpleResponseMessage("coins", "Coins?!?! I think you meant !points"),
-                new SimpleResponseMessage("discord", "Hey! Checkout out our Discord here https://discord.gg/aQry9jG"),
-                new SimpleResponseMessage("github", "Check out our GitHub repositories here https://github.com/DevChatter/"),
-                new SimpleResponseMessage("emotes", "These are our current emotes: devchaHype devchaDerp devchaFail "),
-                new SimpleResponseMessage("lurk", "{0} is just lurking here, but still thinks you're all awesome!", selector: x => x.ChatUser.DisplayName)
+                new SimpleCommand("coins", "Coins?!?! I think you meant !points"),
+                new SimpleCommand("discord", "Hey! Checkout out our Discord here https://discord.gg/aQry9jG"),
+                new SimpleCommand("github", "Check out our GitHub repositories here https://github.com/DevChatter/"),
+                new SimpleCommand("emotes", "These are our current emotes: devchaHype devchaDerp devchaFail "),
+                new SimpleCommand("lurk", "{0} is just lurking here, but still thinks you're all awesome!", selector: x => x.ChatUser.DisplayName)
             };
         }
 
@@ -56,7 +56,7 @@ namespace DevChatter.Bot
         {
             _repository.Create(GetIntervalTriggeredMessages());
 
-            _repository.Create(GetSimpleResponseMessages());
+            _repository.Create(GetSimpleCommands());
 
             _repository.Create(GetFollowerCommands());
         }

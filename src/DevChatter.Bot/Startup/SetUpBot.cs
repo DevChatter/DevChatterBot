@@ -22,7 +22,7 @@ namespace DevChatter.Bot.Startup
             var twitchApi = new TwitchAPI(twitchSettings.TwitchClientId);
             var twitchFollowerService = new TwitchFollowerService(twitchApi, twitchSettings);
 
-            var simpleResponses = repository.List(DataItemPolicy<SimpleResponseMessage>.ActiveOnly());
+            var simpleResponses = repository.List(DataItemPolicy<SimpleCommand>.ActiveOnly());
             var followerCommands = repository.List(DataItemPolicy<FollowerCommand>.ActiveOnly());
             foreach (FollowerCommand followerCommand in followerCommands)
             {

@@ -5,7 +5,7 @@ using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public class FollowerCommand : SimpleResponseMessage
+    public class FollowerCommand : SimpleCommand
     {
         private IFollowerService _followerService;
 
