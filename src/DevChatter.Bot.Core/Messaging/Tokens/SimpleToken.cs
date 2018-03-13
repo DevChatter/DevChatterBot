@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Events;
 
@@ -27,5 +28,14 @@ namespace DevChatter.Bot.Core.Messaging.Tokens
         {
             return inputText.Replace(ReplacementToken, _replacementValueSelector(commandReceivedEventArgs));
         }
+
+        public static readonly List<SimpleToken> ListAll = new List<SimpleToken>
+        {
+            UserDisplayName,
+            CommandWord,
+            Arg0,
+            Arg1,
+            Arg2,
+        };
     }
 }
