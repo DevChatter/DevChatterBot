@@ -42,7 +42,7 @@ namespace DevChatter.Bot
             };
         }
 
-        public static List<FollowsCommand> GetFollowerCommands()
+        public static List<FollowsCommand> GetFollowsCommands()
         {
             return new List<FollowsCommand>
             {
@@ -59,7 +59,7 @@ namespace DevChatter.Bot
 
             _repository.Create(GetSimpleCommands());
 
-            _repository.Create(GetFollowerCommands());
+            _repository.Create(GetFollowsCommands());
         }
     }
 }
