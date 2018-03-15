@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
     {
         private readonly TwitchAPI _twitchApi;
         private readonly TwitchClientSettings _settings;
-        private FollowerService _followerService;
+        private readonly FollowerService _followerService;
 
         public TwitchFollowerService(TwitchAPI twitchApi, TwitchClientSettings settings)
         {
