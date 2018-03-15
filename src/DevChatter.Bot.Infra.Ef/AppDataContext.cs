@@ -8,7 +8,7 @@ namespace DevChatter.Bot.Infra.Ef
     {
         public DbSet<IntervalTriggeredMessage> IntervalTriggeredMessages { get; set; }
         public DbSet<SimpleCommand> SimpleResponseMessages { get; set; }
-        public DbSet<FollowerCommand> FollowerCommands { get; set; }
+        public DbSet<FollowsCommand> FollowerCommands { get; set; }
 
         public AppDataContext()
         { }

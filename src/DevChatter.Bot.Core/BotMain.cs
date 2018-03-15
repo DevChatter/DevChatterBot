@@ -17,15 +17,16 @@ namespace DevChatter.Bot.Core
         private readonly AutomatedMessagingSystem _autoMsgSystem = new AutomatedMessagingSystem();
         private readonly CommandHandler _commandHandler;
         private readonly SubscriberHandler _subscriberHandler;
-        private readonly IFollowerService _followerService;
+        private readonly FollowableSystem _followableSystem; // This will eventually be a list of these
 
-        public BotMain(List<IChatClient> chatClients, IRepository repository, CommandHandler commandHandler, SubscriberHandler subscriberHandler, IFollowerService followerService)
+        public BotMain(List<IChatClient> chatClients, IRepository repository, CommandHandler commandHandler,
+            SubscriberHandler subscriberHandler, FollowableSystem followableSystem)
         {
             _chatClients = chatClients;
             _repository = repository;
             _commandHandler = commandHandler;
             _subscriberHandler = subscriberHandler;
-            _followerService = followerService;
+            _followableSystem = followableSystem;
         }
 
         public void Run()
@@ -34,8 +35,11 @@ namespace DevChatter.Bot.Core
 
             ConnectChatClients();
 
+            _followableSystem.HandleFollowerNotifications();
+
             BeginLoop();
         }
+
 
         private void BeginLoop()
         {
