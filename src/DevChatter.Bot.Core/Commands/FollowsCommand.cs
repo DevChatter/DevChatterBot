@@ -7,16 +7,16 @@ using DevChatter.Bot.Core.Streaming;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class FollowerCommand : SimpleCommand
+    public class FollowsCommand : SimpleCommand
     {
         private IFollowerService _followerService;
         protected readonly Func<CommandReceivedEventArgs, string> _selector;
 
-        public FollowerCommand()
+        public FollowsCommand()
         {
         }
 
-        public FollowerCommand(string commandText, string staticResponse,
+        public FollowsCommand(string commandText, string staticResponse,
             UserRole userRole = UserRole.Everyone,
             DataItemStatus dataItemStatus = DataItemStatus.Draft,
             Func<CommandReceivedEventArgs, string> selector = null)

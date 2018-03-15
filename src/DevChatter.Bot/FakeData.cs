@@ -42,11 +42,11 @@ namespace DevChatter.Bot
             };
         }
 
-        public static List<FollowerCommand> GetFollowerCommands()
+        public static List<FollowsCommand> GetFollowerCommands()
         {
-            return new List<FollowerCommand>
+            return new List<FollowsCommand>
             {
-                new FollowerCommand("so", "Hey! We love https://www.twitch.tv/{0} ! You should go check out their channel!", 
+                new FollowsCommand("so", "Hey! We love https://www.twitch.tv/{0} ! You should go check out their channel!",
                     UserRole.Mod,
                     DataItemStatus.Active,
                     x => x.Arguments?.FirstOrDefault()?.NoAt()),
