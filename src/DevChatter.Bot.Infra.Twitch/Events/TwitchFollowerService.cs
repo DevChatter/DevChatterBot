@@ -16,6 +16,15 @@ namespace DevChatter.Bot.Infra.Twitch.Events
         private readonly TwitchClientSettings _settings;
         private readonly FollowerService _followerService;
 
+        private UserFollow[] _userFollows;
+        private UserFollow[] UserFollows {
+            get
+            {
+                return _userFollows ?? (_userFollows =
+                           _twitchApi.Users.v5.GetUserFollowsAsync(_settings.TwitchUserID).Result.Follows);
+            }
+        }
+
         public TwitchFollowerService(TwitchAPI twitchApi, TwitchClientSettings settings)
         {
             _twitchApi = twitchApi;
@@ -37,8 +46,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
 
         public List<string> GetUsersWeFollow()
         {
-            UserFollows userFollows = _twitchApi.Users.v5.GetUserFollowsAsync(_settings.TwitchUserID).Result;
-            return userFollows.Follows.Select(uf => uf.Channel.Name).ToList();
+            return UserFollows.Select(uf => uf.Channel.Name).ToList();
         }
 
         public event EventHandler<NewFollowersEventArgs> OnNewFollower;
