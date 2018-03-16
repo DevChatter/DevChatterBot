@@ -62,6 +62,7 @@ namespace DevChatter.Bot.Infra.Twitch
         private void TwitchClientOnOnDisconnected(object sender, OnDisconnectedArgs onDisconnectedArgs)
         {
             _twitchClient.OnDisconnected -= TwitchClientOnOnDisconnected;
+            _isReady = false;
 
             _disconnectionCompletionTask.SetResult(true);
             _connectionCompletionTask = new TaskCompletionSource<bool>();

@@ -23,17 +23,14 @@ namespace DevChatter.Bot
 
             new FakeData(repository).Initialize();
 
-            Console.WriteLine("To exit, press [Ctrl]+c");
-
             BotMain botMain = SetUpBot.NewBot(clientSettings, repository);
-
             WaitForCommands(botMain);
         }
 
         private static void WaitForCommands(BotMain botMain)
         {
             Console.WriteLine("==============================");
-            Console.WriteLine("Available bot commands : start, stop");
+            Console.WriteLine("Available bot commands : start, stop, exit");
             Console.WriteLine("==============================");
 
             var command = "start";
@@ -55,12 +52,17 @@ namespace DevChatter.Bot
                         Console.WriteLine("==============================");
                         break;
 
+                    case "exit":
+                        return;
+
                     default:
                     {
                         Console.WriteLine($"{command} is not a valid command");
                         break;
                     }
                 }
+
+                Console.Write("Bot:");
                 command = Console.ReadLine();
             }
         }

@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core
         private readonly CommandHandler _commandHandler;
         private readonly SubscriberHandler _subscriberHandler;
         private readonly FollowableSystem _followableSystem; // This will eventually be a list of these
-        private readonly CancellationTokenSource _tokenSource;
+        private readonly CancellationTokenSource _stopRequestSource;
         private readonly int _refreshInterval = 1000;//the milliseconds the bot waits before checking for new messages
 
         public BotMain(List<IChatClient> chatClients, IRepository repository, CommandHandler commandHandler,
@@ -29,7 +29,7 @@ namespace DevChatter.Bot.Core
             _commandHandler = commandHandler;
             _subscriberHandler = subscriberHandler;
             _followableSystem = followableSystem;
-            _tokenSource = new CancellationTokenSource();
+            _stopRequestSource = new CancellationTokenSource();
         }
 
         public void Run()
@@ -57,15 +57,14 @@ namespace DevChatter.Bot.Core
 
         private void StopLoop()
         {
-           
-            _tokenSource.Cancel();
+            _stopRequestSource.Cancel();
         }
 
         private void BeginLoop()
         {
             Task.Run(() =>
             {
-                while (_tokenSource.IsCancellationRequested != true)
+                while (_stopRequestSource.IsCancellationRequested != true)
                 {
                     Thread.Sleep(_refreshInterval);
 
@@ -108,7 +107,6 @@ namespace DevChatter.Bot.Core
             }
 
             Task.WhenAll(disconnectedTasks);
-
         }
 
         private void ConnectChatClients()
