@@ -12,6 +12,11 @@ namespace DevChatter.Bot
             return Task.CompletedTask;
         }
 
+        public Task Disconnect()
+        {
+            return Task.CompletedTask;
+        }
+
         public void SendMessage(string message)
         {
             Console.WriteLine(message);

@@ -26,8 +26,43 @@ namespace DevChatter.Bot
             Console.WriteLine("To exit, press [Ctrl]+c");
 
             BotMain botMain = SetUpBot.NewBot(clientSettings, repository);
-            botMain.Run();
+
+            WaitForCommands(botMain);
         }
 
+        private static void WaitForCommands(BotMain botMain)
+        {
+            Console.WriteLine("==============================");
+            Console.WriteLine("Available bot commands : start, stop");
+            Console.WriteLine("==============================");
+
+            var command = "start";
+            while (true)
+            {
+                switch (command)
+                {
+                    case "stop":
+                        Console.WriteLine("Bot stopping....");
+                        botMain.Stop();
+                        Console.WriteLine("Bot stopped");
+                        Console.WriteLine("==============================");
+                        break;
+
+                    case "start":
+                        Console.WriteLine("Bot starting....");
+                        botMain.Run();
+                        Console.WriteLine("Bot started");
+                        Console.WriteLine("==============================");
+                        break;
+
+                    default:
+                    {
+                        Console.WriteLine($"{command} is not a valid command");
+                        break;
+                    }
+                }
+                command = Console.ReadLine();
+            }
+        }
     }
 }

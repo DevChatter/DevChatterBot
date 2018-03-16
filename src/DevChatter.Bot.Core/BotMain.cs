@@ -18,6 +18,8 @@ namespace DevChatter.Bot.Core
         private readonly CommandHandler _commandHandler;
         private readonly SubscriberHandler _subscriberHandler;
         private readonly FollowableSystem _followableSystem; // This will eventually be a list of these
+        private readonly CancellationTokenSource _tokenSource;
+        private readonly int _refreshInterval = 1000;//the milliseconds the bot waits before checking for new messages
 
         public BotMain(List<IChatClient> chatClients, IRepository repository, CommandHandler commandHandler,
             SubscriberHandler subscriberHandler, FollowableSystem followableSystem)
@@ -27,6 +29,7 @@ namespace DevChatter.Bot.Core
             _commandHandler = commandHandler;
             _subscriberHandler = subscriberHandler;
             _followableSystem = followableSystem;
+            _tokenSource = new CancellationTokenSource();
         }
 
         public void Run()
@@ -41,26 +44,47 @@ namespace DevChatter.Bot.Core
         }
 
 
+        public void Stop()
+        {
+            StopLoop();
+
+            _followableSystem.StopHandlingNotifications();
+
+            DisconnectChatClients();
+
+            //todo check if publish messages needs to be cleaned ?
+        }
+
+        private void StopLoop()
+        {
+           
+            _tokenSource.Cancel();
+        }
+
         private void BeginLoop()
         {
-            while (true)
+            Task.Run(() =>
             {
-                Thread.Sleep(1000);
-
-                _autoMsgSystem.CheckMessages(DateTime.Now);
-
-                while (_autoMsgSystem.DequeueMessage(out string theMessage))
+                while (_tokenSource.IsCancellationRequested != true)
                 {
-                    var message = $"{DateTime.Now.ToShortTimeString()} - {theMessage}";
-                    foreach (var chatClient in _chatClients)
+                    Thread.Sleep(_refreshInterval);
+
+                    _autoMsgSystem.CheckMessages(DateTime.Now);
+
+                    while (_autoMsgSystem.DequeueMessage(out string theMessage))
                     {
-                        chatClient.SendMessage(message);
+                        var message = $"{DateTime.Now.ToShortTimeString()} - {theMessage}";
+                        foreach (var chatClient in _chatClients)
+                        {
+                            chatClient.SendMessage(message);
+                        }
                     }
                 }
-            }
+            });
         }
 
         // TODO: Fix this method's name
+
         private void PublishMessages()
         {
             var messages = _repository.List(DataItemPolicy<IntervalTriggeredMessage>.ActiveOnly());
@@ -68,6 +92,23 @@ namespace DevChatter.Bot.Core
             {
                 _autoMsgSystem.Publish(message);
             }
+        }
+
+        private void DisconnectChatClients()
+        {
+            foreach (var chatClient in _chatClients)
+            {
+                chatClient.SendMessage("Goodby for now! The bot has left the building");
+            }
+
+            var disconnectedTasks = new List<Task>();
+            foreach (var chatClient in _chatClients)
+            {
+                disconnectedTasks.Add(chatClient.Disconnect());
+            }
+
+            Task.WhenAll(disconnectedTasks);
+
         }
 
         private void ConnectChatClients()

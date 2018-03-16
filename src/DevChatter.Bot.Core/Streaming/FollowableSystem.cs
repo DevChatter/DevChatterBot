@@ -30,5 +30,10 @@ namespace DevChatter.Bot.Core.Streaming
                 }
             }
         }
+
+        public void StopHandlingNotifications()
+        {
+            _followerService.OnNewFollower -= FollowerServiceOnOnNewFollower;
+        }
     }
 }
