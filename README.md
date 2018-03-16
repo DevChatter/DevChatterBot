@@ -6,6 +6,9 @@ Have I mentioned that you're awesome for even considering contributing to this p
 
 There are a few ways you can help, you can join us at DevChatter when we're streaming, you can report bugs or issues that you find, or you can suggest enhancements or changes.
 
+### Setting Up the Bot Locally
+Please read the existing help documentation for [setting up the bot locally](docs/Setting-Up.md).
+
 ### Reporting Bugs
 We are using [GitHub Issues](https://github.com/DevChatter/devchatterbot/issues) for our bug reports. Make sure to choose the correct label when creating the issue. Please include details of what you noticed as well as instructions for reproducing the issue. Please provide plenty of details to make it easier for us!
 
