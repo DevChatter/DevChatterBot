@@ -41,6 +41,11 @@ namespace UnitTests.Core.Commands.SimpleCommandTests
             throw new NotImplementedException();
         }
 
+        public Task Disconnect()
+        {
+            throw new NotImplementedException();
+        }
+
         public void SendMessage(string message)
         {
             SentMessage = message;

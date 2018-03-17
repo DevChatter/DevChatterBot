@@ -11,7 +11,8 @@ namespace DevChatter.Bot.Infra.Twitch
     public class TwitchChatClient : IChatClient
     {
         private readonly TwitchClient _twitchClient;
-        private readonly TaskCompletionSource<bool> _connectionCompletionTask = new TaskCompletionSource<bool>();
+        private TaskCompletionSource<bool> _connectionCompletionTask = new TaskCompletionSource<bool>();
+        private TaskCompletionSource<bool> _disconnectionCompletionTask = new TaskCompletionSource<bool>();
         private bool _isReady = false;
 
         public TwitchChatClient(TwitchClientSettings settings)
@@ -32,19 +33,39 @@ namespace DevChatter.Bot.Infra.Twitch
             OnCommandReceived?.Invoke(this, e.ToCommandReceivedEventArgs());
         }
 
+        public async Task Connect()
+        {
+            _twitchClient.OnConnected += TwitchClientConnected;
+            _twitchClient.Connect();
+
+            await _connectionCompletionTask.Task;
+        }
+
         private void TwitchClientConnected(object sender, OnConnectedArgs onConnectedArgs)
         {
+            _twitchClient.OnConnected -= TwitchClientConnected;
+
             _isReady = true;
             _connectionCompletionTask.SetResult(true);
+            _disconnectionCompletionTask = new TaskCompletionSource<bool>();
             _twitchClient.SendMessage("Hello World! The bot has arrived!");
         }
 
-        public async Task Connect()
+        public async Task Disconnect()
         {
-            _twitchClient.Connect();
-            _twitchClient.OnConnected += TwitchClientConnected;
+            _twitchClient.OnDisconnected += TwitchClientOnOnDisconnected;
+            _twitchClient.Disconnect();
 
-            await _connectionCompletionTask.Task;
+            await _disconnectionCompletionTask.Task;
+        }
+
+        private void TwitchClientOnOnDisconnected(object sender, OnDisconnectedArgs onDisconnectedArgs)
+        {
+            _twitchClient.OnDisconnected -= TwitchClientOnOnDisconnected;
+            _isReady = false;
+
+            _disconnectionCompletionTask.SetResult(true);
+            _connectionCompletionTask = new TaskCompletionSource<bool>();
         }
 
         public void SendMessage(string message)

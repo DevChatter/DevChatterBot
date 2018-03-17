@@ -7,8 +7,13 @@ namespace DevChatter.Bot.Core.ChatSystems
     public interface IChatClient
     {
         Task Connect();
+
+        Task Disconnect();
+
         void SendMessage(string message);
+
         event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
+
         event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
     }
 }
