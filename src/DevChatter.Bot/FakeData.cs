@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
@@ -56,8 +57,10 @@ namespace DevChatter.Bot
         {
             return new List<QuoteEntity>
             {
-                new QuoteEntity{QuoteId = 1, AddedBy = "Brendoneus", Author = "DevChatter", Text = "Hello world!"},
-                new QuoteEntity{QuoteId = 2, AddedBy = "Brendoneus", Author = "DevChatter", Text = "Welcome to DevChatter!"},
+                new QuoteEntity{QuoteId = 1, DateAdded = new DateTime(2018,3,19),
+                    AddedBy = "Brendoneus", Author = "DevChatter", Text = "Hello world!"},
+                new QuoteEntity{QuoteId = 2, DateAdded = new DateTime(2018,3,19),
+                    AddedBy = "Brendoneus", Author = "DevChatter", Text = "Welcome to DevChatter!"},
             };
         }
 
