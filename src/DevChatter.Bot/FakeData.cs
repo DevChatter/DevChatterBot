@@ -56,8 +56,8 @@ namespace DevChatter.Bot
         {
             return new List<QuoteEntity>
             {
-                new QuoteEntity{QuoteId = 1, AddedBy = "Brendoneus", Author = "DevChatter", Message = "Hello world!"},
-                new QuoteEntity{QuoteId = 2, AddedBy = "Brendoneus", Author = "DevChatter", Message = "Welcome to DevChatter!"},
+                new QuoteEntity{QuoteId = 1, AddedBy = "Brendoneus", Author = "DevChatter", Text = "Hello world!"},
+                new QuoteEntity{QuoteId = 2, AddedBy = "Brendoneus", Author = "DevChatter", Text = "Welcome to DevChatter!"},
             };
         }
 

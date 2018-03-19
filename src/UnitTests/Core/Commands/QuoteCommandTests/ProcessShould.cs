@@ -13,7 +13,7 @@ namespace UnitTests.Core.Commands.QuoteCommandTests
         [Fact]
         public void ReturnRequestedQuote_GivenQuoteExists()
         {
-            var foundQuote = new QuoteEntity { Message = "Hello world!", Author = "Brendan", QuoteId = 1,
+            var foundQuote = new QuoteEntity { Text = "Hello world!", Author = "Brendan", QuoteId = 1,
                 DateAdded = new DateTime(2018,3,19)};
             var quoteCommand = new QuoteCommand(new FakeRepo() {SingleToReturn = foundQuote});
 
@@ -25,8 +25,7 @@ namespace UnitTests.Core.Commands.QuoteCommandTests
 
             quoteCommand.Process(fakeChatClient, commandReceivedEventArgs);
 
-            Assert.Equal($"\"{foundQuote.Message}\" - {foundQuote.Author}, {foundQuote.DateAdded.ToShortDateString()}"
-                , fakeChatClient.SentMessage);
+            Assert.Equal(foundQuote.ToString(), fakeChatClient.SentMessage);
         }
 
         [Fact]

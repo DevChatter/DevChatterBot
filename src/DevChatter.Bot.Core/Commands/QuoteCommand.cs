@@ -61,7 +61,7 @@ namespace DevChatter.Bot.Core.Commands
             }
             else
             {
-                triggeringClient.SendMessage($"\"{quote.Message}\" - {quote.Author}, {quote.DateAdded.ToShortDateString()}");
+                triggeringClient.SendMessage(quote.ToString());
             }
         }
     }
