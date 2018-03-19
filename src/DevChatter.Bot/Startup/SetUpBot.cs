@@ -34,6 +34,7 @@ namespace DevChatter.Bot.Startup
             List<IBotCommand> allCommands = new List<IBotCommand>();
             allCommands.AddRange(simpleResponses);
             allCommands.AddRange(followerCommands);
+            allCommands.Add(new QuoteCommand(repository));
 
             var commandHandler = new CommandHandler(chatClients, allCommands);
             var subscriberHandler = new SubscriberHandler(chatClients);
