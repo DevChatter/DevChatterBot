@@ -10,39 +10,62 @@ namespace UnitTests.Core.Commands.QuoteCommandTests
 {
     public class ProcessShould
     {
+        private QuoteCommand _quoteCommand;
+        private readonly FakeChatClient _fakeChatClient = new FakeChatClient();
+
+        public void SetUpTest(QuoteEntity foundQuote)
+        {
+            _quoteCommand = new QuoteCommand(new FakeRepo { SingleToReturn = foundQuote });
+        }
+
         [Fact]
         public void ReturnRequestedQuote_GivenQuoteExists()
         {
-            var foundQuote = new QuoteEntity { Text = "Hello world!", Author = "Brendan", QuoteId = 1,
-                DateAdded = new DateTime(2018,3,19)};
-            var quoteCommand = new QuoteCommand(new FakeRepo() {SingleToReturn = foundQuote});
+            QuoteEntity foundQuote = GetTestQuote();
+            SetUpTest(foundQuote);
 
-            var fakeChatClient = new FakeChatClient();
-            var commandReceivedEventArgs = new CommandReceivedEventArgs
-            {
-                Arguments = new List<string> { "1" }, CommandWord = "quote"
-            };
+            CommandReceivedEventArgs commandReceivedEventArgs = GetEventArgs(1);
 
-            quoteCommand.Process(fakeChatClient, commandReceivedEventArgs);
+            _quoteCommand.Process(_fakeChatClient, commandReceivedEventArgs);
 
-            Assert.Equal(foundQuote.ToString(), fakeChatClient.SentMessage);
+            Assert.Equal(foundQuote.ToString(), _fakeChatClient.SentMessage);
         }
 
         [Fact]
         public void ReturnNotFoundMessage_GivenQuoteNotFound()
         {
-            var quoteCommand = new QuoteCommand(new FakeRepo() {SingleToReturn = null});
+            SetUpTest(null);
             int requestQuoteId = 123;
 
-            var fakeChatClient = new FakeChatClient();
+            CommandReceivedEventArgs commandReceivedEventArgs = GetEventArgs(requestQuoteId);
+
+            _quoteCommand.Process(_fakeChatClient, commandReceivedEventArgs);
+
+            Assert.Equal($"I'm sorry, but we don't have a quote {requestQuoteId}... Yet...", _fakeChatClient.SentMessage);
+        }
+
+        private static CommandReceivedEventArgs GetEventArgs(int requestQuoteId)
+        {
             var commandReceivedEventArgs = new CommandReceivedEventArgs
             {
-                Arguments = new List<string> { requestQuoteId.ToString() }, CommandWord = "quote"
+                Arguments = new List<string> {requestQuoteId.ToString()},
+                CommandWord = "quote"
             };
-
-            quoteCommand.Process(fakeChatClient, commandReceivedEventArgs);
-
-            Assert.Equal($"I'm sorry, but we don't have a quote {requestQuoteId}... Yet...", fakeChatClient.SentMessage);
+            return commandReceivedEventArgs;
         }
+
+        private static QuoteEntity GetTestQuote()
+        {
+            var foundQuote = new QuoteEntity
+            {
+                Text = "Hello world!",
+                Author = "Brendan",
+                QuoteId = 1,
+                DateAdded = new DateTime(2018, 3, 19)
+            };
+            return foundQuote;
+        }
+
+
     }
 }
