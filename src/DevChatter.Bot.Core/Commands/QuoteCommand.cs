@@ -29,14 +29,7 @@ namespace DevChatter.Bot.Core.Commands
                 {
                     HandleQuoteRequest(triggeringClient, requestQuoteId);
                 }
-                else if (argumentOne == "add")
-                {
-                    HandleQuoteAddition();
-                }
-                else
-                {
-                    // TODO: Handle this eroneous case
-                }
+                // TODO: Handle this eroneous case
             }
             else
             {
@@ -49,11 +42,6 @@ namespace DevChatter.Bot.Core.Commands
             List<QuoteEntity> quoteEntities = _repository.List(QuoteEntityPolicy.All);
             int selectedIndex = _random.Next(quoteEntities.Count);
             triggeringClient.SendMessage(quoteEntities[selectedIndex].ToString());
-        }
-
-        private void HandleQuoteAddition()
-        {
-            // TODO Check if it's an add
         }
 
         private void HandleQuoteRequest(IChatClient triggeringClient, int requestQuoteId)
