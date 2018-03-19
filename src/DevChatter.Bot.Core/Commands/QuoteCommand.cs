@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
@@ -9,6 +11,7 @@ namespace DevChatter.Bot.Core.Commands
     public class QuoteCommand : SimpleCommand
     {
         private readonly IRepository _repository;
+        private readonly Random _random = new Random();
 
         public QuoteCommand(IRepository repository)
         {
@@ -24,13 +27,11 @@ namespace DevChatter.Bot.Core.Commands
             {
                 if (int.TryParse(argumentOne, out int requestQuoteId))
                 {
-                    // TODO: Get and return request
                     HandleQuoteRequest(triggeringClient, requestQuoteId);
                 }
                 else if (argumentOne == "add")
                 {
                     HandleQuoteAddition();
-                    // TODO Check if it's an add
                 }
                 else
                 {
@@ -39,17 +40,20 @@ namespace DevChatter.Bot.Core.Commands
             }
             else
             {
-                HandleRandomQuoteRequest();
-                // TODO: Add Random Selection
+                HandleRandomQuoteRequest(triggeringClient);
             }
         }
 
-        private void HandleRandomQuoteRequest()
+        private void HandleRandomQuoteRequest(IChatClient triggeringClient)
         {
+            List<QuoteEntity> quoteEntities = _repository.List(QuoteEntityPolicy.All);
+            int selectedIndex = _random.Next(quoteEntities.Count);
+            triggeringClient.SendMessage(quoteEntities[selectedIndex].ToString());
         }
 
         private void HandleQuoteAddition()
         {
+            // TODO Check if it's an add
         }
 
         private void HandleQuoteRequest(IChatClient triggeringClient, int requestQuoteId)

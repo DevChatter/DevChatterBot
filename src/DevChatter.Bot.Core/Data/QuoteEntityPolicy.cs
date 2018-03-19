@@ -10,6 +10,8 @@ namespace DevChatter.Bot.Core.Data
         {
         }
 
+        public static QuoteEntityPolicy All { get; } = new QuoteEntityPolicy(x => true);
+
         public static QuoteEntityPolicy ByQuoteId(int quoteId)
         {
             return new QuoteEntityPolicy(x => x.QuoteId == quoteId);
