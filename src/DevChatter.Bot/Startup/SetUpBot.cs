@@ -25,15 +25,10 @@ namespace DevChatter.Bot.Startup
             var twitchFollowerService = new TwitchFollowerService(twitchApi, twitchSettings);
 
             var simpleResponses = repository.List(DataItemPolicy<SimpleCommand>.ActiveOnly());
-            var followerCommands = repository.List(DataItemPolicy<FollowsCommand>.ActiveOnly());
-            foreach (FollowsCommand followerCommand in followerCommands)
-            {
-                followerCommand.Initialize(twitchFollowerService);
-            }
 
             List<IBotCommand> allCommands = new List<IBotCommand>();
             allCommands.AddRange(simpleResponses);
-            allCommands.AddRange(followerCommands);
+            allCommands.Add(new ShoudOutCommand(twitchFollowerService));
             allCommands.Add(new QuoteCommand(repository));
             allCommands.Add(new AddQuoteCommand(repository));
 

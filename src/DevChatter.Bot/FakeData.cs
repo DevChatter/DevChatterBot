@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Model;
 
@@ -43,16 +41,6 @@ namespace DevChatter.Bot
             };
         }
 
-        public static List<FollowsCommand> GetFollowsCommands()
-        {
-            return new List<FollowsCommand>
-            {
-                new FollowsCommand("so", "Hey! We love https://www.twitch.tv/{0} ! You should go check out their channel!",
-                    UserRole.Mod,
-                    DataItemStatus.Active,
-                    x => x.Arguments?.FirstOrDefault()?.NoAt()),
-            };
-        }
         private List<QuoteEntity> GetInitialQuotes()
         {
             return new List<QuoteEntity>
@@ -69,8 +57,6 @@ namespace DevChatter.Bot
             _repository.Create(GetIntervalMessages());
 
             _repository.Create(GetSimpleCommands());
-
-            _repository.Create(GetFollowsCommands());
 
             _repository.Create(GetInitialQuotes());
         }
