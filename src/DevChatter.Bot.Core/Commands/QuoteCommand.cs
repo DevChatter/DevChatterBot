@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Data;
@@ -11,7 +10,6 @@ namespace DevChatter.Bot.Core.Commands
     public class QuoteCommand : SimpleCommand
     {
         private readonly IRepository _repository;
-        private readonly Random _random = new Random();
 
         public QuoteCommand(IRepository repository)
         {
@@ -40,7 +38,7 @@ namespace DevChatter.Bot.Core.Commands
         private void HandleRandomQuoteRequest(IChatClient triggeringClient)
         {
             List<QuoteEntity> quoteEntities = _repository.List(QuoteEntityPolicy.All);
-            int selectedIndex = _random.Next(quoteEntities.Count);
+            int selectedIndex = MyRandom.RandomNumber(0, quoteEntities.Count);
             triggeringClient.SendMessage(quoteEntities[selectedIndex].ToString());
         }
 
