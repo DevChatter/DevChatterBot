@@ -23,12 +23,12 @@ namespace UnitTests.Core.AutomatedMessagingTests
             var automatedMessagingSystem = new AutomatedMessagingSystem();
             var message = new AlwaysReadyMessage();
             automatedMessagingSystem.Publish(message);
-            automatedMessagingSystem.CheckMessages(DateTime.Now);
+            automatedMessagingSystem.CheckMessages();
 
             bool result = automatedMessagingSystem.DequeueMessage(out string myMessage);
 
             Assert.True(result);
-            Assert.Equal(message.GetMessageInstance(DateTime.Now), myMessage);
+            Assert.Equal(message.GetMessageInstance(), myMessage);
         }
 
         [Fact]
@@ -37,13 +37,13 @@ namespace UnitTests.Core.AutomatedMessagingTests
             var automatedMessagingSystem = new AutomatedMessagingSystem();
             var message = new AlwaysReadyMessage();
             automatedMessagingSystem.Publish(message);
-            automatedMessagingSystem.CheckMessages(DateTime.Now);
+            automatedMessagingSystem.CheckMessages();
 
             automatedMessagingSystem.DequeueMessage(out string myMessage);
             bool result = automatedMessagingSystem.DequeueMessage(out string throwawayMessage);
 
             Assert.False(result);
-            Assert.Equal(message.GetMessageInstance(DateTime.Now), myMessage);
+            Assert.Equal(message.GetMessageInstance(), myMessage);
             Assert.Null(throwawayMessage);
         }
     }

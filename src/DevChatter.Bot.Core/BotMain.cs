@@ -68,7 +68,7 @@ namespace DevChatter.Bot.Core
                 {
                     Thread.Sleep(_refreshInterval);
 
-                    _autoMsgSystem.CheckMessages(DateTime.Now);
+                    _autoMsgSystem.CheckMessages();
 
                     while (_autoMsgSystem.DequeueMessage(out string theMessage))
                     {

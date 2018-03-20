@@ -15,25 +15,21 @@ namespace DevChatter.Bot.Core.Messaging
             DelayInMinutes = delayInMinutes;
             Message = message;
             DataItemStatus = dataItemStatus;
+            _previousRunTime = DateTime.Now;
         }
 
         private DateTime _previousRunTime;
         public int DelayInMinutes { get; }
         public string Message { get; }
 
-        public void Initialize(DateTime currentTime)
+        public bool IsTimeToDisplay()
         {
-            _previousRunTime = currentTime;
+            return _previousRunTime.AddMinutes(DelayInMinutes) <= DateTime.Now;
         }
 
-        public bool IsItYourTimeToDisplay(DateTime currentTime)
+        public string GetMessageInstance()
         {
-            return _previousRunTime.AddMinutes(DelayInMinutes) <= currentTime;
-        }
-
-        public string GetMessageInstance(DateTime currentTime)
-        {
-            _previousRunTime = currentTime;
+            _previousRunTime = DateTime.Now;
             return Message;
         }
     }

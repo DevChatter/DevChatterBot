@@ -12,7 +12,7 @@ namespace UnitTests.Core.AutomatedMessagingTests
         {
             var automatedMessagingSystem = new AutomatedMessagingSystem();
 
-            automatedMessagingSystem.CheckMessages(DateTime.Now);
+            automatedMessagingSystem.CheckMessages();
 
             Assert.Empty(automatedMessagingSystem.QueuedMessages);
         }
@@ -23,7 +23,7 @@ namespace UnitTests.Core.AutomatedMessagingTests
             var automatedMessagingSystem = new AutomatedMessagingSystem();
             automatedMessagingSystem.Publish(new AlwaysReadyMessage());
 
-            automatedMessagingSystem.CheckMessages(DateTime.Now);
+            automatedMessagingSystem.CheckMessages();
 
             Assert.Single(automatedMessagingSystem.QueuedMessages);
         }
@@ -36,7 +36,7 @@ namespace UnitTests.Core.AutomatedMessagingTests
             automatedMessagingSystem.Publish(new AlwaysReadyMessage());
             automatedMessagingSystem.Publish(new NeverReadyMessage());
 
-            automatedMessagingSystem.CheckMessages(DateTime.Now);
+            automatedMessagingSystem.CheckMessages();
 
             Assert.Single(automatedMessagingSystem.QueuedMessages);
         }

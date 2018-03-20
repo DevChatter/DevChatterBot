@@ -6,16 +6,12 @@ namespace UnitTests.Fakes
 {
     public class AlwaysReadyMessage : IAutomatedMessage
     {
-        public void Initialize(DateTime currentTime)
-        {
-        }
-
-        public bool IsItYourTimeToDisplay(DateTime currentTime)
+        public bool IsTimeToDisplay()
         {
             return true;
         }
 
-        public string GetMessageInstance(DateTime currentTime)
+        public string GetMessageInstance()
         {
             return "Always Ready";
         }

@@ -11,13 +11,12 @@ namespace DevChatter.Bot.Core.Messaging
 
         public void Publish(IAutomatedMessage automatedMessage)
         {
-            automatedMessage.Initialize(DateTime.Now);
             ManagedMessages.Add(automatedMessage);
         }
 
-        public void CheckMessages(DateTime currentTime)
+        public void CheckMessages()
         {
-            var messagesToQueue = ManagedMessages.Where(m => m.IsItYourTimeToDisplay(currentTime)).Select(m => m.GetMessageInstance(currentTime));
+            var messagesToQueue = ManagedMessages.Where(m => m.IsTimeToDisplay()).Select(m => m.GetMessageInstance());
 
             QueuedMessages.AddRange(messagesToQueue);
         }
