@@ -28,7 +28,7 @@ namespace DevChatter.Bot.Startup
 
             List<IBotCommand> allCommands = new List<IBotCommand>();
             allCommands.AddRange(simpleResponses);
-            allCommands.Add(new ShoudOutCommand(twitchFollowerService));
+            allCommands.Add(new ShoutOutCommand(twitchFollowerService));
             allCommands.Add(new QuoteCommand(repository));
             allCommands.Add(new AddQuoteCommand(repository));
 
