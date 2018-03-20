@@ -6,16 +6,13 @@ namespace UnitTests.Fakes
 {
     public class NeverReadyMessage : IAutomatedMessage
     {
-        public void Initialize(DateTime currentTime)
-        {
-        }
 
-        public bool IsItYourTimeToDisplay(DateTime currentTime)
+        public bool IsTimeToDisplay()
         {
             return false;
         }
 
-        public string GetMessageInstance(DateTime currentTime)
+        public string GetMessageInstance()
         {
             throw new NotImplementedException("How did you do this?!?!");
         }

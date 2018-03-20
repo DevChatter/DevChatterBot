@@ -9,7 +9,7 @@ namespace UnitTests.Core.AutomatedMessagingTests
         public void AddAutomatedMessageToManagedMessages()
         {
             var messagingSystem = new AutomatedMessagingSystem();
-            var automatedMessage = new IntervalTriggeredMessage(1, "Welcome! If you are enjoying the content, please follow DevChatter for more!");
+            var automatedMessage = new IntervalMessage(1, "Welcome! If you are enjoying the content, please follow DevChatter for more!");
 
             messagingSystem.Publish(automatedMessage);
 
