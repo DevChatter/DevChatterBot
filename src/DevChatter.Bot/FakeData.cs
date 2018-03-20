@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
@@ -38,7 +39,7 @@ namespace DevChatter.Bot
                 new SimpleCommand("discord", "Hey! Checkout out our Discord here https://discord.gg/aQry9jG"),
                 new SimpleCommand("github", "Check out our GitHub repositories here https://github.com/DevChatter/"),
                 new SimpleCommand("emotes", "These are our current emotes: devchaHype devchaDerp devchaFail "),
-                new SimpleCommand("lurk", "[UserDisplayName] is just lurking here, but still thinks you're all awesome!")
+                new SimpleCommand("lurk", "[UserDisplayName] is just lurking here, but still thinks you're all awesome!"),
             };
         }
 
@@ -52,6 +53,16 @@ namespace DevChatter.Bot
                     x => x.Arguments?.FirstOrDefault()?.NoAt()),
             };
         }
+        private List<QuoteEntity> GetInitialQuotes()
+        {
+            return new List<QuoteEntity>
+            {
+                new QuoteEntity{QuoteId = 1, DateAdded = new DateTime(2018,3,19),
+                    AddedBy = "Brendoneus", Author = "DevChatter", Text = "Hello world!"},
+                new QuoteEntity{QuoteId = 2, DateAdded = new DateTime(2018,3,19),
+                    AddedBy = "Brendoneus", Author = "DevChatter", Text = "Welcome to DevChatter!"},
+            };
+        }
 
         public void Initialize()
         {
@@ -60,6 +71,9 @@ namespace DevChatter.Bot
             _repository.Create(GetSimpleCommands());
 
             _repository.Create(GetFollowsCommands());
+
+            _repository.Create(GetInitialQuotes());
         }
+
     }
 }

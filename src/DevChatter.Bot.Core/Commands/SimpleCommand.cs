@@ -24,8 +24,8 @@ namespace DevChatter.Bot.Core.Commands
         }
 
         protected readonly string _staticResponse;
-        public UserRole RoleRequired { get; }
-        public string CommandText { get; }
+        public UserRole RoleRequired { get; protected set; }
+        public string CommandText { get; protected set;  }
         public virtual void Process(IChatClient triggeringClient, CommandReceivedEventArgs eventArgs)
         {
             IEnumerable<string> findTokens = _staticResponse.FindTokens();

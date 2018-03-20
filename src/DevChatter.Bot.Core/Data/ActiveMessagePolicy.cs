@@ -6,7 +6,7 @@ namespace DevChatter.Bot.Core.Data
 {
     public class DataItemPolicy<T> : ISpecification<T> where T : DataItem
     {
-        private DataItemPolicy(Expression<Func<T, bool>> expression)
+        protected DataItemPolicy(Expression<Func<T, bool>> expression)
         {
             Criteria = expression;
         }
