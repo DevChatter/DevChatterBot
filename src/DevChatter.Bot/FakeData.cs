@@ -17,15 +17,15 @@ namespace DevChatter.Bot
             _repository = repository;
         }
 
-        private static List<IntervalTriggeredMessage> GetIntervalTriggeredMessages()
+        private static List<IntervalMessage> GetIntervalMessages()
         {
-            var automatedMessages = new List<IntervalTriggeredMessage>
+            var automatedMessages = new List<IntervalMessage>
             {
-                new IntervalTriggeredMessage(15,
+                new IntervalMessage(15,
                     "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!",
                     DataItemStatus.Active),
-                new IntervalTriggeredMessage(1, "foo", DataItemStatus.Draft),
-                new IntervalTriggeredMessage(2, "bar", DataItemStatus.Disabled),
+                new IntervalMessage(1, "foo", DataItemStatus.Draft),
+                new IntervalMessage(2, "bar", DataItemStatus.Disabled),
             };
             return automatedMessages;
         }
@@ -55,7 +55,7 @@ namespace DevChatter.Bot
 
         public void Initialize()
         {
-            _repository.Create(GetIntervalTriggeredMessages());
+            _repository.Create(GetIntervalMessages());
 
             _repository.Create(GetSimpleCommands());
 

@@ -86,7 +86,7 @@ namespace DevChatter.Bot.Core
 
         private void PublishMessages()
         {
-            var messages = _repository.List(DataItemPolicy<IntervalTriggeredMessage>.ActiveOnly());
+            var messages = _repository.List(DataItemPolicy<IntervalMessage>.ActiveOnly());
             foreach (var message in messages)
             {
                 _autoMsgSystem.Publish(message);

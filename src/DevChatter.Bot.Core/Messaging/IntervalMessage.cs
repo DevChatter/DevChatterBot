@@ -3,13 +3,13 @@ using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public class IntervalTriggeredMessage : DataItem, IAutomatedMessage
+    public class IntervalMessage : DataItem, IAutomatedMessage
     {
-        public IntervalTriggeredMessage()
+        public IntervalMessage()
         {
         }
 
-        public IntervalTriggeredMessage(int delayInMinutes, string message, 
+        public IntervalMessage(int delayInMinutes, string message, 
             DataItemStatus dataItemStatus = DataItemStatus.Draft)
         {
             DelayInMinutes = delayInMinutes;

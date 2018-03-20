@@ -3,7 +3,7 @@ using DevChatter.Bot.Core.Messaging;
 using Pose;
 using Xunit;
 
-namespace UnitTests.Core.IntervalTriggeredMessageTests
+namespace UnitTests.Core.IntervalMessageTests
 {
     public class IsTimeToDisplayShould
     {
@@ -43,9 +43,9 @@ namespace UnitTests.Core.IntervalTriggeredMessageTests
             PoseContext.Isolate(() => Assert.True(message.IsTimeToDisplay()), shim);
         }
 
-        private static IntervalTriggeredMessage GetTestMessage()
+        private static IntervalMessage GetTestMessage()
         {
-            return new IntervalTriggeredMessage(1, "Hello there!");
+            return new IntervalMessage(1, "Hello there!");
         }
     }
 }
