@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Core.Commands
     {
         private readonly IRepository _repository;
 
-        private readonly List<(string username, RockPaperScissors choice)> _competitors = new List<(string, RockPaperScissors)>();
+        private readonly Dictionary<string, RockPaperScissors> _competitors = new Dictionary<string, RockPaperScissors>();
 
         public RockPaperScissorsCommand(IRepository repository)
         {
@@ -25,7 +25,7 @@ namespace DevChatter.Bot.Core.Commands
         {
             string username = eventArgs?.ChatUser?.DisplayName;
             string argumentOne = eventArgs?.Arguments?.ElementAtOrDefault(0);
-            if (argumentOne == "start" && username == _competitors.FirstOrDefault().username)
+            if (argumentOne == "start" && username == _competitors.FirstOrDefault().Key)
             {
                 PlayMatch(chatClient);
             }
@@ -49,8 +49,15 @@ namespace DevChatter.Bot.Core.Commands
 
         private void JoinMatch(IChatClient chatClient, (string username, RockPaperScissors choice) userChoice)
         {
-            _competitors.Add(userChoice);
-            chatClient.SendMessage($"{userChoice.username} joined in the Rock-Paper-Scissors game with {userChoice.choice}!");
+            if (_competitors.ContainsKey(userChoice.username))
+            {
+                chatClient.SendMessage($"{userChoice.username} changed from {_competitors[userChoice.username]} in the Rock-Paper-Scissors game to {userChoice.choice}!");
+            }
+            else
+            {
+                chatClient.SendMessage($"{userChoice.username} joined in the Rock-Paper-Scissors game with {userChoice.choice}!");
+            }
+            _competitors[userChoice.username] = userChoice.choice;
         }
 
         private void StartNewMatch(IChatClient chatClient, (string username, RockPaperScissors choice) userChoice)
@@ -73,7 +80,7 @@ namespace DevChatter.Bot.Core.Commands
         private void AnnounceWinners(IChatClient chatClient, RockPaperScissors botChoice)
         {
             var winningChoice = (RockPaperScissors) (((int) botChoice + 1) % 3);
-            var winnersList = _competitors.Where(x => x.choice == winningChoice).Select(x => x.username);
+            var winnersList = _competitors.Where(x => x.Value == winningChoice).Select(x => x.Key);
             string winners = string.Join(",", winnersList);
             chatClient.SendMessage($"The winners are {winners}!");
         }
