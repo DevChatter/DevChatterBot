@@ -12,7 +12,6 @@ namespace DevChatter.Bot.Core.Commands
     public class ShoudOutCommand : SimpleCommand
     {
         private readonly IFollowerService _followerService;
-        private readonly Random _random = new Random();
 
         public ShoudOutCommand(IFollowerService followerService)
         {
@@ -31,7 +30,7 @@ namespace DevChatter.Bot.Core.Commands
         private string GetRandomFollowedStream()
         {
             List<string> usersWeFollow = _followerService.GetUsersWeFollow();
-            int randomIndex = _random.Next(usersWeFollow.Count);
+            int randomIndex = MyRandom.RandomNumber(0, usersWeFollow.Count);
             return usersWeFollow[randomIndex];
         }
 
