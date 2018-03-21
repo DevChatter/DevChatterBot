@@ -49,6 +49,8 @@ namespace DevChatter.Bot
                     AddedBy = "Brendoneus", Author = "DevChatter", Text = "Hello world!"},
                 new QuoteEntity{QuoteId = 2, DateAdded = new DateTime(2018,3,19),
                     AddedBy = "Brendoneus", Author = "DevChatter", Text = "Welcome to DevChatter!"},
+                new QuoteEntity{QuoteId = 3, DateAdded = new DateTime(2018,3,20),
+                    AddedBy = "cragsify", Author = "DevChatter", Text = "I swear it's not rigged!"},
             };
         }
 

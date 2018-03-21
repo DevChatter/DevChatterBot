@@ -9,11 +9,11 @@ using DevChatter.Bot.Core.Streaming;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class ShoudOutCommand : SimpleCommand
+    public class ShoutOutCommand : SimpleCommand
     {
         private readonly IFollowerService _followerService;
 
-        public ShoudOutCommand(IFollowerService followerService)
+        public ShoutOutCommand(IFollowerService followerService)
         {
             CommandText = "so";
             _followerService = followerService;
