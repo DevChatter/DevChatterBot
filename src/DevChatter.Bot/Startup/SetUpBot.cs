@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
@@ -39,7 +40,11 @@ namespace DevChatter.Bot.Startup
 
             var twitchSystem = new FollowableSystem(new [] { twitchChatClient }, twitchFollowerService);
 
-            var botMain = new BotMain(chatClients, repository, commandHandler, subscriberHandler, twitchSystem);
+            var currencyUpdate = new CurrencyUpdate(1, new CurrencyGenerator(chatClients, repository));
+
+            var automatedActionSystem = new AutomatedActionSystem(new List<IIntervalAction> { currencyUpdate });
+
+            var botMain = new BotMain(chatClients, repository, commandHandler, subscriberHandler, twitchSystem, automatedActionSystem);
             return botMain;
         }
     }

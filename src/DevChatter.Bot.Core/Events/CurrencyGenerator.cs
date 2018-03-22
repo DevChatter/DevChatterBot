@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Data;
@@ -39,6 +40,16 @@ namespace DevChatter.Bot.Core.Events
                 _repository.Create(eventArgs.ToChatUser());
             }
             _activeChatUsers.RemoveAll(x => x.DisplayName == eventArgs.DisplayName);
+        }
+
+        public void UpdateCurrency()
+        {
+            foreach (ChatUser activeChatUser in _activeChatUsers)
+            {
+                activeChatUser.Tokens += 10;
+            }
+
+            _repository.Update(_activeChatUsers);
         }
     }
 }

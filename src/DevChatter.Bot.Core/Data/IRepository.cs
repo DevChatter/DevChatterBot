@@ -9,6 +9,7 @@ namespace DevChatter.Bot.Core.Data
         List<T> List<T>(ISpecification<T> spec) where T : DataItem;
         T Create<T>(T dataItem) where T : DataItem;
         T Update<T>(T dataItem) where T : DataItem;
+        void Update<T>(List<T> dataItemList) where T : DataItem;
         void Create<T>(List<T> dataItemList) where T : DataItem;
     }
 }

@@ -40,6 +40,12 @@ namespace DevChatter.Bot.Infra.Ef
             return dataItem;
         }
 
+        public void Update<T>(List<T> dataItemList) where T : DataItem
+        {
+            _db.Set<T>().UpdateRange(dataItemList);
+            _db.SaveChanges();
+        }
+
         public void Create<T>(List<T> dataItemList) where T : DataItem
         {
             _db.Set<T>().AddRange(dataItemList);

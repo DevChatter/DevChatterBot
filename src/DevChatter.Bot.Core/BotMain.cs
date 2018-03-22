@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
@@ -18,17 +19,19 @@ namespace DevChatter.Bot.Core
         private readonly CommandHandler _commandHandler;
         private readonly SubscriberHandler _subscriberHandler;
         private readonly FollowableSystem _followableSystem; // This will eventually be a list of these
+        private readonly AutomatedActionSystem _automatedActionSystem;
         private CancellationTokenSource _stopRequestSource;
         private readonly int _refreshInterval = 1000;//the milliseconds the bot waits before checking for new messages
 
         public BotMain(List<IChatClient> chatClients, IRepository repository, CommandHandler commandHandler,
-            SubscriberHandler subscriberHandler, FollowableSystem followableSystem)
+            SubscriberHandler subscriberHandler, FollowableSystem followableSystem, AutomatedActionSystem automatedActionSystem)
         {
             _chatClients = chatClients;
             _repository = repository;
             _commandHandler = commandHandler;
             _subscriberHandler = subscriberHandler;
             _followableSystem = followableSystem;
+            _automatedActionSystem = automatedActionSystem;
         }
 
         public void Run()
@@ -68,11 +71,12 @@ namespace DevChatter.Bot.Core
                 {
                     Thread.Sleep(_refreshInterval);
 
+                    _automatedActionSystem.RunNecessaryActions();
+
                     _autoMsgSystem.CheckMessages();
 
-                    while (_autoMsgSystem.DequeueMessage(out string theMessage))
+                    while (_autoMsgSystem.DequeueMessage(out string message))
                     {
-                        var message = $"{DateTime.Now.ToShortTimeString()} - {theMessage}";
                         foreach (var chatClient in _chatClients)
                         {
                             chatClient.SendMessage(message);

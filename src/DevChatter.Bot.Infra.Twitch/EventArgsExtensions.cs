@@ -84,5 +84,13 @@ namespace DevChatter.Bot.Infra.Twitch
                 DisplayName = src.Username,
             };
         }
+
+        public static UserStatusEventArgs ToUserStatusEventArgs(this OnChatCommandReceivedArgs src)
+        {
+            return new UserStatusEventArgs
+            {
+                DisplayName = src.Command.ChatMessage.DisplayName,
+            };
+        }
     }
 }

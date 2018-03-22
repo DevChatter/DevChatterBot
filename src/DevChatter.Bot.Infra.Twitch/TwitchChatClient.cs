@@ -43,6 +43,7 @@ namespace DevChatter.Bot.Infra.Twitch
         private void ChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
             OnCommandReceived?.Invoke(this, e.ToCommandReceivedEventArgs());
+            OnUserNoticed?.Invoke(this, e.ToUserStatusEventArgs());
         }
 
         public async Task Connect()
