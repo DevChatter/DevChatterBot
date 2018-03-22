@@ -12,12 +12,13 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<QuoteEntity> QuoteEntities { get; set; }
         public DbSet<ChatUser> ChatUsers { get; set; }
 
-        public AppDataContext()
-        { }
-
         public AppDataContext(DbContextOptions<AppDataContext> options)
             : base(options)
         { }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 }

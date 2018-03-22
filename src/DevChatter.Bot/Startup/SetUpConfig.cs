@@ -6,7 +6,7 @@ namespace DevChatter.Bot.Startup
 {
     public static class SetUpConfig
     {
-        public static TwitchClientSettings InitializeConfiguration()
+        public static (string, TwitchClientSettings) InitializeConfiguration()
         {
             Console.WriteLine("Initializing configuration...");
 
@@ -17,7 +17,7 @@ namespace DevChatter.Bot.Startup
 
             IConfigurationRoot configuration = builder.Build();
 
-            return configuration.Get<TwitchClientSettings>();
+            return (configuration.GetConnectionString("DevChatterBotDb"), configuration.Get<TwitchClientSettings>());
         }
     }
 }

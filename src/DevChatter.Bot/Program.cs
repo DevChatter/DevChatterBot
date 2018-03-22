@@ -1,10 +1,7 @@
 ﻿using System;
 using DevChatter.Bot.Core;
-using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.Twitch;
 using DevChatter.Bot.Startup;
-using Microsoft.EntityFrameworkCore;
 
 namespace DevChatter.Bot
 {
@@ -13,17 +10,10 @@ namespace DevChatter.Bot
         private static void Main(string[] args)
         {
             Console.WriteLine("Initializing the Bot...");
-            TwitchClientSettings clientSettings = SetUpConfig.InitializeConfiguration();
+            
+            (string connectionString, TwitchClientSettings clientSettings) = SetUpConfig.InitializeConfiguration();
 
-            DbContextOptions<AppDataContext> options = new DbContextOptionsBuilder<AppDataContext>()
-                .UseInMemoryDatabase("fake-data-db")
-                .Options;
-
-            IRepository repository = new EfGenericRepo(new AppDataContext(options));
-
-            new FakeData(repository).Initialize();
-
-            BotMain botMain = SetUpBot.NewBot(clientSettings, repository);
+            BotMain botMain = SetUpBot.NewBot(clientSettings, connectionString);
             WaitForCommands(botMain);
         }
 
