@@ -2,7 +2,6 @@
 using System.Linq;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Commands;
-using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Model;
 
@@ -10,13 +9,12 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 {
     public class RockPaperScissorsCommand : SimpleCommand
     {
-        private readonly IRepository _repository;
-
+        private readonly CurrencyGenerator _currencyGenerator;
         private readonly Dictionary<string, RockPaperScissors> _competitors = new Dictionary<string, RockPaperScissors>();
 
-        public RockPaperScissorsCommand(IRepository repository)
+        public RockPaperScissorsCommand(CurrencyGenerator currencyGenerator)
         {
-            _repository = repository;
+            _currencyGenerator = currencyGenerator;
             CommandText = "rps";
             RoleRequired = UserRole.Everyone;
         }
@@ -29,7 +27,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             {
                 PlayMatch(chatClient);
             }
-            else 
+            else
             {
                 if (!_competitors.Any())
                 {
@@ -64,18 +62,28 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             RockPaperScissors botChoice = RockPaperScissors.GetRandomChoice();
             chatClient.SendMessage($"I choose {botChoice}!");
             AnnounceWinners(chatClient, botChoice);
-            //AdjustTokens(botChoice);
+            AdjustTokens(botChoice);
 
             _competitors.Clear();
         }
 
+        private void AdjustTokens(RockPaperScissors botChoice)
+        {
+            List<string> winnersList = GetWinnerList(botChoice);
+            _currencyGenerator.AddCurrencyTo(winnersList, 50);
+        }
+
         private void AnnounceWinners(IChatClient chatClient, RockPaperScissors botChoice)
         {
-            RockPaperScissors winningChoice = botChoice.LosesTo();
-            var winnersList = _competitors.Where(x => x.Value == winningChoice).Select(x => x.Key);
+            List<string> winnersList = GetWinnerList(botChoice);
             string winners = string.Join(",", winnersList);
             chatClient.SendMessage($"The winners are {winners}!");
         }
 
+        private List<string> GetWinnerList(RockPaperScissors botChoice)
+        {
+            RockPaperScissors winningChoice = botChoice.LosesTo();
+            return _competitors.Where(x => x.Value == winningChoice).Select(x => x.Key).ToList();
+        }
     }
 }

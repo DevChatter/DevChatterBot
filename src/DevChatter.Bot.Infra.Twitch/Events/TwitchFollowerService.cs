@@ -28,6 +28,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
         public TwitchFollowerService(TwitchAPI twitchApi, TwitchClientSettings settings)
         {
             _twitchApi = twitchApi;
+
             _settings = settings;
 
             _followerService = new FollowerService(twitchApi);

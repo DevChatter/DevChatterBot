@@ -26,5 +26,7 @@ namespace UnitTests.Fakes
 
         public event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
         public event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
+        public event EventHandler<UserStatusEventArgs> OnUserNoticed;
+        public event EventHandler<UserStatusEventArgs> OnUserLeft;
     }
 }

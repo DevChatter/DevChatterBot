@@ -15,5 +15,7 @@ namespace DevChatter.Bot.Core.ChatSystems
         event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
 
         event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
+        event EventHandler<UserStatusEventArgs> OnUserNoticed;
+        event EventHandler<UserStatusEventArgs> OnUserLeft;
     }
 }

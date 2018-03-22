@@ -40,6 +40,11 @@ namespace DevChatter.Bot.Core.Data.Caching
             return _repository.Update(dataItem);
         }
 
+        public void Update<T>(List<T> dataItemList) where T : DataItem
+        {
+            _repository.Update(dataItemList);
+        }
+
         public void Create<T>(List<T> dataItemList) where T : DataItem
         {
             _repository.Create(dataItemList);

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
@@ -25,6 +26,8 @@ namespace DevChatter.Bot.Startup
             var twitchApi = new TwitchAPI(twitchSettings.TwitchClientId);
             var twitchFollowerService = new TwitchFollowerService(twitchApi, twitchSettings);
 
+            var currencyGenerator = new CurrencyGenerator(chatClients, repository);
+
             var simpleResponses = repository.List(DataItemPolicy<SimpleCommand>.ActiveOnly());
 
             List<IBotCommand> allCommands = new List<IBotCommand>();
@@ -32,14 +35,18 @@ namespace DevChatter.Bot.Startup
             allCommands.Add(new ShoutOutCommand(twitchFollowerService));
             allCommands.Add(new QuoteCommand(repository));
             allCommands.Add(new AddQuoteCommand(repository));
-            allCommands.Add(new RockPaperScissorsCommand(repository));
+            allCommands.Add(new RockPaperScissorsCommand(currencyGenerator));
 
             var commandHandler = new CommandHandler(chatClients, allCommands);
             var subscriberHandler = new SubscriberHandler(chatClients);
 
             var twitchSystem = new FollowableSystem(new [] { twitchChatClient }, twitchFollowerService);
 
-            var botMain = new BotMain(chatClients, repository, commandHandler, subscriberHandler, twitchSystem);
+            var currencyUpdate = new CurrencyUpdate(1, currencyGenerator);
+
+            var automatedActionSystem = new AutomatedActionSystem(new List<IIntervalAction> { currencyUpdate });
+
+            var botMain = new BotMain(chatClients, repository, commandHandler, subscriberHandler, twitchSystem, automatedActionSystem);
             return botMain;
         }
     }

@@ -27,9 +27,12 @@ namespace UnitTests.Fakes
             throw new System.NotImplementedException();
         }
 
+        public void Update<T>(List<T> dataItemList) where T : DataItem
+        {
+        }
+
         public void Create<T>(List<T> dataItemList) where T : DataItem
         {
-            throw new System.NotImplementedException();
         }
     }
 }

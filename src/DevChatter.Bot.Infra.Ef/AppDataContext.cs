@@ -10,6 +10,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<IntervalMessage> IntervalMessages { get; set; }
         public DbSet<SimpleCommand> SimpleResponseMessages { get; set; }
         public DbSet<QuoteEntity> QuoteEntities { get; set; }
+        public DbSet<ChatUser> ChatUsers { get; set; }
 
         public AppDataContext()
         { }
