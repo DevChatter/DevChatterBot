@@ -47,6 +47,17 @@ namespace DevChatter.Bot.Core.Events
             foreach (ChatUser activeChatUser in _activeChatUsers)
             {
                 activeChatUser.Tokens += 10;
+                Console.WriteLine($"{activeChatUser.DisplayName} has {activeChatUser.Tokens} tokens.");
+            }
+
+            _repository.Update(_activeChatUsers);
+        }
+
+        public void AddCurrencyTo(List<string> winnersList, int tokensToAdd)
+        {
+            foreach (ChatUser chatUser in _activeChatUsers.Where(x => winnersList.Contains(x.DisplayName)))
+            {
+                chatUser.Tokens += tokensToAdd;
             }
 
             _repository.Update(_activeChatUsers);
