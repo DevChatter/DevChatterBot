@@ -29,7 +29,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             {
                 PlayMatch(chatClient);
             }
-            else 
+            else
             {
                 if (!_competitors.Any())
                 {

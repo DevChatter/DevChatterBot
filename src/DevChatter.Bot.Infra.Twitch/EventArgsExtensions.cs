@@ -68,5 +68,21 @@ namespace DevChatter.Bot.Infra.Twitch
 
             return eventArgs;
         }
+
+        public static UserStatusEventArgs ToUserStatusEventArgs(this OnUserJoinedArgs src)
+        {
+            return new UserStatusEventArgs
+            {
+                DisplayName = src.Username,
+            };
+        }
+
+        public static UserStatusEventArgs ToUserStatusEventArgs(this OnUserLeftArgs src)
+        {
+            return new UserStatusEventArgs
+            {
+                DisplayName = src.Username,
+            };
+        }
     }
 }
