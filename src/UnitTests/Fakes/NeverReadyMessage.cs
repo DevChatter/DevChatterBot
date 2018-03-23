@@ -16,7 +16,5 @@ namespace UnitTests.Fakes
         {
             throw new NotImplementedException("How did you do this?!?!");
         }
-
-        public DataItemStatus DataItemStatus => DataItemStatus.Active;
     }
 }

@@ -9,13 +9,12 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace DevChatter.Bot.Migrations
+namespace DevChatter.Bot.Infra.Ef.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20180323030224_InitialCreate")]
-    partial class InitialCreate
+    partial class AppDataContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,13 +28,13 @@ namespace DevChatter.Bot.Migrations
 
                     b.Property<string>("CommandText");
 
-                    b.Property<int>("DataItemStatus");
+                    b.Property<string>("StaticResponse");
 
                     b.Property<int>("RoleRequired");
 
                     b.HasKey("Id");
 
-                    b.ToTable("SimpleResponseMessages");
+                    b.ToTable("SimpleCommands");
                 });
 
             modelBuilder.Entity("DevChatter.Bot.Core.Messaging.IntervalMessage", b =>
@@ -43,7 +42,9 @@ namespace DevChatter.Bot.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("DataItemStatus");
+                    b.Property<int>("DelayInMinutes");
+
+                    b.Property<string>("MessageText");
 
                     b.HasKey("Id");
 
@@ -54,8 +55,6 @@ namespace DevChatter.Bot.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("DataItemStatus");
 
                     b.Property<string>("DisplayName");
 
@@ -77,15 +76,16 @@ namespace DevChatter.Bot.Migrations
 
                     b.Property<string>("Author");
 
-                    b.Property<int>("DataItemStatus");
-
                     b.Property<DateTime>("DateAdded");
 
-                    b.Property<int>("QuoteId");
+                    b.Property<int>("QuoteId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("QuoteId");
 
                     b.ToTable("QuoteEntities");
                 });

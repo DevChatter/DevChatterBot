@@ -10,7 +10,7 @@ namespace DevChatter.Bot.Infra.Ef
     public class AppDataContext : DbContext
     {
         public DbSet<IntervalMessage> IntervalMessages { get; set; }
-        public DbSet<SimpleCommand> SimpleResponseMessages { get; set; }
+        public DbSet<SimpleCommand> SimpleCommands { get; set; }
         public DbSet<QuoteEntity> QuoteEntities { get; set; }
         public DbSet<ChatUser> ChatUsers { get; set; }
 
@@ -18,13 +18,6 @@ namespace DevChatter.Bot.Infra.Ef
             : base(options)
         {
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-        }
-
-
     }
     public class AppDataContextFactory : IDesignTimeDbContextFactory<AppDataContext>
     {

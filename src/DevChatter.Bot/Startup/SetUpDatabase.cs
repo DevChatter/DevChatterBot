@@ -4,16 +4,40 @@ using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Model;
+using DevChatter.Bot.Infra.Ef;
+using Microsoft.EntityFrameworkCore;
 
-namespace DevChatter.Bot
+namespace DevChatter.Bot.Startup
 {
-    public class FakeData
+    public static class SetUpDatabase
     {
-        private readonly IRepository _repository;
-
-        public FakeData(IRepository repository)
+        public static IRepository SetUpRepository(string connectionString)
         {
-            _repository = repository;
+            DbContextOptions<AppDataContext> options = new DbContextOptionsBuilder<AppDataContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+            var appDataContext = new AppDataContext(options);
+
+            EnsureDatabase(appDataContext);
+            IRepository repository = new EfGenericRepo(appDataContext);
+            EnsureInitialData(repository);
+
+            return repository;
+        }
+
+        private static void EnsureDatabase(AppDataContext dataContext)
+        {
+            dataContext.Database.Migrate();
+        }
+
+        private static void EnsureInitialData(IRepository repository)
+        {
+            repository.Create(GetIntervalMessages());
+
+            repository.Create(GetSimpleCommands());
+
+            repository.Create(GetInitialQuotes());
         }
 
         private static List<IntervalMessage> GetIntervalMessages()
@@ -21,10 +45,7 @@ namespace DevChatter.Bot
             var automatedMessages = new List<IntervalMessage>
             {
                 new IntervalMessage(15,
-                    "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!",
-                    DataItemStatus.Active),
-                new IntervalMessage(1, "foo", DataItemStatus.Draft),
-                new IntervalMessage(2, "bar", DataItemStatus.Disabled),
+                    "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!")
             };
             return automatedMessages;
         }
@@ -41,7 +62,7 @@ namespace DevChatter.Bot
             };
         }
 
-        private List<QuoteEntity> GetInitialQuotes()
+        private static List<QuoteEntity> GetInitialQuotes()
         {
             return new List<QuoteEntity>
             {
@@ -53,15 +74,5 @@ namespace DevChatter.Bot
                     AddedBy = "cragsify", Author = "DevChatter", Text = "I swear it's not rigged!"},
             };
         }
-
-        public void Initialize()
-        {
-            _repository.Create(GetIntervalMessages());
-
-            _repository.Create(GetSimpleCommands());
-
-            _repository.Create(GetInitialQuotes());
-        }
-
     }
 }

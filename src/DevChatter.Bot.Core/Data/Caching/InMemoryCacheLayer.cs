@@ -6,9 +6,9 @@ namespace DevChatter.Bot.Core.Data.Caching
     // TODO: Create a better ICacheLayer implementation (have this wrap a real one, move to infra)
     public class InMemoryCacheLayer : ICacheLayer
     {
-        private readonly Dictionary<string, DataItem> _cache = new Dictionary<string, DataItem>();
+        private readonly Dictionary<string, DataEntity> _cache = new Dictionary<string, DataEntity>();
 
-        public T TryGet<T>(string cacheKey) where T : DataItem
+        public T TryGet<T>(string cacheKey) where T : DataEntity
         {
             if (_cache.ContainsKey(cacheKey))
             {
@@ -17,7 +17,7 @@ namespace DevChatter.Bot.Core.Data.Caching
             return null;
         }
 
-        public void Insert<T>(T item, string cacheKey) where T : DataItem
+        public void Insert<T>(T item, string cacheKey) where T : DataEntity
         {
             _cache[cacheKey] = item;
         }

@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core.Data.Caching
             _cacheLayer = cacheLayer;
         }
 
-        public T Single<T>(ISpecification<T> spec) where T : DataItem
+        public T Single<T>(ISpecification<T> spec) where T : DataEntity
         {
             T item = _cacheLayer.TryGet<T>(spec.CacheKey);
             if (item == null)
@@ -25,27 +25,27 @@ namespace DevChatter.Bot.Core.Data.Caching
             return item;
         }
 
-        public List<T> List<T>(ISpecification<T> spec) where T : DataItem
+        public List<T> List<T>(ISpecification<T> spec) where T : DataEntity
         {
             return _repository.List(spec);
         }
 
-        public T Create<T>(T dataItem) where T : DataItem
+        public T Create<T>(T dataItem) where T : DataEntity
         {
             return _repository.Create(dataItem);
         }
 
-        public T Update<T>(T dataItem) where T : DataItem
+        public T Update<T>(T dataItem) where T : DataEntity
         {
             return _repository.Update(dataItem);
         }
 
-        public void Update<T>(List<T> dataItemList) where T : DataItem
+        public void Update<T>(List<T> dataItemList) where T : DataEntity
         {
             _repository.Update(dataItemList);
         }
 
-        public void Create<T>(List<T> dataItemList) where T : DataItem
+        public void Create<T>(List<T> dataItemList) where T : DataEntity
         {
             _repository.Create(dataItemList);
         }

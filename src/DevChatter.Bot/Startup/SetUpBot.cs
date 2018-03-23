@@ -28,20 +28,15 @@ namespace DevChatter.Bot.Startup
             var twitchApi = new TwitchAPI(twitchSettings.TwitchClientId);
             var twitchFollowerService = new TwitchFollowerService(twitchApi, twitchSettings);
 
-            DbContextOptions<AppDataContext> options = new DbContextOptionsBuilder<AppDataContext>()
-                .UseSqlServer(connectionString)
-                .Options;
+            IRepository repository = SetUpDatabase.SetUpRepository(connectionString);
 
-            IRepository repository = new EfGenericRepo(new AppDataContext(options));
 
             var currencyGenerator = new CurrencyGenerator(chatClients, repository);
 
-            new FakeData(repository).Initialize();
-
-            var simpleResponses = repository.List(DataItemPolicy<SimpleCommand>.ActiveOnly());
+            var simpleCommands = repository.List<SimpleCommand>();
 
             List<IBotCommand> allCommands = new List<IBotCommand>();
-            allCommands.AddRange(simpleResponses);
+            allCommands.AddRange(simpleCommands);
             allCommands.Add(new ShoutOutCommand(twitchFollowerService));
             allCommands.Add(new QuoteCommand(repository));
             allCommands.Add(new AddQuoteCommand(repository));
@@ -59,5 +54,6 @@ namespace DevChatter.Bot.Startup
             var botMain = new BotMain(chatClients, repository, commandHandler, subscriberHandler, twitchSystem, automatedActionSystem);
             return botMain;
         }
+
     }
 }
