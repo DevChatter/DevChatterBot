@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Messaging;
@@ -33,11 +34,20 @@ namespace DevChatter.Bot.Startup
 
         private static void EnsureInitialData(IRepository repository)
         {
-            repository.Create(GetIntervalMessages());
+            if (!repository.List<IntervalMessage>().Any())
+            {
+                repository.Create(GetIntervalMessages());
+            }
 
-            repository.Create(GetSimpleCommands());
+            if (!repository.List<SimpleCommand>().Any())
+            {
+                repository.Create(GetSimpleCommands());
+            }
 
-            repository.Create(GetInitialQuotes());
+            if (!repository.List<QuoteEntity>().Any())
+            {
+                repository.Create(GetInitialQuotes());
+            }
         }
 
         private static List<IntervalMessage> GetIntervalMessages()
