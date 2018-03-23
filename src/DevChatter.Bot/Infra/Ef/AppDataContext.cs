@@ -3,7 +3,7 @@ using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
 
 namespace DevChatter.Bot.Infra.Ef
 {
@@ -30,8 +30,10 @@ namespace DevChatter.Bot.Infra.Ef
     {
         public AppDataContext CreateDbContext(string[] args)
         {
+            string connectionString = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetConnectionString("DevChatterBotDb");
+
             var optionsBuilder = new DbContextOptionsBuilder<AppDataContext>();
-            optionsBuilder.UseSqlServer("Data Source=DevChatterBotDb");
+            optionsBuilder.UseSqlServer(connectionString);
 
             return new AppDataContext(optionsBuilder.Options);
         }
