@@ -64,7 +64,6 @@ namespace DevChatter.Bot.Startup
         {
             return new List<SimpleCommand>
             {
-                new SimpleCommand("coins", "Coins?!?! I think you meant !points"),
                 new SimpleCommand("discord", "Hey! Checkout out our Discord here https://discord.gg/aQry9jG"),
                 new SimpleCommand("github", "Check out our GitHub repositories here https://github.com/DevChatter/"),
                 new SimpleCommand("emotes", "These are our current emotes: devchaHype devchaDerp devchaFail "),

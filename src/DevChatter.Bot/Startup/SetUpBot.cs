@@ -7,10 +7,8 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
 using DevChatter.Bot.Core.Streaming;
-using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.Twitch;
 using DevChatter.Bot.Infra.Twitch.Events;
-using Microsoft.EntityFrameworkCore;
 using TwitchLib;
 
 namespace DevChatter.Bot.Startup
@@ -37,6 +35,8 @@ namespace DevChatter.Bot.Startup
 
             List<IBotCommand> allCommands = new List<IBotCommand>();
             allCommands.AddRange(simpleCommands);
+            allCommands.Add(new CommandsCommand(allCommands));
+            allCommands.Add(new CoinsCommand(repository));
             allCommands.Add(new ShoutOutCommand(twitchFollowerService));
             allCommands.Add(new QuoteCommand(repository));
             allCommands.Add(new AddQuoteCommand(repository));
