@@ -15,7 +15,5 @@ namespace UnitTests.Fakes
         {
             return "Always Ready";
         }
-
-        public DataItemStatus DataItemStatus => DataItemStatus.Active;
     }
 }

@@ -3,24 +3,22 @@ using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public class IntervalMessage : DataItem, IAutomatedMessage
+    public class IntervalMessage : DataEntity, IAutomatedMessage
     {
         public IntervalMessage()
         {
         }
 
-        public IntervalMessage(int delayInMinutes, string message, 
-            DataItemStatus dataItemStatus = DataItemStatus.Draft)
+        public IntervalMessage(int delayInMinutes, string messageText)
         {
             DelayInMinutes = delayInMinutes;
-            Message = message;
-            DataItemStatus = dataItemStatus;
+            MessageText = messageText;
             _previousRunTime = DateTime.Now;
         }
 
         private DateTime _previousRunTime;
-        public int DelayInMinutes { get; }
-        public string Message { get; }
+        public int DelayInMinutes { get; protected set; }
+        public string MessageText { get; protected set; }
 
         public bool IsTimeToDisplay()
         {
@@ -30,7 +28,7 @@ namespace DevChatter.Bot.Core.Messaging
         public string GetMessageInstance()
         {
             _previousRunTime = DateTime.Now;
-            return Message;
+            return MessageText;
         }
     }
 }

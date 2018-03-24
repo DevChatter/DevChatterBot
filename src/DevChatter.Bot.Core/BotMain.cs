@@ -90,7 +90,7 @@ namespace DevChatter.Bot.Core
 
         private void PublishMessages()
         {
-            var messages = _repository.List(DataItemPolicy<IntervalMessage>.ActiveOnly());
+            var messages = _repository.List<IntervalMessage>();
             foreach (var message in messages)
             {
                 _autoMsgSystem.Publish(message);
