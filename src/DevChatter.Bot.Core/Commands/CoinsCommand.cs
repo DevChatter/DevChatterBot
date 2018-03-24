@@ -16,7 +16,7 @@ namespace DevChatter.Bot.Core.Commands
         {
             _repository = repository;
             CommandText = "coins";
-            RoleRequired = UserRole.Mod;
+            RoleRequired = UserRole.Everyone;
         }
 
         public override void Process(IChatClient triggeringClient, CommandReceivedEventArgs eventArgs)
@@ -39,7 +39,6 @@ namespace DevChatter.Bot.Core.Commands
             {
                 Console.WriteLine(e);
             }
-
         }
     }
 }
