@@ -4,8 +4,13 @@ More details coming.
 ## Configuration
 There are some configuration options you'll need to set up using information you set up in Twitch accounts. Read the [Configuration](Configuration.md) section for more info.
 
-## Building Local Database
-We are using SQL LocalDb for the database for the project, which means you'll need to check the connection string in the `appsettings.json` file and confirm that it will work on your machine.
+## Building and updating Local Database
+We are using SQL LocalDb for the database for the project, which means you'll need to check the connection string in the `appsettings.json` file and confirm that it will work on your machine before running the application.
+
+When the application starts, it automatically performs a migration based on the latest migration files in the application.
+
+## Adding a new migration
+In order to update the schema you'll need to add a new migration using EF Core migrations.
 
 [Read about EF Core Migrations](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/)
 
@@ -24,21 +29,7 @@ If everything worked correctly, you should be able to run this command:
 Get-Help about_EntityFrameworkCore
 ```
 
-### Applying the latest schema changes to the datbase
-To apply the migration to the database and create the schema, do the following:
-
-#### PowerShell
-```
-Update-Database
-```
-
-#### Console
-```
-dotnet ef database update
-```
-
 ### Tips
-
  - You can check in the SQL Server Object Explorer in Visual Studio to see your localdb.
  - The migration will pull the connection string from the `appsettings.json` file that gets copied on build.
- - I've found that the best place to run these commands is in the Package Manager Console. Find it in Visual Studio udner `Tools` -> `NuGet Package Manager` -> `Package Manager Console`.
+ - The easiest place to run the EF Core Tools is in the Package Manager Console. Find it in Visual Studio under `Tools` -> `NuGet Package Manager` -> `Package Manager Console`.
