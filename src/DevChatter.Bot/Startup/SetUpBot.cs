@@ -28,8 +28,8 @@ namespace DevChatter.Bot.Startup
 
             IRepository repository = SetUpDatabase.SetUpRepository(connectionString);
 
-
             var currencyGenerator = new CurrencyGenerator(chatClients, repository);
+            var rockPaperScissorsGame = new RockPaperScissorsGame(currencyGenerator);
 
             var simpleCommands = repository.List<SimpleCommand>();
 
@@ -40,7 +40,7 @@ namespace DevChatter.Bot.Startup
             allCommands.Add(new ShoutOutCommand(twitchFollowerService));
             allCommands.Add(new QuoteCommand(repository));
             allCommands.Add(new AddQuoteCommand(repository));
-            allCommands.Add(new RockPaperScissorsCommand(currencyGenerator));
+            allCommands.Add(new RockPaperScissorsCommand(rockPaperScissorsGame));
 
             var commandHandler = new CommandHandler(chatClients, allCommands);
             var subscriberHandler = new SubscriberHandler(chatClients);
