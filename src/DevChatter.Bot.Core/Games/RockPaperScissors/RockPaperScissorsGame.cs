@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Automation;
@@ -40,6 +41,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             AdjustTokens(botChoice);
 
             _competitors.Clear();
+            _isRunningGame = false;
         }
 
         public void AdjustTokens(RockPaperScissors botChoice)
@@ -68,16 +70,21 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 
         public void AttemptToStartNewGame(IChatClient chatClient, string username)
         {
+            if (_isRunningGame) return;
             lock (_gameStartLock)
             {
-                if (!_isRunningGame)
-                {
-                    chatClient.SendMessage($"{username} wants to play Rock-Paper-Scissors! To join, simply type \"!rps\" in chat.");
-                    var rpsUpdate = new RockPaperScissorsUpdate(1, this, chatClient);
-                    // TODO: connect this to the interval actions
-                    _isRunningGame = true;
-                }
+                if (_isRunningGame) return;
+                _isRunningGame = true;
             }
+
+            StartNewGame(chatClient, username);
+        }
+
+        private void StartNewGame(IChatClient chatClient, string username)
+        {
+            chatClient.SendMessage($"{username} wants to play Rock-Paper-Scissors! To join, simply type \"!rps\" in chat.");
+            var rpsUpdate = new RockPaperScissorsUpdate(1, this, chatClient);
+            // TODO: connect this to the interval actions
         }
     }
 }
