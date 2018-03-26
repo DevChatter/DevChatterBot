@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Model;
@@ -17,33 +18,48 @@ namespace DevChatter.Bot.Core.Events
             _chatUserCollection = new ChatUserCollection(repository);
             foreach (IChatClient chatClient in chatClients)
             {
+                AddCurrentChatters(chatClient);
                 chatClient.OnUserNoticed += ChatClientOnOnUserNoticed;
                 chatClient.OnUserLeft += ChatClientOnUserLeft;
             }
         }
 
+        private void AddCurrentChatters(IChatClient chatClient)
+        {
+            List<ChatUser> allChatters = chatClient.GetAllChatters();
+            foreach (ChatUser chatter in allChatters)
+            {
+                WatchUserIfNeeded(chatter.DisplayName, () => chatter);
+            }
+        }
+
         private void ChatClientOnOnUserNoticed(object sender, UserStatusEventArgs eventArgs)
         {
-            if (_chatUserCollection.NeedToWatchUser(eventArgs.DisplayName))
+            WatchUserIfNeeded(eventArgs.DisplayName, () => eventArgs.ToChatUser());
+        }
+
+        private void WatchUserIfNeeded(string displayName, Func<ChatUser> func)
+        {
+            if (_chatUserCollection.NeedToWatchUser(displayName))
             {
-                ChatUser userFromDb = GetOrCreateChatUser(eventArgs);
+                ChatUser userFromDb = GetOrCreateChatUser(displayName, func);
                 _chatUserCollection.WatchUser(userFromDb);
             }
         }
 
-        private ChatUser GetOrCreateChatUser(UserStatusEventArgs eventArgs)
+        private ChatUser GetOrCreateChatUser(string displayName, Func<ChatUser> func)
         {
             lock (_userCreationLock)
             {
-                ChatUser userFromDb = _repository.Single(ChatUserPolicy.ByDisplayName(eventArgs.DisplayName));
-                userFromDb = userFromDb ?? _repository.Create(eventArgs.ToChatUser());
+                ChatUser userFromDb = _repository.Single(ChatUserPolicy.ByDisplayName(displayName));
+                userFromDb = userFromDb ?? _repository.Create(func());
                 return userFromDb;
             }
         }
 
         private void ChatClientOnUserLeft(object sender, UserStatusEventArgs eventArgs)
         {
-            GetOrCreateChatUser(eventArgs);
+            GetOrCreateChatUser(eventArgs.DisplayName, () => eventArgs.ToChatUser());
 
             _chatUserCollection.StopWatching(eventArgs.DisplayName);
         }
