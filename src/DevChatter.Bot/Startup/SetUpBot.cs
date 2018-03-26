@@ -43,6 +43,7 @@ namespace DevChatter.Bot.Startup
             allCommands.Add(new ShoutOutCommand(twitchFollowerService));
             allCommands.Add(new QuoteCommand(repository));
             allCommands.Add(new AddQuoteCommand(repository));
+            allCommands.Add(new AddCommandCommand(repository));
             allCommands.Add(new RockPaperScissorsCommand(rockPaperScissorsGame));
 
             var commandHandler = new CommandHandler(chatClients, allCommands);
