@@ -25,12 +25,15 @@ namespace DevChatter.Bot.Core.Commands
                 // !AddCommand Twitter "https://twitter.com/DevChatter_" Everyone
                 SimpleCommand command = eventArgs.Arguments.ToSimpleCommand();
 
-                chatClient.SendMessage($"You are trying to make a !{command.CommandText} command for {command.RoleRequired} responding with {command.StaticResponse}.");
-
-                if (_repository.Single(CommandPolicy.ByCommandText(command.CommandText)) == null)
+                if (_repository.Single(CommandPolicy.ByCommandText(command.CommandText)) != null)
                 {
-                    _repository.Create(command);
+                    chatClient.SendMessage($"There's already a command using !{command.CommandText}");
+                    return;
                 }
+
+                chatClient.SendMessage($"Adding a !{command.CommandText} command for {command.RoleRequired}. It will respond with {command.StaticResponse}.");
+
+                _repository.Create(command);
             }
             catch (Exception e)
             {
