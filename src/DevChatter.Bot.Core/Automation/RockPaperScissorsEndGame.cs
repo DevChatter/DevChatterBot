@@ -4,14 +4,14 @@ using DevChatter.Bot.Core.Games.RockPaperScissors;
 
 namespace DevChatter.Bot.Core.Automation
 {
-    public class RockPaperScissorsUpdate : IIntervalAction
+    public class RockPaperScissorsEndGame : IIntervalAction
     {
         private readonly RockPaperScissorsGame _rockPaperScissorsGame;
         private readonly IChatClient _chatClient;
 
         private DateTime _timeOfNextRun;
 
-        public RockPaperScissorsUpdate(int intervalInSeconds, 
+        public RockPaperScissorsEndGame(int intervalInSeconds, 
             RockPaperScissorsGame rockPaperScissorsGame,
             IChatClient chatClient)
         {

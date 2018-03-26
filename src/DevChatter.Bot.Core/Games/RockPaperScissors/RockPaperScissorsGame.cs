@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Events;
@@ -16,7 +14,8 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         private readonly Dictionary<string, RockPaperScissors> _competitors = new Dictionary<string, RockPaperScissors>();
         private readonly object _gameStartLock = new object();
         private bool _isRunningGame;
-        private RockPaperScissorsUpdate _rockPaperScissorsUpdate;
+        private RockPaperScissorsEndGame _rockPaperScissorsEndGame;
+        private DelayedMessageAction _joinGameWarningMessage;
 
         public RockPaperScissorsGame(CurrencyGenerator currencyGenerator, AutomatedActionSystem automatedActionSystem)
         {
@@ -44,9 +43,15 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             AnnounceWinners(chatClient, botChoice);
             AdjustTokens(botChoice);
 
+            CleanUpAfterGame();
+        }
+
+        private void CleanUpAfterGame()
+        {
             _competitors.Clear();
             _isRunningGame = false;
-            _automatedActionSystem.RemoveAction(_rockPaperScissorsUpdate);
+            _automatedActionSystem.RemoveAction(_rockPaperScissorsEndGame);
+            _automatedActionSystem.RemoveAction(_joinGameWarningMessage);
         }
 
         public void AdjustTokens(RockPaperScissors botChoice)
@@ -90,8 +95,9 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             chatClient.SendMessage($"{username} wants to play Rock-Paper-Scissors! You have {SECONDS_TO_JOIN_GAME} seconds to join!");
             chatClient.SendMessage("To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.");
 
-            _rockPaperScissorsUpdate = new RockPaperScissorsUpdate(SECONDS_TO_JOIN_GAME, this, chatClient);
-            _automatedActionSystem.AddAction(_rockPaperScissorsUpdate);
+            _rockPaperScissorsEndGame = new RockPaperScissorsEndGame(SECONDS_TO_JOIN_GAME, this, chatClient);
+            _automatedActionSystem.AddAction(_rockPaperScissorsEndGame);
+            _joinGameWarningMessage = new DelayedMessageAction(SECONDS_TO_JOIN_GAME - 30, "Only 30 seconds left to join! Type \"!rps rock\", \"!rps paper\", or \"!rps scissors\"", chatClient);
         }
     }
 }
