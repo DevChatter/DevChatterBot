@@ -17,19 +17,22 @@ namespace DevChatter.Bot.Startup
     {
         public static BotMain NewBot(TwitchClientSettings twitchSettings, string connectionString)
         {
-            var twitchChatClient = new TwitchChatClient(twitchSettings);
+            var twitchApi = new TwitchAPI(twitchSettings.TwitchClientId);
+            var twitchChatClient = new TwitchChatClient(twitchSettings, twitchApi);
             var chatClients = new List<IChatClient>
             {
                 new ConsoleChatClient(),
                 twitchChatClient,
             };
-            var twitchApi = new TwitchAPI(twitchSettings.TwitchClientId);
             var twitchFollowerService = new TwitchFollowerService(twitchApi, twitchSettings);
 
             IRepository repository = SetUpDatabase.SetUpRepository(connectionString);
 
             var currencyGenerator = new CurrencyGenerator(chatClients, repository);
-            var rockPaperScissorsGame = new RockPaperScissorsGame(currencyGenerator);
+            var currencyUpdate = new CurrencyUpdate(1, currencyGenerator);
+
+            var automatedActionSystem = new AutomatedActionSystem(new List<IIntervalAction> { currencyUpdate });
+            var rockPaperScissorsGame = new RockPaperScissorsGame(currencyGenerator, automatedActionSystem);
 
             var simpleCommands = repository.List<SimpleCommand>();
 
@@ -47,9 +50,6 @@ namespace DevChatter.Bot.Startup
 
             var twitchSystem = new FollowableSystem(new[] { twitchChatClient }, twitchFollowerService);
 
-            var currencyUpdate = new CurrencyUpdate(1, currencyGenerator);
-
-            var automatedActionSystem = new AutomatedActionSystem(new List<IIntervalAction> { currencyUpdate });
 
             var botMain = new BotMain(chatClients, repository, commandHandler, subscriberHandler, twitchSystem, automatedActionSystem);
             return botMain;

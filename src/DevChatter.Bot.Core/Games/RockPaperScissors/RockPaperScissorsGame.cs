@@ -10,14 +10,18 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 {
     public class RockPaperScissorsGame
     {
+        private const int SECONDS_TO_JOIN_GAME = 120;
         private readonly CurrencyGenerator _currencyGenerator;
+        private readonly AutomatedActionSystem _automatedActionSystem;
         private readonly Dictionary<string, RockPaperScissors> _competitors = new Dictionary<string, RockPaperScissors>();
         private readonly object _gameStartLock = new object();
         private bool _isRunningGame;
+        private RockPaperScissorsUpdate _rockPaperScissorsUpdate;
 
-        public RockPaperScissorsGame(CurrencyGenerator currencyGenerator)
+        public RockPaperScissorsGame(CurrencyGenerator currencyGenerator, AutomatedActionSystem automatedActionSystem)
         {
             _currencyGenerator = currencyGenerator;
+            _automatedActionSystem = automatedActionSystem;
         }
 
         public void JoinMatch(IChatClient chatClient, (string username, RockPaperScissors choice) userChoice)
@@ -42,6 +46,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 
             _competitors.Clear();
             _isRunningGame = false;
+            _automatedActionSystem.RemoveAction(_rockPaperScissorsUpdate);
         }
 
         public void AdjustTokens(RockPaperScissors botChoice)
@@ -82,9 +87,11 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 
         private void StartNewGame(IChatClient chatClient, string username)
         {
-            chatClient.SendMessage($"{username} wants to play Rock-Paper-Scissors! To join, simply type \"!rps\" in chat.");
-            var rpsUpdate = new RockPaperScissorsUpdate(1, this, chatClient);
-            // TODO: connect this to the interval actions
+            chatClient.SendMessage($"{username} wants to play Rock-Paper-Scissors! You have {SECONDS_TO_JOIN_GAME} seconds to join!");
+            chatClient.SendMessage("To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.");
+
+            _rockPaperScissorsUpdate = new RockPaperScissorsUpdate(SECONDS_TO_JOIN_GAME, this, chatClient);
+            _automatedActionSystem.AddAction(_rockPaperScissorsUpdate);
         }
     }
 }

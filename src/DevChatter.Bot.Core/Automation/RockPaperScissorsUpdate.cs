@@ -8,23 +8,24 @@ namespace DevChatter.Bot.Core.Automation
     {
         private readonly RockPaperScissorsGame _rockPaperScissorsGame;
         private readonly IChatClient _chatClient;
-        private readonly int _intervalInMinutes;
-        private DateTime _previousRunTime = DateTime.Now;
 
-        public RockPaperScissorsUpdate(int intervalInMinutes, RockPaperScissorsGame rockPaperScissorsGame,
+        private DateTime _timeOfNextRun;
+
+        public RockPaperScissorsUpdate(int intervalInSeconds, 
+            RockPaperScissorsGame rockPaperScissorsGame,
             IChatClient chatClient)
         {
-            _intervalInMinutes = intervalInMinutes;
             _rockPaperScissorsGame = rockPaperScissorsGame;
             _chatClient = chatClient;
+            _timeOfNextRun = DateTime.Now.AddSeconds(intervalInSeconds);
         }
 
-        public bool IsTimeToRun() => DateTime.Now > _previousRunTime.AddMinutes(_intervalInMinutes);
+        public bool IsTimeToRun() => DateTime.Now > _timeOfNextRun;
 
         public void Invoke()
         {
             _rockPaperScissorsGame.PlayMatch(_chatClient);
-            _previousRunTime = DateTime.Now;
+            _timeOfNextRun = DateTime.MaxValue;
         }
     }
 }
