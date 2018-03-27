@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Systems.Chat;
 using Pose;
 using UnitTests.Fakes;
 using Xunit;

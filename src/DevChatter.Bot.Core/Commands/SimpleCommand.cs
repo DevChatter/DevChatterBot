@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Messaging.Tokens;
 using DevChatter.Bot.Core.Model;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {

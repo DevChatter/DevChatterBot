@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Model;
 
-namespace DevChatter.Bot.Core.ChatSystems
+namespace DevChatter.Bot.Core.Systems.Chat
 {
     public interface IChatClient
     {

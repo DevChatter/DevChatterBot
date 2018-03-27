@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Systems.Chat;
 
-namespace DevChatter.Bot.Core.Streaming
+namespace DevChatter.Bot.Core.Systems.Streaming
 {
     public class FollowableSystem
     {
