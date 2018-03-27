@@ -17,12 +17,12 @@ namespace DevChatter.Bot.Core.Commands
             RoleRequired = UserRole.Everyone;
         }
 
-        public override void Process(IChatClient triggeringClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             var listOfCommands = _allCommands.Where(x => eventArgs.ChatUser.CanUserRunCommand(x)).Select(x => $"!{x.CommandText}").ToList();
 
             string stringOfCommands = string.Join(", ", listOfCommands);
-            triggeringClient.SendMessage($"These are the commands that {eventArgs.ChatUser.DisplayName} is allowed to run: ({stringOfCommands})");
+            chatClient.SendMessage($"These are the commands that {eventArgs.ChatUser.DisplayName} is allowed to run: ({stringOfCommands})");
         }
     }
 }

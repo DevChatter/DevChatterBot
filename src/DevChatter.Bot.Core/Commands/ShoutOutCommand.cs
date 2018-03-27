@@ -20,11 +20,11 @@ namespace DevChatter.Bot.Core.Commands
             RoleRequired = UserRole.Mod;
         }
 
-        public override void Process(IChatClient triggeringClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string streamName = eventArgs.Arguments?.FirstOrDefault()?.NoAt() ?? GetRandomFollowedStream();
 
-            triggeringClient.SendMessage(FormatMessage(streamName));
+            chatClient.SendMessage(FormatMessage(streamName));
         }
 
         private string GetRandomFollowedStream()

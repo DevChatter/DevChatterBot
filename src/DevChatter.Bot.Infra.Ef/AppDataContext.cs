@@ -13,6 +13,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<SimpleCommand> SimpleCommands { get; set; }
         public DbSet<QuoteEntity> QuoteEntities { get; set; }
         public DbSet<ChatUser> ChatUsers { get; set; }
+        public DbSet<StreamerEntity> Streamers { get; set; }
 
         public AppDataContext(DbContextOptions<AppDataContext> options)
             : base(options)

@@ -20,7 +20,7 @@ namespace DevChatter.Bot.Core.Commands
             RoleRequired = UserRole.Everyone;
         }
 
-        public override void Process(IChatClient triggeringClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace DevChatter.Bot.Core.Commands
 
                 ChatUser chatUser = _repository.Single(ChatUserPolicy.ByDisplayName(userToCheck));
 
-                triggeringClient.SendMessage($"{userToCheck} has {chatUser.Tokens} tokens!");
+                chatClient.SendMessage($"{userToCheck} has {chatUser.Tokens} tokens!");
             }
             catch (Exception e)
             {

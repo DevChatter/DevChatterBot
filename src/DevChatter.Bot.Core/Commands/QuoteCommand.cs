@@ -20,20 +20,20 @@ namespace DevChatter.Bot.Core.Commands
             RoleRequired = UserRole.Everyone;
         }
 
-        public override void Process(IChatClient triggeringClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string argumentOne = eventArgs?.Arguments?.FirstOrDefault();
             if (argumentOne != null)
             {
                 if (int.TryParse(argumentOne, out int requestQuoteId))
                 {
-                    HandleQuoteRequest(triggeringClient, requestQuoteId);
+                    HandleQuoteRequest(chatClient, requestQuoteId);
                 }
                 // TODO: Handle this eroneous case
             }
             else
             {
-                HandleRandomQuoteRequest(triggeringClient);
+                HandleRandomQuoteRequest(chatClient);
             }
         }
 
