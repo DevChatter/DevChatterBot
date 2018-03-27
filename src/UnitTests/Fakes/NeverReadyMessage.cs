@@ -1,6 +1,5 @@
 ﻿using System;
 using DevChatter.Bot.Core.Messaging;
-using DevChatter.Bot.Core.Model;
 
 namespace UnitTests.Fakes
 {

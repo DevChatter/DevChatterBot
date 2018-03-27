@@ -1,4 +1,4 @@
-﻿using DevChatter.Bot.Core.Model;
+﻿using DevChatter.Bot.Core.Data.Model;
 using TwitchLib.Enums;
 using TwitchLib.Models.API.Undocumented.Chatters;
 

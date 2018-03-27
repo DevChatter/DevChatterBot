@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevChatter.Bot.Core.Model
+namespace DevChatter.Bot.Core.Data.Model
 {
     public abstract class DataEntity
     {

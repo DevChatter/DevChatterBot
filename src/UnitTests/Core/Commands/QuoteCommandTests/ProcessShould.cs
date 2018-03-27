@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.Model;
 using UnitTests.Fakes;
 using Xunit;
 

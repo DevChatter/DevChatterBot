@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.Model;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Infra.Twitch.Extensions;
 using TwitchLib;
