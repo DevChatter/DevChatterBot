@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevChatter.Bot.Core
+namespace DevChatter.Bot.Core.Util
 {
     public static class MyRandom
     {

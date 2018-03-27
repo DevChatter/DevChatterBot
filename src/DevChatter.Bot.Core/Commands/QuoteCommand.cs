@@ -4,6 +4,7 @@ using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Model;
+using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Commands
 {
