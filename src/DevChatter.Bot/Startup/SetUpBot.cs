@@ -4,6 +4,7 @@ using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Games.Hangman;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
@@ -33,6 +34,7 @@ namespace DevChatter.Bot.Startup
 
             var automatedActionSystem = new AutomatedActionSystem(new List<IIntervalAction> { currencyUpdate });
             var rockPaperScissorsGame = new RockPaperScissorsGame(currencyGenerator, automatedActionSystem);
+            var hangmanGame = new HangmanGame(currencyGenerator, automatedActionSystem);
 
             var simpleCommands = repository.List<SimpleCommand>();
 
@@ -46,6 +48,7 @@ namespace DevChatter.Bot.Startup
             allCommands.Add(new AddQuoteCommand(repository));
             allCommands.Add(new AddCommandCommand(repository));
             allCommands.Add(new RemoveCommandCommand(repository));
+            allCommands.Add(new HangmanCommand(hangmanGame));
             allCommands.Add(new RockPaperScissorsCommand(rockPaperScissorsGame));
 
             var commandHandler = new CommandHandler(chatClients, allCommands);
