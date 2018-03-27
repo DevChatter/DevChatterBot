@@ -23,7 +23,7 @@ namespace DevChatter.Bot.Core.Commands
         {
             string argumentOne = eventArgs.Arguments?.FirstOrDefault();
             string argumentTwo = eventArgs.Arguments?.ElementAtOrDefault(1);
-            if (argumentOne?.ToLower() == "add")
+            if (argumentOne != null && argumentOne.Equals("add", StringComparison.InvariantCultureIgnoreCase))
             {
                 AddNewStreamer(chatClient, argumentTwo, eventArgs.ChatUser);
             }
