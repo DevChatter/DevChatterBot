@@ -9,6 +9,8 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
     public class RockPaperScissorsGame
     {
         private const int SECONDS_TO_JOIN_GAME = 120;
+        private const int TOKENS_FOR_WINNING = 100;
+        private const int TOKENS_REQUIRED_TO_PLAY = 30;
         private readonly CurrencyGenerator _currencyGenerator;
         private readonly AutomatedActionSystem _automatedActionSystem;
         private readonly Dictionary<string, RockPaperScissors> _competitors = new Dictionary<string, RockPaperScissors>();
@@ -31,7 +33,15 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             }
             else
             {
-                chatClient.SendMessage($"{userChoice.username} joined in the Rock-Paper-Scissors game with {userChoice.choice}!");
+                if (_currencyGenerator.RemoveCurrencyFrom(userChoice.username, TOKENS_REQUIRED_TO_PLAY))
+                {
+                    chatClient.SendMessage($"{userChoice.username} joined in the Rock-Paper-Scissors game with {userChoice.choice}!");
+                }
+                else
+                {
+                    chatClient.SendMessage($"You need more coins to play rock-paper-scissors, {userChoice.username}");
+                    return;
+                }
             }
             _competitors[userChoice.username] = userChoice.choice;
         }
@@ -57,7 +67,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         public void AdjustTokens(RockPaperScissors botChoice)
         {
             List<string> winnersList = GetWinnerList(botChoice);
-            _currencyGenerator.AddCurrencyTo(winnersList, 50);
+            _currencyGenerator.AddCurrencyTo(winnersList, TOKENS_FOR_WINNING);
         }
 
         public void AnnounceWinners(IChatClient chatClient, RockPaperScissors botChoice)

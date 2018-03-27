@@ -63,5 +63,12 @@ namespace DevChatter.Bot.Core
                 _activeChatUsers.RemoveAll(x => x.DisplayName == displayName);
             }
         }
+
+        public bool UserHasAtLeast(string username, int tokensToRemove)
+        {
+            ChatUser chatUser = _activeChatUsers.SingleOrDefault(x => x.DisplayName == username);
+
+            return chatUser.Tokens >= tokensToRemove;
+        }
     }
 }

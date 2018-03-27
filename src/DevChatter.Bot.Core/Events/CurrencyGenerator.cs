@@ -73,5 +73,17 @@ namespace DevChatter.Bot.Core.Events
             _chatUserCollection.UpdateSpecficChatters(x => x.Tokens += tokensToAdd, 
                 x => listOfNames.Contains(x.DisplayName));
         }
+
+        public bool RemoveCurrencyFrom(string userName, int tokensToRemove)
+        {
+            if (!_chatUserCollection.UserHasAtLeast(userName, tokensToRemove))
+            {
+                return false;
+            }
+
+            _chatUserCollection.UpdateSpecficChatters(x => x.Tokens -= tokensToRemove,
+                x => x.DisplayName == userName);
+            return true;
+        }
     }
 }
