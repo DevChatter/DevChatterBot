@@ -24,14 +24,14 @@ This is the username of the Twitch account you want to use to connect to the Twi
 **TwitchUsername example: DevChatterBot**
 
 ## TwitchClientId
-Your Twitch Client ID. This is the first thing you need to get. If you've never registered for twitch developer/API access you won't have this yet. Don't waste your time looking for it in the Twitch client. Instead, head over to the Twitch Developer site, log in and go to "dashboard" and "register your app" https://dev.twitch.tv/dashboard/apps/create . Give "your app" a name, e.g. DevchatterTwitchBotClone and for "redirect URI" just put http://localhost if you don't have a different address. Click register and then copy/save your client ID somewhere safe. You will need this for the next step!
+Your Twitch Client ID. This is the first thing you need to get. If you've never registered for twitch developer/API access you won't have this yet. Don't waste your time looking for it in the Twitch client. Instead, head over to the Twitch Developer site, log in and go to "dashboard" and [register your app](https://dev.twitch.tv/dashboard/apps/create) . Give your app a name, e.g. DevchatterTwitchBotClone and for "redirect URI" just put http://localhost since the bot doesn't use a callback yet. Click register and then copy/save your client ID somewhere safe. You will need this for the next step!
 
 **TwitchClientId example: 0123456789abcdefghijABCDEFGHIJ**
 
 ## TwitchUserID
 The v5 Twitch API primarily uses this userId instead of using the Username. You can use a tool like Postman to call the Twitch API to find your userid on their [Users Reference](https://dev.twitch.tv/docs/v5/reference/users). 
 
-If you're completely new to all of this, just do this: Open a new tab in your browser. Paste this in https://api.twitch.tv/kraken/users/YOURTWITCHUSERNAME?client_id=YOURTWITCHUSERID . Replace YOURTWITCHUSERNAME with, you guessed it, your TwitchUsername (see above) and replace YOURTWITCHUSERID with your TwitchUserID that you just got on the twitch dev website. Now hit enter. You should get a response back and the second thing in it will be your TwitchUserId. You're almost done!
+If you're completely new to all of this, just do this: Open a new tab in your browser. Paste this in https://api.twitch.tv/kraken/users/YOURTWITCHUSERNAME?client_id=YOURTWITCHCLIENTID . Replace YOURTWITCHUSERNAME with, you guessed it, your TwitchUsername (see above) and replace YOURTWITCHCLIENTID with your TwitchClientID that you just got on the twitch dev website. Now hit enter. You should get a response back and the second thing in it will be your TwitchUserId. You're almost done!
 
 **TwitchUserID example: 44322889**
 
@@ -42,7 +42,7 @@ You set this up on the Twitch developer site: https://twitchapps.com/tmi/
 **TwitchOAuth example: oauth:hi3curghksvcjefirskm1b81jbf452**
 
 ## TwitchChannel
-This is the channel you want your bot to be watching and whose chat channel you want it to connect to. Again, if you only have one twich account it's simply your twitch name and the same as your TwitchUsername.
+This is the channel you want your bot to be watching and whose chat channel you want it to connect to. Again, if you only have one twitch account it's simply your twitch name and the same as your TwitchUsername.
 
 **TwitchChannel example: DevChatter**
 
