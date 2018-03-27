@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
-using DevChatter.Bot.Core.Streaming;
+using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Infra.Twitch;
 using DevChatter.Bot.Infra.Twitch.Events;
 using TwitchLib;

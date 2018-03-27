@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Core.Model;
+using DevChatter.Bot.Core.Data.Model;
 
 namespace DevChatter.Bot.Core
 {

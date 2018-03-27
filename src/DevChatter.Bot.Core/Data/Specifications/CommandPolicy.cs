@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using DevChatter.Bot.Core.Commands;
 
-namespace DevChatter.Bot.Core.Data
+namespace DevChatter.Bot.Core.Data.Specifications
 {
     public class CommandPolicy : DataItemPolicy<SimpleCommand>
     {

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.Streaming;
+using DevChatter.Bot.Core.Systems.Streaming;
+using DevChatter.Bot.Infra.Twitch.Extensions;
 using TwitchLib;
 using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Models.API.v5.Users;

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.Model;
 using TwitchLib.Events.Client;
 using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Models.Client;
 
-namespace DevChatter.Bot.Infra.Twitch
+namespace DevChatter.Bot.Infra.Twitch.Extensions
 {
     public static class EventArgsExtensions
     {

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Messaging;
-using DevChatter.Bot.Core.Streaming;
+using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Systems.Streaming;
 
 namespace DevChatter.Bot.Core
 {

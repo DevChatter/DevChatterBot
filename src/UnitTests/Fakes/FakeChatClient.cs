@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DevChatter.Bot.Core.ChatSystems;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.Model;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace UnitTests.Fakes
 {

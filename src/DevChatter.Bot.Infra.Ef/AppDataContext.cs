@@ -1,6 +1,6 @@
 ﻿using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Messaging;
-using DevChatter.Bot.Core.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
