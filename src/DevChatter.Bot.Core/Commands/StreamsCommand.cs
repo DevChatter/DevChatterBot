@@ -9,6 +9,7 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class StreamsCommand : SimpleCommand
     {
+        private const int MAX_STREAMS = 5;
         private readonly IRepository _repository;
 
         public StreamsCommand(IRepository repository)
@@ -34,7 +35,7 @@ namespace DevChatter.Bot.Core.Commands
 
         private void ShoutOutRandomStreamers(IChatClient chatClient)
         {
-            var toShout = _repository.List<StreamerEntity>().OrderBy(x => Guid.NewGuid()).Take(5).ToList();
+            var toShout = _repository.List<StreamerEntity>().OrderBy(x => Guid.NewGuid()).Take(MAX_STREAMS).ToList();
             if (toShout.Any())
             {
                 string streamersText = string.Join(",", toShout.Select(x => $" https://www.twitch.tv/{x.ChannelName} "));
