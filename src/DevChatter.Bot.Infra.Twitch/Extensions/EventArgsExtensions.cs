@@ -6,7 +6,7 @@ using TwitchLib.Events.Client;
 using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Models.Client;
 
-namespace DevChatter.Bot.Infra.Twitch
+namespace DevChatter.Bot.Infra.Twitch.Extensions
 {
     public static class EventArgsExtensions
     {
