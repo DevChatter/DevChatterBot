@@ -2,6 +2,7 @@
 using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Util;

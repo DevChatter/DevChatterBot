@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using DevChatter.Bot.Core.Data.Model;
 
-namespace DevChatter.Bot.Core.Data
+namespace DevChatter.Bot.Core.Data.Specifications
 {
     public class DataItemPolicy<T> : ISpecification<T> where T : DataEntity
     {
