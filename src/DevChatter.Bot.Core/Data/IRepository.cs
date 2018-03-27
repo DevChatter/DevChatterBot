@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Model;
 
 namespace DevChatter.Bot.Core.Data
@@ -12,5 +11,6 @@ namespace DevChatter.Bot.Core.Data
         T Update<T>(T dataItem) where T : DataEntity;
         void Update<T>(List<T> dataItemList) where T : DataEntity;
         void Create<T>(List<T> dataItemList) where T : DataEntity;
+        void Remove<T>(T dataItem) where T : DataEntity;
     }
 }

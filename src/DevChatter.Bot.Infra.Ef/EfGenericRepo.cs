@@ -53,5 +53,11 @@ namespace DevChatter.Bot.Infra.Ef
             _db.Set<T>().AddRange(dataItemList);
             _db.SaveChanges();
         }
+
+        public void Remove<T>(T dataItem) where T : DataEntity
+        {
+            _db.Set<T>().Remove(dataItem);
+            _db.SaveChanges();
+        }
     }
 }

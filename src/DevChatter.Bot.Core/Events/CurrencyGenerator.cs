@@ -17,33 +17,48 @@ namespace DevChatter.Bot.Core.Events
             _chatUserCollection = new ChatUserCollection(repository);
             foreach (IChatClient chatClient in chatClients)
             {
+                AddCurrentChatters(chatClient);
                 chatClient.OnUserNoticed += ChatClientOnOnUserNoticed;
                 chatClient.OnUserLeft += ChatClientOnUserLeft;
             }
         }
 
+        private void AddCurrentChatters(IChatClient chatClient)
+        {
+            List<ChatUser> allChatters = chatClient.GetAllChatters();
+            foreach (ChatUser chatter in allChatters)
+            {
+                WatchUserIfNeeded(chatter.DisplayName, chatter);
+            }
+        }
+
         private void ChatClientOnOnUserNoticed(object sender, UserStatusEventArgs eventArgs)
         {
-            if (_chatUserCollection.NeedToWatchUser(eventArgs.DisplayName))
+            WatchUserIfNeeded(eventArgs.DisplayName, eventArgs.ToChatUser());
+        }
+
+        private void WatchUserIfNeeded(string displayName, ChatUser chatUser)
+        {
+            if (_chatUserCollection.NeedToWatchUser(displayName))
             {
-                ChatUser userFromDb = GetOrCreateChatUser(eventArgs);
+                ChatUser userFromDb = GetOrCreateChatUser(displayName, chatUser);
                 _chatUserCollection.WatchUser(userFromDb);
             }
         }
 
-        private ChatUser GetOrCreateChatUser(UserStatusEventArgs eventArgs)
+        private ChatUser GetOrCreateChatUser(string displayName, ChatUser chatUser)
         {
             lock (_userCreationLock)
             {
-                ChatUser userFromDb = _repository.Single(ChatUserPolicy.ByDisplayName(eventArgs.DisplayName));
-                userFromDb = userFromDb ?? _repository.Create(eventArgs.ToChatUser());
+                ChatUser userFromDb = _repository.Single(ChatUserPolicy.ByDisplayName(displayName));
+                userFromDb = userFromDb ?? _repository.Create(chatUser);
                 return userFromDb;
             }
         }
 
         private void ChatClientOnUserLeft(object sender, UserStatusEventArgs eventArgs)
         {
-            GetOrCreateChatUser(eventArgs);
+            GetOrCreateChatUser(eventArgs.DisplayName, eventArgs.ToChatUser());
 
             _chatUserCollection.StopWatching(eventArgs.DisplayName);
         }
@@ -57,6 +72,18 @@ namespace DevChatter.Bot.Core.Events
         {
             _chatUserCollection.UpdateSpecficChatters(x => x.Tokens += tokensToAdd, 
                 x => listOfNames.Contains(x.DisplayName));
+        }
+
+        public bool RemoveCurrencyFrom(string userName, int tokensToRemove)
+        {
+            if (!_chatUserCollection.UserHasAtLeast(userName, tokensToRemove))
+            {
+                return false;
+            }
+
+            _chatUserCollection.UpdateSpecficChatters(x => x.Tokens -= tokensToRemove,
+                x => x.DisplayName == userName);
+            return true;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Model;
 
 namespace UnitTests.Fakes
 {
@@ -20,6 +22,11 @@ namespace UnitTests.Fakes
         public void SendMessage(string message)
         {
             SentMessage = message;
+        }
+
+        public List<ChatUser> GetAllChatters()
+        {
+            throw new NotImplementedException();
         }
 
         public string SentMessage { get; set; }

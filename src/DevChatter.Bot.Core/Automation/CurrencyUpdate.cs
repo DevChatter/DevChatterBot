@@ -7,27 +7,26 @@ namespace DevChatter.Bot.Core.Automation
     {
         private readonly int _intervalInMinutes;
         private readonly CurrencyGenerator _currencyGenerator;
-        private DateTime _previousRunTime = DateTime.Now;
+        private DateTime _nextRunTime;
 
         public CurrencyUpdate(int intervalInMinutes, CurrencyGenerator currencyGenerator)
         {
             _intervalInMinutes = intervalInMinutes;
             _currencyGenerator = currencyGenerator;
+            SetNextRunTime();
         }
 
-        public bool IsTimeToRun()
-        {
-            if (DateTime.Now > _previousRunTime.AddMinutes(_intervalInMinutes))
-            {
-                return true;
-            }
-            return false;
-        }
+        public bool IsTimeToRun() => DateTime.Now > _nextRunTime;
 
         public void Invoke()
         {
             _currencyGenerator.UpdateCurrency();
-            _previousRunTime = DateTime.Now;
+            SetNextRunTime();
+        }
+
+        private void SetNextRunTime()
+        {
+            _nextRunTime = DateTime.Now.AddMinutes(_intervalInMinutes);
         }
     }
 }

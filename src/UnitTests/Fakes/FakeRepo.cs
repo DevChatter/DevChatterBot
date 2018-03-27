@@ -34,5 +34,9 @@ namespace UnitTests.Fakes
         public void Create<T>(List<T> dataItemList) where T : DataEntity
         {
         }
+
+        public void Remove<T>(T dataItem) where T : DataEntity
+        {
+        }
     }
 }

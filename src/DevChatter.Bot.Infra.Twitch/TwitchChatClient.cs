@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.ChatSystems;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Model;
+using DevChatter.Bot.Infra.Twitch.Extensions;
 using TwitchLib;
 using TwitchLib.Events.Client;
 using TwitchLib.Models.Client;
@@ -10,13 +14,17 @@ namespace DevChatter.Bot.Infra.Twitch
 {
     public class TwitchChatClient : IChatClient
     {
+        private readonly TwitchClientSettings _settings;
+        private readonly TwitchAPI _twitchApi;
         private readonly TwitchClient _twitchClient;
         private TaskCompletionSource<bool> _connectionCompletionTask = new TaskCompletionSource<bool>();
         private TaskCompletionSource<bool> _disconnectionCompletionTask = new TaskCompletionSource<bool>();
         private bool _isReady = false;
 
-        public TwitchChatClient(TwitchClientSettings settings)
+        public TwitchChatClient(TwitchClientSettings settings, TwitchAPI twitchApi)
         {
+            _settings = settings;
+            _twitchApi = twitchApi;
             var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchOAuth);
             _twitchClient = new TwitchClient(credentials, settings.TwitchChannel);
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
@@ -87,6 +95,13 @@ namespace DevChatter.Bot.Infra.Twitch
             {
                 _twitchClient.SendMessage(message);
             }
+        }
+
+        public List<ChatUser> GetAllChatters()
+        {
+            var chatters = _twitchApi.Undocumented.GetChattersAsync(_settings.TwitchChannel).Result;
+            var chatUsers = chatters.Select(x => x.ToChatUser()).ToList();
+            return chatUsers;
         }
 
         public event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
