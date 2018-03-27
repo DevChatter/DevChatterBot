@@ -17,7 +17,7 @@ namespace DevChatter.Bot.Core.Commands
             RoleRequired = UserRole.Mod;
         }
 
-        public override void Process(IChatClient triggeringClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string quoteText = eventArgs?.Arguments?.ElementAtOrDefault(0);
             string quoteAuthor = eventArgs?.Arguments?.ElementAtOrDefault(1);
@@ -35,7 +35,7 @@ namespace DevChatter.Bot.Core.Commands
 
             QuoteEntity updatedEntity = _repository.Create(quoteEntity);
 
-            triggeringClient.SendMessage($"Created quote # {updatedEntity.QuoteId}.");
+            chatClient.SendMessage($"Created quote # {updatedEntity.QuoteId}.");
         }
     }
 }

@@ -25,11 +25,11 @@ namespace DevChatter.Bot.Core.Commands
         public string StaticResponse { get; protected set; }
         public UserRole RoleRequired { get; protected set; }
         public string CommandText { get; protected set;  }
-        public virtual void Process(IChatClient triggeringClient, CommandReceivedEventArgs eventArgs)
+        public virtual void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             IEnumerable<string> findTokens = StaticResponse.FindTokens();
             string textToSend = ReplaceTokens(StaticResponse, findTokens, eventArgs);
-            triggeringClient.SendMessage(textToSend);
+            chatClient.SendMessage(textToSend);
         }
 
         private string ReplaceTokens(string textToSend, IEnumerable<string> tokens, CommandReceivedEventArgs eventArgs)

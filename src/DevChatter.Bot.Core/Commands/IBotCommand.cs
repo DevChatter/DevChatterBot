@@ -8,7 +8,7 @@ namespace DevChatter.Bot.Core.Commands
     {
         UserRole RoleRequired { get; }
         string CommandText { get; }
-        void Process(IChatClient triggeringClient, CommandReceivedEventArgs eventArgs);
+        void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
 
     }
 }
