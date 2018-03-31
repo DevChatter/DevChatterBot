@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data.Model;
@@ -27,15 +28,28 @@ namespace DevChatter.Bot.Core.Events
                 IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.CommandText == e.CommandWord);
                 if (botCommand != null)
                 {
-                    if (CanUserRunCommand(e.ChatUser, botCommand))
-                    {
-                        botCommand.Process(chatClient, e);
-                    }
-                    else
-                    {
-                        chatClient.SendMessage($"Sorry, {e.ChatUser.DisplayName}! You don't have permission to use the !{e.CommandWord} command.");
-                    }
+                    AttemptToRunCommand(e, botCommand, chatClient);
                 }
+            }
+        }
+
+        private void AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand, IChatClient chatClient1)
+        {
+            try
+            {
+                if (CanUserRunCommand(e.ChatUser, botCommand))
+                {
+                    botCommand.Process(chatClient1, e);
+                }
+                else
+                {
+                    chatClient1.SendMessage(
+                        $"Sorry, {e.ChatUser.DisplayName}! You don't have permission to use the !{e.CommandWord} command.");
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
             }
         }
 
