@@ -53,7 +53,7 @@ namespace DevChatter.Bot.Core.Events
 
         public void UpdateCurrency()
         {
-            _chatUserCollection.UpdateEachChatter(x => x.Tokens += 10);
+            _chatUserCollection.UpdateEachChatter(x => x.Tokens += 1);
         }
 
         public void AddCurrencyTo(List<string> listOfNames, int tokensToAdd)

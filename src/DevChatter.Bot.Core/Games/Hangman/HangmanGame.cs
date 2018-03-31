@@ -12,14 +12,18 @@ namespace DevChatter.Bot.Core.Games.Hangman
     {
         private const int GUESS_WAIT_IN_SECONDS = 30;
         private const UserRole ROLE_REQUIRE_TO_START = UserRole.Subscriber;
+        private const int TOKENS_TO_WINNER = 25;
 
         private readonly List<string> _guessedLetters = new List<string>();
 
-        private const string PASSWORD = "password";
+        private readonly List<string> _wordList;
+
+        private string _password;
+        public string Password => _password ?? (_password = _wordList.OrderBy(x => Guid.NewGuid()).FirstOrDefault());
 
         public string MaskedPassword
         {
-            get { return new string(PASSWORD.Select(x => _guessedLetters.Contains(x.ToString()) ? x : '*').ToArray()); }
+            get { return new string(Password.Select(x => _guessedLetters.Contains(x.ToString()) ? x : '*').ToArray()); }
         }
 
         private readonly CurrencyGenerator _currencyGenerator;
@@ -27,10 +31,12 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         private bool _isRunningGame;
 
-        public HangmanGame(CurrencyGenerator currencyGenerator, AutomatedActionSystem automatedActionSystem)
+        public HangmanGame(CurrencyGenerator currencyGenerator, AutomatedActionSystem automatedActionSystem, 
+            List<string> wordList)
         {
             _currencyGenerator = currencyGenerator;
             _automatedActionSystem = automatedActionSystem;
+            _wordList = wordList;
         }
 
         public void GuessWord(IChatClient chatClient, string guess, ChatUser chatUser)
@@ -41,10 +47,11 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 return;
             }
 
-            if (guess.Equals(PASSWORD, StringComparison.InvariantCultureIgnoreCase))
+            if (guess.Equals(Password, StringComparison.InvariantCultureIgnoreCase))
             {
                 ResetGame();
-                chatClient.SendMessage($"congratulations, {chatUser.DisplayName} ! You won this pointless game! No points for you!");
+                chatClient.SendMessage($"Congratulations, {chatUser.DisplayName} ! You won the game!");
+                _currencyGenerator.AddCurrencyTo(new List<string>{chatUser.DisplayName}, TOKENS_TO_WINNER);
             }
             else
             {
@@ -56,6 +63,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         {
             _isRunningGame = false;
             _guessedLetters.Clear();
+            _password = null;
         }
 
         public void AskAboutLetter(IChatClient chatClient, string letterToAsk, ChatUser chatUser)
@@ -73,7 +81,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             }
 
             _guessedLetters.Add(letterToAsk);
-            if (PASSWORD.Contains(letterToAsk))
+            if (Password.Contains(letterToAsk))
             {
                 chatClient.SendMessage($"Yep, {letterToAsk} is in here. {MaskedPassword}");
             }
@@ -94,6 +102,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             if (!chatUser.CanUserRunCommand(ROLE_REQUIRE_TO_START))
             {
                 chatClient.SendMessage($"You must be at least a {ROLE_REQUIRE_TO_START} to start a game, {chatUser.DisplayName}");
+                return;
             }
 
             _isRunningGame = true;

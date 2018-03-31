@@ -34,7 +34,8 @@ namespace DevChatter.Bot.Startup
 
             var automatedActionSystem = new AutomatedActionSystem(new List<IIntervalAction> { currencyUpdate });
             var rockPaperScissorsGame = new RockPaperScissorsGame(currencyGenerator, automatedActionSystem);
-            var hangmanGame = new HangmanGame(currencyGenerator, automatedActionSystem);
+            var wordList = new List<string> { "apple", "banana", "orange", "mango", "watermellon", "grapes", "pizza", "pasta", "pepperoni", "cheese", "mushroom", "csharp", "javascript", "cplusplus", "nullreferenceexception", "parameter", "argument" };
+            var hangmanGame = new HangmanGame(currencyGenerator, automatedActionSystem, wordList);
 
             var simpleCommands = repository.List<SimpleCommand>();
 
