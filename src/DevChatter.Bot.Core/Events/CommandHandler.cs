@@ -25,7 +25,7 @@ namespace DevChatter.Bot.Core.Events
         {
             if (sender is IChatClient chatClient)
             {
-                IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.CommandText == e.CommandWord);
+                IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.CommandText.ToLowerInvariant() == e.CommandWord.ToLowerInvariant());
                 if (botCommand != null)
                 {
                     AttemptToRunCommand(e, botCommand, chatClient);
