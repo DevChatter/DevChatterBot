@@ -83,6 +83,11 @@ namespace DevChatter.Bot.Core.Games.Hangman
             _guessedLetters.Add(letterToAsk);
             if (Password.Contains(letterToAsk))
             {
+                if (Password == MaskedPassword)
+                {
+                    GuessWord(chatClient, MaskedPassword, chatUser);
+                    return;
+                }
                 chatClient.SendMessage($"Yep, {letterToAsk} is in here. {MaskedPassword}");
             }
             else
