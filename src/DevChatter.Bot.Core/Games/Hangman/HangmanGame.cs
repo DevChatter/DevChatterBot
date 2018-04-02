@@ -50,7 +50,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             if (guess.Equals(Password, StringComparison.InvariantCultureIgnoreCase))
             {
                 ResetGame();
-                chatClient.SendMessage($"Congratulations, {chatUser.DisplayName} ! You won the game!");
+                chatClient.SendMessage($"Congratulations, {chatUser.DisplayName} ! You won the game and will get {TOKENS_TO_WINNER} tokens!");
                 _currencyGenerator.AddCurrencyTo(new List<string>{chatUser.DisplayName}, TOKENS_TO_WINNER);
             }
             else
