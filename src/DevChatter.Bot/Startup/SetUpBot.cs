@@ -43,6 +43,7 @@ namespace DevChatter.Bot.Startup
             allCommands.AddRange(simpleCommands);
             allCommands.Add(new CommandsCommand(allCommands));
             allCommands.Add(new CoinsCommand(repository));
+            allCommands.Add(new BonusCommand(currencyGenerator));
             allCommands.Add(new StreamsCommand(repository));
             allCommands.Add(new ShoutOutCommand(twitchFollowerService));
             allCommands.Add(new QuoteCommand(repository));
