@@ -8,6 +8,8 @@ namespace DevChatter.Bot.Core.Games.Hangman
 {
     public class HangmanCommand : SimpleCommand
     {
+        private static readonly object SingleFileLock = new object();
+
         private readonly HangmanGame _hangmanGame;
 
         public HangmanCommand(HangmanGame hangmanGame)
@@ -21,20 +23,23 @@ namespace DevChatter.Bot.Core.Games.Hangman
         {
             string argumentOne = eventArgs?.Arguments?.FirstOrDefault();
             ChatUser chatUser = eventArgs?.ChatUser;
-            if (string.IsNullOrWhiteSpace(argumentOne))
+            lock (SingleFileLock)
             {
-                // attempting to start a game
-                _hangmanGame.AttemptToStartGame(chatClient, chatUser);
-            }
-            else if (argumentOne.Length == 1)
-            {
-                // asking about a letter
-                _hangmanGame.AskAboutLetter(chatClient, argumentOne.ToLowerInvariant(), chatUser);
-            }
-            else
-            {
-                // guessing the word
-                _hangmanGame.GuessWord(chatClient, argumentOne, chatUser);
+                if (string.IsNullOrWhiteSpace(argumentOne))
+                {
+                    // attempting to start a game
+                    _hangmanGame.AttemptToStartGame(chatClient, chatUser);
+                }
+                else if (argumentOne.Length == 1)
+                {
+                    // asking about a letter
+                    _hangmanGame.AskAboutLetter(chatClient, argumentOne.ToLowerInvariant(), chatUser);
+                }
+                else
+                {
+                    // guessing the word
+                    _hangmanGame.GuessWord(chatClient, argumentOne, chatUser);
+                }
             }
         }
     }

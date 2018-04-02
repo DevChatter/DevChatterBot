@@ -12,9 +12,10 @@ namespace DevChatter.Bot.Core.Games.Hangman
     {
         private const int GUESS_WAIT_IN_SECONDS = 30;
         private const UserRole ROLE_REQUIRE_TO_START = UserRole.Subscriber;
+        private const int PER_LETTER_TOKENS = 2;
         private const int TOKENS_TO_WINNER = 25;
 
-        private readonly List<string> _guessedLetters = new List<string>();
+        private readonly List<HangmanGuess> _guessedLetters = new List<HangmanGuess>();
 
         private readonly List<string> _wordList;
 
@@ -23,7 +24,17 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         public string MaskedPassword
         {
-            get { return new string(Password.Select(x => _guessedLetters.Contains(x.ToString()) ? x : '*').ToArray()); }
+            get
+            {
+                return new string(
+                    Password.Select(x =>
+                        {
+                            var guessedLetters = _guessedLetters.Select(g => g.Letter);
+                            return guessedLetters.Contains(x.ToString()) ? x : '*';
+                        })
+                        .ToArray()
+                    );
+            }
         }
 
         private readonly CurrencyGenerator _currencyGenerator;
@@ -49,14 +60,36 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
             if (guess.Equals(Password, StringComparison.InvariantCultureIgnoreCase))
             {
-                ResetGame();
-                chatClient.SendMessage($"Congratulations, {chatUser.DisplayName} ! You won the game!");
-                _currencyGenerator.AddCurrencyTo(new List<string>{chatUser.DisplayName}, TOKENS_TO_WINNER);
+                GameWon(chatClient, chatUser);
             }
             else
             {
                 chatClient.SendMessage($"That is not the word, {chatUser.DisplayName} ...");
             }
+        }
+
+        private void GameWon(IChatClient chatClient, ChatUser chatUser)
+        {
+            chatClient.SendMessage(
+                $"Congratulations, {chatUser.DisplayName} ! You won the game and will get {TOKENS_TO_WINNER} tokens!");
+            _currencyGenerator.AddCurrencyTo(new List<string> {chatUser.DisplayName}, TOKENS_TO_WINNER);
+            GivePerLetterTokens(chatClient);
+            ResetGame();
+        }
+
+        private void GivePerLetterTokens(IChatClient chatClient)
+        {
+            chatClient.SendMessage($"{PER_LETTER_TOKENS} tokens will be given for each correctly guessed letter.");
+            var tokensToGiveOut = CalculateLetterAwards(_guessedLetters, Password);
+            _currencyGenerator.AddCurrencyTo(tokensToGiveOut, PER_LETTER_TOKENS);
+        }
+
+        public static List<string> CalculateLetterAwards(List<HangmanGuess> guessedLetters, string password)
+        {
+            IEnumerable<HangmanGuess> hangmanGuesses = password.Select(letter => 
+                guessedLetters.SingleOrDefault(g => g.Letter == letter.ToString())).Where(x => x != null);
+
+            return hangmanGuesses.Select(x => x.Guesser.DisplayName).ToList();
         }
 
         private void ResetGame()
@@ -74,20 +107,35 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 return;
             }
 
-            if (_guessedLetters.Contains(letterToAsk))
+            if (_guessedLetters.Any(g => g.Letter == letterToAsk))
             {
                 chatClient.SendMessage($"{letterToAsk} has already been guessed, {chatUser.DisplayName}.");
                 return;
             }
 
-            _guessedLetters.Add(letterToAsk);
+            _guessedLetters.Add(new HangmanGuess(letterToAsk, chatUser));
             if (Password.Contains(letterToAsk))
             {
+                if (Password == MaskedPassword)
+                {
+                    GuessWord(chatClient, MaskedPassword, chatUser);
+                    return;
+                }
                 chatClient.SendMessage($"Yep, {letterToAsk} is in here. {MaskedPassword}");
             }
             else
             {
                 chatClient.SendMessage($"No, {letterToAsk} is not in the word.");
+                CheckForGameLost(chatClient);
+            }
+        }
+
+        private void CheckForGameLost(IChatClient chatClient)
+        {
+            if (_guessedLetters.Count(x => !Password.Contains(x.Letter)) > 5)
+            {
+                chatClient.SendMessage("That's too many failed guesses. You all lost. devchaFail ");
+                ResetGame();
             }
         }
 
@@ -119,5 +167,16 @@ namespace DevChatter.Bot.Core.Games.Hangman
         {
             chatClient.SendMessage($"There's no {nameof(HangmanGame)} running, {chatUser.DisplayName}.");
         }
+    }
+
+    public class HangmanGuess
+    {
+        public HangmanGuess(string letter, ChatUser guesser)
+        {
+            Letter = letter;
+            Guesser = guesser;
+        }
+        public string Letter { get; }
+        public ChatUser Guesser { get; }
     }
 }
