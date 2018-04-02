@@ -49,5 +49,22 @@ namespace UnitTests.Core.Games.Hangman.HangmanGameTests
             Assert.Equal(4, awards.Count(a => a == user1.DisplayName));
             Assert.Equal(4, awards.Count(a => a == user2.DisplayName));
         }
+
+        [Fact]
+        public void ReturnFewerGuesses_GivenGuessedEarly()
+        {
+            var user1 = new ChatUser {DisplayName = "1"};
+            var user2 = new ChatUser {DisplayName = "2"};
+            var guessedLetters = new List<HangmanGuess>
+            {
+                new HangmanGuess("p", user1),
+                new HangmanGuess("a", user2),
+                new HangmanGuess("s", user2),
+            };
+            List<string> awards = HangmanGame.CalculateLetterAwards(guessedLetters, "password");
+
+            Assert.Equal(1, awards.Count(a => a == user1.DisplayName));
+            Assert.Equal(3, awards.Count(a => a == user2.DisplayName));
+        }
     }
 }

@@ -86,8 +86,9 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         public static List<string> CalculateLetterAwards(List<HangmanGuess> guessedLetters, string password)
         {
-            var hangmanGuesses = password
-                .Select(x => new HangmanGuess(x.ToString(), guessedLetters.Single(g => g.Letter == x.ToString()).Guesser));
+            IEnumerable<HangmanGuess> hangmanGuesses = password.Select(letter => 
+                guessedLetters.SingleOrDefault(g => g.Letter == letter.ToString())).Where(x => x != null);
+
             return hangmanGuesses.Select(x => x.Guesser.DisplayName).ToList();
         }
 
@@ -125,6 +126,16 @@ namespace DevChatter.Bot.Core.Games.Hangman
             else
             {
                 chatClient.SendMessage($"No, {letterToAsk} is not in the word.");
+                CheckForGameLost(chatClient);
+            }
+        }
+
+        private void CheckForGameLost(IChatClient chatClient)
+        {
+            if (_guessedLetters.Count(x => !Password.Contains(x.Letter)) > 5)
+            {
+                chatClient.SendMessage("That's too many failed guesses. You all lost. devchaFail ");
+                ResetGame();
             }
         }
 
