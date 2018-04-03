@@ -29,7 +29,8 @@ namespace DevChatter.Bot.Startup
 
             IRepository repository = SetUpDatabase.SetUpRepository(connectionString);
 
-            var currencyGenerator = new CurrencyGenerator(chatClients, repository);
+            var chatUserCollection = new ChatUserCollection(repository);
+            var currencyGenerator = new CurrencyGenerator(chatClients, chatUserCollection);
             var currencyUpdate = new CurrencyUpdate(1, currencyGenerator);
 
             var automatedActionSystem = new AutomatedActionSystem(new List<IIntervalAction> { currencyUpdate });
@@ -41,6 +42,7 @@ namespace DevChatter.Bot.Startup
 
             List<IBotCommand> allCommands = new List<IBotCommand>();
             allCommands.AddRange(simpleCommands);
+            allCommands.Add(new GiveCommand(chatUserCollection));
             allCommands.Add(new HelpCommand(allCommands));
             allCommands.Add(new CommandsCommand(allCommands));
             allCommands.Add(new CoinsCommand(repository));

@@ -9,9 +9,9 @@ namespace DevChatter.Bot.Core.Events
     {
         private readonly ChatUserCollection _chatUserCollection;
 
-        public CurrencyGenerator(List<IChatClient> chatClients, IRepository repository)
+        public CurrencyGenerator(List<IChatClient> chatClients, ChatUserCollection chatUserCollection)
         {
-            _chatUserCollection = new ChatUserCollection(repository);
+            _chatUserCollection = chatUserCollection;
             foreach (IChatClient chatClient in chatClients)
             {
                 AddCurrentChatters(chatClient);
