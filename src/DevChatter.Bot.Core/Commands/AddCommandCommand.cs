@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -11,12 +12,15 @@ namespace DevChatter.Bot.Core.Commands
     public class AddCommandCommand : SimpleCommand
     {
         private readonly IRepository _repository;
+        private readonly List<IBotCommand> _allCommands;
 
-        public AddCommandCommand(IRepository repository)
+        public AddCommandCommand(IRepository repository, List<IBotCommand> allCommands)
         {
             _repository = repository;
+            _allCommands = allCommands;
             CommandText = "AddCommand";
             RoleRequired = UserRole.Mod;
+            HelpText = "To add a command to the bot use \"!AddCommand Command Text PermissionLevel\" Example: !AddCommand Twitter \"https://twitter.com/DevChatter_\" Everyone";
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
@@ -25,6 +29,13 @@ namespace DevChatter.Bot.Core.Commands
             {
                 // !AddCommand Twitter "https://twitter.com/DevChatter_" Everyone
                 SimpleCommand command = eventArgs.Arguments.ToSimpleCommand();
+
+                if (command == null)
+                {
+                    chatClient.SendMessage("Failed to create command.");
+                    chatClient.SendMessage(HelpText);
+                    return;
+                }
 
                 if (_repository.Single(CommandPolicy.ByCommandText(command.CommandText)) != null)
                 {
@@ -35,6 +46,7 @@ namespace DevChatter.Bot.Core.Commands
                 chatClient.SendMessage($"Adding a !{command.CommandText} command for {command.RoleRequired}. It will respond with {command.StaticResponse}.");
 
                 _repository.Create(command);
+                _allCommands.Add(command);
             }
             catch (Exception e)
             {

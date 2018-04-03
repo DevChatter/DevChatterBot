@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -10,10 +12,12 @@ namespace DevChatter.Bot.Core.Commands
     public class RemoveCommandCommand : SimpleCommand
     {
         private readonly IRepository _repository;
+        private readonly List<IBotCommand> _allCommands;
 
-        public RemoveCommandCommand(IRepository repository)
+        public RemoveCommandCommand(IRepository repository, List<IBotCommand> allCommands)
         {
             _repository = repository;
+            _allCommands = allCommands;
             CommandText = "RemoveCommand";
             RoleRequired = UserRole.Mod;
         }
@@ -35,6 +39,11 @@ namespace DevChatter.Bot.Core.Commands
                 chatClient.SendMessage($"Removing the !{commandText} command.");
 
                 _repository.Remove(command);
+                IBotCommand botCommand = _allCommands.SingleOrDefault(x => x.CommandText.Equals(commandText));
+                if (botCommand != null)
+                {
+                    _allCommands.Remove(botCommand);
+                }
             }
             catch (Exception e)
             {
