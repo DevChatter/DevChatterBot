@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Automation;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
 using Pose;
@@ -36,7 +38,8 @@ namespace UnitTests.Core.Automation.CurrencyUpdateTests
         {
             // TODO: Add the shim in here, because the test would pass regardless
             const int intervalInMinutes = 1;
-            var currencyUpdate = new CurrencyUpdate(intervalInMinutes, new CurrencyGenerator(new List<IChatClient>(), new FakeRepo()));
+            IRepository repository = new FakeRepo();
+            var currencyUpdate = new CurrencyUpdate(intervalInMinutes, new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(repository)));
 
             bool result = false;
             currencyUpdate.Invoke();

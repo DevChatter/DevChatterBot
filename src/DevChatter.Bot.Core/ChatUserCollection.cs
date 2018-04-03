@@ -78,13 +78,50 @@ namespace DevChatter.Bot.Core
             return chatUser.Tokens >= tokensToRemove;
         }
 
-        public ChatUser GetOrCreateChatUser(string displayName, ChatUser chatUser)
+        public ChatUser GetOrCreateChatUser(string displayName, ChatUser chatUser = null)
         {
             lock (_userCreationLock)
             {
                 ChatUser userFromDb = _repository.Single(ChatUserPolicy.ByDisplayName(displayName));
                 userFromDb = userFromDb ?? _repository.Create(chatUser);
                 return userFromDb;
+            }
+        }
+
+        public bool UserExists(string username)
+        {
+            if (_activeChatUsers.Any(x => x.DisplayName.Equals(username, StringComparison.InvariantCultureIgnoreCase))
+            || _repository.Single(ChatUserPolicy.ByDisplayName(username)) != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryGiveCoins(string coinGiver, string coinReceiver, int coinsToGive)
+        {
+            lock (_activeChatUsersLock)
+            {
+                if (!UserHasAtLeast(coinGiver, coinsToGive))
+                {
+                    return false;
+                }
+
+                if (!UserExists(coinReceiver))
+                {
+                    return false;
+                }
+
+                ChatUser giver = _activeChatUsers.SingleOrDefault(x => x.DisplayName == coinGiver)
+                                 ?? GetOrCreateChatUser(coinGiver);
+                ChatUser receiver = _activeChatUsers.SingleOrDefault(x => x.DisplayName == coinReceiver)
+                                    ?? GetOrCreateChatUser(coinReceiver);
+
+                giver.Tokens -= coinsToGive;
+                receiver.Tokens += coinsToGive;
+
+                return true;
             }
         }
 
