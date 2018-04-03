@@ -14,6 +14,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             _rockPaperScissorsGame = rockPaperScissorsGame;
             CommandText = "rps";
             RoleRequired = UserRole.Everyone;
+            HelpText = "Use \"!rps\" to join randomly. Use \"!rps rock\" to select rock. Bot will eventually choose randomly and award the winners.";
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

@@ -100,7 +100,7 @@ namespace DevChatter.Bot.Core
         {
             foreach (var chatClient in _chatClients)
             {
-                chatClient.SendMessage("Goodby for now! The bot has left the building");
+                chatClient.SendMessage("Goodbye for now! The bot has left the building...");
             }
 
             var disconnectedTasks = new List<Task>();

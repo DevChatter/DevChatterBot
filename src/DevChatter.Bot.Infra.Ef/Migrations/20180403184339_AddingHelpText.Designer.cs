@@ -12,9 +12,10 @@ using System;
 namespace DevChatter.Bot.Infra.Ef.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20180403184339_AddingHelpText")]
+    partial class AddingHelpText
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,9 +71,9 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
 
                     b.Property<string>("Text");
 
-                    b.HasIndex("QuoteId");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("QuoteId");
 
                     b.ToTable("QuoteEntities");
                 });

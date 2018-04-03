@@ -12,13 +12,14 @@ namespace DevChatter.Bot.Core.Commands
         private readonly CurrencyGenerator _currencyGenerator;
         public UserRole RoleRequired { get; }
         public string CommandText { get; }
+        public string HelpText { get; }
 
         public BonusCommand(CurrencyGenerator currencyGenerator)
         {
             _currencyGenerator = currencyGenerator;
             CommandText = "Bonus";
             RoleRequired = UserRole.Mod;
-
+            HelpText = "Use the bonus command to give free coins to someone example: !bonus sadukie 50";
         }
 
         public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
