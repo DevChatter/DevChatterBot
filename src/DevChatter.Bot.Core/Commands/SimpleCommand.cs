@@ -25,6 +25,8 @@ namespace DevChatter.Bot.Core.Commands
         public string StaticResponse { get; protected set; }
         public UserRole RoleRequired { get; protected set; }
         public string CommandText { get; protected set;  }
+        public string HelpText { get; protected set; } = $"No help text for this command yet.";
+
         public virtual void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             IEnumerable<string> findTokens = StaticResponse.FindTokens();
