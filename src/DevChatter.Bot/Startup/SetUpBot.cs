@@ -51,8 +51,8 @@ namespace DevChatter.Bot.Startup
             allCommands.Add(new ShoutOutCommand(twitchFollowerService));
             allCommands.Add(new QuoteCommand(repository));
             allCommands.Add(new AddQuoteCommand(repository));
-            allCommands.Add(new AddCommandCommand(repository));
-            allCommands.Add(new RemoveCommandCommand(repository));
+            allCommands.Add(new AddCommandCommand(repository, allCommands));
+            allCommands.Add(new RemoveCommandCommand(repository, allCommands));
             allCommands.Add(new HangmanCommand(hangmanGame));
             allCommands.Add(new RockPaperScissorsCommand(rockPaperScissorsGame));
 
