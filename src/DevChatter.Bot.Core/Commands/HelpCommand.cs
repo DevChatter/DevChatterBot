@@ -38,6 +38,11 @@ namespace DevChatter.Bot.Core.Commands
                 return;
             }
 
+            if (argOne == "↑, ↑, ↓, ↓, ←, →, ←, →, B, A, start, select")
+            {
+                chatClient.SendMessage("Please be sure to drink your ovaltine.");
+            }
+
             IBotCommand requestedCommand = _allCommands.SingleOrDefault(x =>
                 x.CommandText.Equals(argOne, StringComparison.InvariantCultureIgnoreCase));
 

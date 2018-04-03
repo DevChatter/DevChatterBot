@@ -15,6 +15,7 @@ namespace DevChatter.Bot.Core.Commands
             _repository = repository;
             CommandText = "quoteadd";
             RoleRequired = UserRole.Mod;
+            HelpText = "Example usage !quoteadd \"this is the quote\" @Brendoneus";
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

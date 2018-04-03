@@ -17,6 +17,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             _hangmanGame = hangmanGame;
             CommandText = "Hangman";
             RoleRequired = UserRole.Everyone;
+            HelpText = "Use \"!hangman\" to start a game. Use \"!hangman x\" to guess a letter. Use \"!hangman word\" to guess a word.";
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
