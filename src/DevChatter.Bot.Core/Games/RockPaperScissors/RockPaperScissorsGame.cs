@@ -80,7 +80,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
                 if (winnersList.Count() > 1)
                     chatClient.SendMessage($"The winners are {winners}!");
                 else
-                    chatClient.SendMessage($"The winners is {winners}!");
+                    chatClient.SendMessage($"The winner is {winners}!");
             }
             else
             {
