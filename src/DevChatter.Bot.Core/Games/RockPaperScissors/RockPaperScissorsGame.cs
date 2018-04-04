@@ -77,7 +77,10 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             if (winnersList.Any())
             {
                 string winners = string.Join(",", winnersList);
-                chatClient.SendMessage($"The winners are {winners}!");
+                if (winnersList.Count() > 1)
+                    chatClient.SendMessage($"The winners are {winners}!");
+                else
+                    chatClient.SendMessage($"The winners is {winners}!");
             }
             else
             {
