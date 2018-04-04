@@ -9,10 +9,14 @@ namespace DevChatter.Bot.Core.Events
 {
     public class CommandHandler
     {
+        private readonly CommandHandlerSettings _settings;
         private readonly List<IBotCommand> _commandMessages;
 
-        public CommandHandler(List<IChatClient> chatClients, List<IBotCommand> commandMessages)
+        private DateTimeOffset _lastCommandHandledTime = DateTimeOffset.MinValue;
+
+        public CommandHandler(CommandHandlerSettings settings, List<IChatClient> chatClients, List<IBotCommand> commandMessages)
         {
+            _settings = settings;
             _commandMessages = commandMessages;
 
             foreach (var chatClient in chatClients)
@@ -25,10 +29,18 @@ namespace DevChatter.Bot.Core.Events
         {
             if (sender is IChatClient chatClient)
             {
+                var elapsedSinceLastCommand = DateTimeOffset.Now - _lastCommandHandledTime;
+                if (elapsedSinceLastCommand.TotalSeconds < _settings.GlobalCommandCooldown)
+                {
+                    chatClient.SendMessage("Whoa! Slow down there cowboy!");
+                    return;
+                }
+
                 IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.CommandText.ToLowerInvariant() == e.CommandWord.ToLowerInvariant());
                 if (botCommand != null)
                 {
                     AttemptToRunCommand(e, botCommand, chatClient);
+                    _lastCommandHandledTime = DateTimeOffset.Now;
                 }
             }
         }

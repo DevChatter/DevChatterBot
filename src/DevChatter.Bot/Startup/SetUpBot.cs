@@ -16,7 +16,7 @@ namespace DevChatter.Bot.Startup
 {
     public static class SetUpBot
     {
-        public static BotMain NewBot(TwitchClientSettings twitchSettings, string connectionString)
+        public static BotMain NewBot(TwitchClientSettings twitchSettings, CommandHandlerSettings commandHandlerSettings, string connectionString)
         {
             var twitchApi = new TwitchAPI(twitchSettings.TwitchClientId);
             var twitchChatClient = new TwitchChatClient(twitchSettings, twitchApi);
@@ -56,7 +56,7 @@ namespace DevChatter.Bot.Startup
             allCommands.Add(new HangmanCommand(hangmanGame));
             allCommands.Add(new RockPaperScissorsCommand(rockPaperScissorsGame));
 
-            var commandHandler = new CommandHandler(chatClients, allCommands);
+            var commandHandler = new CommandHandler(commandHandlerSettings, chatClients, allCommands);
             var subscriberHandler = new SubscriberHandler(chatClients);
 
             var twitchSystem = new FollowableSystem(new[] { twitchChatClient }, twitchFollowerService);
