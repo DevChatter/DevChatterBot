@@ -5,6 +5,7 @@ using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Games.Hangman;
+using DevChatter.Bot.Core.Games.Heist;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Infra.Twitch;
@@ -72,11 +73,9 @@ namespace DevChatter.Bot.Startup
                 .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
                 .AsImplementedInterfaces();
 
-            var simpleCommands = repository.List<SimpleCommand>();
-            foreach (var command in simpleCommands)
-            {
-                builder.Register(ctx => command).AsImplementedInterfaces().SingleInstance();
-            }
+
+            builder.RegisterType<HeistCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<HeistGame>().AsSelf().SingleInstance();
 
             builder.Register(ctx => new CommandList(ctx.Resolve<IList<IBotCommand>>()))
                 .AsSelf()
