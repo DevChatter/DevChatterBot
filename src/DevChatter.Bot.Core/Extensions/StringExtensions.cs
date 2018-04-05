@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -17,6 +18,14 @@ namespace DevChatter.Bot.Core.Extensions
             MatchCollection matches = TokenFindingRegex.Matches(src);
             IEnumerable<Match> matchesEnumerable = matches.OfType<Match>();
             return matchesEnumerable.Select(m => m.Value);
+        }
+
+        /// <summary>
+        /// Case Insensitive Equality Comparison using StringComparison.InvariantCultureIgnoreCase
+        /// </summary>
+        public static bool EqualsIns(this string a, string b)
+        {
+            return a.Equals(b, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

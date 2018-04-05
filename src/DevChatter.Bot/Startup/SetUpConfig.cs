@@ -1,4 +1,5 @@
 ﻿using System;
+using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Infra.Twitch;
 using Microsoft.Extensions.Configuration;
 
@@ -6,7 +7,7 @@ namespace DevChatter.Bot.Startup
 {
     public static class SetUpConfig
     {
-        public static (string, TwitchClientSettings) InitializeConfiguration()
+        public static (string, TwitchClientSettings, CommandHandlerSettings) InitializeConfiguration()
         {
             Console.WriteLine("Initializing configuration...");
 
@@ -17,7 +18,7 @@ namespace DevChatter.Bot.Startup
 
             IConfigurationRoot configuration = builder.Build();
 
-            return (configuration.GetConnectionString("DevChatterBotDb"), configuration.Get<TwitchClientSettings>());
+            return (configuration.GetConnectionString("DevChatterBotDb"), configuration.Get<TwitchClientSettings>(), configuration.Get<CommandHandlerSettings>());
         }
     }
 }

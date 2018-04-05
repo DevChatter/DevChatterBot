@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
-using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Events
 {
     public class CommandHandler
     {
+        private readonly CommandUsageTracker _usageTracker;
         private readonly List<IBotCommand> _commandMessages;
 
-        public CommandHandler(List<IChatClient> chatClients, List<IBotCommand> commandMessages)
+        public CommandHandler(CommandUsageTracker usageTracker, List<IChatClient> chatClients,
+            List<IBotCommand> commandMessages)
         {
+            _usageTracker = usageTracker;
             _commandMessages = commandMessages;
 
             foreach (var chatClient in chatClients)
@@ -25,10 +28,27 @@ namespace DevChatter.Bot.Core.Events
         {
             if (sender is IChatClient chatClient)
             {
-                IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.CommandText.ToLowerInvariant() == e.CommandWord.ToLowerInvariant());
+                string userDisplayName = e.ChatUser.DisplayName;
+
+                _usageTracker.PurgeExpiredUserCommandCooldowns(DateTimeOffset.Now);
+
+                var previousUsage = _usageTracker.GetByUserDisplayName(userDisplayName);
+                if (previousUsage != null)
+                {
+                    if (!previousUsage.WasUserWarned)
+                    {
+                        chatClient.SendMessage($"Whoa {userDisplayName}! Slow down there cowboy!");
+                        previousUsage.WasUserWarned = true;
+                    }
+
+                    return;
+                }
+
+                IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.CommandText.EqualsIns(e.CommandWord));
                 if (botCommand != null)
                 {
                     AttemptToRunCommand(e, botCommand, chatClient);
+                    _usageTracker.RecordUsage(new CommandUsage(userDisplayName, DateTimeOffset.Now, false));
                 }
             }
         }
@@ -37,7 +57,7 @@ namespace DevChatter.Bot.Core.Events
         {
             try
             {
-                if (CanUserRunCommand(e.ChatUser, botCommand))
+                if (e.ChatUser.CanUserRunCommand(botCommand))
                 {
                     botCommand.Process(chatClient1, e);
                 }
@@ -53,9 +73,5 @@ namespace DevChatter.Bot.Core.Events
             }
         }
 
-        private bool CanUserRunCommand(ChatUser user, IBotCommand botCommand)
-        {
-            return user.Role <= botCommand.RoleRequired;
-        }
     }
 }
