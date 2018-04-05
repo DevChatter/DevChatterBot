@@ -9,15 +9,13 @@ namespace DevChatter.Bot.Core.Events
 {
     public class CommandHandler
     {
-        private readonly CommandHandlerSettings _settings;
+        private readonly CommandUsageTracker _usageTracker;
         private readonly List<IBotCommand> _commandMessages;
 
-        private readonly List<CommandUsage> _userCommandUsages = new List<CommandUsage>();
-
-        public CommandHandler(CommandHandlerSettings settings, List<IChatClient> chatClients,
+        public CommandHandler(CommandUsageTracker usageTracker, List<IChatClient> chatClients,
             List<IBotCommand> commandMessages)
         {
-            _settings = settings;
+            _usageTracker = usageTracker;
             _commandMessages = commandMessages;
 
             foreach (var chatClient in chatClients)
@@ -30,11 +28,11 @@ namespace DevChatter.Bot.Core.Events
         {
             if (sender is IChatClient chatClient)
             {
-                var currentTime = DateTimeOffset.Now;
-                PurgeExpiredUserCommandCooldowns(currentTime);
-
                 string userDisplayName = e.ChatUser.DisplayName;
-                var previousUsage = _userCommandUsages.SingleOrDefault(x => x.DisplayName.EqualsIns(userDisplayName));
+
+                _usageTracker.PurgeExpiredUserCommandCooldowns(DateTimeOffset.Now);
+
+                var previousUsage = _usageTracker.GetByUserDisplayName(userDisplayName);
                 if (previousUsage != null)
                 {
                     if (!previousUsage.WasUserWarned)
@@ -50,7 +48,7 @@ namespace DevChatter.Bot.Core.Events
                 if (botCommand != null)
                 {
                     AttemptToRunCommand(e, botCommand, chatClient);
-                    _userCommandUsages.Add(new CommandUsage(userDisplayName, currentTime, false));
+                    _usageTracker.RecordUsage(new CommandUsage(userDisplayName, DateTimeOffset.Now, false));
                 }
             }
         }
@@ -75,38 +73,5 @@ namespace DevChatter.Bot.Core.Events
             }
         }
 
-        private void PurgeExpiredUserCommandCooldowns(DateTimeOffset currentTime)
-        {
-            var expiredCooldowns = new List<CommandUsage>();
-
-            foreach (var cooldownPair in _userCommandUsages)
-            {
-                var elapsedTime = currentTime - cooldownPair.TimeInvoked;
-                if (elapsedTime.TotalSeconds >= _settings.GlobalCommandCooldown)
-                {
-                    expiredCooldowns.Add(cooldownPair);
-                }
-            }
-
-            foreach (var user in expiredCooldowns)
-            {
-                _userCommandUsages.Remove(user);
-            }
-        }
     }
-
-    public class CommandUsage
-    {
-        public CommandUsage(string displayName, DateTimeOffset timeInvoked, bool wasUserWarned)
-        {
-            DisplayName = displayName;
-            TimeInvoked = timeInvoked;
-            WasUserWarned = wasUserWarned;
-        }
-
-        public string DisplayName { get; set; }
-        public DateTimeOffset TimeInvoked { get; set; }
-        public bool WasUserWarned { get; set; }
-    }
-
 }

@@ -56,7 +56,8 @@ namespace DevChatter.Bot.Startup
             allCommands.Add(new HangmanCommand(hangmanGame));
             allCommands.Add(new RockPaperScissorsCommand(rockPaperScissorsGame));
 
-            var commandHandler = new CommandHandler(commandHandlerSettings, chatClients, allCommands);
+            var commandUsageTracker = new CommandUsageTracker(commandHandlerSettings);
+            var commandHandler = new CommandHandler(commandUsageTracker, chatClients, allCommands);
             var subscriberHandler = new SubscriberHandler(chatClients);
 
             var twitchSystem = new FollowableSystem(new[] { twitchChatClient }, twitchFollowerService);
