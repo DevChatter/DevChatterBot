@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
-using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Events
@@ -12,9 +12,10 @@ namespace DevChatter.Bot.Core.Events
         private readonly CommandHandlerSettings _settings;
         private readonly List<IBotCommand> _commandMessages;
 
-        private readonly Dictionary<string, (DateTimeOffset timeInvoked, bool wasUserWarned)> _usersLastCommandHandledTime = new Dictionary<string, (DateTimeOffset timeInvoked, bool wasUserWarned)>();
+        private readonly List<CommandUsage> _userCommandUsages = new List<CommandUsage>();
 
-        public CommandHandler(CommandHandlerSettings settings, List<IChatClient> chatClients, List<IBotCommand> commandMessages)
+        public CommandHandler(CommandHandlerSettings settings, List<IChatClient> chatClients,
+            List<IBotCommand> commandMessages)
         {
             _settings = settings;
             _commandMessages = commandMessages;
@@ -32,22 +33,24 @@ namespace DevChatter.Bot.Core.Events
                 var currentTime = DateTimeOffset.Now;
                 PurgeExpiredUserCommandCooldowns(currentTime);
 
-                if (_usersLastCommandHandledTime.TryGetValue(e.ChatUser.DisplayName, out var lastHandledWarningTuple))
+                string userDisplayName = e.ChatUser.DisplayName;
+                var previousUsage = _userCommandUsages.SingleOrDefault(x => x.DisplayName.EqualsIns(userDisplayName));
+                if (previousUsage != null)
                 {
-                    if (!lastHandledWarningTuple.wasUserWarned)
+                    if (!previousUsage.WasUserWarned)
                     {
-                        chatClient.SendMessage("Whoa! Slow down there cowboy!");
-                        _usersLastCommandHandledTime[e.ChatUser.DisplayName] = (lastHandledWarningTuple.timeInvoked, true);
+                        chatClient.SendMessage($"Whoa {userDisplayName}! Slow down there cowboy!");
+                        previousUsage.WasUserWarned = true;
                     }
 
                     return;
                 }
 
-                IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.CommandText.ToLowerInvariant() == e.CommandWord.ToLowerInvariant());
+                IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.CommandText.EqualsIns(e.CommandWord));
                 if (botCommand != null)
                 {
                     AttemptToRunCommand(e, botCommand, chatClient);
-                    _usersLastCommandHandledTime.Add(e.ChatUser.DisplayName, (currentTime, false));
+                    _userCommandUsages.Add(new CommandUsage(userDisplayName, currentTime, false));
                 }
             }
         }
@@ -56,7 +59,7 @@ namespace DevChatter.Bot.Core.Events
         {
             try
             {
-                if (CanUserRunCommand(e.ChatUser, botCommand))
+                if (e.ChatUser.CanUserRunCommand(botCommand))
                 {
                     botCommand.Process(chatClient1, e);
                 }
@@ -72,26 +75,38 @@ namespace DevChatter.Bot.Core.Events
             }
         }
 
-        private bool CanUserRunCommand(ChatUser user, IBotCommand botCommand)
-        {
-            return user.Role <= botCommand.RoleRequired;
-        }
-
         private void PurgeExpiredUserCommandCooldowns(DateTimeOffset currentTime)
         {
-            var expiredCooldowns = new List<string>();
+            var expiredCooldowns = new List<CommandUsage>();
 
-            foreach (var cooldownPair in _usersLastCommandHandledTime)
+            foreach (var cooldownPair in _userCommandUsages)
             {
-                var elapsedTime = currentTime - cooldownPair.Value.timeInvoked;
-                if(elapsedTime.TotalSeconds >= _settings.GlobalCommandCooldown)
-                    expiredCooldowns.Add(cooldownPair.Key);
+                var elapsedTime = currentTime - cooldownPair.TimeInvoked;
+                if (elapsedTime.TotalSeconds >= _settings.GlobalCommandCooldown)
+                {
+                    expiredCooldowns.Add(cooldownPair);
+                }
             }
 
             foreach (var user in expiredCooldowns)
             {
-                _usersLastCommandHandledTime.Remove(user);
+                _userCommandUsages.Remove(user);
             }
         }
     }
+
+    public class CommandUsage
+    {
+        public CommandUsage(string displayName, DateTimeOffset timeInvoked, bool wasUserWarned)
+        {
+            DisplayName = displayName;
+            TimeInvoked = timeInvoked;
+            WasUserWarned = wasUserWarned;
+        }
+
+        public string DisplayName { get; set; }
+        public DateTimeOffset TimeInvoked { get; set; }
+        public bool WasUserWarned { get; set; }
+    }
+
 }
