@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Core.Events
         private readonly CommandHandlerSettings _settings;
         private readonly List<IBotCommand> _commandMessages;
 
-        private DateTimeOffset _lastCommandHandledTime = DateTimeOffset.MinValue;
+        private readonly Dictionary<string, (DateTimeOffset timeInvoked, bool wasUserWarned)> _usersLastCommandHandledTime = new Dictionary<string, (DateTimeOffset timeInvoked, bool wasUserWarned)>();
 
         public CommandHandler(CommandHandlerSettings settings, List<IChatClient> chatClients, List<IBotCommand> commandMessages)
         {
@@ -29,10 +29,17 @@ namespace DevChatter.Bot.Core.Events
         {
             if (sender is IChatClient chatClient)
             {
-                var elapsedSinceLastCommand = DateTimeOffset.Now - _lastCommandHandledTime;
-                if (elapsedSinceLastCommand.TotalSeconds < _settings.GlobalCommandCooldown)
+                var currentTime = DateTimeOffset.Now;
+                PurgeExpiredUserCommandCooldowns(currentTime);
+
+                if (_usersLastCommandHandledTime.TryGetValue(e.ChatUser.DisplayName, out var lastHandledWarningTuple))
                 {
-                    chatClient.SendMessage("Whoa! Slow down there cowboy!");
+                    if (!lastHandledWarningTuple.wasUserWarned)
+                    {
+                        chatClient.SendMessage("Whoa! Slow down there cowboy!");
+                        _usersLastCommandHandledTime[e.ChatUser.DisplayName] = (lastHandledWarningTuple.timeInvoked, true);
+                    }
+
                     return;
                 }
 
@@ -40,7 +47,7 @@ namespace DevChatter.Bot.Core.Events
                 if (botCommand != null)
                 {
                     AttemptToRunCommand(e, botCommand, chatClient);
-                    _lastCommandHandledTime = DateTimeOffset.Now;
+                    _usersLastCommandHandledTime.Add(e.ChatUser.DisplayName, (currentTime, false));
                 }
             }
         }
@@ -68,6 +75,23 @@ namespace DevChatter.Bot.Core.Events
         private bool CanUserRunCommand(ChatUser user, IBotCommand botCommand)
         {
             return user.Role <= botCommand.RoleRequired;
+        }
+
+        private void PurgeExpiredUserCommandCooldowns(DateTimeOffset currentTime)
+        {
+            var expiredCooldowns = new List<string>();
+
+            foreach (var cooldownPair in _usersLastCommandHandledTime)
+            {
+                var elapsedTime = currentTime - cooldownPair.Value.timeInvoked;
+                if(elapsedTime.TotalSeconds >= _settings.GlobalCommandCooldown)
+                    expiredCooldowns.Add(cooldownPair.Key);
+            }
+
+            foreach (var user in expiredCooldowns)
+            {
+                _usersLastCommandHandledTime.Remove(user);
+            }
         }
     }
 }
