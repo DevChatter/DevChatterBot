@@ -13,6 +13,7 @@ namespace DevChatter.Bot.Core.Commands
         public UserRole RoleRequired { get; }
         public string CommandText { get; }
         public string HelpText { get; }
+        public bool IsEnabled { get; }
 
         public BonusCommand(CurrencyGenerator currencyGenerator)
         {
@@ -20,6 +21,7 @@ namespace DevChatter.Bot.Core.Commands
             CommandText = "Bonus";
             RoleRequired = UserRole.Mod;
             HelpText = "Use the bonus command to give free coins to someone example: !bonus sadukie 50";
+            IsEnabled = true;
         }
 
         public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

@@ -24,7 +24,7 @@ namespace DevChatter.Bot.Core.Events
             }
         }
 
-        private void CommandReceivedHandler(object sender, CommandReceivedEventArgs e)
+        public void CommandReceivedHandler(object sender, CommandReceivedEventArgs e)
         {
             if (sender is IChatClient chatClient)
             {
@@ -44,7 +44,9 @@ namespace DevChatter.Bot.Core.Events
                     return;
                 }
 
-                IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.CommandText.EqualsIns(e.CommandWord));
+                IBotCommand botCommand = _commandMessages
+                    .FirstOrDefault(c => c.CommandText.EqualsIns(e.CommandWord)
+                                         && c.IsEnabled);
                 if (botCommand != null)
                 {
                     AttemptToRunCommand(e, botCommand, chatClient);

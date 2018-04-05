@@ -25,7 +25,11 @@ namespace DevChatter.Bot.Core.Extensions
         /// </summary>
         public static bool EqualsIns(this string a, string b)
         {
-            return a.Equals(b, StringComparison.InvariantCultureIgnoreCase);
+            if (a == null && b == null)
+            {
+                return true;
+            }
+            return a?.Equals(b, StringComparison.InvariantCultureIgnoreCase) ?? false;
         }
     }
 }

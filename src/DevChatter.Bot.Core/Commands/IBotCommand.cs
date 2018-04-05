@@ -10,6 +10,6 @@ namespace DevChatter.Bot.Core.Commands
         string CommandText { get; }
         string HelpText { get; }
         void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
-
+        bool IsEnabled { get; }
     }
 }
