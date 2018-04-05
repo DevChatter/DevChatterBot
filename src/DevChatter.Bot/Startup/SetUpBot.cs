@@ -63,6 +63,7 @@ namespace DevChatter.Bot.Startup
             builder.RegisterType<ShoutOutCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<QuoteCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<AliasCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<ScheduleCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.Register(ctx => new HelpCommand(ctx.Resolve<IRepository>()))
                 .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
