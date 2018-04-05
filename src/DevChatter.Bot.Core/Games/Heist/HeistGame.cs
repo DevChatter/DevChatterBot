@@ -78,7 +78,9 @@ namespace DevChatter.Bot.Core.Games.Heist
 
         private List<HeistRoles> GetAvailableRoles()
         {
-            return Enum.GetValues(typeof(HeistRoles)).Cast<HeistRoles>().Except(_heistMembers.Keys).ToList();
+            var allHeistRoles = Enum.GetValues(typeof(HeistRoles)).Cast<HeistRoles>();
+            var claimedRoles = _heistMembers.Keys;
+            return allHeistRoles.Except(claimedRoles).ToList();
         }
     }
 }
