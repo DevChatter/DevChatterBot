@@ -67,14 +67,25 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         public void AdjustTokens(RockPaperScissors botChoice)
         {
             List<string> winnersList = GetWinnerList(botChoice);
-            _currencyGenerator.AddCurrencyTo(winnersList, TOKENS_FOR_WINNING);
+            if (winnersList.Any())
+                _currencyGenerator.AddCurrencyTo(winnersList, TOKENS_FOR_WINNING);
         }
 
         public void AnnounceWinners(IChatClient chatClient, RockPaperScissors botChoice)
         {
             List<string> winnersList = GetWinnerList(botChoice);
-            string winners = string.Join(",", winnersList);
-            chatClient.SendMessage($"The winners are {winners}!");
+            if (winnersList.Any())
+            {
+                string winners = string.Join(",", winnersList);
+                if (winnersList.Count() > 1)
+                    chatClient.SendMessage($"The winners are {winners}!");
+                else
+                    chatClient.SendMessage($"The winner is {winners}!");
+            }
+            else
+            {
+                chatClient.SendMessage("Nobody won this time!");
+            }
         }
 
         public List<string> GetWinnerList(RockPaperScissors botChoice)
