@@ -13,6 +13,7 @@ namespace DevChatter.Bot.Core.Commands
         public UserRole RoleRequired { get; }
         public string CommandText { get; }
         public string HelpText { get; }
+        public bool IsEnabled { get; }
 
         public HelpCommand(List<IBotCommand> allCommands)
         {
@@ -20,6 +21,7 @@ namespace DevChatter.Bot.Core.Commands
             CommandText = "help";
             RoleRequired = UserRole.Everyone;
             HelpText = "I think you figured this out already...";
+            IsEnabled = true;
         }
 
         public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

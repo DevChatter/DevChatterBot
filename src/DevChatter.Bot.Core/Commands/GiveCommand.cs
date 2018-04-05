@@ -12,6 +12,7 @@ namespace DevChatter.Bot.Core.Commands
         public UserRole RoleRequired { get; }
         public string CommandText { get; }
         public string HelpText { get; }
+        public bool IsEnabled { get; }
 
         public GiveCommand(ChatUserCollection chatUserCollection)
         {
@@ -19,6 +20,7 @@ namespace DevChatter.Bot.Core.Commands
             RoleRequired = UserRole.Everyone;
             CommandText = "give";
             HelpText = "Give coins to someone. Example !give LNGgrinds 10";
+            IsEnabled = true;
         }
 
         public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
