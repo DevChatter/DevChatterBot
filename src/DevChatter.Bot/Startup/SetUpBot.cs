@@ -26,6 +26,7 @@ namespace DevChatter.Bot.Startup
                 twitchChatClient,
             };
             var twitchFollowerService = new TwitchFollowerService(twitchApi, twitchSettings);
+            var twitchPlatform = new StreamingPlatform(twitchChatClient, twitchFollowerService, new TwitchStreamingInfoService(twitchApi, twitchSettings));
 
             IRepository repository = SetUpDatabase.SetUpRepository(connectionString);
 
@@ -42,6 +43,7 @@ namespace DevChatter.Bot.Startup
 
             List<IBotCommand> allCommands = new List<IBotCommand>();
             allCommands.AddRange(simpleCommands);
+            allCommands.Add(new UptimeCommand(twitchPlatform));
             allCommands.Add(new GiveCommand(chatUserCollection));
             allCommands.Add(new HelpCommand(allCommands));
             allCommands.Add(new CommandsCommand(allCommands));
