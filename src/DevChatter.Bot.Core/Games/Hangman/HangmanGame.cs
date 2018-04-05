@@ -134,7 +134,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         {
             if (_guessedLetters.Count(x => !Password.Contains(x.Letter)) > 5)
             {
-                chatClient.SendMessage("That's too many failed guesses. You all lost. devchaFail ");
+                chatClient.SendMessage($"That's too many failed guesses. You all lost. devchaFail. The word was: {Password}");
                 ResetGame();
             }
         }
