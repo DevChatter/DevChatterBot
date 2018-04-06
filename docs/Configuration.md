@@ -12,7 +12,7 @@ This is the current contents of the appsettings.json file.
   "TwitchClientId": "secret"
 }
 ```
-If you're not worried about your twitch credentials, skip using the secret manager and just replace the word "secret" with each credential that is required. Keep the parentheses, of course. 
+If you're not worried about your twitch credentials, skip using the secret manager and just replace the word "secret" with each credential that is required. Keep the quotation marks, of course. 
 
 You don't need to be an active twitch streamer to run the bot: 
 
