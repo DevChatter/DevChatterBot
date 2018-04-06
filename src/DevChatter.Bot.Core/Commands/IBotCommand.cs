@@ -9,7 +9,7 @@ namespace DevChatter.Bot.Core.Commands
         UserRole RoleRequired { get; }
         string CommandText { get; }
         string HelpText { get; }
-        bool IsEnabled { get; }
+        bool ShouldExecute(string commandText);
         void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
     }
 }

@@ -28,6 +28,8 @@ namespace DevChatter.Bot.Core.Commands
         public string HelpText { get; protected set; } = $"No help text for this command yet.";
         public bool IsEnabled { get; } = true;
 
+        public bool ShouldExecute(string commandText) => IsEnabled && CommandText.EqualsIns(commandText);
+
         public virtual void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             IEnumerable<string> findTokens = StaticResponse.FindTokens();

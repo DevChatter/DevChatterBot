@@ -1,5 +1,6 @@
 ﻿using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
@@ -10,6 +11,8 @@ namespace DevChatter.Bot.Core.Commands
         public string CommandText { get; protected set; }
         public string HelpText { get; protected set; }
         public bool IsEnabled { get; protected set; }
+
+        public bool ShouldExecute(string commandText) => IsEnabled && CommandText.EqualsIns(commandText);
 
         public abstract void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
     }

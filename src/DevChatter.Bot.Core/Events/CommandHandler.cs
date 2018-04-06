@@ -44,9 +44,7 @@ namespace DevChatter.Bot.Core.Events
                     return;
                 }
 
-                IBotCommand botCommand = _commandMessages
-                    .FirstOrDefault(c => c.CommandText.EqualsIns(e.CommandWord)
-                                         && c.IsEnabled);
+                IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
                 if (botCommand != null)
                 {
                     AttemptToRunCommand(e, botCommand, chatClient);

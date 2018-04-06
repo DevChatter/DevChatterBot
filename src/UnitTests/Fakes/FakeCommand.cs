@@ -5,24 +5,20 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace UnitTests.Fakes
 {
-    public class FakeCommand : IBotCommand
+    public class FakeCommand : BaseCommand
     {
         public FakeCommand(string commandText, bool isEnabled)
         {
             CommandText = commandText;
             IsEnabled = isEnabled;
+            RoleRequired = UserRole.Everyone;
         }
 
-        public UserRole RoleRequired { get; } = UserRole.Everyone;
-        public string CommandText { get; }
-        public string HelpText { get; }
-        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             ProcessWasCalled = true;
         }
 
         public bool ProcessWasCalled { get; set; } = false;
-
-        public bool IsEnabled { get; }
     }
 }
