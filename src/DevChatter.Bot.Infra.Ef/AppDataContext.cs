@@ -19,6 +19,11 @@ namespace DevChatter.Bot.Infra.Ef
             : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<QuoteEntity>()
+                .HasIndex(b => b.QuoteId);
+        }
     }
     public class AppDataContextFactory : IDesignTimeDbContextFactory<AppDataContext>
     {
