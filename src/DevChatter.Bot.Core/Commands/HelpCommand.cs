@@ -49,7 +49,7 @@ namespace DevChatter.Bot.Core.Commands
 
         private void ShowAvailableCommands(IChatClient chatClient, ChatUser chatUser)
         {
-            var commands = _allCommands.Where(chatUser.CanUserRunCommand).Select(x => $"!{x.CommandWords.First()}");
+            var commands = _allCommands.Where(chatUser.CanUserRunCommand).Select(x => $"!{x.PrimaryCommandText}");
             string stringOfCommands = string.Join(", ", commands);
 
             string message = $"These are the commands that {chatUser.DisplayName} is allowed to run: ({stringOfCommands})";

@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Commands
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            var listOfCommands = _allCommands.Where(x => eventArgs.ChatUser.CanUserRunCommand(x)).Select(x => $"!{x.CommandWords.First()}").ToList();
+            var listOfCommands = _allCommands.Where(x => eventArgs.ChatUser.CanUserRunCommand(x)).Select(x => $"!{x.PrimaryCommandText}").ToList();
 
             string stringOfCommands = string.Join(", ", listOfCommands);
             chatClient.SendMessage($"These are the commands that {eventArgs.ChatUser.DisplayName} is allowed to run: ({stringOfCommands})");

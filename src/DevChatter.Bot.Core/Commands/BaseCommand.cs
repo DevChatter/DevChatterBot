@@ -11,6 +11,7 @@ namespace DevChatter.Bot.Core.Commands
     {
         private readonly bool _isEnabled;
         public UserRole RoleRequired { get; }
+        public string PrimaryCommandText => CommandWords.First();
         public IList<string> CommandWords { get; }
         public string HelpText { get; protected set; }
 
