@@ -8,10 +8,8 @@ namespace UnitTests.Fakes
     public class FakeCommand : BaseCommand
     {
         public FakeCommand(string commandText, bool isEnabled)
+            : base(commandText, UserRole.Everyone)
         {
-            CommandText = commandText;
-            IsEnabled = isEnabled;
-            RoleRequired = UserRole.Everyone;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

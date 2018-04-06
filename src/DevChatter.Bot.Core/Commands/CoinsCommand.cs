@@ -14,10 +14,9 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IRepository _repository;
 
         public CoinsCommand(IRepository repository)
+            : base("coins", UserRole.Everyone)
         {
             _repository = repository;
-            CommandText = "coins";
-            RoleRequired = UserRole.Everyone;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

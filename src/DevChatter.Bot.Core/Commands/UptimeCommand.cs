@@ -11,12 +11,10 @@ namespace DevChatter.Bot.Core.Commands
         private readonly StreamingPlatform _streamingPlatform;
 
         public UptimeCommand(StreamingPlatform streamingPlatform)
+            : base("Uptime", UserRole.Everyone)
         {
             _streamingPlatform = streamingPlatform;
-            RoleRequired = UserRole.Everyone;
-            CommandText = "Uptime";
             HelpText = "Just type \"!uptime\" and it will tell you how long we've been streaming.";
-            IsEnabled = true;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

@@ -15,11 +15,10 @@ namespace DevChatter.Bot.Core.Commands
         private readonly List<IBotCommand> _allCommands;
 
         public RemoveCommandCommand(IRepository repository, List<IBotCommand> allCommands)
+            : base("RemoveCommand", UserRole.Mod)
         {
             _repository = repository;
             _allCommands = allCommands;
-            CommandText = "RemoveCommand";
-            RoleRequired = UserRole.Mod;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

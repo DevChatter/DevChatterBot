@@ -11,12 +11,10 @@ namespace DevChatter.Bot.Core.Commands
         private readonly ChatUserCollection _chatUserCollection;
 
         public GiveCommand(ChatUserCollection chatUserCollection)
+            : base("Give", UserRole.Everyone)
         {
             _chatUserCollection = chatUserCollection;
-            RoleRequired = UserRole.Everyone;
-            CommandText = "give";
             HelpText = "Give coins to someone. Example !give LNGgrinds 10";
-            IsEnabled = true;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

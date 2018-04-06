@@ -14,10 +14,9 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IRepository _repository;
 
         public QuoteCommand(IRepository repository)
+            : base("quote", UserRole.Everyone)
         {
             _repository = repository;
-            CommandText = "quote";
-            RoleRequired = UserRole.Everyone;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

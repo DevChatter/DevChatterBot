@@ -11,10 +11,9 @@ namespace DevChatter.Bot.Core.Commands
         private readonly List<IBotCommand> _allCommands;
 
         public CommandsCommand(List<IBotCommand> allCommands)
+            : base("commands", UserRole.Everyone)
         {
             _allCommands = allCommands;
-            CommandText = "commands";
-            RoleRequired = UserRole.Everyone;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

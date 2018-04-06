@@ -14,10 +14,9 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IFollowerService _followerService;
 
         public ShoutOutCommand(IFollowerService followerService)
+            : base("so", UserRole.Mod)
         {
-            CommandText = "so";
             _followerService = followerService;
-            RoleRequired = UserRole.Mod;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

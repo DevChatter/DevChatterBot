@@ -15,11 +15,10 @@ namespace DevChatter.Bot.Core.Commands
         private readonly List<IBotCommand> _allCommands;
 
         public AddCommandCommand(IRepository repository, List<IBotCommand> allCommands)
+            : base("AddCommand", UserRole.Mod)
         {
             _repository = repository;
             _allCommands = allCommands;
-            CommandText = "AddCommand";
-            RoleRequired = UserRole.Mod;
             HelpText = "To add a command to the bot use \"!AddCommand Command Text PermissionLevel\" Example: !AddCommand Twitter \"https://twitter.com/DevChatter_\" Everyone";
         }
 

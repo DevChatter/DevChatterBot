@@ -12,12 +12,10 @@ namespace DevChatter.Bot.Core.Commands
         private readonly List<IBotCommand> _allCommands;
 
         public HelpCommand(List<IBotCommand> allCommands)
+            : base("Help", UserRole.Everyone)
         {
             _allCommands = allCommands;
-            CommandText = "help";
-            RoleRequired = UserRole.Everyone;
             HelpText = "I think you figured this out already...";
-            IsEnabled = true;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
