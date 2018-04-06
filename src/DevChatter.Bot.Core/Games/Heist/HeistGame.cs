@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Core.Games.Heist
         private const UserRole ROLE_REQUIRED_TO_START = UserRole.Subscriber;
         private const int HEIST_DELAY_IN_SECONDS = 90;
 
-        private Dictionary<HeistRoles, string> _heistMembers = new Dictionary<HeistRoles, string>();
+        private readonly Dictionary<HeistRoles, string> _heistMembers = new Dictionary<HeistRoles, string>();
 
         public HeistGame(AutomatedActionSystem automatedActionSystem)
         {
@@ -48,6 +48,7 @@ namespace DevChatter.Bot.Core.Games.Heist
         public void StartHeist(IChatClient chatClient)
         {
             chatClient.SendMessage("Everyone got arrested, because they talked about the heist publicly on a Twitch chat... And then they waited 2 minutes, giving the cops time to catch them. Fools!");
+            _heistMembers.Clear();
             IsGameRunning = false;
         }
 
