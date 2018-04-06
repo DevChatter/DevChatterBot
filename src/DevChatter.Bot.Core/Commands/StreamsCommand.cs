@@ -13,7 +13,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IRepository _repository;
 
         public StreamsCommand(IRepository repository)
-            : base("Streams", UserRole.Everyone)
+            : base(UserRole.Everyone, "Streams")
         {
             _repository = repository;
         }

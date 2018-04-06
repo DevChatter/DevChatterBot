@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IRepository _repository;
 
         public CoinsCommand(IRepository repository)
-            : base("coins", UserRole.Everyone)
+            : base(UserRole.Everyone, "coins", "tokens", "points")
         {
             _repository = repository;
         }

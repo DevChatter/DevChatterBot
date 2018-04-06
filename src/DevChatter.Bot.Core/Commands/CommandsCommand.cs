@@ -11,14 +11,14 @@ namespace DevChatter.Bot.Core.Commands
         private readonly List<IBotCommand> _allCommands;
 
         public CommandsCommand(List<IBotCommand> allCommands)
-            : base("commands", UserRole.Everyone)
+            : base(UserRole.Everyone, "commands")
         {
             _allCommands = allCommands;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            var listOfCommands = _allCommands.Where(x => eventArgs.ChatUser.CanUserRunCommand(x)).Select(x => $"!{x.CommandText}").ToList();
+            var listOfCommands = _allCommands.Where(x => eventArgs.ChatUser.CanUserRunCommand(x)).Select(x => $"!{x.CommandWords.First()}").ToList();
 
             string stringOfCommands = string.Join(", ", listOfCommands);
             chatClient.SendMessage($"These are the commands that {eventArgs.ChatUser.DisplayName} is allowed to run: ({stringOfCommands})");

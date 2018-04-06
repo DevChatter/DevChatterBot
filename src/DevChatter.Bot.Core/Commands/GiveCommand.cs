@@ -11,7 +11,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly ChatUserCollection _chatUserCollection;
 
         public GiveCommand(ChatUserCollection chatUserCollection)
-            : base("Give", UserRole.Everyone)
+            : base(UserRole.Everyone, "Give")
         {
             _chatUserCollection = chatUserCollection;
             HelpText = "Give coins to someone. Example !give LNGgrinds 10";

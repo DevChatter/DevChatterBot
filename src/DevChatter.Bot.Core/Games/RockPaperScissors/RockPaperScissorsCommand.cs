@@ -10,7 +10,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
     {
         private readonly RockPaperScissorsGame _rockPaperScissorsGame;
         public RockPaperScissorsCommand(RockPaperScissorsGame rockPaperScissorsGame)
-            : base("rps", UserRole.Everyone)
+            : base(UserRole.Everyone, "rps", "rockpaperscissors")
         {
             _rockPaperScissorsGame = rockPaperScissorsGame;
             HelpText = "Use \"!rps\" to join randomly. Use \"!rps rock\" to select rock. Bot will eventually choose randomly and award the winners.";

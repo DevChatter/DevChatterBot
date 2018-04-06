@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly List<IBotCommand> _allCommands;
 
         public HelpCommand(List<IBotCommand> allCommands)
-            : base("Help", UserRole.Everyone)
+            : base(UserRole.Everyone, "Help")
         {
             _allCommands = allCommands;
             HelpText = "I think you figured this out already...";
@@ -39,8 +39,7 @@ namespace DevChatter.Bot.Core.Commands
                 chatClient.SendMessage("Please be sure to drink your ovaltine.");
             }
 
-            IBotCommand requestedCommand = _allCommands.SingleOrDefault(x =>
-                x.CommandText.Equals(argOne, StringComparison.InvariantCultureIgnoreCase));
+            IBotCommand requestedCommand = _allCommands.SingleOrDefault(x => x.ShouldExecute(argOne));
 
             if (requestedCommand != null)
             {
@@ -50,10 +49,11 @@ namespace DevChatter.Bot.Core.Commands
 
         private void ShowAvailableCommands(IChatClient chatClient, ChatUser chatUser)
         {
-            var listOfCommands = _allCommands.Where(chatUser.CanUserRunCommand).Select(x => $"!{x.CommandText}").ToList();
+            var commands = _allCommands.Where(chatUser.CanUserRunCommand).Select(x => $"!{x.CommandWords.First()}");
+            string stringOfCommands = string.Join(", ", commands);
 
-            string stringOfCommands = string.Join(", ", listOfCommands);
-            chatClient.SendMessage($"These are the commands that {chatUser.DisplayName} is allowed to run: ({stringOfCommands})");
+            string message = $"These are the commands that {chatUser.DisplayName} is allowed to run: ({stringOfCommands})";
+            chatClient.SendMessage(message);
 
         }
     }

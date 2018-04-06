@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly List<IBotCommand> _allCommands;
 
         public RemoveCommandCommand(IRepository repository, List<IBotCommand> allCommands)
-            : base("RemoveCommand", UserRole.Mod)
+            : base(UserRole.Mod, "RemoveCommand", "CommandRemove")
         {
             _repository = repository;
             _allCommands = allCommands;
@@ -33,12 +33,13 @@ namespace DevChatter.Bot.Core.Commands
                 if (command == null)
                 {
                     chatClient.SendMessage($"I didn't find a !{commandText} command.");
+                    return;
                 }
 
                 chatClient.SendMessage($"Removing the !{commandText} command.");
 
                 _repository.Remove(command);
-                IBotCommand botCommand = _allCommands.SingleOrDefault(x => x.CommandText.Equals(commandText));
+                IBotCommand botCommand = _allCommands.SingleOrDefault(x => x.ShouldExecute(commandText));
                 if (botCommand != null)
                 {
                     _allCommands.Remove(botCommand);

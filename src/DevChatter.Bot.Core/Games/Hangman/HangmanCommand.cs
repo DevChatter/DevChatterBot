@@ -13,7 +13,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         private readonly HangmanGame _hangmanGame;
 
         public HangmanCommand(HangmanGame hangmanGame)
-            : base("Hangman", UserRole.Everyone)
+            : base(UserRole.Everyone, "Hangman", "hm")
         {
             _hangmanGame = hangmanGame;
             HelpText = "Use \"!hangman\" to start a game. Use \"!hangman x\" to guess a letter. Use \"!hangman word\" to guess a word.";

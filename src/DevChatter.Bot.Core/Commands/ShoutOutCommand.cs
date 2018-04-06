@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IFollowerService _followerService;
 
         public ShoutOutCommand(IFollowerService followerService)
-            : base("so", UserRole.Mod)
+            : base(UserRole.Mod, "so")
         {
             _followerService = followerService;
         }

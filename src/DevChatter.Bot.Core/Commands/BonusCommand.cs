@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly CurrencyGenerator _currencyGenerator;
 
         public BonusCommand(CurrencyGenerator currencyGenerator)
-            : base("Bonus", UserRole.Mod)
+            : base(UserRole.Mod, "Bonus")
         {
             _currencyGenerator = currencyGenerator;
             HelpText = "Use the bonus command to give free coins to someone example: !bonus sadukie 50";

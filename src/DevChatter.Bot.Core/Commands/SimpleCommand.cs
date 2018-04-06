@@ -19,16 +19,16 @@ namespace DevChatter.Bot.Core.Commands
         {
             StaticResponse = staticResponse;
             RoleRequired = roleRequired;
-            CommandText = commandText;
+            CommandWords = new List<string> {commandText};
         }
 
         public string StaticResponse { get; protected set; }
         public UserRole RoleRequired { get; protected set; }
-        public string CommandText { get; protected set;  }
+        public IList<string> CommandWords { get; } = new List<string>();
+        public string CommandText => CommandWords.First();
         public string HelpText { get; protected set; } = $"No help text for this command yet.";
-        public bool IsEnabled { get; } = true;
 
-        public bool ShouldExecute(string commandText) => IsEnabled && CommandText.EqualsIns(commandText);
+        public bool ShouldExecute(string commandText) => CommandWords.Any(x => x.EqualsIns(commandText));
 
         public virtual void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
