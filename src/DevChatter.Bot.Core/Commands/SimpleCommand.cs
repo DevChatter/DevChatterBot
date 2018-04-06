@@ -24,9 +24,11 @@ namespace DevChatter.Bot.Core.Commands
 
         public string StaticResponse { get; protected set; }
         public UserRole RoleRequired { get; protected set; }
-        public string CommandText { get; protected set;  }
+        public string PrimaryCommandText => CommandText;
+        public string CommandText { get; protected set; }
         public string HelpText { get; protected set; } = $"No help text for this command yet.";
-        public bool IsEnabled { get; } = true;
+
+        public bool ShouldExecute(string commandText) => CommandText.EqualsIns(commandText);
 
         public virtual void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {

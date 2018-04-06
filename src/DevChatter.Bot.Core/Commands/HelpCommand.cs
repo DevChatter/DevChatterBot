@@ -7,24 +7,18 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class HelpCommand : IBotCommand
+    public class HelpCommand : BaseCommand
     {
         private readonly List<IBotCommand> _allCommands;
-        public UserRole RoleRequired { get; }
-        public string CommandText { get; }
-        public string HelpText { get; }
-        public bool IsEnabled { get; }
 
         public HelpCommand(List<IBotCommand> allCommands)
+            : base(UserRole.Everyone, "Help")
         {
             _allCommands = allCommands;
-            CommandText = "help";
-            RoleRequired = UserRole.Everyone;
             HelpText = "I think you figured this out already...";
-            IsEnabled = true;
         }
 
-        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             if (eventArgs.Arguments.Count == 0)
             {
@@ -45,8 +39,7 @@ namespace DevChatter.Bot.Core.Commands
                 chatClient.SendMessage("Please be sure to drink your ovaltine.");
             }
 
-            IBotCommand requestedCommand = _allCommands.SingleOrDefault(x =>
-                x.CommandText.Equals(argOne, StringComparison.InvariantCultureIgnoreCase));
+            IBotCommand requestedCommand = _allCommands.SingleOrDefault(x => x.ShouldExecute(argOne));
 
             if (requestedCommand != null)
             {
@@ -56,10 +49,11 @@ namespace DevChatter.Bot.Core.Commands
 
         private void ShowAvailableCommands(IChatClient chatClient, ChatUser chatUser)
         {
-            var listOfCommands = _allCommands.Where(chatUser.CanUserRunCommand).Select(x => $"!{x.CommandText}").ToList();
+            var commands = _allCommands.Where(chatUser.CanUserRunCommand).Select(x => $"!{x.PrimaryCommandText}");
+            string stringOfCommands = string.Join(", ", commands);
 
-            string stringOfCommands = string.Join(", ", listOfCommands);
-            chatClient.SendMessage($"These are the commands that {chatUser.DisplayName} is allowed to run: ({stringOfCommands})");
+            string message = $"These are the commands that {chatUser.DisplayName} is allowed to run: ({stringOfCommands})";
+            chatClient.SendMessage(message);
 
         }
     }

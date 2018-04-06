@@ -9,15 +9,14 @@ using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class ShoutOutCommand : SimpleCommand
+    public class ShoutOutCommand : BaseCommand
     {
         private readonly IFollowerService _followerService;
 
         public ShoutOutCommand(IFollowerService followerService)
+            : base(UserRole.Mod, "so")
         {
-            CommandText = "so";
             _followerService = followerService;
-            RoleRequired = UserRole.Mod;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

@@ -6,24 +6,18 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class GiveCommand : IBotCommand
+    public class GiveCommand : BaseCommand
     {
         private readonly ChatUserCollection _chatUserCollection;
-        public UserRole RoleRequired { get; }
-        public string CommandText { get; }
-        public string HelpText { get; }
-        public bool IsEnabled { get; }
 
         public GiveCommand(ChatUserCollection chatUserCollection)
+            : base(UserRole.Everyone, "Give")
         {
             _chatUserCollection = chatUserCollection;
-            RoleRequired = UserRole.Everyone;
-            CommandText = "give";
             HelpText = "Give coins to someone. Example !give LNGgrinds 10";
-            IsEnabled = true;
         }
 
-        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string coinGiver = eventArgs?.ChatUser?.DisplayName;
             string coinReceiver = eventArgs?.Arguments?.ElementAtOrDefault(0).NoAt();

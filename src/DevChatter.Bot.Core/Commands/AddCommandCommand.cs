@@ -9,17 +9,16 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class AddCommandCommand : SimpleCommand
+    public class AddCommandCommand : BaseCommand
     {
         private readonly IRepository _repository;
         private readonly List<IBotCommand> _allCommands;
 
         public AddCommandCommand(IRepository repository, List<IBotCommand> allCommands)
+            : base(UserRole.Mod, "AddCommand", "CommandAdd")
         {
             _repository = repository;
             _allCommands = allCommands;
-            CommandText = "AddCommand";
-            RoleRequired = UserRole.Mod;
             HelpText = "To add a command to the bot use \"!AddCommand Command Text PermissionLevel\" Example: !AddCommand Twitter \"https://twitter.com/DevChatter_\" Everyone";
         }
 

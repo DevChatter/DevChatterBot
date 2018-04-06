@@ -6,14 +6,13 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.RockPaperScissors
 {
-    public class RockPaperScissorsCommand : SimpleCommand
+    public class RockPaperScissorsCommand : BaseCommand
     {
         private readonly RockPaperScissorsGame _rockPaperScissorsGame;
         public RockPaperScissorsCommand(RockPaperScissorsGame rockPaperScissorsGame)
+            : base(UserRole.Everyone, "rps", "rockpaperscissors")
         {
             _rockPaperScissorsGame = rockPaperScissorsGame;
-            CommandText = "rps";
-            RoleRequired = UserRole.Everyone;
             HelpText = "Use \"!rps\" to join randomly. Use \"!rps rock\" to select rock. Bot will eventually choose randomly and award the winners.";
         }
 

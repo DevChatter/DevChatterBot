@@ -7,16 +7,15 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class StreamsCommand : SimpleCommand
+    public class StreamsCommand : BaseCommand
     {
         private const int MAX_STREAMS = 5;
         private readonly IRepository _repository;
 
         public StreamsCommand(IRepository repository)
+            : base(UserRole.Everyone, "Streams")
         {
             _repository = repository;
-            CommandText = "Streams";
-            RoleRequired = UserRole.Everyone;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

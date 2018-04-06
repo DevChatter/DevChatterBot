@@ -9,15 +9,14 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class CoinsCommand : SimpleCommand
+    public class CoinsCommand : BaseCommand
     {
         private readonly IRepository _repository;
 
         public CoinsCommand(IRepository repository)
+            : base(UserRole.Everyone, "coins", "tokens", "points")
         {
             _repository = repository;
-            CommandText = "coins";
-            RoleRequired = UserRole.Everyone;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

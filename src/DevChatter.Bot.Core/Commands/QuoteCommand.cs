@@ -9,15 +9,14 @@ using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class QuoteCommand : SimpleCommand
+    public class QuoteCommand : BaseCommand
     {
         private readonly IRepository _repository;
 
         public QuoteCommand(IRepository repository)
+            : base(UserRole.Everyone, "quote")
         {
             _repository = repository;
-            CommandText = "quote";
-            RoleRequired = UserRole.Everyone;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

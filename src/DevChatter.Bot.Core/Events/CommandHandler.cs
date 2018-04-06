@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
-using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Events
@@ -44,9 +43,7 @@ namespace DevChatter.Bot.Core.Events
                     return;
                 }
 
-                IBotCommand botCommand = _commandMessages
-                    .FirstOrDefault(c => c.CommandText.EqualsIns(e.CommandWord)
-                                         && c.IsEnabled);
+                IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
                 if (botCommand != null)
                 {
                     AttemptToRunCommand(e, botCommand, chatClient);

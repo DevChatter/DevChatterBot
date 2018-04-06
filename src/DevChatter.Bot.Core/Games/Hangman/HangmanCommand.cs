@@ -6,17 +6,16 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Hangman
 {
-    public class HangmanCommand : SimpleCommand
+    public class HangmanCommand : BaseCommand
     {
         private static readonly object SingleFileLock = new object();
 
         private readonly HangmanGame _hangmanGame;
 
         public HangmanCommand(HangmanGame hangmanGame)
+            : base(UserRole.Everyone, "Hangman", "hm")
         {
             _hangmanGame = hangmanGame;
-            CommandText = "Hangman";
-            RoleRequired = UserRole.Everyone;
             HelpText = "Use \"!hangman\" to start a game. Use \"!hangman x\" to guess a letter. Use \"!hangman word\" to guess a word.";
         }
 
