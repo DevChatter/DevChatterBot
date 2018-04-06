@@ -12,7 +12,8 @@ namespace DevChatter.Bot.Core.Games.Heist
     {
         private readonly HeistGame _heistGame;
 
-        public HeistCommand(IRepository repository, HeistGame heistGame) : base(repository, UserRole.Everyone)
+        public HeistCommand(IRepository repository, HeistGame heistGame)
+            : base(repository, UserRole.Everyone)
         {
             _heistGame = heistGame;
             HelpText = "But it's so intuitive... Sorry, help is coming soon...";
