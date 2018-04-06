@@ -7,7 +7,7 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class StreamsCommand : SimpleCommand
+    public class StreamsCommand : BaseCommand
     {
         private const int MAX_STREAMS = 5;
         private readonly IRepository _repository;

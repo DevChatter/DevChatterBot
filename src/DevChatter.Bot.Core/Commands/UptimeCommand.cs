@@ -6,13 +6,9 @@ using DevChatter.Bot.Core.Systems.Streaming;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class UptimeCommand : IBotCommand
+    public class UptimeCommand : BaseCommand
     {
         private readonly StreamingPlatform _streamingPlatform;
-        public UserRole RoleRequired { get; }
-        public string CommandText { get; }
-        public string HelpText { get; }
-        public bool IsEnabled { get; }
 
         public UptimeCommand(StreamingPlatform streamingPlatform)
         {
@@ -23,7 +19,7 @@ namespace DevChatter.Bot.Core.Commands
             IsEnabled = true;
         }
 
-        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             TimeSpan? timeSpan = _streamingPlatform.GetUptimeAsync().Result;
             if (timeSpan.HasValue)

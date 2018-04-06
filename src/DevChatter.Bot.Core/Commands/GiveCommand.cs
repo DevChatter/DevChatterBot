@@ -6,13 +6,9 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class GiveCommand : IBotCommand
+    public class GiveCommand : BaseCommand
     {
         private readonly ChatUserCollection _chatUserCollection;
-        public UserRole RoleRequired { get; }
-        public string CommandText { get; }
-        public string HelpText { get; }
-        public bool IsEnabled { get; }
 
         public GiveCommand(ChatUserCollection chatUserCollection)
         {
@@ -23,7 +19,7 @@ namespace DevChatter.Bot.Core.Commands
             IsEnabled = true;
         }
 
-        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string coinGiver = eventArgs?.ChatUser?.DisplayName;
             string coinReceiver = eventArgs?.Arguments?.ElementAtOrDefault(0).NoAt();

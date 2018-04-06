@@ -7,13 +7,9 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class HelpCommand : IBotCommand
+    public class HelpCommand : BaseCommand
     {
         private readonly List<IBotCommand> _allCommands;
-        public UserRole RoleRequired { get; }
-        public string CommandText { get; }
-        public string HelpText { get; }
-        public bool IsEnabled { get; }
 
         public HelpCommand(List<IBotCommand> allCommands)
         {
@@ -24,7 +20,7 @@ namespace DevChatter.Bot.Core.Commands
             IsEnabled = true;
         }
 
-        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             if (eventArgs.Arguments.Count == 0)
             {

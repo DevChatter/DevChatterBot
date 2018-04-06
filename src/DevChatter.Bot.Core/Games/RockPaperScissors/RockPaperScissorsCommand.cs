@@ -6,7 +6,7 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.RockPaperScissors
 {
-    public class RockPaperScissorsCommand : SimpleCommand
+    public class RockPaperScissorsCommand : BaseCommand
     {
         private readonly RockPaperScissorsGame _rockPaperScissorsGame;
         public RockPaperScissorsCommand(RockPaperScissorsGame rockPaperScissorsGame)

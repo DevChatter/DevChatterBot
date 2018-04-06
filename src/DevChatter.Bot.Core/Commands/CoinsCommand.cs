@@ -9,7 +9,7 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class CoinsCommand : SimpleCommand
+    public class CoinsCommand : BaseCommand
     {
         private readonly IRepository _repository;
 

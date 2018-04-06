@@ -6,7 +6,7 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class CommandsCommand : SimpleCommand
+    public class CommandsCommand : BaseCommand
     {
         private readonly List<IBotCommand> _allCommands;
 

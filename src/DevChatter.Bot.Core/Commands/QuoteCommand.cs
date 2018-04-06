@@ -9,7 +9,7 @@ using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class QuoteCommand : SimpleCommand
+    public class QuoteCommand : BaseCommand
     {
         private readonly IRepository _repository;
 

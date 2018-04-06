@@ -7,7 +7,7 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class AddQuoteCommand : SimpleCommand
+    public class AddQuoteCommand : BaseCommand
     {
         private readonly IRepository _repository;
         public AddQuoteCommand(IRepository repository)

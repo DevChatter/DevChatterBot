@@ -9,7 +9,7 @@ using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class ShoutOutCommand : SimpleCommand
+    public class ShoutOutCommand : BaseCommand
     {
         private readonly IFollowerService _followerService;
 

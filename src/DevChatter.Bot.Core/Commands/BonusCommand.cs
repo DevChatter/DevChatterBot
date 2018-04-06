@@ -7,13 +7,9 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class BonusCommand : IBotCommand
+    public class BonusCommand : BaseCommand
     {
         private readonly CurrencyGenerator _currencyGenerator;
-        public UserRole RoleRequired { get; }
-        public string CommandText { get; }
-        public string HelpText { get; }
-        public bool IsEnabled { get; }
 
         public BonusCommand(CurrencyGenerator currencyGenerator)
         {
@@ -24,7 +20,7 @@ namespace DevChatter.Bot.Core.Commands
             IsEnabled = true;
         }
 
-        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string bonusReceiver = (eventArgs?.Arguments?.ElementAtOrDefault(0) ?? "").NoAt();
             string bonusGiver = eventArgs?.ChatUser?.DisplayName;

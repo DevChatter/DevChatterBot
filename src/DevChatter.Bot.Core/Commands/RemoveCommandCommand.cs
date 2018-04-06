@@ -9,7 +9,7 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class RemoveCommandCommand : SimpleCommand
+    public class RemoveCommandCommand : BaseCommand
     {
         private readonly IRepository _repository;
         private readonly List<IBotCommand> _allCommands;

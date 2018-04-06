@@ -6,7 +6,7 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Hangman
 {
-    public class HangmanCommand : SimpleCommand
+    public class HangmanCommand : BaseCommand
     {
         private static readonly object SingleFileLock = new object();
 
