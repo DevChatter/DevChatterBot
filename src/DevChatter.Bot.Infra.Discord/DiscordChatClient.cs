@@ -31,23 +31,35 @@ namespace DevChatter.Bot.Infra.Discord
             _discordClient.MessageReceived += DiscordClientMessageReceived;
             _discordClient.GuildAvailable += DiscordClientGuildAvailable;
             _discordClient.GuildUnavailable += DiscordClientGuildUnavailable;
+            _discordClient.ChannelCreated += DiscordClientChannelCreated;
+            _discordClient.ChannelDestroyed += DiscordClientChannelDestroyed;
             _discordClient.UserJoined += DiscordClientUserJoined;
             _discordClient.UserLeft += DiscordClientUserLeft;
         }
 
-        private async Task DiscordClientGuildAvailable(SocketGuild arg)
+        private async Task DiscordClientGuildAvailable(SocketGuild guild)
         {
-            _Guild = arg;
+            _Guild = guild;
             _GuildChannelIds.AddRange(_Guild.Channels.Select(channel => channel.Id));
             _TextChannel = _Guild.Channels.FirstOrDefault(channel => channel.Id == _settings.DiscordTextChannelId) as ISocketMessageChannel;
             _isReady = true;
         }
 
-        private async Task DiscordClientGuildUnavailable(SocketGuild arg)
+        private async Task DiscordClientGuildUnavailable(SocketGuild guild)
         {
             _Guild = null;
             _GuildChannelIds.Clear();
             _isReady = false;
+        }
+
+        private async Task DiscordClientChannelCreated(SocketChannel newChannel)
+        {
+            _GuildChannelIds.Add(newChannel.Id);
+        }
+
+        private async Task DiscordClientChannelDestroyed(SocketChannel oldChannel)
+        {
+            _GuildChannelIds.Remove(oldChannel.Id);
         }
 
         private async Task DiscordClientMessageReceived(SocketMessage arg)
