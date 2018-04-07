@@ -48,8 +48,17 @@ namespace DevChatter.Bot.Core.Games.Heist
 
         public void StartHeist(IChatClient chatClient)
         {
+            // TODO Pick Random Heist from collection
+            var heistMission = new HeistMission("failing heist", new []{HeistRoles.Hacker}, 0);
+
+            heistMission.AttemptHeist(chatClient, _heistMembers);
+
+            ResetHeist();
+        }
+
+        private void ResetHeist()
+        {
             _heistMembers.Clear();
-            chatClient.SendMessage("Everyone got arrested, because they talked about the heist publicly on a Twitch chat... And then they waited 2 minutes, giving the cops time to catch them. Fools!");
             IsGameRunning = false;
             _automatedActionSystem.RemoveAction(_lastCallToJoin);
             _automatedActionSystem.RemoveAction(_startHeistAction);
