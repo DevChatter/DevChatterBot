@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Core", "DevC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Infra.Twitch", "DevChatter.Bot.Infra.Twitch\DevChatter.Bot.Infra.Twitch.csproj", "{3F44367A-5E16-4CC5-8565-F07FE985EFF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevChatter.Bot.Infra.Ef", "DevChatter.Bot.Infra.Ef\DevChatter.Bot.Infra.Ef.csproj", "{EB61DAF6-52D8-4203-AACA-A896D6DB02CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Infra.Ef", "DevChatter.Bot.Infra.Ef\DevChatter.Bot.Infra.Ef.csproj", "{EB61DAF6-52D8-4203-AACA-A896D6DB02CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFA01D12-4037-499A-ADD0-211B882917F4}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
