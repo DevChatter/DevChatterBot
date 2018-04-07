@@ -1,7 +1,5 @@
 ﻿using System;
 using DevChatter.Bot.Core;
-using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Infra.Twitch;
 using DevChatter.Bot.Startup;
 
 namespace DevChatter.Bot
@@ -11,10 +9,10 @@ namespace DevChatter.Bot
         private static void Main(string[] args)
         {
             Console.WriteLine("Initializing the Bot...");
-            
-            (string connectionString, TwitchClientSettings clientSettings, CommandHandlerSettings commandHandlerSettings) = SetUpConfig.InitializeConfiguration();
 
-            BotMain botMain = SetUpBot.NewBot(clientSettings, commandHandlerSettings, connectionString);
+            var botConfiguration = SetUpConfig.InitializeConfiguration();
+
+            BotMain botMain = SetUpBot.NewBot(botConfiguration);
             WaitForCommands(botMain);
         }
 
