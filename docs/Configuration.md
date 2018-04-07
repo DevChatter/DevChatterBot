@@ -1,15 +1,28 @@
 # Configuration
 The configuration of DevChatterBot is in the appsettings.json file, however, if you want to develop without checking in your details, the project is configured to use the [Secret Manager](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?tabs=visual-studio).
 
+##### Example using Secret Manager
+```
+dotnet user-secrets set TwitchClientSettings:TwitchUsername DevChatterBot
+```
+
 This is the current contents of the appsettings.json file.
 
 ```
 {
-  "TwitchUsername": "secret",
-  "TwitchUserID": "secret",
-  "TwitchOAuth": "secret",
-  "TwitchChannel": "secret",
-  "TwitchClientId": "secret"
+  "DatabaseConnectionString": "Server=(localdb)\\mssqllocaldb;Database=DevChatterBot;Trusted_Connection=True;MultipleActiveResultSets=true",
+
+  "TwitchClientSettings": {
+    "TwitchUsername": "secret",
+    "TwitchUserID": "secret",
+    "TwitchOAuth": "secret",
+    "TwitchChannel": "secret",
+    "TwitchClientId": "secret"
+  },
+
+  "CommandHandlerSettings": {
+    "GlobalCommandCooldown": "2.5"
+  }
 }
 ```
 If you're not worried about your twitch credentials, skip using the secret manager and just replace the word "secret" with each credential that is required. Keep the quotation marks, of course. 
