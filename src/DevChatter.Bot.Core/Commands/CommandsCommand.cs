@@ -11,7 +11,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly List<IBotCommand> _allCommands;
 
         public CommandsCommand(List<IBotCommand> allCommands)
-            : base(UserRole.Everyone, "commands")
+            : base(UserRole.Everyone)
         {
             _allCommands = allCommands;
         }

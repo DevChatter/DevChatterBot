@@ -11,7 +11,7 @@ namespace DevChatter.Bot.Core.Commands
     {
         private readonly IRepository _repository;
         public AddQuoteCommand(IRepository repository)
-            : base(UserRole.Mod, "QuoteAdd", "AddQuote")
+            : base(UserRole.Mod)
         {
             _repository = repository;
             HelpText = "Example usage !quoteadd \"this is the quote\" @Brendoneus";

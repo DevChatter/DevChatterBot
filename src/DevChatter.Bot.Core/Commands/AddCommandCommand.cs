@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly List<IBotCommand> _allCommands;
 
         public AddCommandCommand(IRepository repository, List<IBotCommand> allCommands)
-            : base(UserRole.Mod, "AddCommand", "CommandAdd")
+            : base(UserRole.Mod)
         {
             _repository = repository;
             _allCommands = allCommands;

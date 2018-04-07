@@ -11,7 +11,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly StreamingPlatform _streamingPlatform;
 
         public UptimeCommand(StreamingPlatform streamingPlatform)
-            : base(UserRole.Everyone, "Uptime")
+            : base(UserRole.Everyone)
         {
             _streamingPlatform = streamingPlatform;
             HelpText = "Just type \"!uptime\" and it will tell you how long we've been streaming.";

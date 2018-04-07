@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly List<IBotCommand> _allCommands;
 
         public RemoveCommandCommand(IRepository repository, List<IBotCommand> allCommands)
-            : base(UserRole.Mod, "RemoveCommand", "CommandRemove")
+            : base(UserRole.Mod)
         {
             _repository = repository;
             _allCommands = allCommands;

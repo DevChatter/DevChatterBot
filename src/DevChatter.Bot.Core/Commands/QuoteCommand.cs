@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IRepository _repository;
 
         public QuoteCommand(IRepository repository)
-            : base(UserRole.Everyone, "quote")
+            : base(UserRole.Everyone)
         {
             _repository = repository;
         }
