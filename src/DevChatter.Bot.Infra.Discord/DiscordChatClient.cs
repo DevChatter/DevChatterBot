@@ -54,24 +54,26 @@ namespace DevChatter.Bot.Infra.Discord
             {
                 return;
             }
-            
-            // TODO: I'm not sure when this would ever NOT be a SocketGuildUser...direct message maybe?
-            // should we handle direct messages?
-            var user = arg.Author as SocketGuildUser;
-            if (user == null)
-            {
-                return;
-            }
-            
-            int commandStartIndex = 0;
-            if(message.HasCharPrefix(_settings.CommandPrefix, ref commandStartIndex))
-            {
-                var commandInfo = CommandParser.Parse(message.Content, commandStartIndex);
 
-                if (!string.IsNullOrWhiteSpace(commandInfo.commandWord))
+            int commandStartIndex = 0;
+            if (message.HasCharPrefix(_settings.CommandPrefix, ref commandStartIndex))
+            {
+                if (arg.Author is SocketGuildUser guildUser)
                 {
-                    RaiseOnCommandReceived(user, commandInfo.commandWord, commandInfo.arguments);
+                    GuildMessageReceived(guildUser, commandStartIndex, arg.Content);
                 }
+                
+                // TODO: arg.Author could be of type SocketGlobalUser (but the type is internal...) which means we got a direct message.
+                // I'm not sure how else I can detect the difference I'm not seeing anything obvious in the API
+            }
+        }
+
+        private void GuildMessageReceived(SocketGuildUser user, int commandStartIndex, string message)
+        {
+            var commandInfo = CommandParser.Parse(message, commandStartIndex);
+            if (!string.IsNullOrWhiteSpace(commandInfo.commandWord))
+            {
+                RaiseOnCommandReceived(user, commandInfo.commandWord, commandInfo.arguments);
             }
         }
 
