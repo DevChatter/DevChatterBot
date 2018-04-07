@@ -68,7 +68,6 @@ namespace DevChatter.Bot.Infra.Discord
 
                 if (!string.IsNullOrWhiteSpace(commandInfo.commandWord))
                 {
-                    SendMessage(commandInfo.commandWord);
                     RaiseOnCommandReceived(user, commandInfo.commandWord, commandInfo.arguments);
                 }
             }
