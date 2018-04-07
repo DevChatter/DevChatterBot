@@ -136,7 +136,7 @@ namespace DevChatter.Bot.Infra.Discord
                 return;
             }
 
-            _TextChannel.SendMessageAsync(message).Wait();
+            _TextChannel.SendMessageAsync($"`{message}`").Wait();
         }
 
         public event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
