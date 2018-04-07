@@ -55,27 +55,32 @@ namespace DevChatter.Bot.Core.Games.Heist
             _automatedActionSystem.RemoveAction(_startHeistAction);
         }
 
-        public bool AttemptToJoinHeist(ChatUser chatUser, HeistRoles role)
+        public JoinGameResult AttemptToJoinHeist(string displayName, HeistRoles role)
         {
             if (_heistMembers.ContainsKey(role))
             {
-                return false;
+                return HeistJoinResults.RoleTakenResult(displayName, role);
             }
 
-            _heistMembers.Add(role, chatUser.DisplayName);
+            if (_heistMembers.ContainsValue(displayName))
+            {
+                return HeistJoinResults.AlreadyInHeistResult(displayName);
+            }
 
-            return true;
+            _heistMembers.Add(role, displayName);
+
+            return HeistJoinResults.SuccessJoinResult(displayName, role);
         }
-        public bool AttemptToJoinHeist(ChatUser chatUser, out HeistRoles role)
+        public JoinGameResult AttemptToJoinHeist(ChatUser chatUser, out HeistRoles role, string displayName)
         {
             bool success;
             (success, role) = MyRandom.ChooseRandomItem(GetAvailableRoles());
             if (!success)
             {
-                return false;
+                return HeistJoinResults.HeistFullResult(displayName);
             }
 
-            return AttemptToJoinHeist(chatUser, role);
+            return AttemptToJoinHeist(displayName, role);
         }
 
         private List<HeistRoles> GetAvailableRoles()
@@ -93,5 +98,20 @@ namespace DevChatter.Bot.Core.Games.Heist
                 StartHeist(chatClient);
             }
         }
+    }
+
+    public static class HeistJoinResults
+    {
+        public static JoinGameResult SuccessJoinResult(string displayName, HeistRoles role) 
+            => new JoinGameResult(true, $"{displayName} joined the heist as the {role}!");
+        public static JoinGameResult RoleTakenResult(string displayName, HeistRoles role) 
+            => new JoinGameResult(false, $"Sorry, {displayName} we already have a {role}!");
+        public static JoinGameResult HeistFullResult(string displayName) 
+            => new JoinGameResult(false, $"Sorry, {displayName} this heist is full!");
+        public static JoinGameResult UnknownRoleResult(string displayName) 
+            => new JoinGameResult(false, $"I don't know what role you wanted to be, {displayName}. Try again?");
+        public static JoinGameResult AlreadyInHeistResult(string displayName) 
+            => new JoinGameResult(false, $"You're already in this heist, {displayName} and you aren't a multi-tasker.");
+
     }
 }

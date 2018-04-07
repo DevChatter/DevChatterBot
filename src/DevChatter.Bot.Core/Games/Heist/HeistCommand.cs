@@ -50,26 +50,14 @@ namespace DevChatter.Bot.Core.Games.Heist
 
         private void JoinHeistRandom(IChatClient chatClient, ChatUser chatUser)
         {
-            if (_heistGame.AttemptToJoinHeist(chatUser, out HeistRoles role))
-            {
-                chatClient.SendMessage($"{chatUser.DisplayName} joined the heist as the {role}!");
-            }
-            else
-            {
-                chatClient.SendMessage($"Sorry, {chatUser.DisplayName} the heist is full!");
-            }
+            JoinGameResult result = _heistGame.AttemptToJoinHeist(chatUser, out HeistRoles role, chatUser.DisplayName);
+            chatClient.SendMessage(result.Message);
         }
 
         private void JoinHeistByRole(IChatClient chatClient, ChatUser chatUser, HeistRoles role)
         {
-            if (_heistGame.AttemptToJoinHeist(chatUser, role))
-            {
-                chatClient.SendMessage($"{chatUser.DisplayName} joined the heist as the {role}!");
-            }
-            else
-            {
-                chatClient.SendMessage($"Sorry, {chatUser.DisplayName} we already have a {role}!");
-            }
+            JoinGameResult result = _heistGame.AttemptToJoinHeist(chatUser.DisplayName, role);
+            chatClient.SendMessage(result.Message);
         }
     }
 }
