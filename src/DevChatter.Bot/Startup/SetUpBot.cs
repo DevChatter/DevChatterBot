@@ -16,8 +16,9 @@ namespace DevChatter.Bot.Startup
 {
     public static class SetUpBot
     {
-        public static BotMain NewBot(TwitchClientSettings twitchSettings, CommandHandlerSettings commandHandlerSettings, string connectionString)
+        public static BotMain NewBot(BotConfiguration botConfiguration)
         {
+            var twitchSettings = botConfiguration.TwitchClientSettings;
             var twitchApi = new TwitchAPI(twitchSettings.TwitchClientId);
             var twitchChatClient = new TwitchChatClient(twitchSettings, twitchApi);
             var chatClients = new List<IChatClient>
@@ -28,7 +29,7 @@ namespace DevChatter.Bot.Startup
             var twitchFollowerService = new TwitchFollowerService(twitchApi, twitchSettings);
             var twitchPlatform = new StreamingPlatform(twitchChatClient, twitchFollowerService, new TwitchStreamingInfoService(twitchApi, twitchSettings));
 
-            IRepository repository = SetUpDatabase.SetUpRepository(connectionString);
+            IRepository repository = SetUpDatabase.SetUpRepository(botConfiguration.DatabaseConnectionString);
 
             var chatUserCollection = new ChatUserCollection(repository);
             var currencyGenerator = new CurrencyGenerator(chatClients, chatUserCollection);
@@ -58,7 +59,7 @@ namespace DevChatter.Bot.Startup
             allCommands.Add(new HangmanCommand(hangmanGame));
             allCommands.Add(new RockPaperScissorsCommand(rockPaperScissorsGame));
 
-            var commandUsageTracker = new CommandUsageTracker(commandHandlerSettings);
+            var commandUsageTracker = new CommandUsageTracker(botConfiguration.CommandHandlerSettings);
             var commandHandler = new CommandHandler(commandUsageTracker, chatClients, allCommands);
             var subscriberHandler = new SubscriberHandler(chatClients);
 
