@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using DevChatter.Bot.Core.Data.Model;
-using Discord.WebSocket;
+using Discord;
 
 namespace DevChatter.Bot.Infra.Discord.Extensions
 {
     public static class ModelExtensions
     {
-        public static ChatUser ToChatUser(this SocketGuildUser discordUser, DiscordClientSettings settings)
+        public static ChatUser ToChatUser(this IGuildUser discordUser, DiscordClientSettings settings)
         {
             var chatUser = new ChatUser
             {
@@ -17,19 +17,19 @@ namespace DevChatter.Bot.Infra.Discord.Extensions
             return chatUser;
         }
 
-        public static UserRole ToUserRole(this SocketGuildUser discordUser, DiscordClientSettings settings)
+        public static UserRole ToUserRole(this IGuildUser discordUser, DiscordClientSettings settings)
         {
-            if (discordUser.Roles.Any(role => role.Id == settings.DiscordStreamerRoleId))
+            if (discordUser.RoleIds.Any(role => role == settings.DiscordStreamerRoleId))
             {
                 return UserRole.Streamer;
             }
 
-            if (discordUser.Roles.Any(role => role.Id == settings.DiscordModeratorRoleId))
+            if (discordUser.RoleIds.Any(role => role == settings.DiscordModeratorRoleId))
             {
                 return UserRole.Mod;
             }
 
-            if (discordUser.Roles.Any(role => role.Id == settings.DiscordSubscriberRoleId))
+            if (discordUser.RoleIds.Any(role => role == settings.DiscordSubscriberRoleId))
             {
                 return UserRole.Subscriber;
             }

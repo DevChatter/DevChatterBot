@@ -20,6 +20,7 @@ namespace DevChatter.Bot.Infra.Discord
         private TaskCompletionSource<bool> _connectionCompletionTask = new TaskCompletionSource<bool>();
         private TaskCompletionSource<bool> _disconnectionCompletionTask = new TaskCompletionSource<bool>();
         private SocketGuild _Guild;
+        private readonly List<ulong> _GuildChannelIds = new List<ulong>();
         private ISocketMessageChannel _TextChannel;
         private bool _isReady;
 
@@ -37,6 +38,7 @@ namespace DevChatter.Bot.Infra.Discord
         private async Task DiscordClientGuildAvailable(SocketGuild arg)
         {
             _Guild = arg;
+            _GuildChannelIds.AddRange(_Guild.Channels.Select(channel => channel.Id));
             _TextChannel = _Guild.Channels.FirstOrDefault(channel => channel.Id == _settings.DiscordTextChannelId) as ISocketMessageChannel;
             _isReady = true;
         }
@@ -44,6 +46,7 @@ namespace DevChatter.Bot.Infra.Discord
         private async Task DiscordClientGuildUnavailable(SocketGuild arg)
         {
             _Guild = null;
+            _GuildChannelIds.Clear();
             _isReady = false;
         }
 
@@ -58,23 +61,34 @@ namespace DevChatter.Bot.Infra.Discord
             int commandStartIndex = 0;
             if (message.HasCharPrefix(_settings.CommandPrefix, ref commandStartIndex))
             {
-                if (arg.Author is SocketGuildUser guildUser)
+                if (_GuildChannelIds.Contains(message.Channel.Id))
                 {
-                    GuildMessageReceived(guildUser, commandStartIndex, arg.Content);
+                    if (arg.Author is IGuildUser guildUser)
+                    {
+                        GuildCommandReceived(guildUser, commandStartIndex, arg.Content);
+                    }
                 }
-                
-                // TODO: arg.Author could be of type SocketGlobalUser (but the type is internal...) which means we got a direct message.
-                // I'm not sure how else I can detect the difference I'm not seeing anything obvious in the API
+                else
+                {
+                    DirectCommandReceieved(arg.Author, commandStartIndex, arg.Content);
+                }
             }
         }
 
-        private void GuildMessageReceived(SocketGuildUser user, int commandStartIndex, string message)
+        private void GuildCommandReceived(IGuildUser user, int commandStartIndex, string message)
         {
             var commandInfo = CommandParser.Parse(message, commandStartIndex);
-            if (!string.IsNullOrWhiteSpace(commandInfo.commandWord))
-            {
-                RaiseOnCommandReceived(user, commandInfo.commandWord, commandInfo.arguments);
-            }
+            if (string.IsNullOrWhiteSpace(commandInfo.commandWord)) return;
+
+            RaiseOnCommandReceived(user, commandInfo.commandWord, commandInfo.arguments);
+        }
+
+        private void DirectCommandReceieved(IUser user, int commandStartIndex, string message)
+        {
+            var commandInfo = CommandParser.Parse(message, commandStartIndex);
+            if (string.IsNullOrWhiteSpace(commandInfo.commandWord)) return;
+
+            // TODO: Do we want to handle direct message commands?
         }
 
         public async Task Connect()
@@ -140,7 +154,7 @@ namespace DevChatter.Bot.Infra.Discord
             _TextChannel.SendMessageAsync($"`{message}`").Wait();
         }
 
-        private void RaiseOnCommandReceived(SocketGuildUser user, string commandWord, List<string> arguments)
+        private void RaiseOnCommandReceived(IGuildUser user, string commandWord, List<string> arguments)
         {
             var eventArgs = new CommandReceivedEventArgs
             {
