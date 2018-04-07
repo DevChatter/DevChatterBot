@@ -26,7 +26,7 @@ namespace DevChatter.Bot.Core.Games.Heist
             string roleRequest = eventArgs.Arguments?.ElementAtOrDefault(0);
 
             ChatUser chatUser = eventArgs.ChatUser;
-            _heistGame.AttemptToStartGame(chatClient, chatUser);
+            _heistGame.AttemptToCreateGame(chatClient, chatUser);
 
             if (!_heistGame.IsGameRunning)
             {
@@ -44,6 +44,8 @@ namespace DevChatter.Bot.Core.Games.Heist
             {
                 chatClient.SendMessage("I don't know what role you wanted to be. Try again?");
             }
+
+            _heistGame.AttemptToStartGame(chatClient);
         }
 
         private void JoinHeistRandom(IChatClient chatClient, ChatUser chatUser)
