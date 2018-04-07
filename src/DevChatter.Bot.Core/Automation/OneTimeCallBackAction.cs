@@ -13,7 +13,7 @@ namespace DevChatter.Bot.Core.Automation
             _timeOfNextRun = DateTime.UtcNow.AddSeconds(delayInSeconds);
         }
 
-        public bool IsTimeToRun() => DateTime.Now > _timeOfNextRun;
+        public bool IsTimeToRun() => DateTime.UtcNow > _timeOfNextRun;
 
         public void Invoke()
         {
