@@ -30,6 +30,8 @@ namespace DevChatter.Bot.Infra.Discord
             _discordClient.MessageReceived += DiscordClientMessageReceived;
             _discordClient.GuildAvailable += DiscordClientGuildAvailable;
             _discordClient.GuildUnavailable += DiscordClientGuildUnavailable;
+            _discordClient.UserJoined += DiscordClientUserJoined;
+            _discordClient.UserLeft += DiscordClientUserLeft;
         }
 
         private async Task DiscordClientGuildAvailable(SocketGuild arg)
@@ -73,18 +75,6 @@ namespace DevChatter.Bot.Infra.Discord
             }
         }
 
-        private void RaiseOnCommandReceived(SocketGuildUser user, string commandWord, List<string> arguments)
-        {
-            var eventArgs = new CommandReceivedEventArgs
-            {
-                CommandWord = commandWord,
-                Arguments = arguments ?? new List<string>(),
-                ChatUser = user.ToChatUser(_settings)
-            };
-
-            OnCommandReceived?.Invoke(this, eventArgs);
-        }
-
         public async Task Connect()
         {
             _discordClient.Connected += DiscordClientConnected;
@@ -119,6 +109,16 @@ namespace DevChatter.Bot.Infra.Discord
             _connectionCompletionTask = new TaskCompletionSource<bool>();
         }
 
+        private async Task DiscordClientUserJoined(SocketGuildUser arg)
+        {
+            RaiseOnUserNoticed(arg);
+        }
+
+        private async Task DiscordClientUserLeft(SocketGuildUser arg)
+        {
+            RaiseOnUserLeft(arg);
+        }
+
         public List<ChatUser> GetAllChatters()
         {
             if(!_isReady)
@@ -136,6 +136,40 @@ namespace DevChatter.Bot.Infra.Discord
             }
 
             _TextChannel.SendMessageAsync($"`{message}`").Wait();
+        }
+
+        private void RaiseOnCommandReceived(SocketGuildUser user, string commandWord, List<string> arguments)
+        {
+            var eventArgs = new CommandReceivedEventArgs
+            {
+                CommandWord = commandWord,
+                Arguments = arguments ?? new List<string>(),
+                ChatUser = user.ToChatUser(_settings)
+            };
+
+            OnCommandReceived?.Invoke(this, eventArgs);
+        }
+
+        private void RaiseOnUserNoticed(SocketGuildUser user)
+        {
+            var eventArgs = new UserStatusEventArgs
+            {
+                DisplayName = user.Username,
+                Role = user.ToUserRole(_settings)
+            };
+
+            OnUserNoticed?.Invoke(this, eventArgs);
+        }
+
+        private void RaiseOnUserLeft(SocketGuildUser user)
+        {
+            var eventArgs = new UserStatusEventArgs
+            {
+                DisplayName = user.Username,
+                Role = user.ToUserRole(_settings)
+            };
+
+            OnUserLeft?.Invoke(this, eventArgs);
         }
 
         public event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
