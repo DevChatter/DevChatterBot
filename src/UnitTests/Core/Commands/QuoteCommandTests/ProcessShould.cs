@@ -13,9 +13,9 @@ namespace UnitTests.Core.Commands.QuoteCommandTests
         private QuoteCommand _quoteCommand;
         private readonly FakeChatClient _fakeChatClient = new FakeChatClient();
 
-        private void SetUpTest(QuoteEntity foundQuote)
+        private void SetUpTest(QuoteEntity foundQuote, IList<CommandWordEntity> words = null)
         {
-            _quoteCommand = new QuoteCommand(new FakeRepo { SingleToReturn = foundQuote });
+            _quoteCommand = new QuoteCommand(new FakeRepo {SingleToReturn = foundQuote});
         }
 
         [Fact]

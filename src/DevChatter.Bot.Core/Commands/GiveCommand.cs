@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Extensions;
@@ -10,8 +11,8 @@ namespace DevChatter.Bot.Core.Commands
     {
         private readonly ChatUserCollection _chatUserCollection;
 
-        public GiveCommand(ChatUserCollection chatUserCollection)
-            : base(UserRole.Everyone)
+        public GiveCommand(IRepository repository, ChatUserCollection chatUserCollection)
+            : base(repository, UserRole.Everyone)
         {
             _chatUserCollection = chatUserCollection;
             HelpText = "Give coins to someone. Example !give LNGgrinds 10";

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net.Http.Headers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -7,11 +8,11 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class AddQuoteCommand : BaseCommand
+	public class AddQuoteCommand : BaseCommand
     {
         private readonly IRepository _repository;
         public AddQuoteCommand(IRepository repository)
-            : base(UserRole.Mod)
+            : base(repository, UserRole.Mod)
         {
             _repository = repository;
             HelpText = "Example usage !quoteadd \"this is the quote\" @Brendoneus";

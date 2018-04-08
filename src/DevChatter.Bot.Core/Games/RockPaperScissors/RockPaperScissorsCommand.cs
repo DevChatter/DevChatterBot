@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -9,8 +10,8 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
     public class RockPaperScissorsCommand : BaseCommand
     {
         private readonly RockPaperScissorsGame _rockPaperScissorsGame;
-        public RockPaperScissorsCommand(RockPaperScissorsGame rockPaperScissorsGame)
-            : base(UserRole.Everyone, "rps", "rockpaperscissors")
+        public RockPaperScissorsCommand(IRepository repository, RockPaperScissorsGame rockPaperScissorsGame)
+            : base(repository, UserRole.Everyone)
         {
             _rockPaperScissorsGame = rockPaperScissorsGame;
             HelpText = "Use \"!rps\" to join randomly. Use \"!rps rock\" to select rock. Bot will eventually choose randomly and award the winners.";

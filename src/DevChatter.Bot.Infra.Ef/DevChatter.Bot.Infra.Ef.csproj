@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180408041144_AbstractedCommandWords.cs" />
+    <Compile Remove="Migrations\20180408041411_AbstractedCommandWords.cs" />
+    <Compile Remove="Migrations\20180408041425_AbstractedCommandWords.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />

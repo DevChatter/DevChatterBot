@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Commands;
@@ -41,23 +42,30 @@ namespace DevChatter.Bot.Startup
             var hangmanGame = new HangmanGame(currencyGenerator, automatedActionSystem, wordList);
 
             var simpleCommands = repository.List<SimpleCommand>();
+			var aliasCommand = new AliasCommand(repository);
 
             List<IBotCommand> allCommands = new List<IBotCommand>();
             allCommands.AddRange(simpleCommands);
-            allCommands.Add(new UptimeCommand(twitchPlatform));
-            allCommands.Add(new GiveCommand(chatUserCollection));
-            allCommands.Add(new HelpCommand(allCommands));
-            allCommands.Add(new CommandsCommand(allCommands));
+            allCommands.Add(new UptimeCommand(repository, twitchPlatform));
+            allCommands.Add(new GiveCommand(repository, chatUserCollection));
+            allCommands.Add(new HelpCommand(repository, allCommands));
+            allCommands.Add(new CommandsCommand(repository, allCommands));
             allCommands.Add(new CoinsCommand(repository));
-            allCommands.Add(new BonusCommand(currencyGenerator));
+            allCommands.Add(new BonusCommand(repository, currencyGenerator));
             allCommands.Add(new StreamsCommand(repository));
-            allCommands.Add(new ShoutOutCommand(twitchFollowerService));
+            allCommands.Add(new ShoutOutCommand(repository, twitchFollowerService));
             allCommands.Add(new QuoteCommand(repository));
             allCommands.Add(new AddQuoteCommand(repository));
             allCommands.Add(new AddCommandCommand(repository, allCommands));
             allCommands.Add(new RemoveCommandCommand(repository, allCommands));
-            allCommands.Add(new HangmanCommand(hangmanGame));
-            allCommands.Add(new RockPaperScissorsCommand(rockPaperScissorsGame));
+            allCommands.Add(new HangmanCommand(repository, hangmanGame));
+            allCommands.Add(new RockPaperScissorsCommand(repository, rockPaperScissorsGame));
+			allCommands.Add(aliasCommand);
+
+	        foreach (var command in allCommands.OfType<BaseCommand>())
+	        {
+		        aliasCommand.CommandAliasModified += (s, e) => command.NotifyWordsModified();
+	        }
 
             var commandUsageTracker = new CommandUsageTracker(botConfiguration.CommandHandlerSettings);
             var commandHandler = new CommandHandler(commandUsageTracker, chatClients, allCommands);
