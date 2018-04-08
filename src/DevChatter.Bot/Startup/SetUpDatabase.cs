@@ -50,11 +50,11 @@ namespace DevChatter.Bot.Startup
                 repository.Create(GetInitialQuotes());
             }
 
-	        if (!repository.List<CommandWordEntity>().Any())
-	        {
-		        repository.Create(GetCommandWords());
-	        }
-		}
+            if (!repository.List<CommandWordEntity>().Any())
+            {
+                repository.Create(GetCommandWords());
+            }
+        }
 
         private static List<IntervalMessage> GetIntervalMessages()
         {
@@ -90,24 +90,24 @@ namespace DevChatter.Bot.Startup
             };
         }
 
-	    private static List<CommandWordEntity> GetCommandWords()
-	    {
-		    var botCommandTypeAssembly = typeof(IBotCommand).Assembly;
-		    var conventionSuffix = "Command";
+        private static List<CommandWordEntity> GetCommandWords()
+        {
+            var botCommandTypeAssembly = typeof(IBotCommand).Assembly;
+            var conventionSuffix = "Command";
 
-		    var concreteCommands = botCommandTypeAssembly.DefinedTypes
-			    .Where(x => !x.IsAbstract)
-			    .Where(x => !x.IsSubclassOf(typeof(DataEntity)))
-			    .Where(x => x.FullName.EndsWith(conventionSuffix));
+            var concreteCommands = botCommandTypeAssembly.DefinedTypes
+                .Where(x => !x.IsAbstract)
+                .Where(x => !x.IsSubclassOf(typeof(DataEntity)))
+                .Where(x => x.FullName.EndsWith(conventionSuffix));
 
-		    return concreteCommands
-				.Select(commandType => new CommandWordEntity
-					{
-						CommandWord = commandType.Name.Substring(0, commandType.Name.Length - conventionSuffix.Length),
-						FullTypeName = commandType.FullName,
-						IsPrimary = true
-					})
-			    .ToList();
-	    }
+            return concreteCommands
+                .Select(commandType => new CommandWordEntity
+                    {
+                        CommandWord = commandType.Name.Substring(0, commandType.Name.Length - conventionSuffix.Length),
+                        FullTypeName = commandType.FullName,
+                        IsPrimary = true
+                    })
+                .ToList();
+        }
     }
 }

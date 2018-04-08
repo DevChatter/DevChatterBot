@@ -14,10 +14,10 @@ namespace UnitTests.Fakes
             return SingleToReturn as T;
         }
 
-	    public List<object> ListToReturn { get; set; }
+        public List<object> ListToReturn { get; set; }
         public List<T> List<T>(ISpecification<T> spec) where T : DataEntity
         {
-	        return (ListToReturn ?? Enumerable.Empty<object>()).OfType<T>().ToList();
+            return (ListToReturn ?? Enumerable.Empty<object>()).OfType<T>().ToList();
         }
 
         public T Create<T>(T dataItem) where T : DataEntity

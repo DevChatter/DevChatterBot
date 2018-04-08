@@ -35,20 +35,20 @@ namespace UnitTests.Core.Events.CommandHandlerTests
             Assert.False(fakeCommand.ProcessWasCalled);
         }
 
-	    private static IRepository GetFakeRepository()
-	    {
-		    return new FakeRepo
-		    {
-			    ListToReturn = new List<object>
-			    {
-				    new CommandWordEntity
-				    {
-					    CommandWord = "Fake", 
-						FullTypeName = "UnitTests.Fakes.FakeCommand"
-					}
-			    }
-		    };
-	    }
+        private static IRepository GetFakeRepository()
+        {
+            return new FakeRepo
+            {
+                ListToReturn = new List<object>
+                {
+                    new CommandWordEntity
+                    {
+                        CommandWord = "Fake", 
+                        FullTypeName = "UnitTests.Fakes.FakeCommand"
+                    }
+                }
+            };
+        }
 
         private static CommandHandler GetTestCommandHandler(FakeCommand fakeCommand)
         {

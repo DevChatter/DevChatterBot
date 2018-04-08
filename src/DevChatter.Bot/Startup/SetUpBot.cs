@@ -42,7 +42,7 @@ namespace DevChatter.Bot.Startup
             var hangmanGame = new HangmanGame(currencyGenerator, automatedActionSystem, wordList);
 
             var simpleCommands = repository.List<SimpleCommand>();
-			var aliasCommand = new AliasCommand(repository);
+            var aliasCommand = new AliasCommand(repository);
 
             List<IBotCommand> allCommands = new List<IBotCommand>();
             allCommands.AddRange(simpleCommands);
@@ -60,12 +60,12 @@ namespace DevChatter.Bot.Startup
             allCommands.Add(new RemoveCommandCommand(repository, allCommands));
             allCommands.Add(new HangmanCommand(repository, hangmanGame));
             allCommands.Add(new RockPaperScissorsCommand(repository, rockPaperScissorsGame));
-			allCommands.Add(aliasCommand);
+            allCommands.Add(aliasCommand);
 
-	        foreach (var command in allCommands.OfType<BaseCommand>())
-	        {
-		        aliasCommand.CommandAliasModified += (s, e) => command.NotifyWordsModified();
-	        }
+            foreach (var command in allCommands.OfType<BaseCommand>())
+            {
+                aliasCommand.CommandAliasModified += (s, e) => command.NotifyWordsModified();
+            }
 
             var commandUsageTracker = new CommandUsageTracker(botConfiguration.CommandHandlerSettings);
             var commandHandler = new CommandHandler(commandUsageTracker, chatClients, allCommands);

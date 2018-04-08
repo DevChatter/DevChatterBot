@@ -13,7 +13,7 @@ namespace UnitTests.Fakes
         public FakeCommand(IRepository repository, bool isEnabled)
             : base(repository, UserRole.Everyone, isEnabled)
         {
-			NotifyWordsModified();
+            NotifyWordsModified();
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

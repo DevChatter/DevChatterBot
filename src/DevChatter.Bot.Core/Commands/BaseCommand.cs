@@ -11,8 +11,8 @@ namespace DevChatter.Bot.Core.Commands
 {
     public abstract class BaseCommand : IBotCommand
     {
-	    private readonly IRepository _repository;
-	    private readonly bool _isEnabled;
+        private readonly IRepository _repository;
+        private readonly bool _isEnabled;
         public UserRole RoleRequired { get; }
         public string PrimaryCommandText => CommandWords.First();
         public IList<string> CommandWords { get; private set; }
@@ -23,26 +23,26 @@ namespace DevChatter.Bot.Core.Commands
         {
         }
 
-	    protected BaseCommand(IRepository repository, UserRole roleRequired, bool isEnabled)
+        protected BaseCommand(IRepository repository, UserRole roleRequired, bool isEnabled)
         {
-	        _repository = repository;
-			RoleRequired = roleRequired;
+            _repository = repository;
+            RoleRequired = roleRequired;
             _isEnabled = isEnabled;
-	        CommandWords = RefreshCommandWords();
-		}
+            CommandWords = RefreshCommandWords();
+        }
 
-	    private string[] RefreshCommandWords()
-	    {
-		    return _repository
-			    .List(CommandWordPolicy.ByType(GetType()))
-			    .OrderByDescending(x => x.IsPrimary)
-			    .Select(word => word.CommandWord)
-			    .ToArray();
-	    }
+        private string[] RefreshCommandWords()
+        {
+            return _repository
+                .List(CommandWordPolicy.ByType(GetType()))
+                .OrderByDescending(x => x.IsPrimary)
+                .Select(word => word.CommandWord)
+                .ToArray();
+        }
 
-	    public void NotifyWordsModified() => CommandWords = RefreshCommandWords(); 
+        public void NotifyWordsModified() => CommandWords = RefreshCommandWords(); 
 
-		public bool ShouldExecute(string commandText) => _isEnabled && CommandWords.Any(x => x.EqualsIns(commandText));
+        public bool ShouldExecute(string commandText) => _isEnabled && CommandWords.Any(x => x.EqualsIns(commandText));
 
         public abstract void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
     }

@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<QuoteEntity> QuoteEntities { get; set; }
         public DbSet<ChatUser> ChatUsers { get; set; }
         public DbSet<StreamerEntity> Streamers { get; set; }
-		public DbSet<CommandWordEntity> CommandWords { get; set; }
+        public DbSet<CommandWordEntity> CommandWords { get; set; }
 
         public AppDataContext(DbContextOptions<AppDataContext> options)
             : base(options)
@@ -25,8 +25,8 @@ namespace DevChatter.Bot.Infra.Ef
             modelBuilder.Entity<QuoteEntity>()
                 .HasIndex(b => b.QuoteId);
 
-	        modelBuilder.Entity<CommandWordEntity>()
-		        .HasIndex(b => b.CommandWord);
+            modelBuilder.Entity<CommandWordEntity>()
+                .HasIndex(b => b.CommandWord);
         }
     }
     public class AppDataContextFactory : IDesignTimeDbContextFactory<AppDataContext>
