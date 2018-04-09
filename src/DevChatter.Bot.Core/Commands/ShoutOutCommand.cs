@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Extensions;
@@ -13,8 +14,8 @@ namespace DevChatter.Bot.Core.Commands
     {
         private readonly IFollowerService _followerService;
 
-        public ShoutOutCommand(IFollowerService followerService)
-            : base(UserRole.Mod, "so")
+        public ShoutOutCommand(IRepository repository, IFollowerService followerService)
+            : base(repository, UserRole.Mod)
         {
             _followerService = followerService;
         }

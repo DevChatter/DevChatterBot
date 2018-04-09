@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -12,8 +13,8 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         private readonly HangmanGame _hangmanGame;
 
-        public HangmanCommand(HangmanGame hangmanGame)
-            : base(UserRole.Everyone, "Hangman", "hm")
+        public HangmanCommand(IRepository repository, HangmanGame hangmanGame)
+            : base(repository, UserRole.Everyone)
         {
             _hangmanGame = hangmanGame;
             HelpText = "Use \"!hangman\" to start a game. Use \"!hangman x\" to guess a letter. Use \"!hangman word\" to guess a word.";

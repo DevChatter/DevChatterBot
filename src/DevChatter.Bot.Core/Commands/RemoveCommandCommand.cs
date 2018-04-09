@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IRepository _repository;
 
         public RemoveCommandCommand(IRepository repository)
-            : base(UserRole.Mod, "RemoveCommand", "CommandRemove")
+            : base(repository, UserRole.Mod)
         {
             _repository = repository;
         }

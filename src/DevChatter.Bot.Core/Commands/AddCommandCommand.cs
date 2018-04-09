@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IRepository _repository;
 
         public AddCommandCommand(IRepository repository)
-            : base(UserRole.Mod, "AddCommand", "CommandAdd")
+            : base(repository, UserRole.Mod)
         {
             _repository = repository;
             HelpText = "To add a command to the bot use \"!AddCommand Command Text PermissionLevel\" Example: !AddCommand Twitter \"https://twitter.com/DevChatter_\" Everyone";

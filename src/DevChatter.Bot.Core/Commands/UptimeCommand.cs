@@ -1,4 +1,5 @@
 ﻿using System;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -10,8 +11,8 @@ namespace DevChatter.Bot.Core.Commands
     {
         private readonly IStreamingPlatform _streamingPlatform;
 
-        public UptimeCommand(IStreamingPlatform streamingPlatform)
-            : base(UserRole.Everyone, "Uptime")
+        public UptimeCommand(IRepository repository, IStreamingPlatform streamingPlatform)
+            : base(repository, UserRole.Everyone)
         {
             _streamingPlatform = streamingPlatform;
             HelpText = "Just type \"!uptime\" and it will tell you how long we've been streaming.";

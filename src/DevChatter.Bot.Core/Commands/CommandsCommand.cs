@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -8,8 +9,8 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class CommandsCommand : BaseCommand
     {
-        public CommandsCommand()
-            : base(UserRole.Everyone, "commands", "cmd")
+        public CommandsCommand(IRepository repository)
+            : base(repository, UserRole.Everyone)
         {
         }
 

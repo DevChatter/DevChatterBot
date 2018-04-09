@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -9,8 +10,8 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class HelpCommand : BaseCommand
     {
-        public HelpCommand()
-            : base(UserRole.Everyone, "Help")
+        public HelpCommand(IRepository repository)
+            : base(repository, UserRole.Everyone)
         {
             HelpText = "I think you figured this out already...";
         }
