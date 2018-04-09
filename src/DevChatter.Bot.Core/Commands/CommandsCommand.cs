@@ -8,17 +8,16 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class CommandsCommand : BaseCommand
     {
-        private readonly List<IBotCommand> _allCommands;
-
-        public CommandsCommand(List<IBotCommand> allCommands)
+        public CommandsCommand()
             : base(UserRole.Everyone, "commands", "cmd")
         {
-            _allCommands = allCommands;
         }
+
+        public IEnumerable<IBotCommand> AllCommands { get; set; }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            var listOfCommands = _allCommands.Where(x => eventArgs.ChatUser.CanUserRunCommand(x)).Select(x => $"!{x.PrimaryCommandText}").ToList();
+            var listOfCommands = AllCommands.Where(x => eventArgs.ChatUser.CanUserRunCommand(x)).Select(x => $"!{x.PrimaryCommandText}").ToList();
 
             string stringOfCommands = string.Join(", ", listOfCommands);
             chatClient.SendMessage($"These are the commands that {eventArgs.ChatUser.DisplayName} is allowed to run: ({stringOfCommands})");

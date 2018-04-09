@@ -4,6 +4,6 @@ namespace DevChatter.Bot.Core.Events
 {
     public class NewFollowersEventArgs
     {
-        public List<string> FollowerNames { get; } = new List<string>();
+        public IList<string> FollowerNames { get; } = new List<string>();
     }
 }

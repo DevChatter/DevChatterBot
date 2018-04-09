@@ -8,9 +8,9 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class GiveCommand : BaseCommand
     {
-        private readonly ChatUserCollection _chatUserCollection;
+        private readonly IChatUserCollection _chatUserCollection;
 
-        public GiveCommand(ChatUserCollection chatUserCollection)
+        public GiveCommand(IChatUserCollection chatUserCollection)
             : base(UserRole.Everyone, "Give")
         {
             _chatUserCollection = chatUserCollection;

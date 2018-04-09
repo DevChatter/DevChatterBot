@@ -7,7 +7,7 @@ using DevChatter.Bot.Core.Data.Specifications;
 
 namespace DevChatter.Bot.Core
 {
-    public class ChatUserCollection
+    public class ChatUserCollection : IChatUserCollection
     {
         private readonly IRepository _repository;
         private readonly object _userCreationLock = new object();

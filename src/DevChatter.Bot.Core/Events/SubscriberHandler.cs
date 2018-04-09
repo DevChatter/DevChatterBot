@@ -5,7 +5,7 @@ namespace DevChatter.Bot.Core.Events
 {
     public class SubscriberHandler
     {
-        public SubscriberHandler(List<IChatClient> chatClients)
+        public SubscriberHandler(IList<IChatClient> chatClients)
         {
             foreach (IChatClient chatClient in chatClients)
             {

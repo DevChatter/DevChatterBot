@@ -7,6 +7,6 @@ namespace DevChatter.Bot.Core.Systems.Streaming
     public interface IFollowerService
     {
         event EventHandler<NewFollowersEventArgs> OnNewFollower;
-        List<string> GetUsersWeFollow();
+        IList<string> GetUsersWeFollow();
     }
 }
