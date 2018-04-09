@@ -4,6 +4,7 @@ using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Infra.Ef;
 using Microsoft.EntityFrameworkCore;
@@ -50,9 +51,10 @@ namespace DevChatter.Bot.Startup
                 repository.Create(GetInitialQuotes());
             }
 
-            if (!repository.List<CommandWordEntity>().Any())
+            var missingCommandWords = GetMissingCommandWords(repository);
+            if (missingCommandWords.Any())
             {
-                repository.Create(GetCommandWords());
+                repository.Create(missingCommandWords);
             }
         }
 
@@ -90,7 +92,7 @@ namespace DevChatter.Bot.Startup
             };
         }
 
-        private static List<CommandWordEntity> GetCommandWords()
+        private static List<CommandWordEntity> GetMissingCommandWords(IRepository repository)
         {
             var botCommandTypeAssembly = typeof(IBotCommand).Assembly;
             var conventionSuffix = "Command";
@@ -100,14 +102,19 @@ namespace DevChatter.Bot.Startup
                 .Where(x => !x.IsSubclassOf(typeof(DataEntity)))
                 .Where(x => x.FullName.EndsWith(conventionSuffix));
 
-            return concreteCommands
+            var storedCommandWords = repository.List(CommandWordPolicy.OnlyPrimaries()).Select(x => x.CommandWord);
+
+            List<CommandWordEntity> defaultCommandWords = concreteCommands
                 .Select(commandType => new CommandWordEntity
-                    {
-                        CommandWord = commandType.Name.Substring(0, commandType.Name.Length - conventionSuffix.Length),
-                        FullTypeName = commandType.FullName,
-                        IsPrimary = true
-                    })
+                {
+                    CommandWord = commandType.Name.Substring(0, commandType.Name.Length - conventionSuffix.Length),
+                    FullTypeName = commandType.FullName,
+                    IsPrimary = true
+                })
+                .Where(x => !storedCommandWords.Contains(x.CommandWord))
                 .ToList();
+
+            return defaultCommandWords;
         }
     }
 }
