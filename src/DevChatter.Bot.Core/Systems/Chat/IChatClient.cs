@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core.Systems.Chat
 
         void SendMessage(string message);
 
-        List<ChatUser> GetAllChatters();
+        IList<ChatUser> GetAllChatters();
 
         event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
 

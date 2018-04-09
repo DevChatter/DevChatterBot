@@ -6,11 +6,11 @@ using DevChatter.Bot.Core.Events;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class CommandUsageTracker
+    public class CommandUsageTracker : ICommandUsageTracker
     {
         private readonly CommandHandlerSettings _settings;
 
-        private readonly List<CommandUsage> _userCommandUsages = new List<CommandUsage>();
+        private readonly IList<CommandUsage> _userCommandUsages = new List<CommandUsage>();
 
         public CommandUsageTracker(CommandHandlerSettings settings)
         {
@@ -38,7 +38,7 @@ namespace DevChatter.Bot.Core.Commands
 
         public CommandUsage GetByUserDisplayName(string userDisplayName)
         {
-            return _userCommandUsages.SingleOrDefault(x => StringExtensions.EqualsIns(x.DisplayName, userDisplayName));
+            return _userCommandUsages.SingleOrDefault(x => x.DisplayName.EqualsIns(userDisplayName));
         }
 
         public void RecordUsage(CommandUsage commandUsage)

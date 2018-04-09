@@ -7,7 +7,7 @@ namespace DevChatter.Bot.Core.Extensions
 {
     public static class ListOfStringExtensions
     {
-        public static SimpleCommand ToSimpleCommand(this List<string> arguments)
+        public static SimpleCommand ToSimpleCommand(this IList<string> arguments)
         {
             if (arguments.Count >= 3 && Enum.TryParse(arguments[2], out UserRole role))
             {

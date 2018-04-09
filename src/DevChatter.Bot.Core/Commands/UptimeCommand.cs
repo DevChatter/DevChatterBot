@@ -9,9 +9,9 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class UptimeCommand : BaseCommand
     {
-        private readonly StreamingPlatform _streamingPlatform;
+        private readonly IStreamingPlatform _streamingPlatform;
 
-        public UptimeCommand(IRepository repository, StreamingPlatform streamingPlatform)
+        public UptimeCommand(IRepository repository, IStreamingPlatform streamingPlatform)
             : base(repository, UserRole.Everyone)
         {
             _streamingPlatform = streamingPlatform;

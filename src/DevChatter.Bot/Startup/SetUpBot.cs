@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+using Autofac;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Commands;
@@ -7,76 +6,112 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Games.Hangman;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
-using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Infra.Twitch;
 using DevChatter.Bot.Infra.Twitch.Events;
+using System.Collections.Generic;
+using System.Linq;
 using TwitchLib;
 
 namespace DevChatter.Bot.Startup
 {
     public static class SetUpBot
     {
-        public static BotMain NewBot(BotConfiguration botConfiguration)
+        public static IContainer NewBotDepedencyContainer(BotConfiguration botConfiguration)
         {
-            var twitchSettings = botConfiguration.TwitchClientSettings;
-            var twitchApi = new TwitchAPI(twitchSettings.TwitchClientId);
-            var twitchChatClient = new TwitchChatClient(twitchSettings, twitchApi);
-            var chatClients = new List<IChatClient>
-            {
-                new ConsoleChatClient(),
-                twitchChatClient,
-            };
-            var twitchFollowerService = new TwitchFollowerService(twitchApi, twitchSettings);
-            var twitchPlatform = new StreamingPlatform(twitchChatClient, twitchFollowerService, new TwitchStreamingInfoService(twitchApi, twitchSettings));
+            var repository = SetUpDatabase.SetUpRepository(botConfiguration.DatabaseConnectionString);
 
-            IRepository repository = SetUpDatabase.SetUpRepository(botConfiguration.DatabaseConnectionString);
+            var builder = new ContainerBuilder();
 
-            var chatUserCollection = new ChatUserCollection(repository);
-            var currencyGenerator = new CurrencyGenerator(chatClients, chatUserCollection);
-            var currencyUpdate = new CurrencyUpdate(1, currencyGenerator);
+            builder.Register(ctx => botConfiguration.CommandHandlerSettings).AsSelf().SingleInstance();
+            builder.Register(ctx => botConfiguration.TwitchClientSettings).AsSelf().SingleInstance();
 
-            var automatedActionSystem = new AutomatedActionSystem(new List<IIntervalAction> { currencyUpdate });
-            var rockPaperScissorsGame = new RockPaperScissorsGame(currencyGenerator, automatedActionSystem);
-            var wordList = new List<string> { "apple", "banana", "orange", "mango", "watermellon", "grapes", "pizza", "pasta", "pepperoni", "cheese", "mushroom", "csharp", "javascript", "cplusplus", "nullreferenceexception", "parameter", "argument" };
-            var hangmanGame = new HangmanGame(currencyGenerator, automatedActionSystem, wordList);
+            builder.RegisterType<TwitchFollowerService>().AsImplementedInterfaces().SingleInstance();
+            builder.Register(ctx => new TwitchAPI(botConfiguration.TwitchClientSettings.TwitchClientId))
+                .AsImplementedInterfaces();
+            builder.RegisterType<TwitchChatClient>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<StreamingPlatform>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<TwitchStreamingInfoService>().AsImplementedInterfaces().SingleInstance();
+
+            builder.RegisterType<ConsoleChatClient>().AsImplementedInterfaces().SingleInstance();
+
+            builder.Register(ctx => repository).As<IRepository>().SingleInstance();
+
+            builder.RegisterType<ChatUserCollection>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<CurrencyGenerator>().AsImplementedInterfaces().SingleInstance();
+            builder.Register(ctx => new CurrencyUpdate(1, ctx.Resolve<ICurrencyGenerator>()))
+                .AsImplementedInterfaces()
+                .SingleInstance();
+
+            builder.RegisterType<AutomatedActionSystem>().AsImplementedInterfaces().SingleInstance();
+
+            builder.RegisterType<RockPaperScissorsGame>().AsSelf().SingleInstance();
+            builder.RegisterType<RockPaperScissorsCommand>().AsImplementedInterfaces().SingleInstance();
+
+            builder.RegisterType<HangmanGame>().AsSelf().SingleInstance();
+            builder.RegisterType<HardcodedWordListProvider>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<HangmanCommand>().AsImplementedInterfaces().SingleInstance();
+
+            builder.RegisterType<UptimeCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<GiveCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<CoinsCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<BonusCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<StreamsCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<ShoutOutCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<QuoteCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<AddQuoteCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<AliasCommand>().AsImplementedInterfaces().SingleInstance();
+
+            builder.Register(ctx => new HelpCommand(ctx.Resolve<IRepository>()))
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
+            builder.Register(ctx => new CommandsCommand(ctx.Resolve<IRepository>()))
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
+            builder.Register(ctx => new AddCommandCommand(ctx.Resolve<IRepository>()))
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
+            builder.Register(ctx => new RemoveCommandCommand(ctx.Resolve<IRepository>()))
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
 
             var simpleCommands = repository.List<SimpleCommand>();
-            var aliasCommand = new AliasCommand(repository);
-
-            List<IBotCommand> allCommands = new List<IBotCommand>();
-            allCommands.AddRange(simpleCommands);
-            allCommands.Add(new UptimeCommand(repository, twitchPlatform));
-            allCommands.Add(new GiveCommand(repository, chatUserCollection));
-            allCommands.Add(new HelpCommand(repository, allCommands));
-            allCommands.Add(new CommandsCommand(repository, allCommands));
-            allCommands.Add(new CoinsCommand(repository));
-            allCommands.Add(new BonusCommand(repository, currencyGenerator));
-            allCommands.Add(new StreamsCommand(repository));
-            allCommands.Add(new ShoutOutCommand(repository, twitchFollowerService));
-            allCommands.Add(new QuoteCommand(repository));
-            allCommands.Add(new AddQuoteCommand(repository));
-            allCommands.Add(new AddCommandCommand(repository, allCommands));
-            allCommands.Add(new RemoveCommandCommand(repository, allCommands));
-            allCommands.Add(new HangmanCommand(repository, hangmanGame));
-            allCommands.Add(new RockPaperScissorsCommand(repository, rockPaperScissorsGame));
-            allCommands.Add(aliasCommand);
-
-            foreach (var command in allCommands.OfType<BaseCommand>())
+            foreach (var command in simpleCommands)
             {
-                aliasCommand.CommandAliasModified += (s, e) => command.NotifyWordsModified();
+                builder.Register(ctx => command).AsImplementedInterfaces().SingleInstance();
             }
 
-            var commandUsageTracker = new CommandUsageTracker(botConfiguration.CommandHandlerSettings);
-            var commandHandler = new CommandHandler(commandUsageTracker, chatClients, allCommands);
-            var subscriberHandler = new SubscriberHandler(chatClients);
+            builder.Register(ctx => new CommandList(ctx.Resolve<IList<IBotCommand>>()))
+                .AsSelf()
+                .SingleInstance();
 
-            var twitchSystem = new FollowableSystem(new[] { twitchChatClient }, twitchFollowerService);
+            builder.RegisterType<CommandUsageTracker>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<CommandHandler>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<SubscriberHandler>().AsSelf().SingleInstance();
+            builder.RegisterType<FollowableSystem>().AsImplementedInterfaces().SingleInstance();
 
+            builder.RegisterType<BotMain>().AsImplementedInterfaces().SingleInstance();
 
-            var botMain = new BotMain(chatClients, repository, commandHandler, subscriberHandler, twitchSystem, automatedActionSystem);
-            return botMain;
+            var container = builder.Build();
+
+            WireUpAliasNotifications(container);
+
+            return container;
         }
 
+        private static void WireUpAliasNotifications(IContainer container)
+        {
+            var commandList = container.Resolve<CommandList>();
+
+            AliasCommand aliasCommand = commandList.OfType<AliasCommand>().SingleOrDefault();
+
+            if (aliasCommand != null)
+            {
+                foreach (var command in commandList.OfType<BaseCommand>())
+                {
+                    aliasCommand.CommandAliasModified += (s, e) => command.NotifyWordsModified();
+                }
+            }
+        }
     }
 }

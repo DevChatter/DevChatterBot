@@ -6,10 +6,10 @@ namespace DevChatter.Bot.Core.Automation
     public class CurrencyUpdate : IIntervalAction
     {
         private readonly int _intervalInMinutes;
-        private readonly CurrencyGenerator _currencyGenerator;
+        private readonly ICurrencyGenerator _currencyGenerator;
         private DateTime _nextRunTime;
 
-        public CurrencyUpdate(int intervalInMinutes, CurrencyGenerator currencyGenerator)
+        public CurrencyUpdate(int intervalInMinutes, ICurrencyGenerator currencyGenerator)
         {
             _intervalInMinutes = intervalInMinutes;
             _currencyGenerator = currencyGenerator;

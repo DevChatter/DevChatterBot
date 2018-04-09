@@ -10,9 +10,9 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class BonusCommand : BaseCommand
     {
-        private readonly CurrencyGenerator _currencyGenerator;
+        private readonly ICurrencyGenerator _currencyGenerator;
 
-        public BonusCommand(IRepository repository, CurrencyGenerator currencyGenerator)
+        public BonusCommand(IRepository repository, ICurrencyGenerator currencyGenerator)
             : base(repository, UserRole.Mod)
         {
             _currencyGenerator = currencyGenerator;

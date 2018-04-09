@@ -12,14 +12,14 @@ namespace DevChatter.Bot.Core.Commands
     public class RemoveCommandCommand : BaseCommand
     {
         private readonly IRepository _repository;
-        private readonly List<IBotCommand> _allCommands;
 
-        public RemoveCommandCommand(IRepository repository, List<IBotCommand> allCommands)
+        public RemoveCommandCommand(IRepository repository)
             : base(repository, UserRole.Mod)
         {
             _repository = repository;
-            _allCommands = allCommands;
         }
+
+        public IList<IBotCommand> AllCommands { get; set; }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
@@ -39,10 +39,10 @@ namespace DevChatter.Bot.Core.Commands
                 chatClient.SendMessage($"Removing the !{commandText} command.");
 
                 _repository.Remove(command);
-                IBotCommand botCommand = _allCommands.SingleOrDefault(x => x.ShouldExecute(commandText));
+                IBotCommand botCommand = AllCommands.SingleOrDefault(x => x.ShouldExecute(commandText));
                 if (botCommand != null)
                 {
-                    _allCommands.Remove(botCommand);
+                    AllCommands.Remove(botCommand);
                 }
             }
             catch (Exception e)

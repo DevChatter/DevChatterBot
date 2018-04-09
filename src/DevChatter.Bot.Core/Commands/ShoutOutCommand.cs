@@ -29,7 +29,7 @@ namespace DevChatter.Bot.Core.Commands
 
         private string GetRandomFollowedStream()
         {
-            List<string> usersWeFollow = _followerService.GetUsersWeFollow();
+            IList<string> usersWeFollow = _followerService.GetUsersWeFollow();
             int randomIndex = MyRandom.RandomNumber(0, usersWeFollow.Count);
             return usersWeFollow[randomIndex];
         }
