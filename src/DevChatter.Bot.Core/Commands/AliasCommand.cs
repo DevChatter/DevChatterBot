@@ -15,9 +15,9 @@ namespace DevChatter.Bot.Core.Commands
         public AliasCommand(IRepository repository) : base(repository, UserRole.Mod)
         {
             _repository = repository;
-            HelpText = "Use !alias add !<existing> !<new> to add a new command name, or !alias" +
-                       " del !<existing> to delete a command name. For example, \"!alias add hangman " +
-                       "hm\" creates a new shorthand for Hang Man.";
+            HelpText = "Use !alias add <existing> <new> to add a new command name, or !alias" +
+                       " del <existing> to delete a command name. For example, \"!alias add hangman " +
+                       "hm\" creates a new shorthand for Hangman.";
         }
 
         public EventHandler<EventArgs> CommandAliasModified;
