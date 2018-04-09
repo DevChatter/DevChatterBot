@@ -12,15 +12,15 @@ namespace DevChatter.Bot.Core.Commands
     public class AddCommandCommand : BaseCommand
     {
         private readonly IRepository _repository;
-        private readonly List<IBotCommand> _allCommands;
 
-        public AddCommandCommand(IRepository repository, List<IBotCommand> allCommands)
+        public AddCommandCommand(IRepository repository)
             : base(UserRole.Mod, "AddCommand", "CommandAdd")
         {
             _repository = repository;
-            _allCommands = allCommands;
             HelpText = "To add a command to the bot use \"!AddCommand Command Text PermissionLevel\" Example: !AddCommand Twitter \"https://twitter.com/DevChatter_\" Everyone";
         }
+
+        public IList<IBotCommand> AllCommands { get; set; }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
@@ -45,7 +45,7 @@ namespace DevChatter.Bot.Core.Commands
                 chatClient.SendMessage($"Adding a !{command.CommandText} command for {command.RoleRequired}. It will respond with {command.StaticResponse}.");
 
                 _repository.Create(command);
-                _allCommands.Add(command);
+                AllCommands.Add(command);
             }
             catch (Exception e)
             {

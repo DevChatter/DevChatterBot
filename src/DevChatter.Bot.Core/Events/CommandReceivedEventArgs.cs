@@ -6,7 +6,7 @@ namespace DevChatter.Bot.Core.Events
     public class CommandReceivedEventArgs
     {
         public string CommandWord { get; set; }
-        public List<string> Arguments { get; set; } = new List<string>();
+        public IList<string> Arguments { get; set; } = new List<string>();
         public ChatUser ChatUser { get; set; } = new ChatUser();
     }
 }

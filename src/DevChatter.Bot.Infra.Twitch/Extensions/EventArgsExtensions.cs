@@ -64,7 +64,10 @@ namespace DevChatter.Bot.Infra.Twitch.Extensions
         {
             var eventArgs = new NewFollowersEventArgs();
 
-            eventArgs.FollowerNames.AddRange(src.NewFollowers.Select(x => x.User.DisplayName));
+            foreach (var followerName in src.NewFollowers.Select(x => x.User.DisplayName))
+            {
+                eventArgs.FollowerNames.Add(followerName);
+            }
 
             return eventArgs;
         }

@@ -4,7 +4,7 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Systems.Streaming
 {
-    public class FollowableSystem
+    public class FollowableSystem : IFollowableSystem
     {
         private readonly IList<IChatClient> _chatClients;
         private readonly IFollowerService _followerService;

@@ -15,13 +15,13 @@ namespace DevChatter.Bot.Infra.Twitch
     public class TwitchChatClient : IChatClient
     {
         private readonly TwitchClientSettings _settings;
-        private readonly TwitchAPI _twitchApi;
-        private readonly TwitchClient _twitchClient;
+        private readonly ITwitchAPI _twitchApi;
+        private readonly ITwitchClient _twitchClient;
         private TaskCompletionSource<bool> _connectionCompletionTask = new TaskCompletionSource<bool>();
         private TaskCompletionSource<bool> _disconnectionCompletionTask = new TaskCompletionSource<bool>();
         private bool _isReady = false;
 
-        public TwitchChatClient(TwitchClientSettings settings, TwitchAPI twitchApi)
+        public TwitchChatClient(TwitchClientSettings settings, ITwitchAPI twitchApi)
         {
             _settings = settings;
             _twitchApi = twitchApi;
@@ -97,7 +97,7 @@ namespace DevChatter.Bot.Infra.Twitch
             }
         }
 
-        public List<ChatUser> GetAllChatters()
+        public IList<ChatUser> GetAllChatters()
         {
             var chatters = _twitchApi.Undocumented.GetChattersAsync(_settings.TwitchChannel).Result;
             var chatUsers = chatters.Select(x => x.ToChatUser()).ToList();

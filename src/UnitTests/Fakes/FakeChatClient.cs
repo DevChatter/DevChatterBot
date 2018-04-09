@@ -24,7 +24,7 @@ namespace UnitTests.Fakes
             SentMessage = message;
         }
 
-        public List<ChatUser> GetAllChatters()
+        public IList<ChatUser> GetAllChatters()
         {
             throw new NotImplementedException();
         }

@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public class AutomatedMessagingSystem
+    public class AutomatedMessagingSystem : IAutomatedMessagingSystem
     {
-        public List<IAutomatedMessage> ManagedMessages { get; set; } = new List<IAutomatedMessage>(); // TODO: Lock down access to this
-        public List<string> QueuedMessages { get; set; } = new List<string>(); // TODO: Lock down access to this
+        public IList<IAutomatedMessage> ManagedMessages { get; set; } = new List<IAutomatedMessage>(); // TODO: Lock down access to this
+        public IList<string> QueuedMessages { get; set; } = new List<string>(); // TODO: Lock down access to this
 
         public void Publish(IAutomatedMessage automatedMessage)
         {
@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Messaging
         {
             var messagesToQueue = ManagedMessages.Where(m => m.IsTimeToDisplay()).Select(m => m.GetMessageInstance());
 
-            QueuedMessages.AddRange(messagesToQueue);
+            QueuedMessages = QueuedMessages.Concat(messagesToQueue).ToList();
         }
 
         public bool DequeueMessage(out string message)

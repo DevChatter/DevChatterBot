@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using Autofac;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Commands;
@@ -16,58 +19,83 @@ namespace DevChatter.Bot.Startup
 {
     public static class SetUpBot
     {
-        public static BotMain NewBot(BotConfiguration botConfiguration)
+        public static IContainer NewBotDepedencyContainer(BotConfiguration botConfiguration)
         {
-            var twitchSettings = botConfiguration.TwitchClientSettings;
-            var twitchApi = new TwitchAPI(twitchSettings.TwitchClientId);
-            var twitchChatClient = new TwitchChatClient(twitchSettings, twitchApi);
-            var chatClients = new List<IChatClient>
-            {
-                new ConsoleChatClient(),
-                twitchChatClient,
-            };
-            var twitchFollowerService = new TwitchFollowerService(twitchApi, twitchSettings);
-            var twitchPlatform = new StreamingPlatform(twitchChatClient, twitchFollowerService, new TwitchStreamingInfoService(twitchApi, twitchSettings));
+            var repository = SetUpDatabase.SetUpRepository(botConfiguration.DatabaseConnectionString);
 
-            IRepository repository = SetUpDatabase.SetUpRepository(botConfiguration.DatabaseConnectionString);
+            var builder = new ContainerBuilder();
 
-            var chatUserCollection = new ChatUserCollection(repository);
-            var currencyGenerator = new CurrencyGenerator(chatClients, chatUserCollection);
-            var currencyUpdate = new CurrencyUpdate(1, currencyGenerator);
+            builder.Register(ctx => botConfiguration.CommandHandlerSettings).AsSelf().InstancePerLifetimeScope();
+            builder.Register(ctx => botConfiguration.TwitchClientSettings).AsSelf().InstancePerLifetimeScope();
 
-            var automatedActionSystem = new AutomatedActionSystem(new List<IIntervalAction> { currencyUpdate });
-            var rockPaperScissorsGame = new RockPaperScissorsGame(currencyGenerator, automatedActionSystem);
-            var wordList = new List<string> { "apple", "banana", "orange", "mango", "watermellon", "grapes", "pizza", "pasta", "pepperoni", "cheese", "mushroom", "csharp", "javascript", "cplusplus", "nullreferenceexception", "parameter", "argument" };
-            var hangmanGame = new HangmanGame(currencyGenerator, automatedActionSystem, wordList);
+            builder.RegisterType<TwitchFollowerService>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.Register(ctx => new TwitchAPI(botConfiguration.TwitchClientSettings.TwitchClientId))
+                .AsImplementedInterfaces();
+            builder.RegisterType<TwitchChatClient>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<StreamingPlatform>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<TwitchStreamingInfoService>().AsImplementedInterfaces().InstancePerLifetimeScope();
+
+            builder.RegisterType<ConsoleChatClient>().AsImplementedInterfaces().InstancePerLifetimeScope();
+
+            builder.Register(ctx => repository).As<IRepository>().InstancePerLifetimeScope();
+
+            builder.RegisterType<ChatUserCollection>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<CurrencyGenerator>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.Register(ctx => new CurrencyUpdate(1, ctx.Resolve<ICurrencyGenerator>()))
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<AutomatedActionSystem>().AsImplementedInterfaces().InstancePerLifetimeScope();
+
+            builder.RegisterType<RockPaperScissorsGame>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<RockPaperScissorsCommand>().AsImplementedInterfaces().InstancePerLifetimeScope();
+
+            builder.RegisterType<HangmanGame>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<HardcodedWordListProvider>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<HangmanCommand>().AsImplementedInterfaces().InstancePerLifetimeScope();
+
+            builder.RegisterType<UptimeCommand>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<GiveCommand>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<CoinsCommand>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<BonusCommand>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<StreamsCommand>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<ShoutOutCommand>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<QuoteCommand>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<AddQuoteCommand>().AsImplementedInterfaces().InstancePerLifetimeScope();
+
+            builder.Register(ctx => new HelpCommand())
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
+            builder.Register(ctx => new CommandsCommand())
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
+            builder.Register(ctx => new AddCommandCommand(ctx.Resolve<IRepository>()))
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
+            builder.Register(ctx => new RemoveCommandCommand(ctx.Resolve<IRepository>()))
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
 
             var simpleCommands = repository.List<SimpleCommand>();
+            foreach (var command in simpleCommands)
+            {
+                builder.Register(ctx => command).AsImplementedInterfaces().InstancePerLifetimeScope();
+            }
 
-            List<IBotCommand> allCommands = new List<IBotCommand>();
-            allCommands.AddRange(simpleCommands);
-            allCommands.Add(new UptimeCommand(twitchPlatform));
-            allCommands.Add(new GiveCommand(chatUserCollection));
-            allCommands.Add(new HelpCommand(allCommands));
-            allCommands.Add(new CommandsCommand(allCommands));
-            allCommands.Add(new CoinsCommand(repository));
-            allCommands.Add(new BonusCommand(currencyGenerator));
-            allCommands.Add(new StreamsCommand(repository));
-            allCommands.Add(new ShoutOutCommand(twitchFollowerService));
-            allCommands.Add(new QuoteCommand(repository));
-            allCommands.Add(new AddQuoteCommand(repository));
-            allCommands.Add(new AddCommandCommand(repository, allCommands));
-            allCommands.Add(new RemoveCommandCommand(repository, allCommands));
-            allCommands.Add(new HangmanCommand(hangmanGame));
-            allCommands.Add(new RockPaperScissorsCommand(rockPaperScissorsGame));
+            builder.Register(ctx => new CommandList(ctx.Resolve<IList<IBotCommand>>()))
+                .AsSelf()
+                .InstancePerLifetimeScope();
 
-            var commandUsageTracker = new CommandUsageTracker(botConfiguration.CommandHandlerSettings);
-            var commandHandler = new CommandHandler(commandUsageTracker, chatClients, allCommands);
-            var subscriberHandler = new SubscriberHandler(chatClients);
+            builder.RegisterType<CommandUsageTracker>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<CommandHandler>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<SubscriberHandler>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<FollowableSystem>().AsImplementedInterfaces().InstancePerLifetimeScope();
 
-            var twitchSystem = new FollowableSystem(new[] { twitchChatClient }, twitchFollowerService);
+            builder.RegisterType<BotMain>().AsImplementedInterfaces().InstancePerLifetimeScope();
 
+            var container = builder.Build();
 
-            var botMain = new BotMain(chatClients, repository, commandHandler, subscriberHandler, twitchSystem, automatedActionSystem);
-            return botMain;
+            return container;
         }
 
     }

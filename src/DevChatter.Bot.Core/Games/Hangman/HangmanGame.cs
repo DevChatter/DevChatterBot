@@ -17,10 +17,10 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         private readonly List<HangmanGuess> _guessedLetters = new List<HangmanGuess>();
 
-        private readonly List<string> _wordList;
+        private readonly IWordListProvider _wordList;
 
         private string _password;
-        public string Password => _password ?? (_password = _wordList.OrderBy(x => Guid.NewGuid()).FirstOrDefault());
+        public string Password => _password ?? (_password = _wordList.Words.OrderBy(x => Guid.NewGuid()).FirstOrDefault());
 
         public string MaskedPassword
         {
@@ -37,13 +37,13 @@ namespace DevChatter.Bot.Core.Games.Hangman
             }
         }
 
-        private readonly CurrencyGenerator _currencyGenerator;
-        private readonly AutomatedActionSystem _automatedActionSystem;
+        private readonly ICurrencyGenerator _currencyGenerator;
+        private readonly IAutomatedActionSystem _automatedActionSystem;
 
         private bool _isRunningGame;
 
-        public HangmanGame(CurrencyGenerator currencyGenerator, AutomatedActionSystem automatedActionSystem, 
-            List<string> wordList)
+        public HangmanGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem, 
+            IWordListProvider wordList)
         {
             _currencyGenerator = currencyGenerator;
             _automatedActionSystem = automatedActionSystem;
@@ -167,16 +167,5 @@ namespace DevChatter.Bot.Core.Games.Hangman
         {
             chatClient.SendMessage($"There's no {nameof(HangmanGame)} running, {chatUser.DisplayName}.");
         }
-    }
-
-    public class HangmanGuess
-    {
-        public HangmanGuess(string letter, ChatUser guesser)
-        {
-            Letter = letter;
-            Guesser = guesser;
-        }
-        public string Letter { get; }
-        public ChatUser Guesser { get; }
     }
 }

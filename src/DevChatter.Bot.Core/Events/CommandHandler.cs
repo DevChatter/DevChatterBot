@@ -6,13 +6,13 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Events
 {
-    public class CommandHandler
+    public class CommandHandler : ICommandHandler
     {
-        private readonly CommandUsageTracker _usageTracker;
-        private readonly List<IBotCommand> _commandMessages;
+        private readonly ICommandUsageTracker _usageTracker;
+        private readonly IList<IBotCommand> _commandMessages;
 
-        public CommandHandler(CommandUsageTracker usageTracker, List<IChatClient> chatClients,
-            List<IBotCommand> commandMessages)
+        public CommandHandler(ICommandUsageTracker usageTracker, IEnumerable<IChatClient> chatClients,
+            CommandList commandMessages)
         {
             _usageTracker = usageTracker;
             _commandMessages = commandMessages;

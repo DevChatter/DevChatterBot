@@ -24,7 +24,7 @@ namespace DevChatter.Bot
             Console.WriteLine(message);
         }
 
-        public List<ChatUser> GetAllChatters()
+        public IList<ChatUser> GetAllChatters()
         {
             return new List<ChatUser>();
         }

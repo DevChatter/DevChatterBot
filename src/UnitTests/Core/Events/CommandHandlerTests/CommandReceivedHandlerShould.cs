@@ -38,7 +38,7 @@ namespace UnitTests.Core.Events.CommandHandlerTests
             var commandUsageTracker = new CommandUsageTracker(new CommandHandlerSettings());
             var chatClients = new List<IChatClient> { new FakeChatClient() };
             var commandMessages = new List<IBotCommand> { fakeCommand };
-            var commandHandler = new CommandHandler(commandUsageTracker, chatClients, commandMessages);
+            var commandHandler = new CommandHandler(commandUsageTracker, chatClients, new CommandList(commandMessages));
             return commandHandler;
         }
     }
