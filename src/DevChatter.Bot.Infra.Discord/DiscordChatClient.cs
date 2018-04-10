@@ -19,9 +19,9 @@ namespace DevChatter.Bot.Infra.Discord
         private readonly DiscordSocketClient _discordClient;
         private TaskCompletionSource<bool> _connectionCompletionTask = new TaskCompletionSource<bool>();
         private TaskCompletionSource<bool> _disconnectionCompletionTask = new TaskCompletionSource<bool>();
-        private SocketGuild _Guild;
-        private readonly List<ulong> _GuildChannelIds = new List<ulong>();
-        private ISocketMessageChannel _TextChannel;
+        private SocketGuild _guild;
+        private readonly List<ulong> _guildChannels = new List<ulong>();
+        private ISocketMessageChannel _textChannel;
         private bool _isReady;
 
         public DiscordChatClient(DiscordClientSettings settings)
@@ -39,27 +39,27 @@ namespace DevChatter.Bot.Infra.Discord
 
         private async Task DiscordClientGuildAvailable(SocketGuild guild)
         {
-            _Guild = guild;
-            _GuildChannelIds.AddRange(_Guild.Channels.Select(channel => channel.Id));
-            _TextChannel = _Guild.Channels.FirstOrDefault(channel => channel.Id == _settings.DiscordTextChannelId) as ISocketMessageChannel;
+            _guild = guild;
+            _guildChannels.AddRange(_guild.Channels.Select(channel => channel.Id));
+            _textChannel = _guild.Channels.FirstOrDefault(channel => channel.Id == _settings.DiscordTextChannelId) as ISocketMessageChannel;
             _isReady = true;
         }
 
         private async Task DiscordClientGuildUnavailable(SocketGuild guild)
         {
-            _Guild = null;
-            _GuildChannelIds.Clear();
+            _guild = null;
+            _guildChannels.Clear();
             _isReady = false;
         }
 
         private async Task DiscordClientChannelCreated(SocketChannel newChannel)
         {
-            _GuildChannelIds.Add(newChannel.Id);
+            _guildChannels.Add(newChannel.Id);
         }
 
         private async Task DiscordClientChannelDestroyed(SocketChannel oldChannel)
         {
-            _GuildChannelIds.Remove(oldChannel.Id);
+            _guildChannels.Remove(oldChannel.Id);
         }
 
         private async Task DiscordClientMessageReceived(SocketMessage arg)
@@ -73,7 +73,7 @@ namespace DevChatter.Bot.Infra.Discord
             int commandStartIndex = 0;
             if (message.HasCharPrefix(_settings.CommandPrefix, ref commandStartIndex))
             {
-                if (_GuildChannelIds.Contains(message.Channel.Id))
+                if (_guildChannels.Contains(message.Channel.Id))
                 {
                     if (arg.Author is IGuildUser guildUser)
                     {
@@ -147,12 +147,12 @@ namespace DevChatter.Bot.Infra.Discord
             RaiseOnUserLeft(arg);
         }
 
-        public List<ChatUser> GetAllChatters()
+        public IList<ChatUser> GetAllChatters()
         {
             if(!_isReady)
                 return new List<ChatUser>();
 
-            var chatUsers = _Guild.Users.Select(user => user.ToChatUser(_settings)).ToList();
+            var chatUsers = _guild.Users.Select(user => user.ToChatUser(_settings)).ToList();
             return chatUsers;
         }
 
@@ -163,7 +163,7 @@ namespace DevChatter.Bot.Infra.Discord
                 return;
             }
 
-            _TextChannel.SendMessageAsync($"`{message}`").Wait();
+            _textChannel.SendMessageAsync($"`{message}`").Wait();
         }
 
         private void RaiseOnCommandReceived(IGuildUser user, string commandWord, List<string> arguments)
