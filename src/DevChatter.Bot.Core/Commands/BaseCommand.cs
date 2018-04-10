@@ -3,7 +3,6 @@ using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -12,7 +11,7 @@ namespace DevChatter.Bot.Core.Commands
 {
     public abstract class BaseCommand : IBotCommand
     {
-        private readonly IRepository _repository;
+        protected readonly IRepository Repository;
         private readonly bool _isEnabled;
         public UserRole RoleRequired { get; }
         public string PrimaryCommandText => CommandWords.First();
@@ -26,7 +25,7 @@ namespace DevChatter.Bot.Core.Commands
 
         protected BaseCommand(IRepository repository, UserRole roleRequired, bool isEnabled)
         {
-            _repository = repository;
+            Repository = repository;
             RoleRequired = roleRequired;
             _isEnabled = isEnabled;
             CommandWords = RefreshCommandWords();
@@ -34,7 +33,7 @@ namespace DevChatter.Bot.Core.Commands
 
         private List<string> RefreshCommandWords()
         {
-            return _repository
+            return Repository
                 .List(CommandWordPolicy.ByType(GetType()))
                 ?.OrderByDescending(x => x.IsPrimary)
                 .Select(word => word.CommandWord)

@@ -62,19 +62,12 @@ namespace DevChatter.Bot.Startup
             builder.RegisterType<StreamsCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ShoutOutCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<QuoteCommand>().AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<AddQuoteCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<AliasCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.Register(ctx => new HelpCommand(ctx.Resolve<IRepository>()))
                 .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
                 .AsImplementedInterfaces();
             builder.Register(ctx => new CommandsCommand(ctx.Resolve<IRepository>()))
-                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
-                .AsImplementedInterfaces();
-            builder.Register(ctx => new AddCommandCommand(ctx.Resolve<IRepository>()))
-                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
-                .AsImplementedInterfaces();
-            builder.Register(ctx => new RemoveCommandCommand(ctx.Resolve<IRepository>()))
                 .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
                 .AsImplementedInterfaces();
 
