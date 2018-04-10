@@ -18,10 +18,12 @@ namespace DevChatter.Bot.Core.Commands
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            var listOfCommands = AllCommands.Where(x => eventArgs.ChatUser.CanUserRunCommand(x)).Select(x => $"!{x.PrimaryCommandText}").ToList();
-
-            string stringOfCommands = string.Join(", ", listOfCommands);
-            chatClient.SendMessage($"These are the commands that {eventArgs.ChatUser.DisplayName} is allowed to run: ({stringOfCommands})");
+            var listOfCommands = AllCommands.Where(x => eventArgs.ChatUser.CanUserRunCommand(x));
+            var listOfDefaultCommands = listOfCommands.Where(x => x.CommandType == "Default").Select(x => $"!{x.PrimaryCommandText}");
+            var listOfGameCommands = listOfCommands.Where(x => x.CommandType == "Game").Select(x => $"*!{x.PrimaryCommandText}");
+            string stringOfCommands = string.Join(", ", listOfDefaultCommands.Concat(listOfGameCommands));
+            chatClient.SendMessage($"These are the commands that {eventArgs.ChatUser.DisplayName} is allowed to run: {stringOfCommands}." +
+                $"\n (*Only subscribers can start these games. However, all viewers in chat can join a game once it's started.)");
         }
     }
 }

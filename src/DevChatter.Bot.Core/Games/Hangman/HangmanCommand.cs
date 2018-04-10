@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         private readonly HangmanGame _hangmanGame;
 
         public HangmanCommand(IRepository repository, HangmanGame hangmanGame)
-            : base(repository, UserRole.Everyone)
+            : base(repository, UserRole.Everyone, true, "Game")
         {
             _hangmanGame = hangmanGame;
             HelpText = "Use \"!hangman\" to start a game. Use \"!hangman x\" to guess a letter. Use \"!hangman word\" to guess a word.";

@@ -24,6 +24,7 @@ namespace DevChatter.Bot.Core.Commands
 
         public string StaticResponse { get; protected set; }
         public UserRole RoleRequired { get; protected set; }
+        public string CommandType { get; protected set; } = "Default";
         public string PrimaryCommandText => CommandText;
         public string CommandText { get; protected set; }
         public string HelpText { get; protected set; } = $"No help text for this command yet.";
