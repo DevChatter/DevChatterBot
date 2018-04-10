@@ -6,6 +6,7 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Core.Util;
 using DevChatter.Bot.Infra.Ef;
 using Microsoft.EntityFrameworkCore;
 
@@ -63,7 +64,7 @@ namespace DevChatter.Bot.Startup
             var automatedMessages = new List<IntervalMessage>
             {
                 new IntervalMessage(15,
-                    "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!")
+                    "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!", new SystemClock())
             };
             return automatedMessages;
         }

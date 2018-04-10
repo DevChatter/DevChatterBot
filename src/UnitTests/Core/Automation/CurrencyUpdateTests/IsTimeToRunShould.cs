@@ -5,7 +5,6 @@ using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
-using Pose;
 using UnitTests.Fakes;
 using Xunit;
 
@@ -16,7 +15,7 @@ namespace UnitTests.Core.Automation.CurrencyUpdateTests
         [Fact]
         public void ReturnFalse_UponInitialCreation()
         {
-            var currencyUpdate = new CurrencyUpdate(1, null);
+            var currencyUpdate = new CurrencyUpdate(1, null, new FakeClock());
 
             bool result = currencyUpdate.IsTimeToRun();
 
@@ -27,24 +26,28 @@ namespace UnitTests.Core.Automation.CurrencyUpdateTests
         public void ReturnTrue_AfterWaitingFullInterval()
         {
             const int intervalInMinutes = 1;
-            Shim shim = Shim.Replace(() => DateTime.Now).With(() => DateTime.Now.AddMinutes(intervalInMinutes));
-            var currencyUpdate = new CurrencyUpdate(intervalInMinutes, null);
+            var fakeClock = new FakeClock();
+            var currencyUpdate = new CurrencyUpdate(intervalInMinutes, null, fakeClock);
+            fakeClock.Now = fakeClock.Now.AddMinutes(intervalInMinutes);
 
-            PoseContext.Isolate(() => Assert.True(currencyUpdate.IsTimeToRun()), shim);
+            Assert.True(currencyUpdate.IsTimeToRun());
         }
 
         [Fact]
         public void ReturnFalse_AfterInvokingAction()
         {
-            // TODO: Add the shim in here, because the test would pass regardless
             const int intervalInMinutes = 1;
             IRepository repository = new FakeRepo();
-            var currencyUpdate = new CurrencyUpdate(intervalInMinutes, new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(repository)));
+            var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(repository));
+            var fakeClock = new FakeClock();
+            var currencyUpdate = new CurrencyUpdate(intervalInMinutes, currencyGenerator, fakeClock);
 
-            bool result = false;
+            fakeClock.Now = fakeClock.Now.AddMinutes(intervalInMinutes);
+            Assert.True(currencyUpdate.IsTimeToRun());
+
+            fakeClock.Now = fakeClock.Now.AddMinutes(intervalInMinutes);
             currencyUpdate.Invoke();
-            result = currencyUpdate.IsTimeToRun();
-            Assert.False(result);
+            Assert.False(currencyUpdate.IsTimeToRun());
         }
     }
 }

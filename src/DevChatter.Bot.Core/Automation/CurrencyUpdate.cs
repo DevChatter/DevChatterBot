@@ -1,5 +1,6 @@
 ﻿using System;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Automation
 {
@@ -7,16 +8,18 @@ namespace DevChatter.Bot.Core.Automation
     {
         private readonly int _intervalInMinutes;
         private readonly ICurrencyGenerator _currencyGenerator;
+        private readonly IClock _clock;
         private DateTime _nextRunTime;
 
-        public CurrencyUpdate(int intervalInMinutes, ICurrencyGenerator currencyGenerator)
+        public CurrencyUpdate(int intervalInMinutes, ICurrencyGenerator currencyGenerator, IClock clock)
         {
             _intervalInMinutes = intervalInMinutes;
             _currencyGenerator = currencyGenerator;
+            _clock = clock;
             SetNextRunTime();
         }
 
-        public bool IsTimeToRun() => DateTime.Now > _nextRunTime;
+        public bool IsTimeToRun() => _clock.Now >= _nextRunTime;
 
         public void Invoke()
         {
@@ -26,7 +29,7 @@ namespace DevChatter.Bot.Core.Automation
 
         private void SetNextRunTime()
         {
-            _nextRunTime = DateTime.Now.AddMinutes(_intervalInMinutes);
+            _nextRunTime = _clock.Now.AddMinutes(_intervalInMinutes);
         }
     }
 }
