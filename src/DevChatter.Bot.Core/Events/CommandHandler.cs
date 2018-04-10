@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Commands.Trackers;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Events
