@@ -31,16 +31,16 @@ namespace DevChatter.Bot.Core.Commands
             CommandWords = RefreshCommandWords();
         }
 
-        private string[] RefreshCommandWords()
+        private List<string> RefreshCommandWords()
         {
             return _repository
                 .List(CommandWordPolicy.ByType(GetType()))
-                .OrderByDescending(x => x.IsPrimary)
+                ?.OrderByDescending(x => x.IsPrimary)
                 .Select(word => word.CommandWord)
-                .ToArray();
+                .ToList() ?? new List<string>();
         }
 
-        public void NotifyWordsModified() => CommandWords = RefreshCommandWords(); 
+        public void NotifyWordsModified() => CommandWords = RefreshCommandWords();
 
         public bool ShouldExecute(string commandText) => _isEnabled && CommandWords.Any(x => x.EqualsIns(commandText));
 
