@@ -1,16 +1,18 @@
 ﻿using System;
 using DevChatter.Bot.Core.Messaging;
-using Pose;
+using UnitTests.Fakes;
 using Xunit;
 
 namespace UnitTests.Core.IntervalMessageTests
 {
     public class IsTimeToDisplayShould
     {
+        private static int _delayInMinutes = 1;
+
         [Fact]
         public void ReturnFalse_AtInitialCreation()
         {
-            var message = GetTestMessage();
+            (IntervalMessage message, _) = GetTestMessage();
 
             Assert.False(message.IsTimeToDisplay());
         }
@@ -18,34 +20,40 @@ namespace UnitTests.Core.IntervalMessageTests
         [Fact]
         public void ReturnTrue_GivenTimeEqualToDelayInMinutes()
         {
-            Shim shim = Shim.Replace(() => DateTime.Now).With(() => DateTime.Now.AddMinutes(1));
-            var message = GetTestMessage();
+            (IntervalMessage message, FakeClock clock) = GetTestMessage();
 
-            PoseContext.Isolate(() => Assert.True(message.IsTimeToDisplay()), shim);
+            clock.Now = DateTime.Now.AddMinutes(_delayInMinutes); // wait a minute
+
+            Assert.True(message.IsTimeToDisplay());
         }
 
         [Fact]
         public void ReturnFalse_ImmediatelyAfterSendingMessage()
         {
-            var message = GetTestMessage();
+            (IntervalMessage message, _) = GetTestMessage();
 
             message.GetMessageInstance(); // Will reset the interval time
+
             Assert.False(message.IsTimeToDisplay());
         }
 
         [Fact]
         public void ReturnTrue_OnSecondInterval()
         {
-            Shim shim = Shim.Replace(() => DateTime.Now).With(() => DateTime.Now.AddMinutes(1));
-            var message = GetTestMessage();
+            (IntervalMessage message, FakeClock clock) = GetTestMessage();
 
             message.GetMessageInstance(); // Will reset the interval time
-            PoseContext.Isolate(() => Assert.True(message.IsTimeToDisplay()), shim);
+
+            clock.Now = clock.Now.AddMinutes(_delayInMinutes); // Wait a minute
+
+            Assert.True(message.IsTimeToDisplay());
         }
 
-        private static IntervalMessage GetTestMessage()
+        private static (IntervalMessage, FakeClock) GetTestMessage()
         {
-            return new IntervalMessage(1, "Hello there!");
+            var fakeClock = new FakeClock();
+            var intervalMessage = new IntervalMessage(_delayInMinutes, "Hello there!", fakeClock);
+            return (intervalMessage, fakeClock);
         }
     }
 }

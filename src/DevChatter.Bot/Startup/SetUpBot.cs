@@ -11,6 +11,7 @@ using DevChatter.Bot.Infra.Twitch;
 using DevChatter.Bot.Infra.Twitch.Events;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Util;
 using TwitchLib;
 
 namespace DevChatter.Bot.Startup
@@ -32,6 +33,7 @@ namespace DevChatter.Bot.Startup
             builder.RegisterType<TwitchChatClient>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<StreamingPlatform>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<TwitchStreamingInfoService>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<SystemClock>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<ConsoleChatClient>().AsImplementedInterfaces().SingleInstance();
 
@@ -39,7 +41,7 @@ namespace DevChatter.Bot.Startup
 
             builder.RegisterType<ChatUserCollection>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CurrencyGenerator>().AsImplementedInterfaces().SingleInstance();
-            builder.Register(ctx => new CurrencyUpdate(1, ctx.Resolve<ICurrencyGenerator>()))
+            builder.Register(ctx => new CurrencyUpdate(1, ctx.Resolve<ICurrencyGenerator>(), ctx.Resolve<IClock>()))
                 .AsImplementedInterfaces()
                 .SingleInstance();
 
