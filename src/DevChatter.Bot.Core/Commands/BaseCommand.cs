@@ -14,6 +14,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IRepository _repository;
         private readonly bool _isEnabled;
         public UserRole RoleRequired { get; }
+        public string CommandType { get; } = "Default";
         public string PrimaryCommandText => CommandWords.First();
         public IList<string> CommandWords { get; private set; }
         public string HelpText { get; protected set; }
@@ -29,6 +30,15 @@ namespace DevChatter.Bot.Core.Commands
             RoleRequired = roleRequired;
             _isEnabled = isEnabled;
             CommandWords = RefreshCommandWords();
+        }
+
+        protected BaseCommand(IRepository repository, UserRole roleRequired, bool isEnabled, string commandType)
+        {
+            _repository = repository;
+            RoleRequired = roleRequired;
+            _isEnabled = isEnabled;
+            CommandWords = RefreshCommandWords();
+            CommandType = commandType;
         }
 
         private string[] RefreshCommandWords()

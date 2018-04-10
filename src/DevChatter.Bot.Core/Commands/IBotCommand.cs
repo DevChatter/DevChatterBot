@@ -8,6 +8,7 @@ namespace DevChatter.Bot.Core.Commands
     public interface IBotCommand
     {
         UserRole RoleRequired { get; }
+        string CommandType { get; }
         string PrimaryCommandText { get; }
         string HelpText { get; }
         bool ShouldExecute(string commandText);
