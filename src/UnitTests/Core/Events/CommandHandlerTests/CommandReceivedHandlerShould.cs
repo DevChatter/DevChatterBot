@@ -19,7 +19,7 @@ namespace UnitTests.Core.Events.CommandHandlerTests
             var fakeCommand = new FakeCommand(GetTestRepository(), true);
             CommandHandler commandHandler = GetTestCommandHandler(fakeCommand);
 
-            commandHandler.CommandReceivedHandler(new FakeChatClient(), 
+            commandHandler.CommandReceivedHandler(new Mock<IChatClient>().Object, 
                 new CommandReceivedEventArgs { CommandWord = fakeCommand.CommandText});
 
             Assert.True(fakeCommand.ProcessWasCalled);
@@ -31,7 +31,7 @@ namespace UnitTests.Core.Events.CommandHandlerTests
             var fakeCommand = new FakeCommand(GetTestRepository(), false);
             CommandHandler commandHandler = GetTestCommandHandler(fakeCommand);
 
-            commandHandler.CommandReceivedHandler(new FakeChatClient(), 
+            commandHandler.CommandReceivedHandler(new Mock<IChatClient>().Object, 
                 new CommandReceivedEventArgs { CommandWord = fakeCommand.CommandText });
 
             Assert.False(fakeCommand.ProcessWasCalled);
@@ -57,7 +57,7 @@ namespace UnitTests.Core.Events.CommandHandlerTests
         private static CommandHandler GetTestCommandHandler(FakeCommand fakeCommand)
         {
             var commandUsageTracker = new CommandUsageTracker(new CommandHandlerSettings());
-            var chatClients = new List<IChatClient> { new FakeChatClient() };
+            var chatClients = new List<IChatClient> { new Mock<IChatClient>().Object };
             var commandMessages = new List<IBotCommand> { fakeCommand };
             var commandHandler = new CommandHandler(commandUsageTracker, chatClients, new CommandList(commandMessages));
             return commandHandler;
