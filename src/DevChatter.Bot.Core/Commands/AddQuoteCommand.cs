@@ -1,9 +1,7 @@
 ﻿using System.Linq;
-using System.Net.Http.Headers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
@@ -16,7 +14,7 @@ namespace DevChatter.Bot.Core.Commands
             : base(repository, UserRole.Mod)
         {
             _repository = repository;
-            HelpText = "Example usage !quoteadd \"this is the quote\" @Brendoneus";
+            HelpText = $"Example usage !{PrimaryCommandText} \"this is the quote\" @Brendoneus";
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
