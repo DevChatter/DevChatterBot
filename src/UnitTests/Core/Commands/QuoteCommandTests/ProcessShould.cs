@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
-using UnitTests.Fakes;
+using DevChatter.Bot.Core.Systems.Chat;
+using Moq;
 using Xunit;
 
 namespace UnitTests.Core.Commands.QuoteCommandTests
@@ -11,11 +14,13 @@ namespace UnitTests.Core.Commands.QuoteCommandTests
     public class ProcessShould
     {
         private QuoteCommand _quoteCommand;
-        private readonly FakeChatClient _fakeChatClient = new FakeChatClient();
+        private readonly Mock<IChatClient> _chatClientMock = new Mock<IChatClient>();
+        private readonly Mock<IRepository> _repositoryMock = new Mock<IRepository>();
 
-        private void SetUpTest(QuoteEntity foundQuote, IList<CommandWordEntity> words = null)
+        private void SetUpTest(QuoteEntity foundQuote)
         {
-            _quoteCommand = new QuoteCommand(new FakeRepo {SingleToReturn = foundQuote});
+            _repositoryMock.Setup(x => x.Single(It.IsAny<ISpecification<QuoteEntity>>())).Returns(foundQuote);
+            _quoteCommand = new QuoteCommand(_repositoryMock.Object);
         }
 
         [Fact]
@@ -26,9 +31,9 @@ namespace UnitTests.Core.Commands.QuoteCommandTests
 
             CommandReceivedEventArgs commandReceivedEventArgs = GetEventArgs(1);
 
-            _quoteCommand.Process(_fakeChatClient, commandReceivedEventArgs);
+            _quoteCommand.Process(_chatClientMock.Object, commandReceivedEventArgs);
 
-            Assert.Equal(foundQuote.ToString(), _fakeChatClient.SentMessage);
+            _chatClientMock.Verify(x => x.SendMessage(foundQuote.ToString()));
         }
 
         [Fact]
@@ -39,9 +44,9 @@ namespace UnitTests.Core.Commands.QuoteCommandTests
 
             CommandReceivedEventArgs commandReceivedEventArgs = GetEventArgs(requestQuoteId);
 
-            _quoteCommand.Process(_fakeChatClient, commandReceivedEventArgs);
+            _quoteCommand.Process(_chatClientMock.Object, commandReceivedEventArgs);
 
-            Assert.Equal($"I'm sorry, but we don't have a quote {requestQuoteId}... Yet...", _fakeChatClient.SentMessage);
+            _chatClientMock.Verify(x => x.SendMessage($"I'm sorry, but we don't have a quote {requestQuoteId}... Yet..."));
         }
 
         private static CommandReceivedEventArgs GetEventArgs(int requestQuoteId)
