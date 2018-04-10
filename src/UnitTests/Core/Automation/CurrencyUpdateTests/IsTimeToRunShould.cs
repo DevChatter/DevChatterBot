@@ -5,6 +5,7 @@ using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
+using Moq;
 using UnitTests.Fakes;
 using Xunit;
 
@@ -37,7 +38,7 @@ namespace UnitTests.Core.Automation.CurrencyUpdateTests
         public void ReturnFalse_AfterInvokingAction()
         {
             const int intervalInMinutes = 1;
-            IRepository repository = new FakeRepo();
+            IRepository repository = new Mock<IRepository>().Object;
             var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(repository));
             var fakeClock = new FakeClock();
             var currencyUpdate = new CurrencyUpdate(intervalInMinutes, currencyGenerator, fakeClock);
