@@ -196,3 +196,6 @@ csharp_space_between_square_brackets = false:warning
 # Wrapping Options
 csharp_preserve_single_line_blocks = true:warning
 csharp_preserve_single_line_statements = false:warning
+# CSharp code style settings:
+[*.cs]
+csharp_prefer_braces = true:warning
