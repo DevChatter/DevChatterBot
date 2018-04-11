@@ -35,6 +35,7 @@ namespace DevChatter.Bot.Core.Commands
             return usersWeFollow[randomIndex];
         }
 
-        private static string FormatMessage(string streamName) => $"Huge shout out to @{streamName} ! You should go check out their channel! https://www.twitch.tv/{streamName}";
+        private static string FormatMessage(string streamName) =>
+            $"Huge shout out to @{streamName} ! You should go check out their channel! https://www.twitch.tv/{streamName}";
     }
 }

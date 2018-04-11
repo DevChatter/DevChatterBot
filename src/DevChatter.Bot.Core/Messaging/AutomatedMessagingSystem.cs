@@ -6,7 +6,9 @@ namespace DevChatter.Bot.Core.Messaging
 {
     public class AutomatedMessagingSystem : IAutomatedMessagingSystem
     {
-        public IList<IAutomatedMessage> ManagedMessages { get; set; } = new List<IAutomatedMessage>(); // TODO: Lock down access to this
+        public IList<IAutomatedMessage> ManagedMessages { get; set; } =
+            new List<IAutomatedMessage>(); // TODO: Lock down access to this
+
         public IList<string> QueuedMessages { get; set; } = new List<string>(); // TODO: Lock down access to this
 
         public void Publish(IAutomatedMessage automatedMessage)

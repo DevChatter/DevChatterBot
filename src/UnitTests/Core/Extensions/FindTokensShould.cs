@@ -36,8 +36,7 @@ namespace UnitTests.Core.Extensions
             string given = "This [message] contains [two] tokens.";
             var tokens = given.FindTokens().ToArray();
 
-            Assert.Equal(new []{"[message]", "[two]"}, tokens);
+            Assert.Equal(new[] {"[message]", "[two]"}, tokens);
         }
-
     }
 }

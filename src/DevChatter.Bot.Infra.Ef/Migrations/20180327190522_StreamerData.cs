@@ -18,10 +18,7 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     DateAdded = table.Column<DateTime>(nullable: false),
                     TimesShoutedOut = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Streamers", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Streamers", x => x.Id); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

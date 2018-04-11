@@ -10,7 +10,8 @@ namespace DevChatter.Bot.Core.Systems.Streaming
         private readonly IFollowerService _followerService;
         private readonly IStreamingInfoService _streamingInfoService;
 
-        public StreamingPlatform(IChatClient chatClient, IFollowerService followerService, IStreamingInfoService streamingInfoService)
+        public StreamingPlatform(IChatClient chatClient, IFollowerService followerService,
+            IStreamingInfoService streamingInfoService)
         {
             _chatClient = chatClient;
             _followerService = followerService;

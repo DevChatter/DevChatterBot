@@ -19,7 +19,9 @@ namespace DevChatter.Bot.Infra.Twitch.Events
         private readonly FollowerService _followerService;
 
         private UserFollow[] _userFollows;
-        private IEnumerable<UserFollow> UserFollows {
+
+        private IEnumerable<UserFollow> UserFollows
+        {
             get
             {
                 return _userFollows ?? (_userFollows =

@@ -27,7 +27,8 @@ namespace UnitTests.Twitch.EventArgsExtensionsTests
         private static ChatCommand GetTestCommand(string fullIrcString)
         {
             var messageEmoteCollection = new MessageEmoteCollection();
-            return new ChatCommand(fullIrcString, new ChatMessage("botName", fullIrcString, ref messageEmoteCollection));
+            return new ChatCommand(fullIrcString,
+                new ChatMessage("botName", fullIrcString, ref messageEmoteCollection));
         }
     }
 }

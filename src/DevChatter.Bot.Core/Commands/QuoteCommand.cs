@@ -18,8 +18,8 @@ namespace DevChatter.Bot.Core.Commands
         {
             _repository = repository;
             HelpText = $"Use !{PrimaryCommandText} to get a random quote, use !{PrimaryCommandText} [number] to get"
-                    + $" a specific quote, or a moderator may use !{PrimaryCommandText} add \"Quote here.\" <author> to add"
-                    + $" a quote. For example, \"!{PrimaryCommandText} add \"Oh what a day!\" Brendoneus creates a new quote.";
+                       + $" a specific quote, or a moderator may use !{PrimaryCommandText} add \"Quote here.\" <author> to add"
+                       + $" a quote. For example, \"!{PrimaryCommandText} add \"Oh what a day!\" Brendoneus creates a new quote.";
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
@@ -41,6 +41,7 @@ namespace DevChatter.Bot.Core.Commands
                     {
                         HandleQuoteRequest(chatClient, requestQuoteId);
                     }
+
                     break;
             }
         }
@@ -66,7 +67,6 @@ namespace DevChatter.Bot.Core.Commands
             QuoteEntity updatedEntity = _repository.Create(quoteEntity);
 
             chatClient.SendMessage($"Created quote # {updatedEntity.QuoteId}.");
-
         }
 
         private void HandleRandomQuoteRequest(IChatClient triggeringClient)

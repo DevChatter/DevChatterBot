@@ -13,6 +13,7 @@ namespace DevChatter.Bot.Core.Extensions
         }
 
         private static readonly Regex TokenFindingRegex = new Regex(@"\[\w+]");
+
         public static IEnumerable<string> FindTokens(this string src)
         {
             MatchCollection matches = TokenFindingRegex.Matches(src);
@@ -29,6 +30,7 @@ namespace DevChatter.Bot.Core.Extensions
             {
                 return true;
             }
+
             return a?.Equals(b, StringComparison.InvariantCultureIgnoreCase) ?? false;
         }
     }

@@ -47,7 +47,8 @@ namespace UnitTests.Core.Commands.QuoteCommandTests
 
             _quoteCommand.Process(_chatClientMock.Object, commandReceivedEventArgs);
 
-            _chatClientMock.Verify(x => x.SendMessage($"I'm sorry, but we don't have a quote {requestQuoteId}... Yet..."));
+            _chatClientMock.Verify(x =>
+                x.SendMessage($"I'm sorry, but we don't have a quote {requestQuoteId}... Yet..."));
         }
 
         private static CommandReceivedEventArgs GetEventArgs(int requestQuoteId)
@@ -71,7 +72,5 @@ namespace UnitTests.Core.Commands.QuoteCommandTests
             };
             return foundQuote;
         }
-
-
     }
 }

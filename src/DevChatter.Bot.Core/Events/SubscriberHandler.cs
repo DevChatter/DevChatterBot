@@ -18,7 +18,8 @@ namespace DevChatter.Bot.Core.Events
         {
             if (sender is IChatClient chatClient)
             {
-                chatClient.SendMessage($"Welcome, {eventArgs.SubscriberName}! You are awesome! Thank you for subscribing!");
+                chatClient.SendMessage(
+                    $"Welcome, {eventArgs.SubscriberName}! You are awesome! Thank you for subscribing!");
             }
         }
     }

@@ -16,10 +16,7 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     Role = table.Column<int>(nullable: true),
                     Tokens = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChatUsers", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_ChatUsers", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "IntervalMessages",
@@ -29,10 +26,7 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     DelayInMinutes = table.Column<int>(nullable: false),
                     MessageText = table.Column<string>(nullable: true),
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IntervalMessages", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_IntervalMessages", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "QuoteEntities",
@@ -60,10 +54,7 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     StaticResponse = table.Column<string>(nullable: true),
                     RoleRequired = table.Column<int>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SimpleCommands", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_SimpleCommands", x => x.Id); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

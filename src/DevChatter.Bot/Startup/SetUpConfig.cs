@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Startup
             builder.AddUserSecrets<Program>(); // TODO: Only do this in development
 
             IConfigurationRoot configuration = builder.Build();
-            
+
             return configuration.Get<BotConfiguration>();
         }
     }

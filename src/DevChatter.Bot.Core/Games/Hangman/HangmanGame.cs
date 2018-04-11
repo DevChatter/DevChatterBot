@@ -20,7 +20,9 @@ namespace DevChatter.Bot.Core.Games.Hangman
         private readonly IWordListProvider _wordList;
 
         private string _password;
-        public string Password => _password ?? (_password = _wordList.Words.OrderBy(x => Guid.NewGuid()).FirstOrDefault());
+
+        public string Password =>
+            _password ?? (_password = _wordList.Words.OrderBy(x => Guid.NewGuid()).FirstOrDefault());
 
         public string MaskedPassword
         {
@@ -33,7 +35,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
                             return guessedLetters.Contains(x.ToString()) ? x : '*';
                         })
                         .ToArray()
-                    );
+                );
             }
         }
 
@@ -42,7 +44,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         private bool _isRunningGame;
 
-        public HangmanGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem, 
+        public HangmanGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem,
             IWordListProvider wordList)
         {
             _currencyGenerator = currencyGenerator;
@@ -86,7 +88,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         public static List<string> CalculateLetterAwards(List<HangmanGuess> guessedLetters, string password)
         {
-            IEnumerable<HangmanGuess> hangmanGuesses = password.Select(letter => 
+            IEnumerable<HangmanGuess> hangmanGuesses = password.Select(letter =>
                 guessedLetters.SingleOrDefault(g => g.Letter == letter.ToString())).Where(x => x != null);
 
             return hangmanGuesses.Select(x => x.Guesser.DisplayName).ToList();
@@ -121,6 +123,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
                     GuessWord(chatClient, MaskedPassword, chatUser);
                     return;
                 }
+
                 chatClient.SendMessage($"Yep, {letterToAsk} is in here. {MaskedPassword}");
             }
             else
@@ -134,7 +137,8 @@ namespace DevChatter.Bot.Core.Games.Hangman
         {
             if (_guessedLetters.Count(x => !Password.Contains(x.Letter)) > 5)
             {
-                chatClient.SendMessage($"That's too many failed guesses. You all lost. devchaFail. The word was: {Password}");
+                chatClient.SendMessage(
+                    $"That's too many failed guesses. You all lost. devchaFail. The word was: {Password}");
                 ResetGame();
             }
         }
@@ -149,7 +153,8 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
             if (!chatUser.CanUserRunCommand(ROLE_REQUIRE_TO_START))
             {
-                chatClient.SendMessage($"You must be at least a {ROLE_REQUIRE_TO_START} to start a game, {chatUser.DisplayName}");
+                chatClient.SendMessage(
+                    $"You must be at least a {ROLE_REQUIRE_TO_START} to start a game, {chatUser.DisplayName}");
                 return;
             }
 
@@ -160,7 +165,8 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         private void SendGameAlreadyStartedMessage(IChatClient chatClient, ChatUser chatUser)
         {
-            chatClient.SendMessage($"There is already a {nameof(HangmanGame)} running, {chatUser.DisplayName}. Use !Hangman \"letter\" to guess a letter or !Hangman \"word\" to guess the word!");
+            chatClient.SendMessage(
+                $"There is already a {nameof(HangmanGame)} running, {chatUser.DisplayName}. Use !Hangman \"letter\" to guess a letter or !Hangman \"word\" to guess the word!");
         }
 
         private void SendGameNotStartedMessage(IChatClient chatClient, ChatUser chatUser)

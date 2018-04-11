@@ -34,10 +34,10 @@ namespace DevChatter.Bot.Core.Commands
         private List<string> RefreshCommandWords()
         {
             return Repository
-                .List(CommandWordPolicy.ByType(GetType()))
-                ?.OrderByDescending(x => x.IsPrimary)
-                .Select(word => word.CommandWord)
-                .ToList() ?? new List<string>();
+                       .List(CommandWordPolicy.ByType(GetType()))
+                       ?.OrderByDescending(x => x.IsPrimary)
+                       .Select(word => word.CommandWord)
+                       .ToList() ?? new List<string>();
         }
 
         public void NotifyWordsModified() => CommandWords = RefreshCommandWords();

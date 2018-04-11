@@ -37,7 +37,6 @@ namespace DevChatter.Bot.Core.Commands
                     ShowAllCommands(chatClient, eventArgs?.ChatUser);
                     break;
             }
-
         }
 
         private void ShowAllCommands(IChatClient chatClient, ChatUser eventArgsChatUser)
@@ -46,7 +45,8 @@ namespace DevChatter.Bot.Core.Commands
                 .Select(x => $"!{x.PrimaryCommandText}").ToList();
 
             string stringOfCommands = string.Join(", ", listOfCommands);
-            chatClient.SendMessage($"These are the commands that {eventArgsChatUser.DisplayName} is allowed to run: ({stringOfCommands})");
+            chatClient.SendMessage(
+                $"These are the commands that {eventArgsChatUser.DisplayName} is allowed to run: ({stringOfCommands})");
         }
 
         private void DelCommand(IChatClient chatClient, ChatUser chatUser, string commandWord)
@@ -58,6 +58,7 @@ namespace DevChatter.Bot.Core.Commands
                     chatClient.SendMessage("You need to be a moderator to delete a command.");
                     return;
                 }
+
                 SimpleCommand command = Repository.Single(CommandPolicy.ByCommandText(commandWord));
                 if (command == null)
                 {
@@ -92,7 +93,7 @@ namespace DevChatter.Bot.Core.Commands
                 }
 
                 // !AddCommand Twitter "https://twitter.com/DevChatter_" Everyone
-                if (!Enum.TryParse(roleText, true, out UserRole role)) 
+                if (!Enum.TryParse(roleText, true, out UserRole role))
                 {
                     role = UserRole.Everyone;
                 }
@@ -105,7 +106,8 @@ namespace DevChatter.Bot.Core.Commands
                     return;
                 }
 
-                chatClient.SendMessage($"Adding a !{command.CommandText} command for {command.RoleRequired}. It will respond with {command.StaticResponse}.");
+                chatClient.SendMessage(
+                    $"Adding a !{command.CommandText} command for {command.RoleRequired}. It will respond with {command.StaticResponse}.");
 
                 Repository.Create(command);
                 AllCommands.Add(command);

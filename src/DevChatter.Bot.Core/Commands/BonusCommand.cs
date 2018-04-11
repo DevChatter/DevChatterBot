@@ -37,6 +37,7 @@ namespace DevChatter.Bot.Core.Commands
                     chatClient.SendMessage($"Quit messing around, {bonusGiver}. You can't give negative amounts.");
                     return;
                 }
+
                 _currencyGenerator.AddCurrencyTo(new List<string> {bonusReceiver}, amount); // TODO: prevent overflow
                 chatClient.SendMessage($"Added {amount} coins to @{bonusReceiver}.");
             }

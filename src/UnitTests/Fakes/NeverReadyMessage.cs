@@ -5,7 +5,6 @@ namespace UnitTests.Fakes
 {
     public class NeverReadyMessage : IAutomatedMessage
     {
-
         public bool IsTimeToDisplay()
         {
             return false;

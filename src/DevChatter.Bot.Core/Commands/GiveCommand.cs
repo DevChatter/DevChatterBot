@@ -25,7 +25,8 @@ namespace DevChatter.Bot.Core.Commands
             string coinReceiver = eventArgs?.Arguments?.ElementAtOrDefault(0).NoAt();
             string coinsToGiveText = eventArgs?.Arguments?.ElementAtOrDefault(1);
 
-            if (string.IsNullOrWhiteSpace(coinReceiver) || string.IsNullOrWhiteSpace(coinsToGiveText) || string.IsNullOrWhiteSpace(coinGiver))
+            if (string.IsNullOrWhiteSpace(coinReceiver) || string.IsNullOrWhiteSpace(coinsToGiveText) ||
+                string.IsNullOrWhiteSpace(coinGiver))
             {
                 chatClient.SendMessage(HelpText);
                 return;
@@ -41,7 +42,8 @@ namespace DevChatter.Bot.Core.Commands
 
                 if (_chatUserCollection.TryGiveCoins(coinGiver, coinReceiver, coinsToGive))
                 {
-                    chatClient.SendMessage($"Taking {coinsToGive} coins from {coinGiver} and giving them to {coinReceiver}.");
+                    chatClient.SendMessage(
+                        $"Taking {coinsToGive} coins from {coinGiver} and giving them to {coinReceiver}.");
                 }
                 else
                 {
@@ -52,7 +54,6 @@ namespace DevChatter.Bot.Core.Commands
             {
                 chatClient.SendMessage($"Is that even a number, {coinGiver}?");
             }
-
         }
     }
 }

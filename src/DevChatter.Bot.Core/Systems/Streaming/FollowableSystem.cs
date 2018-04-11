@@ -27,7 +27,8 @@ namespace DevChatter.Bot.Core.Systems.Streaming
             {
                 foreach (string followerName in eventArgs.FollowerNames)
                 {
-                    chatClient.SendMessage($"Welcome, {followerName}! Thank you for following! Everyone, say \"hello\"!");
+                    chatClient.SendMessage(
+                        $"Welcome, {followerName}! Thank you for following! Everyone, say \"hello\"!");
                 }
             }
         }

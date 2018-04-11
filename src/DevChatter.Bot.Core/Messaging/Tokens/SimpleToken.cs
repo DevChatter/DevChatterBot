@@ -8,7 +8,9 @@ namespace DevChatter.Bot.Core.Messaging.Tokens
 {
     public class SimpleToken
     {
-        public static SimpleToken UserDisplayName = new SimpleToken(nameof(UserDisplayName), e => e.ChatUser.DisplayName);
+        public static SimpleToken UserDisplayName =
+            new SimpleToken(nameof(UserDisplayName), e => e.ChatUser.DisplayName);
+
         public static SimpleToken CommandWord = new SimpleToken(nameof(CommandWord), e => e.CommandWord);
         public static SimpleToken Arg0 = new SimpleToken(nameof(Arg0), e => e.Arguments?.ElementAtOrDefault(0) ?? "");
         public static SimpleToken Arg1 = new SimpleToken(nameof(Arg1), e => e.Arguments?.ElementAtOrDefault(1) ?? "");

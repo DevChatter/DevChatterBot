@@ -36,7 +36,6 @@ namespace DevChatter.Bot.Startup
 
         private static void EnsureInitialData(IRepository repository)
         {
-
             if (!repository.List<IntervalMessage>().Any())
             {
                 repository.Create(GetIntervalMessages());
@@ -64,7 +63,8 @@ namespace DevChatter.Bot.Startup
             var automatedMessages = new List<IntervalMessage>
             {
                 new IntervalMessage(15,
-                    "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!", new SystemClock())
+                    "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!",
+                    new SystemClock())
             };
             return automatedMessages;
         }
@@ -76,7 +76,8 @@ namespace DevChatter.Bot.Startup
                 new SimpleCommand("discord", "Hey! Checkout out our Discord here https://discord.gg/aQry9jG"),
                 new SimpleCommand("github", "Check out our GitHub repositories here https://github.com/DevChatter/"),
                 new SimpleCommand("emotes", "These are our current emotes: devchaHype devchaDerp devchaFail "),
-                new SimpleCommand("lurk", "[UserDisplayName] is just lurking here, but still thinks you're all awesome!"),
+                new SimpleCommand("lurk",
+                    "[UserDisplayName] is just lurking here, but still thinks you're all awesome!"),
             };
         }
 
@@ -84,12 +85,30 @@ namespace DevChatter.Bot.Startup
         {
             return new List<QuoteEntity>
             {
-                new QuoteEntity{QuoteId = 1, DateAdded = new DateTime(2018,3,19),
-                    AddedBy = "Brendoneus", Author = "DevChatter", Text = "Hello world!"},
-                new QuoteEntity{QuoteId = 2, DateAdded = new DateTime(2018,3,19),
-                    AddedBy = "Brendoneus", Author = "DevChatter", Text = "Welcome to DevChatter!"},
-                new QuoteEntity{QuoteId = 3, DateAdded = new DateTime(2018,3,20),
-                    AddedBy = "cragsify", Author = "DevChatter", Text = "I swear it's not rigged!"},
+                new QuoteEntity
+                {
+                    QuoteId = 1,
+                    DateAdded = new DateTime(2018, 3, 19),
+                    AddedBy = "Brendoneus",
+                    Author = "DevChatter",
+                    Text = "Hello world!"
+                },
+                new QuoteEntity
+                {
+                    QuoteId = 2,
+                    DateAdded = new DateTime(2018, 3, 19),
+                    AddedBy = "Brendoneus",
+                    Author = "DevChatter",
+                    Text = "Welcome to DevChatter!"
+                },
+                new QuoteEntity
+                {
+                    QuoteId = 3,
+                    DateAdded = new DateTime(2018, 3, 20),
+                    AddedBy = "cragsify",
+                    Author = "DevChatter",
+                    Text = "I swear it's not rigged!"
+                },
             };
         }
 

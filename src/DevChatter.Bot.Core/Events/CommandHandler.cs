@@ -73,6 +73,5 @@ namespace DevChatter.Bot.Core.Events
                 Console.WriteLine(exception);
             }
         }
-
     }
 }

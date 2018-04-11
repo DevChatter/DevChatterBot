@@ -59,7 +59,7 @@ namespace DevChatter.Bot.Core.Events
 
         public void AddCurrencyTo(List<string> listOfNames, int tokensToAdd)
         {
-            _chatUserCollection.UpdateSpecficChatters(x => x.Tokens += tokensToAdd, 
+            _chatUserCollection.UpdateSpecficChatters(x => x.Tokens += tokensToAdd,
                 x => listOfNames.Contains(x.DisplayName));
         }
 

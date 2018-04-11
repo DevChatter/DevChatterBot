@@ -11,7 +11,7 @@ namespace DevChatter.Bot.Core.Automation
 
         private DateTime _timeOfNextRun;
 
-        public RockPaperScissorsEndGame(int intervalInSeconds, 
+        public RockPaperScissorsEndGame(int intervalInSeconds,
             RockPaperScissorsGame rockPaperScissorsGame,
             IChatClient chatClient)
         {
