@@ -16,6 +16,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             Id = id;
             Name = name;
         }
+
         public int Id { get; }
         public string Name { get; }
 

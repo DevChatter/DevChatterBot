@@ -9,6 +9,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             Letter = letter;
             Guesser = guesser;
         }
+
         public string Letter { get; }
         public ChatUser Guesser { get; }
     }

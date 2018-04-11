@@ -20,9 +20,11 @@ namespace DevChatter.Bot.Core
         private readonly IFollowableSystem _followableSystem; // This will eventually be a list of these
         private readonly IAutomatedActionSystem _automatedActionSystem;
         private CancellationTokenSource _stopRequestSource;
-        private readonly int _refreshInterval = 1000;//the milliseconds the bot waits before checking for new messages
+        private readonly int _refreshInterval = 1000; //the milliseconds the bot waits before checking for new messages
 
-        public BotMain(IList<IChatClient> chatClients, IRepository repository, IFollowableSystem followableSystem, IAutomatedActionSystem automatedActionSystem, ICommandHandler commandHandler, SubscriberHandler subscriberHandler)
+        public BotMain(IList<IChatClient> chatClients, IRepository repository, IFollowableSystem followableSystem,
+            IAutomatedActionSystem automatedActionSystem, ICommandHandler commandHandler,
+            SubscriberHandler subscriberHandler)
         {
             _chatClients = chatClients;
             _repository = repository;
@@ -122,6 +124,5 @@ namespace DevChatter.Bot.Core
 
             Task.WhenAll(getUserTasks);
         }
-
     }
 }

@@ -11,11 +11,13 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
     public class RockPaperScissorsCommand : BaseCommand
     {
         private readonly RockPaperScissorsGame _rockPaperScissorsGame;
+
         public RockPaperScissorsCommand(IRepository repository, RockPaperScissorsGame rockPaperScissorsGame)
             : base(repository, UserRole.Everyone)
         {
             _rockPaperScissorsGame = rockPaperScissorsGame;
-            HelpText = "Use \"!rps\" to join randomly. Use \"!rps rock\" to select rock. Bot will eventually choose randomly and award the winners.";
+            HelpText =
+                "Use \"!rps\" to join randomly. Use \"!rps rock\" to select rock. Bot will eventually choose randomly and award the winners.";
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
@@ -32,6 +34,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
                 choice = RockPaperScissors.GetRandomChoice();
                 chatClient.SendMessage($"{username} didn't want to pick, so we randomly assigned {choice}!");
             }
+
             _rockPaperScissorsGame.JoinMatch(chatClient, (username, choice));
         }
     }

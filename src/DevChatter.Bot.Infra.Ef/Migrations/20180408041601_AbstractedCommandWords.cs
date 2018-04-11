@@ -17,10 +17,7 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     FullTypeName = table.Column<string>(nullable: false),
                     IsPrimary = table.Column<bool>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CommandWords", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_CommandWords", x => x.Id); });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommandWords_CommandWord",

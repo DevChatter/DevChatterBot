@@ -13,7 +13,10 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         private const int TOKENS_REQUIRED_TO_PLAY = 30;
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IAutomatedActionSystem _automatedActionSystem;
-        private readonly IDictionary<string, RockPaperScissors> _competitors = new Dictionary<string, RockPaperScissors>();
+
+        private readonly IDictionary<string, RockPaperScissors> _competitors =
+            new Dictionary<string, RockPaperScissors>();
+
         private readonly object _gameStartLock = new object();
         private bool _isRunningGame;
         private RockPaperScissorsEndGame _rockPaperScissorsEndGame;
@@ -29,13 +32,15 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         {
             if (_competitors.ContainsKey(userChoice.username))
             {
-                chatClient.SendMessage($"{userChoice.username} changed from {_competitors[userChoice.username]} in the Rock-Paper-Scissors game to {userChoice.choice}!");
+                chatClient.SendMessage(
+                    $"{userChoice.username} changed from {_competitors[userChoice.username]} in the Rock-Paper-Scissors game to {userChoice.choice}!");
             }
             else
             {
                 if (_currencyGenerator.RemoveCurrencyFrom(userChoice.username, TOKENS_REQUIRED_TO_PLAY))
                 {
-                    chatClient.SendMessage($"{userChoice.username} joined in the Rock-Paper-Scissors game with {userChoice.choice}!");
+                    chatClient.SendMessage(
+                        $"{userChoice.username} joined in the Rock-Paper-Scissors game with {userChoice.choice}!");
                 }
                 else
                 {
@@ -43,6 +48,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
                     return;
                 }
             }
+
             _competitors[userChoice.username] = userChoice.choice;
         }
 
@@ -113,12 +119,14 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 
         private void StartNewGame(IChatClient chatClient, string username)
         {
-            chatClient.SendMessage($"{username} wants to play Rock-Paper-Scissors! You have {SECONDS_TO_JOIN_GAME} seconds to join!");
+            chatClient.SendMessage(
+                $"{username} wants to play Rock-Paper-Scissors! You have {SECONDS_TO_JOIN_GAME} seconds to join!");
             chatClient.SendMessage("To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.");
 
             _rockPaperScissorsEndGame = new RockPaperScissorsEndGame(SECONDS_TO_JOIN_GAME, this, chatClient);
             _automatedActionSystem.AddAction(_rockPaperScissorsEndGame);
-            _joinGameWarningMessage = new DelayedMessageAction(SECONDS_TO_JOIN_GAME - 30, "Only 30 seconds left to join! Type \"!rps rock\", \"!rps paper\", or \"!rps scissors\"", chatClient);
+            _joinGameWarningMessage = new DelayedMessageAction(SECONDS_TO_JOIN_GAME - 30,
+                "Only 30 seconds left to join! Type \"!rps rock\", \"!rps paper\", or \"!rps scissors\"", chatClient);
         }
     }
 }

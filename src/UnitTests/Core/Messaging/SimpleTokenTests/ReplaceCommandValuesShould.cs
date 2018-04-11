@@ -12,7 +12,7 @@ namespace UnitTests.Core.Messaging.SimpleTokenTests
         public void PerformSimpleReplacement()
         {
             const string responseTemplate = "[UserDisplayName] is now lurking!";
-            var eventArgs = new CommandReceivedEventArgs{ChatUser = new ChatUser {DisplayName = "Lyon"}};
+            var eventArgs = new CommandReceivedEventArgs {ChatUser = new ChatUser {DisplayName = "Lyon"}};
 
             string resultingMessage = SimpleToken.UserDisplayName.ReplaceCommandValues(responseTemplate, eventArgs);
 
@@ -23,7 +23,7 @@ namespace UnitTests.Core.Messaging.SimpleTokenTests
         public void PerformSimpleReplacement_GivenUnrelatedTokens()
         {
             const string responseTemplate = "[UserDisplayName] is now [CommandWord]ing!";
-            var eventArgs = new CommandReceivedEventArgs{ChatUser = new ChatUser {DisplayName = "Lyon"}};
+            var eventArgs = new CommandReceivedEventArgs {ChatUser = new ChatUser {DisplayName = "Lyon"}};
 
             string resultingMessage = SimpleToken.UserDisplayName.ReplaceCommandValues(responseTemplate, eventArgs);
 
@@ -34,10 +34,13 @@ namespace UnitTests.Core.Messaging.SimpleTokenTests
         public void PerformMultipleReplacements_GivenMultipleTokens()
         {
             const string responseTemplate = "[UserDisplayName] is now [CommandWord]ing!";
-            var eventArgs = new CommandReceivedEventArgs{CommandWord = "lurk", ChatUser = new ChatUser {DisplayName = "Lyon"}};
+            var eventArgs =
+                new CommandReceivedEventArgs {CommandWord = "lurk", ChatUser = new ChatUser {DisplayName = "Lyon"}};
 
-            string afterTokenReplacement1 = SimpleToken.UserDisplayName.ReplaceCommandValues(responseTemplate, eventArgs);
-            string afterTokenReplacement2 = SimpleToken.CommandWord.ReplaceCommandValues(afterTokenReplacement1, eventArgs);
+            string afterTokenReplacement1 =
+                SimpleToken.UserDisplayName.ReplaceCommandValues(responseTemplate, eventArgs);
+            string afterTokenReplacement2 =
+                SimpleToken.CommandWord.ReplaceCommandValues(afterTokenReplacement1, eventArgs);
 
             Assert.Equal("Lyon is now lurking!", afterTokenReplacement2);
         }

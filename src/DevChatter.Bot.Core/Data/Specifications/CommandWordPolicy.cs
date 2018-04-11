@@ -10,12 +10,12 @@ namespace DevChatter.Bot.Core.Data.Specifications
         {
         }
 
-        public static CommandWordPolicy OnlyPrimaries() 
+        public static CommandWordPolicy OnlyPrimaries()
         {
             return new CommandWordPolicy(x => x.IsPrimary);
         }
 
-        public static CommandWordPolicy ByType(Type type) 
+        public static CommandWordPolicy ByType(Type type)
         {
             return new CommandWordPolicy(x => x.FullTypeName == type.FullName);
         }

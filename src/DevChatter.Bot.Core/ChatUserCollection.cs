@@ -42,7 +42,8 @@ namespace DevChatter.Bot.Core
             }
         }
 
-        public void UpdateEachChatter(Action<ChatUser> updateToApply) => UpdateSpecficChatters(updateToApply, x => true);
+        public void UpdateEachChatter(Action<ChatUser> updateToApply) =>
+            UpdateSpecficChatters(updateToApply, x => true);
 
         public void UpdateSpecficChatters(Action<ChatUser> updateToApply, Func<ChatUser, bool> filter)
         {
@@ -91,7 +92,7 @@ namespace DevChatter.Bot.Core
         public bool UserExists(string username)
         {
             if (_activeChatUsers.Any(x => x.DisplayName.Equals(username, StringComparison.InvariantCultureIgnoreCase))
-            || _repository.Single(ChatUserPolicy.ByDisplayName(username)) != null)
+                || _repository.Single(ChatUserPolicy.ByDisplayName(username)) != null)
             {
                 return true;
             }
@@ -124,6 +125,5 @@ namespace DevChatter.Bot.Core
                 return true;
             }
         }
-
     }
 }

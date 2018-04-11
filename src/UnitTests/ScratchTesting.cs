@@ -9,7 +9,7 @@ namespace UnitTests
         [Fact]
         public void TakeTesting()
         {
-            var ints = new List<int> {1,2,3,4,5};
+            var ints = new List<int> {1, 2, 3, 4, 5};
 
             IEnumerable<int> enumerable = ints.Take(10);
 

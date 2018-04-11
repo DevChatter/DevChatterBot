@@ -20,6 +20,7 @@ namespace DevChatter.Bot.Infra.Ef
             : base(options)
         {
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<QuoteEntity>()
@@ -29,11 +30,13 @@ namespace DevChatter.Bot.Infra.Ef
                 .HasIndex(b => b.CommandWord);
         }
     }
+
     public class AppDataContextFactory : IDesignTimeDbContextFactory<AppDataContext>
     {
         public AppDataContext CreateDbContext(string[] args)
         {
-            string connectionString = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["DatabaseConnectionString"];
+            string connectionString =
+                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["DatabaseConnectionString"];
 
             var optionsBuilder = new DbContextOptionsBuilder<AppDataContext>();
             optionsBuilder.UseSqlServer(connectionString);

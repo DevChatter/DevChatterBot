@@ -38,7 +38,8 @@ namespace DevChatter.Bot.Core.Commands
             var toShout = _repository.List<StreamerEntity>().OrderBy(x => Guid.NewGuid()).Take(MAX_STREAMS).ToList();
             if (toShout.Any())
             {
-                string streamersText = string.Join(",", toShout.Select(x => $" https://www.twitch.tv/{x.ChannelName} "));
+                string streamersText =
+                    string.Join(",", toShout.Select(x => $" https://www.twitch.tv/{x.ChannelName} "));
                 chatClient.SendMessage($"Huge shoutout to the following streamers ({streamersText})!");
                 toShout.ForEach(x => x.TimesShoutedOut++);
                 _repository.Update(toShout);
@@ -58,6 +59,7 @@ namespace DevChatter.Bot.Core.Commands
                     chatClient.SendMessage($"Please specify a valid channel name, @{chatUser.DisplayName}");
                     return;
                 }
+
                 // TODO: Prevent inserting same channel
                 _repository.Create(new StreamerEntity {ChannelName = channelName});
                 chatClient.SendMessage($"Added {channelName} to our list of streams! Thanks, {chatUser.DisplayName} !");

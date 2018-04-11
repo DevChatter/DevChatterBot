@@ -31,7 +31,8 @@ namespace DevChatter.Bot.Core.Commands
 
             if (argOne == "?")
             {
-                chatClient.SendMessage($"Use !help to see available commands. To request help for a specific command just type !help [commandname] example: !help hangman");
+                chatClient.SendMessage(
+                    $"Use !help to see available commands. To request help for a specific command just type !help [commandname] example: !help hangman");
                 return;
             }
 
@@ -53,9 +54,9 @@ namespace DevChatter.Bot.Core.Commands
             var commands = AllCommands.Where(chatUser.CanUserRunCommand).Select(x => $"!{x.PrimaryCommandText}");
             string stringOfCommands = string.Join(", ", commands);
 
-            string message = $"These are the commands that {chatUser.DisplayName} is allowed to run: ({stringOfCommands})";
+            string message =
+                $"These are the commands that {chatUser.DisplayName} is allowed to run: ({stringOfCommands})";
             chatClient.SendMessage(message);
-
         }
     }
 }
