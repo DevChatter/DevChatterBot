@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevChatter.Bot.Core.Events
+namespace DevChatter.Bot.Core.Events.Args
 {
     public class NewFollowersEventArgs
     {

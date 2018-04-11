@@ -2,6 +2,7 @@
 using System.Linq;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 using TwitchLib.Events.Client;
 using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Models.Client;

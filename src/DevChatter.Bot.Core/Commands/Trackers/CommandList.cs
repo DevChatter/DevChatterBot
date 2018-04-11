@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace DevChatter.Bot.Core.Commands
+namespace DevChatter.Bot.Core.Commands.Trackers
 {
     public class CommandList : IList<IBotCommand>
     {

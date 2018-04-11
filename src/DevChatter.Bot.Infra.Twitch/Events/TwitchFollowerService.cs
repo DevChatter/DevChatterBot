@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Infra.Twitch.Extensions;
 using TwitchLib;

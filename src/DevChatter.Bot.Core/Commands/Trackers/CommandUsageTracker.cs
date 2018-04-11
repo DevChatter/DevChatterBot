@@ -4,7 +4,7 @@ using System.Linq;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Events;
 
-namespace DevChatter.Bot.Core.Commands
+namespace DevChatter.Bot.Core.Commands.Trackers
 {
     public class CommandUsageTracker : ICommandUsageTracker
     {

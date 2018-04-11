@@ -1,4 +1,6 @@
-﻿namespace DevChatter.Bot.Core.Events
+﻿using DevChatter.Bot.Core.Events.Args;
+
+namespace DevChatter.Bot.Core.Events
 {
     public interface ICommandHandler
     {
