@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core.Commands
         protected readonly IRepository Repository;
         private readonly bool _isEnabled;
         public UserRole RoleRequired { get; }
-        public string PrimaryCommandText => CommandWords.First();
+        public string PrimaryCommandText => CommandWords.FirstOrDefault();
         public IList<string> CommandWords { get; private set; }
         public string HelpText { get; protected set; }
 
