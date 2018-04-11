@@ -24,7 +24,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             return GetById((Id + 1) % 3);
         }
 
-        public static List<RockPaperScissors> All { get; } = new List<RockPaperScissors> {Rock, Paper, Scissors};
+        public static IList<RockPaperScissors> All { get; } = new List<RockPaperScissors> {Rock, Paper, Scissors};
 
         public static RockPaperScissors GetById(int id)
         {

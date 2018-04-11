@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevChatter.Bot.Core.Commands
+namespace DevChatter.Bot.Core.Commands.Trackers
 {
     public class CommandUsage
     {

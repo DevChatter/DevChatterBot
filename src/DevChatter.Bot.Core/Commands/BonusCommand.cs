@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 
@@ -9,10 +11,10 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class BonusCommand : BaseCommand
     {
-        private readonly CurrencyGenerator _currencyGenerator;
+        private readonly ICurrencyGenerator _currencyGenerator;
 
-        public BonusCommand(CurrencyGenerator currencyGenerator)
-            : base(UserRole.Mod, "Bonus")
+        public BonusCommand(IRepository repository, ICurrencyGenerator currencyGenerator)
+            : base(repository, UserRole.Mod)
         {
             _currencyGenerator = currencyGenerator;
             HelpText = "Use the bonus command to give free coins to someone example: !bonus sadukie 50";

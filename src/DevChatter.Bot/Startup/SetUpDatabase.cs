@@ -4,7 +4,9 @@ using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Core.Util;
 using DevChatter.Bot.Infra.Ef;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +36,7 @@ namespace DevChatter.Bot.Startup
 
         private static void EnsureInitialData(IRepository repository)
         {
+
             if (!repository.List<IntervalMessage>().Any())
             {
                 repository.Create(GetIntervalMessages());
@@ -48,6 +51,12 @@ namespace DevChatter.Bot.Startup
             {
                 repository.Create(GetInitialQuotes());
             }
+
+            var missingCommandWords = GetMissingCommandWords(repository);
+            if (missingCommandWords.Any())
+            {
+                repository.Create(missingCommandWords);
+            }
         }
 
         private static List<IntervalMessage> GetIntervalMessages()
@@ -55,7 +64,7 @@ namespace DevChatter.Bot.Startup
             var automatedMessages = new List<IntervalMessage>
             {
                 new IntervalMessage(15,
-                    "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!")
+                    "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!", new SystemClock())
             };
             return automatedMessages;
         }
@@ -82,6 +91,31 @@ namespace DevChatter.Bot.Startup
                 new QuoteEntity{QuoteId = 3, DateAdded = new DateTime(2018,3,20),
                     AddedBy = "cragsify", Author = "DevChatter", Text = "I swear it's not rigged!"},
             };
+        }
+
+        private static List<CommandWordEntity> GetMissingCommandWords(IRepository repository)
+        {
+            var botCommandTypeAssembly = typeof(IBotCommand).Assembly;
+            var conventionSuffix = "Command";
+
+            var concreteCommands = botCommandTypeAssembly.DefinedTypes
+                .Where(x => !x.IsAbstract)
+                .Where(x => !x.IsSubclassOf(typeof(DataEntity)))
+                .Where(x => x.FullName.EndsWith(conventionSuffix));
+
+            var storedCommandWords = repository.List(CommandWordPolicy.OnlyPrimaries()).Select(x => x.CommandWord);
+
+            List<CommandWordEntity> defaultCommandWords = concreteCommands
+                .Select(commandType => new CommandWordEntity
+                {
+                    CommandWord = commandType.Name.Substring(0, commandType.Name.Length - conventionSuffix.Length),
+                    FullTypeName = commandType.FullName,
+                    IsPrimary = true
+                })
+                .Where(x => !storedCommandWords.Contains(x.CommandWord))
+                .ToList();
+
+            return defaultCommandWords;
         }
     }
 }

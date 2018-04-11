@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
@@ -13,8 +15,8 @@ namespace DevChatter.Bot.Core.Commands
     {
         private readonly IFollowerService _followerService;
 
-        public ShoutOutCommand(IFollowerService followerService)
-            : base(UserRole.Mod, "so")
+        public ShoutOutCommand(IRepository repository, IFollowerService followerService)
+            : base(repository, UserRole.Mod)
         {
             _followerService = followerService;
         }
@@ -28,7 +30,7 @@ namespace DevChatter.Bot.Core.Commands
 
         private string GetRandomFollowedStream()
         {
-            List<string> usersWeFollow = _followerService.GetUsersWeFollow();
+            IList<string> usersWeFollow = _followerService.GetUsersWeFollow();
             int randomIndex = MyRandom.RandomNumber(0, usersWeFollow.Count);
             return usersWeFollow[randomIndex];
         }

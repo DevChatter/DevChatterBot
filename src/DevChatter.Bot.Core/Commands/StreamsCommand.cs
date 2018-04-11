@@ -3,6 +3,7 @@ using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
@@ -13,7 +14,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IRepository _repository;
 
         public StreamsCommand(IRepository repository)
-            : base(UserRole.Everyone, "Streams")
+            : base(repository, UserRole.Everyone)
         {
             _repository = repository;
         }

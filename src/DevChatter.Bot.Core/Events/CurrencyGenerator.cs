@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Events
 {
-    public class CurrencyGenerator
+    public class CurrencyGenerator : ICurrencyGenerator
     {
-        private readonly ChatUserCollection _chatUserCollection;
+        private readonly IChatUserCollection _chatUserCollection;
 
-        public CurrencyGenerator(List<IChatClient> chatClients, ChatUserCollection chatUserCollection)
+        public CurrencyGenerator(IList<IChatClient> chatClients, IChatUserCollection chatUserCollection)
         {
             _chatUserCollection = chatUserCollection;
             foreach (IChatClient chatClient in chatClients)
@@ -22,7 +23,7 @@ namespace DevChatter.Bot.Core.Events
 
         private void AddCurrentChatters(IChatClient chatClient)
         {
-            List<ChatUser> allChatters = chatClient.GetAllChatters();
+            IList<ChatUser> allChatters = chatClient.GetAllChatters();
             foreach (ChatUser chatter in allChatters)
             {
                 WatchUserIfNeeded(chatter.DisplayName, chatter);

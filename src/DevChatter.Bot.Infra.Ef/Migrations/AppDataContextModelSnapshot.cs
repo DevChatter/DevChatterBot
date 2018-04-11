@@ -55,6 +55,24 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     b.ToTable("ChatUsers");
                 });
 
+            modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.CommandWordEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CommandWord");
+
+                    b.Property<string>("FullTypeName");
+
+                    b.Property<bool>("IsPrimary");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommandWord");
+
+                    b.ToTable("CommandWords");
+                });
+
             modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.QuoteEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -70,9 +88,9 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
 
                     b.Property<string>("Text");
 
-                    b.HasIndex("QuoteId");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("QuoteId");
 
                     b.ToTable("QuoteEntities");
                 });

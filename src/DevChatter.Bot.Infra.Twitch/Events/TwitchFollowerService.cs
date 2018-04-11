@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Infra.Twitch.Extensions;
 using TwitchLib;
@@ -13,12 +14,12 @@ namespace DevChatter.Bot.Infra.Twitch.Events
 {
     public class TwitchFollowerService : IFollowerService
     {
-        private readonly TwitchAPI _twitchApi;
+        private readonly ITwitchAPI _twitchApi;
         private readonly TwitchClientSettings _settings;
         private readonly FollowerService _followerService;
 
         private UserFollow[] _userFollows;
-        private UserFollow[] UserFollows {
+        private IEnumerable<UserFollow> UserFollows {
             get
             {
                 return _userFollows ?? (_userFollows =
@@ -26,7 +27,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
             }
         }
 
-        public TwitchFollowerService(TwitchAPI twitchApi, TwitchClientSettings settings)
+        public TwitchFollowerService(ITwitchAPI twitchApi, TwitchClientSettings settings)
         {
             _twitchApi = twitchApi;
 
@@ -46,7 +47,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
             OnNewFollower?.Invoke(sender, eventArgs.ToNewFollowerEventArgs());
         }
 
-        public List<string> GetUsersWeFollow()
+        public IList<string> GetUsersWeFollow()
         {
             return UserFollows.Select(uf => uf.Channel.Name).ToList();
         }

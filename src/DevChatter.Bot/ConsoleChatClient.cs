@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot
@@ -24,7 +25,7 @@ namespace DevChatter.Bot
             Console.WriteLine(message);
         }
 
-        public List<ChatUser> GetAllChatters()
+        public IList<ChatUser> GetAllChatters()
         {
             return new List<ChatUser>();
         }

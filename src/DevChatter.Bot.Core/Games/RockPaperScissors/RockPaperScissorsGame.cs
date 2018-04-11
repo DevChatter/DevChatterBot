@@ -11,15 +11,15 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         private const int SECONDS_TO_JOIN_GAME = 120;
         private const int TOKENS_FOR_WINNING = 100;
         private const int TOKENS_REQUIRED_TO_PLAY = 30;
-        private readonly CurrencyGenerator _currencyGenerator;
-        private readonly AutomatedActionSystem _automatedActionSystem;
-        private readonly Dictionary<string, RockPaperScissors> _competitors = new Dictionary<string, RockPaperScissors>();
+        private readonly ICurrencyGenerator _currencyGenerator;
+        private readonly IAutomatedActionSystem _automatedActionSystem;
+        private readonly IDictionary<string, RockPaperScissors> _competitors = new Dictionary<string, RockPaperScissors>();
         private readonly object _gameStartLock = new object();
         private bool _isRunningGame;
         private RockPaperScissorsEndGame _rockPaperScissorsEndGame;
-        private DelayedMessageAction _joinGameWarningMessage;
+        private IIntervalAction _joinGameWarningMessage;
 
-        public RockPaperScissorsGame(CurrencyGenerator currencyGenerator, AutomatedActionSystem automatedActionSystem)
+        public RockPaperScissorsGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem)
         {
             _currencyGenerator = currencyGenerator;
             _automatedActionSystem = automatedActionSystem;

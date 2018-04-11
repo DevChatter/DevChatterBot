@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Systems.Streaming
 {
-    public class FollowableSystem
+    public class FollowableSystem : IFollowableSystem
     {
         private readonly IList<IChatClient> _chatClients;
         private readonly IFollowerService _followerService;

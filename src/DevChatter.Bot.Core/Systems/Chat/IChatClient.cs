@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 
 namespace DevChatter.Bot.Core.Systems.Chat
 {
@@ -14,7 +15,7 @@ namespace DevChatter.Bot.Core.Systems.Chat
 
         void SendMessage(string message);
 
-        List<ChatUser> GetAllChatters();
+        IList<ChatUser> GetAllChatters();
 
         event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
 

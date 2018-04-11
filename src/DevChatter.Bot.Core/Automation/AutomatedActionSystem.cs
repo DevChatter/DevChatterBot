@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace DevChatter.Bot.Core.Automation
 {
-    public class AutomatedActionSystem
+    public class AutomatedActionSystem : IAutomatedActionSystem
     {
-        private readonly List<IIntervalAction> _actions;
+        private readonly IList<IIntervalAction> _actions;
 
-        public AutomatedActionSystem(List<IIntervalAction> actions)
+        public AutomatedActionSystem(IList<IIntervalAction> actions)
         {
             _actions = actions;
         }

@@ -10,27 +10,26 @@ using DevChatter.Bot.Core.Systems.Streaming;
 
 namespace DevChatter.Bot.Core
 {
-    public class BotMain
+    public class BotMain : IBotMain
     {
-        private readonly List<IChatClient> _chatClients;
+        private readonly IList<IChatClient> _chatClients;
         private readonly IRepository _repository;
-        private readonly AutomatedMessagingSystem _autoMsgSystem = new AutomatedMessagingSystem();
-        private readonly CommandHandler _commandHandler;
+        private readonly IAutomatedMessagingSystem _autoMsgSystem = new AutomatedMessagingSystem();
+        private readonly ICommandHandler _commandHandler;
         private readonly SubscriberHandler _subscriberHandler;
-        private readonly FollowableSystem _followableSystem; // This will eventually be a list of these
-        private readonly AutomatedActionSystem _automatedActionSystem;
+        private readonly IFollowableSystem _followableSystem; // This will eventually be a list of these
+        private readonly IAutomatedActionSystem _automatedActionSystem;
         private CancellationTokenSource _stopRequestSource;
         private readonly int _refreshInterval = 1000;//the milliseconds the bot waits before checking for new messages
 
-        public BotMain(List<IChatClient> chatClients, IRepository repository, CommandHandler commandHandler,
-            SubscriberHandler subscriberHandler, FollowableSystem followableSystem, AutomatedActionSystem automatedActionSystem)
+        public BotMain(IList<IChatClient> chatClients, IRepository repository, IFollowableSystem followableSystem, IAutomatedActionSystem automatedActionSystem, ICommandHandler commandHandler, SubscriberHandler subscriberHandler)
         {
             _chatClients = chatClients;
             _repository = repository;
-            _commandHandler = commandHandler;
-            _subscriberHandler = subscriberHandler;
             _followableSystem = followableSystem;
             _automatedActionSystem = automatedActionSystem;
+            _commandHandler = commandHandler;
+            _subscriberHandler = subscriberHandler;
         }
 
         public void Run()

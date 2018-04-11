@@ -4,6 +4,7 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 
@@ -14,7 +15,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IRepository _repository;
 
         public CoinsCommand(IRepository repository)
-            : base(UserRole.Everyone, "coins", "tokens", "points")
+            : base(repository, UserRole.Everyone)
         {
             _repository = repository;
         }
