@@ -1,13 +1,13 @@
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
-using DevChatter.Bot.Core.Extensions;
 
 namespace DevChatter.Bot.Core.Commands.Operations
 {
-    public class AddAliasOperation : ICommandOperation
+    public class AddAliasOperation : BaseCommandOperation
     {
         private readonly IRepository _repository;
 
@@ -16,12 +16,9 @@ namespace DevChatter.Bot.Core.Commands.Operations
             _repository = repository;
         }
 
-        public bool ShouldExecute(string operand)
-        {
-            return operand.EqualsIns("add");
-        }
+        public override List<string> OperandWords { get; } = new List<string> { "add" };
 
-        public string TryToExecute(CommandReceivedEventArgs eventArgs)
+        public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
             var word = eventArgs?.Arguments?.ElementAtOrDefault(1)?.ToLowerInvariant();
             var newAlias = eventArgs?.Arguments?.ElementAtOrDefault(2)?.ToLowerInvariant();

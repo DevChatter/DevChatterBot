@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -6,7 +7,7 @@ using DevChatter.Bot.Core.Extensions;
 
 namespace DevChatter.Bot.Core.Commands.Operations
 {
-    public class DeleteAliasOperation : ICommandOperation
+    public class DeleteAliasOperation : BaseCommandOperation
     {
         private readonly IRepository _repository;
 
@@ -15,12 +16,9 @@ namespace DevChatter.Bot.Core.Commands.Operations
             _repository = repository;
         }
 
-        public bool ShouldExecute(string operand)
-        {
-            return operand.EqualsIns("del");
-        }
+        public override List<string> OperandWords { get; } = new List<string>{"del", "rem", "remove"};
 
-        public string TryToExecute(CommandReceivedEventArgs eventArgs)
+        public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
             var word = eventArgs?.Arguments?.ElementAtOrDefault(1)?.ToLowerInvariant();
 
