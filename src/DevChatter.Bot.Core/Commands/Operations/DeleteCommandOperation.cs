@@ -20,6 +20,8 @@ namespace DevChatter.Bot.Core.Commands.Operations
         }
 
         public override List<string> OperandWords { get; } = new List<string> { "del", "rem", "remove", "delete" };
+        public override string HelpText { get; } =
+            "Use \"!commands del commandWord\" to delete a command.";
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {

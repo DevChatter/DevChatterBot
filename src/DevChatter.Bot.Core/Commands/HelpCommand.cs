@@ -1,9 +1,7 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
@@ -27,7 +25,7 @@ namespace DevChatter.Bot.Core.Commands
                 return;
             }
 
-            string argOne = eventArgs?.Arguments?.ElementAtOrDefault(0);
+            string argOne = eventArgs.Arguments?.ElementAtOrDefault(0);
 
             if (argOne == "?")
             {
@@ -39,13 +37,28 @@ namespace DevChatter.Bot.Core.Commands
             if (argOne == "↑, ↑, ↓, ↓, ←, →, ←, →, B, A, start, select")
             {
                 chatClient.SendMessage("Please be sure to drink your ovaltine.");
+                return;
+            }
+
+            bool isVerboseMode = false;
+            if (argOne == "-v")
+            {
+                isVerboseMode = true;
+                argOne = eventArgs.Arguments?.ElementAtOrDefault(1);
             }
 
             IBotCommand requestedCommand = AllCommands.SingleOrDefault(x => x.ShouldExecute(argOne));
 
             if (requestedCommand != null)
             {
-                chatClient.SendMessage(requestedCommand.HelpText);
+                if (isVerboseMode)
+                {
+                    chatClient.SendMessage(requestedCommand.HelpText);
+                }
+                else
+                {
+                    chatClient.SendMessage(requestedCommand.HelpText);
+                }
             }
         }
 
