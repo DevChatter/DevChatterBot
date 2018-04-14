@@ -107,10 +107,18 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 
         public void AttemptToStartNewGame(IChatClient chatClient, string username)
         {
-            if (_isRunningGame) return;
+            if (_isRunningGame)
+            {
+                return;
+            }
+
             lock (_gameStartLock)
             {
-                if (_isRunningGame) return;
+                if (_isRunningGame)
+                {
+                    return;
+                }
+
                 _isRunningGame = true;
             }
 
