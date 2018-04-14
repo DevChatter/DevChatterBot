@@ -19,7 +19,7 @@ namespace DevChatter.Bot.Core.Commands
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            if (!int.TryParse(eventArgs?.Arguments?.ElementAtOrDefault(0), out int offset))
+            if (!int.TryParse(eventArgs?.Arguments?.ElementAtOrDefault(0), out int offset) || offset > 18 || offset < -18)
             {
                 return;
             }
