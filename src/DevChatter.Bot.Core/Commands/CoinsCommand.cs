@@ -17,6 +17,7 @@ namespace DevChatter.Bot.Core.Commands
             : base(repository, UserRole.Everyone)
         {
             _repository = repository;
+            HelpText = "Use \"!coins\" to see your current coin total, or use \"!coins SomeoneElse\" to see another user's coin total.";
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
