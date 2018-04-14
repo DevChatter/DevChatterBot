@@ -33,7 +33,7 @@ namespace DevChatter.Bot.Core.Commands
 
                 ChatUser chatUser = _repository.Single(ChatUserPolicy.ByDisplayName(userToCheck));
 
-                chatClient.SendMessage($"{userToCheck} has {chatUser?.Tokens} tokens!");
+                chatClient.SendMessage($"{userToCheck} has {chatUser?.Tokens ?? 0} tokens!");
             }
             catch (Exception e)
             {
