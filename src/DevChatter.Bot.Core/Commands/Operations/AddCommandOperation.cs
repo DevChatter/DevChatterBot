@@ -20,6 +20,10 @@ namespace DevChatter.Bot.Core.Commands.Operations
         }
 
         public override List<string> OperandWords { get; } = new List<string> { "add" };
+
+        public override string HelpText { get; } =
+            "Use \"!commands add commandWord responseText roleRequired\" to create a new command.";
+
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
             string commandWord = eventArgs?.Arguments?.ElementAtOrDefault(1);
