@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
@@ -40,7 +40,7 @@ namespace DevChatter.Bot.Core.Commands
                     return;
                 }
 
-                if (_chatUserCollection.TryGiveCoins(coinGiver, coinReceiver, coinsToGive))
+                if (_chatUserCollection.TryGiveCoins(coinGiver, "EchoStrike36", coinsToGive))
                 {
                     chatClient.SendMessage(
                         $"Taking {coinsToGive} coins from {coinGiver} and giving them to {coinReceiver}.");
