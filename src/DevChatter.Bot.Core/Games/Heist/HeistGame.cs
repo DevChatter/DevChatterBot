@@ -10,7 +10,7 @@ namespace DevChatter.Bot.Core.Games.Heist
 {
     public class HeistGame
     {
-        private readonly AutomatedActionSystem _automatedActionSystem;
+        private readonly IAutomatedActionSystem _automatedActionSystem;
         public bool IsGameRunning { get; private set; }
         private const UserRole ROLE_REQUIRED_TO_START = UserRole.Subscriber;
         private const int HEIST_DELAY_IN_SECONDS = 90;
@@ -19,7 +19,7 @@ namespace DevChatter.Bot.Core.Games.Heist
         private DelayedMessageAction _lastCallToJoin;
         private OneTimeCallBackAction _startHeistAction;
 
-        public HeistGame(AutomatedActionSystem automatedActionSystem)
+        public HeistGame(IAutomatedActionSystem automatedActionSystem)
         {
             _automatedActionSystem = automatedActionSystem;
         }
@@ -85,7 +85,7 @@ namespace DevChatter.Bot.Core.Games.Heist
 
             return HeistJoinResults.SuccessJoinResult(displayName, role);
         }
-        public JoinGameResult AttemptToJoinHeist(ChatUser chatUser, out HeistRoles role, string displayName)
+        public JoinGameResult AttemptToJoinHeist(string displayName, out HeistRoles role)
         {
             bool success;
             (success, role) = MyRandom.ChooseRandomItem(GetAvailableRoles());
@@ -104,27 +104,30 @@ namespace DevChatter.Bot.Core.Games.Heist
             return allHeistRoles.Except(claimedRoles).ToList();
         }
 
-        public void AttemptToStartGame(IChatClient chatClient)
+        public bool AttemptToStartGame(IChatClient chatClient, ChatUser chatUser)
         {
             if (!GetAvailableRoles().Any() && IsGameRunning)
             {
                 _automatedActionSystem.RemoveAction(_startHeistAction);
                 StartHeist(chatClient);
+                return true;
             }
+
+            return false;
         }
     }
 
     public static class HeistJoinResults
     {
-        public static JoinGameResult SuccessJoinResult(string displayName, HeistRoles role) 
+        public static JoinGameResult SuccessJoinResult(string displayName, HeistRoles role)
             => new JoinGameResult(true, $"{displayName} joined the heist as the {role}!");
-        public static JoinGameResult RoleTakenResult(string displayName, HeistRoles role) 
+        public static JoinGameResult RoleTakenResult(string displayName, HeistRoles role)
             => new JoinGameResult(false, $"Sorry, {displayName} we already have a {role}!");
-        public static JoinGameResult HeistFullResult(string displayName) 
+        public static JoinGameResult HeistFullResult(string displayName)
             => new JoinGameResult(false, $"Sorry, {displayName} this heist is full!");
-        public static JoinGameResult UnknownRoleResult(string displayName) 
+        public static JoinGameResult UnknownRoleResult(string displayName)
             => new JoinGameResult(false, $"I don't know what role you wanted to be, {displayName}. Try again?");
-        public static JoinGameResult AlreadyInHeistResult(string displayName) 
+        public static JoinGameResult AlreadyInHeistResult(string displayName)
             => new JoinGameResult(false, $"You're already in this heist, {displayName} and you aren't a multi-tasker.");
 
     }

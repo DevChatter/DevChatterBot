@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Games.Heist;
 using DevChatter.Bot.Core.Util;
 using FluentAssertions;
-using Pose;
 using Xunit;
 
 namespace UnitTests.Core.Util.MyRandomTests

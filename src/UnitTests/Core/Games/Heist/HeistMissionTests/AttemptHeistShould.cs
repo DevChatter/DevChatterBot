@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Games.Heist;
 using DevChatter.Bot.Core.Util;
 using FluentAssertions;
-using Pose;
 using Xunit;
 
 namespace UnitTests.Core.Games.Heist.HeistMissionTests
