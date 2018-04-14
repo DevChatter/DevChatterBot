@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Core.Commands
     {
         public string CommandText => "schedule";
 
-        public ScheduleCommand(IRepository repository) : base(repository, UserRole.Mod)
+        public ScheduleCommand(IRepository repository) : base(repository, UserRole.Everyone)
         {
             HelpText = "To see our schedule just type !schedule and to see it in another timezone, pass your UTC offset. Example: !schedule -4";
         }
