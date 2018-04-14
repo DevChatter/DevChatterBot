@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Util;
 
@@ -6,7 +6,7 @@ namespace DevChatter.Bot.Core.Messaging
 {
     public class IntervalMessage : DataEntity, IAutomatedMessage
     {
-        private readonly IClock _clock;
+        private readonly IClock _clock = new SystemClock();
 
         public IntervalMessage()
         {
