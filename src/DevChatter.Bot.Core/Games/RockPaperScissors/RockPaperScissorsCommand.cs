@@ -7,9 +7,11 @@ using System.Linq;
 
 namespace DevChatter.Bot.Core.Games.RockPaperScissors
 {
-    public class RockPaperScissorsCommand : BaseCommand
+    public class RockPaperScissorsCommand : BaseCommand, IGameCommand
     {
         private readonly RockPaperScissorsGame _rockPaperScissorsGame;
+
+        public IGame Game => _rockPaperScissorsGame;
 
         public RockPaperScissorsCommand(IRepository repository, RockPaperScissorsGame rockPaperScissorsGame)
             : base(repository, UserRole.Everyone)
