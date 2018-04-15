@@ -30,7 +30,7 @@ namespace DevChatter.Bot.Core.Commands
                        + $" a quote. For example, \"!{PrimaryCommandText} add \"Oh what a day!\" Brendoneus creates a new quote.";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string argumentOne = eventArgs?.Arguments?.ElementAtOrDefault(0);
             string quoteText = eventArgs?.Arguments?.ElementAtOrDefault(1);

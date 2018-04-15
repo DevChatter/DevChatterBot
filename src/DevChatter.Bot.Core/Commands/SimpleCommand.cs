@@ -10,6 +10,9 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class SimpleCommand : DataEntity, IBotCommand
     {
+        private DateTimeOffset _timeCommandLastInvoked;
+        public TimeSpan Cooldown => TimeSpan.Zero;
+
         public SimpleCommand()
         {
         }
@@ -30,11 +33,15 @@ namespace DevChatter.Bot.Core.Commands
 
         public bool ShouldExecute(string commandText) => CommandText.EqualsIns(commandText);
 
-        public virtual void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            IEnumerable<string> findTokens = StaticResponse.FindTokens();
-            string textToSend = ReplaceTokens(StaticResponse, findTokens, eventArgs);
-            chatClient.SendMessage(textToSend);
+            bool userCanBypassCooldown = eventArgs.ChatUser.Role?.EqualsAny(UserRole.Streamer, UserRole.Mod) ?? false;
+            if (userCanBypassCooldown || DateTimeOffset.Now - _timeCommandLastInvoked >= Cooldown)
+            {
+                IEnumerable<string> findTokens = StaticResponse.FindTokens();
+                string textToSend = ReplaceTokens(StaticResponse, findTokens, eventArgs);
+                chatClient.SendMessage(textToSend);
+            }
         }
 
         private string ReplaceTokens(string textToSend, IEnumerable<string> tokens, CommandReceivedEventArgs eventArgs)

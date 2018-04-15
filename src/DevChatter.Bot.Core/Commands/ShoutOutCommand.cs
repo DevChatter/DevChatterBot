@@ -20,7 +20,7 @@ namespace DevChatter.Bot.Core.Commands
             _followerService = followerService;
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string streamName = eventArgs.Arguments?.FirstOrDefault()?.NoAt() ?? GetRandomFollowedStream();
 

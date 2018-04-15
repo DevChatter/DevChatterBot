@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Commands
             HelpText = "Just type \"!uptime\" and it will tell you how long we've been streaming.";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             TimeSpan? timeSpan = _streamingPlatform.GetUptimeAsync().Result;
             if (timeSpan.HasValue)

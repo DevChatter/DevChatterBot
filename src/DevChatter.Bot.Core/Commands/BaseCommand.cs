@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
@@ -12,8 +13,10 @@ namespace DevChatter.Bot.Core.Commands
     public abstract class BaseCommand : IBotCommand
     {
         protected readonly IRepository Repository;
+        protected DateTimeOffset _timeCommandLastInvoked;
         private readonly bool _isEnabled;
         public UserRole RoleRequired { get; }
+        public TimeSpan Cooldown { get; protected set; } = TimeSpan.Zero;
         public string PrimaryCommandText => CommandWords.FirstOrDefault();
         public IList<string> CommandWords { get; private set; }
         public string HelpText { get; protected set; }
@@ -45,6 +48,24 @@ namespace DevChatter.Bot.Core.Commands
 
         public bool ShouldExecute(string commandText) => _isEnabled && CommandWords.Any(x => x.EqualsIns(commandText));
 
-        public abstract void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
+        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        {
+            bool userCanBypassCooldown = eventArgs.ChatUser.Role?.EqualsAny(UserRole.Streamer, UserRole.Mod) ?? false;
+            TimeSpan timePassedSinceInvoke = DateTimeOffset.Now - _timeCommandLastInvoked;
+            if (userCanBypassCooldown || timePassedSinceInvoke >= Cooldown)
+            {
+                _timeCommandLastInvoked = DateTimeOffset.Now;
+                HandleCommand(chatClient, eventArgs);
+            }
+            else
+            {
+                string timeRemaining = (Cooldown - timePassedSinceInvoke).ToExpandingString();
+
+                // TODO: This should probably be a PM. no sense spamming chat
+                chatClient.SendMessage($"That command is currently on cooldown @{eventArgs.ChatUser.DisplayName} - Remaining time: {timeRemaining}");
+            }
+        }
+
+        protected abstract void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
     }
 }
