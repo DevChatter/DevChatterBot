@@ -36,7 +36,7 @@ insert_final_newline = true
 end_of_line = lf
 
 # Dotnet Code Style Settings
-[*.{cs}]
+[*.{cs,}]
 dotnet_sort_system_directives_first = true:warning
 dotnet_style_coalesce_expression = true:warning
 dotnet_style_collection_initializer = true:warning
@@ -49,6 +49,24 @@ dotnet_style_qualification_for_event = false:warning
 dotnet_style_qualification_for_field = false:warning
 dotnet_style_qualification_for_method = false:warning
 dotnet_style_qualification_for_property = false:warning
+
+dotnet_naming_symbols.private_members.applicable_kinds = field
+dotnet_naming_symbols.private_members.applicable_accessibilities = private
+
+dotnet_naming_symbols.parameters.applicable_kinds = parameter
+
+dotnet_naming_style.camel_case.capitalization = camel_case
+
+dotnet_naming_style.underscore_prefix.capitalization = camel_case
+dotnet_naming_style.underscore_prefix.required_prefix = _
+
+dotnet_naming_rule.prameters_must_be_camel_case.symbols = parameters
+dotnet_naming_rule.prameters_must_be_camel_case.style = camel_case
+dotnet_naming_rule.prameters_must_be_camel_case.severity = error
+
+dotnet_naming_rule.private_members_with_underscore.symbols  = private_members
+dotnet_naming_rule.private_members_with_underscore.style    = underscore_prefix
+dotnet_naming_rule.private_members_with_underscore.severity = suggestion
 
 # Wrapping Options
 csharp_preserve_single_line_blocks = true:warning
