@@ -6,6 +6,7 @@ using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
+using DevChatter.Bot.Core.Games;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
@@ -51,8 +52,14 @@ namespace DevChatter.Bot.Core.Commands
         public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             bool userCanBypassCooldown = eventArgs.ChatUser.Role?.EqualsAny(UserRole.Streamer, UserRole.Mod) ?? false;
+            bool isGameRunning = false;
+            if (this is IGameCommand gameCommand)
+            {
+                isGameRunning = gameCommand.Game.IsRunning;
+            }
+
             TimeSpan timePassedSinceInvoke = DateTimeOffset.Now - _timeCommandLastInvoked;
-            if (userCanBypassCooldown || timePassedSinceInvoke >= Cooldown)
+            if (isGameRunning || userCanBypassCooldown || timePassedSinceInvoke >= Cooldown)
             {
                 _timeCommandLastInvoked = DateTimeOffset.Now;
                 HandleCommand(chatClient, eventArgs);

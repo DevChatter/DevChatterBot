@@ -8,11 +8,12 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Hangman
 {
-    public class HangmanCommand : BaseCommand
+    public class HangmanCommand : BaseCommand, IGameCommand
     {
         private static readonly object SingleFileLock = new object();
 
         private readonly HangmanGame _hangmanGame;
+        public IGame Game => _hangmanGame;
 
         public HangmanCommand(IRepository repository, HangmanGame hangmanGame)
             : base(repository, UserRole.Everyone)
