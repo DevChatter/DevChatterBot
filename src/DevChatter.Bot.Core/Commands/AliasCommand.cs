@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core.Commands
     {
         private readonly IRepository _repository;
 
-        private readonly List<ICommandOperation> _operations;
+        private readonly List<BaseCommandOperation> _operations;
 
         public AliasCommand(IRepository repository) : base(repository, UserRole.Mod)
         {
@@ -22,7 +22,7 @@ namespace DevChatter.Bot.Core.Commands
             HelpText = "Use !alias add <existing> <new> to add a new command name, or !alias" +
                        " del <existing> to delete a command name. For example, \"!alias add hangman " +
                        "hm\" creates a new shorthand for Hangman.";
-            _operations = new List<ICommandOperation>
+            _operations = new List<BaseCommandOperation>
             {
                 new AddAliasOperation(repository),
                 new DeleteAliasOperation(repository)
@@ -30,6 +30,9 @@ namespace DevChatter.Bot.Core.Commands
         }
 
         public EventHandler<EventArgs> CommandAliasModified;
+
+        public override string FullHelpText => "Alias manages aliases for existing commands. "
+                                               + string.Join(" ", _operations.Select(x => x.HelpText));
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {

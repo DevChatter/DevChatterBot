@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Events;
@@ -107,10 +107,18 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 
         public void AttemptToStartNewGame(IChatClient chatClient, string username)
         {
-            if (_isRunningGame) return;
+            if (_isRunningGame)
+            {
+                return;
+            }
+
             lock (_gameStartLock)
             {
-                if (_isRunningGame) return;
+                if (_isRunningGame)
+                {
+                    return;
+                }
+
                 _isRunningGame = true;
             }
 
@@ -127,6 +135,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             _automatedActionSystem.AddAction(_rockPaperScissorsEndGame);
             _joinGameWarningMessage = new DelayedMessageAction(SECONDS_TO_JOIN_GAME - 30,
                 "Only 30 seconds left to join! Type \"!rps rock\", \"!rps paper\", or \"!rps scissors\"", chatClient);
+            _automatedActionSystem.AddAction(_joinGameWarningMessage);
         }
     }
 }

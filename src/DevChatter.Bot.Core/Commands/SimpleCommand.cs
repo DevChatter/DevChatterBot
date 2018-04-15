@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Messaging.Tokens;
@@ -28,6 +27,7 @@ namespace DevChatter.Bot.Core.Commands
         public string PrimaryCommandText => CommandText;
         public string CommandText { get; protected set; }
         public string HelpText { get; protected set; } = $"No help text for this command yet.";
+        public string FullHelpText => HelpText;
 
         public bool ShouldExecute(string commandText) => CommandText.EqualsIns(commandText);
 
