@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -18,6 +17,7 @@ namespace DevChatter.Bot.Core.Commands
             : base(repository, UserRole.Everyone)
         {
             _repository = repository;
+            HelpText = "Use \"!coins\" to see your current coin total, or use \"!coins SomeoneElse\" to see another user's coin total.";
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
@@ -34,7 +34,7 @@ namespace DevChatter.Bot.Core.Commands
 
                 ChatUser chatUser = _repository.Single(ChatUserPolicy.ByDisplayName(userToCheck));
 
-                chatClient.SendMessage($"{userToCheck} has {chatUser.Tokens} tokens!");
+                chatClient.SendMessage($"{userToCheck} has {chatUser?.Tokens ?? 0} tokens!");
             }
             catch (Exception e)
             {

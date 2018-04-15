@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
@@ -17,6 +17,7 @@ namespace DevChatter.Bot.Core.Commands
         public string PrimaryCommandText => CommandWords.FirstOrDefault();
         public IList<string> CommandWords { get; private set; }
         public string HelpText { get; protected set; }
+        public virtual string FullHelpText => HelpText;
 
         protected BaseCommand(IRepository repository, UserRole roleRequired)
             : this(repository, roleRequired, true)

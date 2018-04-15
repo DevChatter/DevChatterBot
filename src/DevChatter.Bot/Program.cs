@@ -1,9 +1,7 @@
-﻿using System;
+using System;
 using Autofac;
 using DevChatter.Bot.Core;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Startup;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace DevChatter.Bot
 {

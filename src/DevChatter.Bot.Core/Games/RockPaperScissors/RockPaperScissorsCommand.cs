@@ -1,8 +1,7 @@
-﻿using System.Linq;
+using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
@@ -19,6 +18,8 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             HelpText =
                 "Use \"!rps\" to join randomly. Use \"!rps rock\" to select rock. Bot will eventually choose randomly and award the winners.";
         }
+
+        public override string FullHelpText => "Use \"!rps\" to start or join the game randomly. To start or join with a selection, you can use \"!rps rock\", \"!rps paper\", \"!rps scissors\", to select rock, paper, or scissors respectively. The bot will wait 120 seconds and then randomly choose its own and anyone who beats the bot will be awarded tokens.";
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
@@ -11,6 +11,7 @@ namespace DevChatter.Bot.Core.Commands
         UserRole RoleRequired { get; }
         string PrimaryCommandText { get; }
         string HelpText { get; }
+        string FullHelpText { get; }
         bool ShouldExecute(string commandText);
         void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
     }
