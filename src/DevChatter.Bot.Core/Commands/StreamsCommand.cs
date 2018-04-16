@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
@@ -14,6 +15,7 @@ namespace DevChatter.Bot.Core.Commands
         public StreamsCommand(IRepository repository)
             : base(repository, UserRole.Everyone)
         {
+            HelpText = $"Use \"!{PrimaryCommandText}\" to shout out the streams we like! To add a new one use \"!{PrimaryCommandText} add channelName\", but it only works for mods.";
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
@@ -57,9 +59,16 @@ namespace DevChatter.Bot.Core.Commands
                     return;
                 }
 
-                // TODO: Prevent inserting same channel
-                Repository.Create(new StreamerEntity {ChannelName = channelName});
-                chatClient.SendMessage($"Added {channelName} to our list of streams! Thanks, {chatUser.DisplayName} !");
+                StreamerEntity entity = Repository.Single(StreamerEntityPolicy.ByChannel(channelName));
+                if (entity == null)
+                {
+                    Repository.Create(new StreamerEntity { ChannelName = channelName });
+                    chatClient.SendMessage($"Added {channelName} to our list of streams! Thanks, {chatUser.DisplayName} !");
+                }
+                else
+                {
+                    chatClient.SendMessage($"We already have {channelName} in our list of streams!");
+                }
             }
             else
             {
