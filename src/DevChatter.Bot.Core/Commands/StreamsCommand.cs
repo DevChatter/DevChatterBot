@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
@@ -11,12 +10,10 @@ namespace DevChatter.Bot.Core.Commands
     public class StreamsCommand : BaseCommand
     {
         private const int MAX_STREAMS = 5;
-        private readonly IRepository _repository;
 
         public StreamsCommand(IRepository repository)
             : base(repository, UserRole.Everyone)
         {
-            _repository = repository;
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
@@ -35,14 +32,14 @@ namespace DevChatter.Bot.Core.Commands
 
         private void ShoutOutRandomStreamers(IChatClient chatClient)
         {
-            var toShout = _repository.List<StreamerEntity>().OrderBy(x => Guid.NewGuid()).Take(MAX_STREAMS).ToList();
+            var toShout = Repository.List<StreamerEntity>().OrderBy(x => Guid.NewGuid()).Take(MAX_STREAMS).ToList();
             if (toShout.Any())
             {
                 string streamersText =
                     string.Join(",", toShout.Select(x => $" https://www.twitch.tv/{x.ChannelName} "));
                 chatClient.SendMessage($"Huge shoutout to the following streamers ({streamersText})!");
                 toShout.ForEach(x => x.TimesShoutedOut++);
-                _repository.Update(toShout);
+                Repository.Update(toShout);
             }
             else
             {
@@ -61,7 +58,7 @@ namespace DevChatter.Bot.Core.Commands
                 }
 
                 // TODO: Prevent inserting same channel
-                _repository.Create(new StreamerEntity {ChannelName = channelName});
+                Repository.Create(new StreamerEntity {ChannelName = channelName});
                 chatClient.SendMessage($"Added {channelName} to our list of streams! Thanks, {chatUser.DisplayName} !");
             }
             else
