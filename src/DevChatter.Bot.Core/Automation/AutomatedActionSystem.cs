@@ -1,15 +1,21 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Automation
 {
     public class AutomatedActionSystem : IAutomatedActionSystem
     {
         private readonly IList<IIntervalAction> _actions;
+        private readonly IClock _clock;
 
-        public AutomatedActionSystem(IList<IIntervalAction> actions)
+        public AutomatedActionSystem(IList<IIntervalAction> actions, IClock clock)
         {
             _actions = actions;
+            _clock = clock;
         }
 
         public void RunNecessaryActions()
@@ -18,6 +24,14 @@ namespace DevChatter.Bot.Core.Automation
             foreach (IIntervalAction readyAction in readyActions)
             {
                 readyAction.Invoke();
+            }
+        }
+
+        public void AddAutomatedMessages(IEnumerable<IntervalMessage> messages, IList<IChatClient> chatClients)
+        {
+            foreach (IntervalMessage message in messages)
+            {
+                _actions.Add(new AutomatedMessage(message, chatClients, _clock));
             }
         }
 

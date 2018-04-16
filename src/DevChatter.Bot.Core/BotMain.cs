@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 
@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core
     {
         private readonly IList<IChatClient> _chatClients;
         private readonly IRepository _repository;
-        private readonly IAutomatedMessagingSystem _autoMsgSystem = new AutomatedMessagingSystem();
+        private readonly IAutomatedActionSystem _autoActionSystem;
         private readonly ICommandHandler _commandHandler;
         private readonly SubscriberHandler _subscriberHandler;
         private readonly IFollowableSystem _followableSystem; // This will eventually be a list of these
@@ -24,7 +24,7 @@ namespace DevChatter.Bot.Core
 
         public BotMain(IList<IChatClient> chatClients, IRepository repository, IFollowableSystem followableSystem,
             IAutomatedActionSystem automatedActionSystem, ICommandHandler commandHandler,
-            SubscriberHandler subscriberHandler)
+            SubscriberHandler subscriberHandler, IAutomatedActionSystem autoActionSystem)
         {
             _chatClients = chatClients;
             _repository = repository;
@@ -32,11 +32,12 @@ namespace DevChatter.Bot.Core
             _automatedActionSystem = automatedActionSystem;
             _commandHandler = commandHandler;
             _subscriberHandler = subscriberHandler;
+            _autoActionSystem = autoActionSystem;
         }
 
         public void Run()
         {
-            PublishMessages();
+            ScheduleAutomatedMessages();
 
             ConnectChatClients();
 
@@ -53,8 +54,6 @@ namespace DevChatter.Bot.Core
             _followableSystem.StopHandlingNotifications();
 
             DisconnectChatClients();
-
-            //todo check if publish messages needs to be cleaned ?
         }
 
         private void StopLoop()
@@ -72,29 +71,15 @@ namespace DevChatter.Bot.Core
                     Thread.Sleep(_refreshInterval);
 
                     _automatedActionSystem.RunNecessaryActions();
-
-                    _autoMsgSystem.CheckMessages();
-
-                    while (_autoMsgSystem.DequeueMessage(out string message))
-                    {
-                        foreach (var chatClient in _chatClients)
-                        {
-                            chatClient.SendMessage(message);
-                        }
-                    }
                 }
             });
         }
 
-        // TODO: Fix this method's name
 
-        private void PublishMessages()
+        private void ScheduleAutomatedMessages()
         {
             var messages = _repository.List<IntervalMessage>();
-            foreach (var message in messages)
-            {
-                _autoMsgSystem.Publish(message);
-            }
+            _autoActionSystem.AddAutomatedMessages(messages, _chatClients);
         }
 
         private void DisconnectChatClients()
