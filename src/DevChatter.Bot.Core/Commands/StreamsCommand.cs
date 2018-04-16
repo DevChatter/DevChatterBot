@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -11,20 +13,28 @@ namespace DevChatter.Bot.Core.Commands
     public class StreamsCommand : BaseCommand
     {
         private const int MAX_STREAMS = 5;
+        private readonly List<BaseCommandOperation> _operations;
 
         public StreamsCommand(IRepository repository)
             : base(repository, UserRole.Everyone)
         {
             HelpText = $"Use \"!{PrimaryCommandText}\" to shout out the streams we like! To add a new one use \"!{PrimaryCommandText} add channelName\", but it only works for mods.";
+            _operations = new List<BaseCommandOperation>
+            {
+                new AddStreamOperation(repository),
+                new DeleteStreamOperation(repository),
+            };
         }
 
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            string argumentOne = eventArgs.Arguments?.FirstOrDefault();
-            string argumentTwo = eventArgs.Arguments?.ElementAtOrDefault(1);
-            if (argumentOne != null && argumentOne.Equals("add", StringComparison.InvariantCultureIgnoreCase))
+            var oper = eventArgs?.Arguments?.ElementAtOrDefault(0)?.ToLowerInvariant();
+
+            var operationToUse = _operations.SingleOrDefault(x => x.ShouldExecute(oper));
+            if (operationToUse != null)
             {
-                AddNewStreamer(chatClient, argumentTwo, eventArgs.ChatUser);
+                string resultMessage = operationToUse.TryToExecute(eventArgs);
+                chatClient.SendMessage(resultMessage);
             }
             else
             {
@@ -46,33 +56,6 @@ namespace DevChatter.Bot.Core.Commands
             else
             {
                 chatClient.SendMessage("Add some streamers before calling this!");
-            }
-        }
-
-        private void AddNewStreamer(IChatClient chatClient, string channelName, ChatUser chatUser)
-        {
-            if (chatUser.CanUserRunCommand(UserRole.Mod))
-            {
-                if (string.IsNullOrWhiteSpace(channelName))
-                {
-                    chatClient.SendMessage($"Please specify a valid channel name, @{chatUser.DisplayName}");
-                    return;
-                }
-
-                StreamerEntity entity = Repository.Single(StreamerEntityPolicy.ByChannel(channelName));
-                if (entity == null)
-                {
-                    Repository.Create(new StreamerEntity { ChannelName = channelName });
-                    chatClient.SendMessage($"Added {channelName} to our list of streams! Thanks, {chatUser.DisplayName} !");
-                }
-                else
-                {
-                    chatClient.SendMessage($"We already have {channelName} in our list of streams!");
-                }
-            }
-            else
-            {
-                chatClient.SendMessage($"You aren't allowed to add new streams, @{chatUser.DisplayName}.");
             }
         }
     }
