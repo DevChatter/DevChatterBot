@@ -13,6 +13,10 @@ namespace DevChatter.Bot.Core.Messaging
         private readonly IClock _clock;
         private readonly IList<IChatClient> _chatClients;
 
+        public AutomatedMessage(IntervalMessage message, IList<IChatClient> chatClients)
+            : this(message, chatClients, new SystemClock())
+        { }
+
         public AutomatedMessage(IntervalMessage message, IList<IChatClient> chatClients, IClock clock)
         {
             _message = message;

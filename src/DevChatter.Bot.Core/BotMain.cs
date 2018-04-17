@@ -5,6 +5,7 @@ using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 
@@ -79,7 +80,10 @@ namespace DevChatter.Bot.Core
         private void ScheduleAutomatedMessages()
         {
             var messages = _repository.List<IntervalMessage>();
-            _autoActionSystem.AddAutomatedMessages(messages, _chatClients);
+            foreach (IntervalMessage message in messages)
+            {
+                _autoActionSystem.AddAction(new AutomatedMessage(message, _chatClients));
+            }
         }
 
         private void DisconnectChatClients()

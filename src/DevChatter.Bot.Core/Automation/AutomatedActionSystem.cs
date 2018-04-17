@@ -27,14 +27,6 @@ namespace DevChatter.Bot.Core.Automation
             }
         }
 
-        public void AddAutomatedMessages(IEnumerable<IntervalMessage> messages, IList<IChatClient> chatClients)
-        {
-            foreach (IntervalMessage message in messages)
-            {
-                _actions.Add(new AutomatedMessage(message, chatClients, _clock));
-            }
-        }
-
         public void AddAction(IIntervalAction actionToAdd) => _actions.Add(actionToAdd);
 
         public void RemoveAction(IIntervalAction actionToRemove) =>
