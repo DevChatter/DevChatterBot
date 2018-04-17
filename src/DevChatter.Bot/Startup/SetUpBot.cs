@@ -64,7 +64,7 @@ namespace DevChatter.Bot.Startup
             builder.RegisterType<QuoteCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<AliasCommand>().AsImplementedInterfaces().SingleInstance();
 
-            builder.RegisterType<TopBallersCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<TopCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<ScheduleCommand>().AsImplementedInterfaces().SingleInstance();
 
