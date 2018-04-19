@@ -12,13 +12,10 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class AliasCommand : BaseCommand
     {
-        private readonly IRepository _repository;
-
         private readonly List<BaseCommandOperation> _operations;
 
         public AliasCommand(IRepository repository) : base(repository, UserRole.Mod)
         {
-            _repository = repository;
             HelpText = "Use !alias add <existing> <new> to add a new command name, or !alias" +
                        " del <existing> to delete a command name. For example, \"!alias add hangman " +
                        "hm\" creates a new shorthand for Hangman.";
@@ -45,7 +42,7 @@ namespace DevChatter.Bot.Core.Commands
                 return;
             }
 
-            var typeName = _repository.Single(CommandWordPolicy.ByWord(word))?.FullTypeName;
+            var typeName = Repository.Single(CommandWordPolicy.ByWord(word))?.FullTypeName;
 
             if (typeName == null)
             {
