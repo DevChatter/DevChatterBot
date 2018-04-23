@@ -35,7 +35,7 @@ namespace UnitTests.Core.Commands.TopCommandTests
         }
 
         [Fact]
-        public void ReturnChatUserwithHighestTokens_GivenTestData()
+        public void ReturnChatUserWithHighestTokens_GivenTestData()
         {
             List<ChatUser> testBallers = GetTestUsers();
             SetUpTest(testBallers);
