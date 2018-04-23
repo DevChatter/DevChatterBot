@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Core.Util;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevChatter.Bot.Core.Commands
 {
