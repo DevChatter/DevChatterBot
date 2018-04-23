@@ -10,7 +10,7 @@ namespace DevChatter.Bot.Startup
 {
     public static class SetUpBot
     {
-        public static IContainer NewBotDepedencyContainer(BotConfiguration botConfiguration)
+        public static IContainer NewBotDependencyContainer(BotConfiguration botConfiguration)
         {
             var repository = SetUpDatabase.SetUpRepository(botConfiguration.DatabaseConnectionString);
 
