@@ -35,6 +35,8 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<HardcodedWordListProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<HangmanCommand>().AsImplementedInterfaces().SingleInstance();
 
+            builder.RegisterType<TopCommand>().AsImplementedInterfaces().SingleInstance();
+
             builder.RegisterType<UptimeCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<GiveCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CoinsCommand>().AsImplementedInterfaces().SingleInstance();
