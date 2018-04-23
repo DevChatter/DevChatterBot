@@ -35,7 +35,7 @@ namespace DevChatter.Bot.Core.Commands
             string message = $"This channel's Top Ballers are: ";
             for (int i = 0; i < topUsers.Count; i++)
             {
-                message += $"-|-   {i+1}. {topUsers[i].DisplayName}:{topUsers[i].Tokens}   ";
+                message += $" devchaHype {i+1}. {topUsers[i].DisplayName}:{topUsers[i].Tokens} ";
             }
 
             return message;
