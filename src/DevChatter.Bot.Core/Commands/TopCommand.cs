@@ -32,8 +32,8 @@ namespace DevChatter.Bot.Core.Commands
 
         public string GenerateMessage(List<ChatUser> topUsers)
         {
-            IEnumerable<string> topUserStrings = topUsers.Select((x, i) => $" devchaHype {i + 1}. {x.DisplayName}:{x.Tokens} ");
-            var topUserMessage = string.Join("", topUserStrings);
+            var topUserStrings = topUsers.Select((x, i) => $" devchaHype {i + 1}. {x.DisplayName}:{x.Tokens} ");
+            string topUserMessage = string.Join("", topUserStrings);
 
             return $"This channel's Top Ballers are: {topUserMessage}";
         }
