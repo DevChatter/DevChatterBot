@@ -56,7 +56,7 @@ namespace UnitTests.Core.Commands.TopCommandTests
             List<ChatUser> users = GetTestUsers();
             SetUpTest(users);
             List<ChatUser> topUsers = _topCommand.GetTopUsers();
-            string message = _topCommand.GenerateMessage(topUsers);
+            string message = TopCommand.GenerateMessage(topUsers);
             Assert.DoesNotContain("Rock", message);
         }
 
@@ -67,7 +67,7 @@ namespace UnitTests.Core.Commands.TopCommandTests
             SetUpTest(users);
             _topCommand.DisplayTopUsers(_chatClientMock.Object);
             List<ChatUser> topUsers = _topCommand.GetTopUsers();
-            string message = _topCommand.GenerateMessage(topUsers);
+            string message = TopCommand.GenerateMessage(topUsers);
             Assert.DoesNotContain("Rock", message);
         }
 
@@ -83,7 +83,7 @@ namespace UnitTests.Core.Commands.TopCommandTests
             };
             _topCommand.Process(_chatClientMock.Object, commandReceivedEventArgs);
             List<ChatUser> topUsers = _topCommand.GetTopUsers();
-            string message = _topCommand.GenerateMessage(topUsers);
+            string message = TopCommand.GenerateMessage(topUsers);
             _chatClientMock.Verify(x => x.SendMessage(message));
         }
 
