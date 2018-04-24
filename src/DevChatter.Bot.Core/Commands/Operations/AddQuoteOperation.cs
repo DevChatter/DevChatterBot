@@ -29,14 +29,14 @@ namespace DevChatter.Bot.Core.Commands.Operations
                 return $"Please ask a moderator to add this quote, {eventArgs.ChatUser.DisplayName}.";
             }
 
-            int count = _repository.List(QuoteEntityPolicy.All).Count;
+            int maxQuoteId = _repository.List(QuoteEntityPolicy.All).Max(x => x.QuoteId);
 
             var quoteEntity = new QuoteEntity
             {
                 AddedBy = eventArgs.ChatUser.DisplayName,
                 Text = quoteText,
                 Author = author,
-                QuoteId = count + 1
+                QuoteId = maxQuoteId + 1
             };
 
             QuoteEntity updatedEntity = _repository.Create(quoteEntity);
