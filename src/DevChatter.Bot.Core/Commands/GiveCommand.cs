@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Core.Commands
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string coinGiver = eventArgs?.ChatUser?.DisplayName;
-            string coinReceiver = eventArgs?.Arguments?.ElementAtOrDefault(0).NoAt();
+            string coinReceiver = eventArgs?.Arguments?.ElementAtOrDefault(0)?.NoAt();
             string coinsToGiveText = eventArgs?.Arguments?.ElementAtOrDefault(1);
 
             if (string.IsNullOrWhiteSpace(coinReceiver) || string.IsNullOrWhiteSpace(coinsToGiveText) ||
