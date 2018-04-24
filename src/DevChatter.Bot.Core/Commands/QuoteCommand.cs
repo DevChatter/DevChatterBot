@@ -1,3 +1,4 @@
+using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -11,6 +12,13 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class QuoteCommand : BaseCommand
     {
+        private List<ICommandOperation> _operations;
+
+        public List<ICommandOperation> Operations => _operations ?? (_operations = new List<ICommandOperation>
+        {
+            new DeleteQuoteOperation(Repository)
+        });
+
         public QuoteCommand(IRepository repository)
             : base(repository, UserRole.Everyone)
         {
@@ -24,6 +32,15 @@ namespace DevChatter.Bot.Core.Commands
             string argumentOne = eventArgs?.Arguments?.ElementAtOrDefault(0);
             string quoteText = eventArgs?.Arguments?.ElementAtOrDefault(1);
             string author = eventArgs?.Arguments?.ElementAtOrDefault(2);
+
+            var operationToUse = Operations.SingleOrDefault(x => x.ShouldExecute(argumentOne));
+
+            if (operationToUse != null)
+            {
+                string message = operationToUse.TryToExecute(eventArgs);
+                chatClient.SendMessage(message);
+                return;
+            }
 
             switch (argumentOne)
             {
