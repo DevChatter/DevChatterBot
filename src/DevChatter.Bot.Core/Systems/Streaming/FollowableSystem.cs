@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -7,13 +7,17 @@ namespace DevChatter.Bot.Core.Systems.Streaming
 {
     public class FollowableSystem : IFollowableSystem
     {
+        private const int TOKENS_FOR_FOLLOWING = 100;
+
         private readonly IList<IChatClient> _chatClients;
         private readonly IFollowerService _followerService;
+        private readonly ICurrencyGenerator _currencyGenerator;
 
-        public FollowableSystem(IList<IChatClient> chatClients, IFollowerService followerService)
+        public FollowableSystem(IList<IChatClient> chatClients, IFollowerService followerService, ICurrencyGenerator currencyGenerator)
         {
             _chatClients = chatClients;
             _followerService = followerService;
+            _currencyGenerator = currencyGenerator;
         }
 
         public void HandleFollowerNotifications()
@@ -27,8 +31,9 @@ namespace DevChatter.Bot.Core.Systems.Streaming
             {
                 foreach (string followerName in eventArgs.FollowerNames)
                 {
+                    _currencyGenerator.AddCurrencyTo(followerName, TOKENS_FOR_FOLLOWING);
                     chatClient.SendMessage(
-                        $"Welcome, {followerName}! Thank you for following! Everyone, say \"hello\"!");
+                        $"Welcome, {followerName}! Thank you for following! Here's  {TOKENS_FOR_FOLLOWING} coins to have some fun. Everyone, say \"hello\"!");
                 }
             }
         }
