@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 using DevChatter.Bot.Core.Data.Model;
 
@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Core.Data.Specifications
 
         public static QuoteEntityPolicy All { get; } = new QuoteEntityPolicy(x => true);
 
-        public static QuoteEntityPolicy ByQuoteId(int quoteId)
+        public static QuoteEntityPolicy ByQuoteId(int? quoteId)
         {
             return new QuoteEntityPolicy(x => x.QuoteId == quoteId);
         }

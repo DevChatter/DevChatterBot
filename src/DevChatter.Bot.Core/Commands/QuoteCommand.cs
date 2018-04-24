@@ -3,6 +3,7 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
+using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Util;
 using System.Collections.Generic;
@@ -16,7 +17,8 @@ namespace DevChatter.Bot.Core.Commands
 
         public List<ICommandOperation> Operations => _operations ?? (_operations = new List<ICommandOperation>
         {
-            new DeleteQuoteOperation(Repository),
+            new GenericDeleteOperation<QuoteEntity>(Repository, UserRole.Mod,
+                e => QuoteEntityPolicy.ByQuoteId(e.Arguments?.ElementAtOrDefault(1).SafeToInt())),
             new AddQuoteOperation(Repository),
         });
 
