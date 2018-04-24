@@ -28,7 +28,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
 
             string quoteNumberString = eventArgs?.Arguments?.ElementAtOrDefault(1);
 
-            if (int.TryParse(quoteNumberString , out int quoteNumber) && quoteNumber > 0)
+            if (int.TryParse(quoteNumberString, out int quoteNumber) && quoteNumber > 0)
             {
                 var quote = _repository.Single(QuoteEntityPolicy.ByQuoteId(quoteNumber));
 
