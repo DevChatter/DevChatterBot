@@ -30,15 +30,12 @@ namespace DevChatter.Bot.Core.Commands
             triggeringClient.SendMessage(message);
         }
 
-        public string GenerateMessage(List<ChatUser> topUsers)
+        public static string GenerateMessage(List<ChatUser> topUsers)
         {
-            string message = $"This channel's Top Ballers are: ";
-            for (int i = 0; i < topUsers.Count; i++)
-            {
-                message += $" devchaHype {i+1}. {topUsers[i].DisplayName}:{topUsers[i].Tokens} ";
-            }
+            var topUserStrings = topUsers.Select((x, i) => $" devchaHype {i + 1}. {x.DisplayName}:{x.Tokens} ");
+            string topUserMessage = string.Join("", topUserStrings);
 
-            return message;
+            return $"This channel's Top Ballers are: {topUserMessage}";
         }
 
         public List<ChatUser> GetTopUsers()

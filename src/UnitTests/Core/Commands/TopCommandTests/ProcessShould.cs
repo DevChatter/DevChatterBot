@@ -5,10 +5,8 @@ using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace UnitTests.Core.Commands.TopCommandTests
@@ -35,7 +33,7 @@ namespace UnitTests.Core.Commands.TopCommandTests
         }
 
         [Fact]
-        public void ReturnChatUserwithHighestTokens_GivenTestData()
+        public void ReturnChatUserWithHighestTokens_GivenTestData()
         {
             List<ChatUser> testBallers = GetTestUsers();
             SetUpTest(testBallers);
@@ -58,7 +56,7 @@ namespace UnitTests.Core.Commands.TopCommandTests
             List<ChatUser> users = GetTestUsers();
             SetUpTest(users);
             List<ChatUser> topUsers = _topCommand.GetTopUsers();
-            string message = _topCommand.GenerateMessage(topUsers);
+            string message = TopCommand.GenerateMessage(topUsers);
             Assert.DoesNotContain("Rock", message);
         }
 
@@ -69,7 +67,7 @@ namespace UnitTests.Core.Commands.TopCommandTests
             SetUpTest(users);
             _topCommand.DisplayTopUsers(_chatClientMock.Object);
             List<ChatUser> topUsers = _topCommand.GetTopUsers();
-            string message = _topCommand.GenerateMessage(topUsers);
+            string message = TopCommand.GenerateMessage(topUsers);
             Assert.DoesNotContain("Rock", message);
         }
 
@@ -85,7 +83,7 @@ namespace UnitTests.Core.Commands.TopCommandTests
             };
             _topCommand.Process(_chatClientMock.Object, commandReceivedEventArgs);
             List<ChatUser> topUsers = _topCommand.GetTopUsers();
-            string message = _topCommand.GenerateMessage(topUsers);
+            string message = TopCommand.GenerateMessage(topUsers);
             _chatClientMock.Verify(x => x.SendMessage(message));
         }
 
