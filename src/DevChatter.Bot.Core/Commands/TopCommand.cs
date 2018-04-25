@@ -40,7 +40,7 @@ namespace DevChatter.Bot.Core.Commands
 
         public List<ChatUser> GetTopUsers()
         {
-            return new List<ChatUser>(Repository.List<ChatUser>().OrderByDescending(b => b.Tokens).Take(5));
+            return new List<ChatUser>(Repository.List<ChatUser>().Where(u => u.Role.Equals(UserRole.Streamer) == false).OrderByDescending(b => b.Tokens).Take(5));
         }
     }
 }

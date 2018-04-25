@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
@@ -61,6 +61,11 @@ namespace DevChatter.Bot.Core.Events
         {
             _chatUserCollection.UpdateSpecficChatters(x => x.Tokens += tokensToAdd,
                 x => listOfNames.Contains(x.DisplayName));
+        }
+
+        public void AddCurrencyTo(string displayName, int tokensToAdd)
+        {
+            AddCurrencyTo(new List<string>() { displayName }, tokensToAdd);
         }
 
         public bool RemoveCurrencyFrom(string userName, int tokensToRemove)
