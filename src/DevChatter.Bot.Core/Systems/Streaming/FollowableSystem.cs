@@ -33,7 +33,7 @@ namespace DevChatter.Bot.Core.Systems.Streaming
                 {
                     _currencyGenerator.AddCurrencyTo(followerName, TOKENS_FOR_FOLLOWING);
                     chatClient.SendMessage(
-                        $"Welcome, {followerName}! Thank you for following! Here's  {TOKENS_FOR_FOLLOWING} coins to have some fun. Everyone, say \"hello\"!");
+                        $"Welcome, {followerName}! Thank you for following! Here's {TOKENS_FOR_FOLLOWING} coins to have some fun. Everyone, say \"hello\"!");
                 }
             }
         }
