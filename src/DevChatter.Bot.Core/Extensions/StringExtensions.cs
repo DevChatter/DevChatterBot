@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,6 +7,17 @@ namespace DevChatter.Bot.Core.Extensions
 {
     public static class StringExtensions
     {
+        public static int? SafeToInt(this string src)
+        {
+            if (int.TryParse(src, out int number))
+            {
+                return number;
+            }
+
+            return null;
+        }
+
+
         public static string NoAt(this string src)
         {
             return src.TrimStart('@');
