@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data.Model;
@@ -23,7 +24,14 @@ namespace DevChatter.Bot.Core.Automation
             var readyActions = _actions.Where(x => x.IsTimeToRun()).ToList();
             foreach (IIntervalAction readyAction in readyActions)
             {
-                readyAction.Invoke();
+                try
+                {
+                    readyAction.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
         }
 
