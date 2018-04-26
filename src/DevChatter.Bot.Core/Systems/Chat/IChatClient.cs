@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Data.Model;
@@ -14,6 +14,7 @@ namespace DevChatter.Bot.Core.Systems.Chat
         Task Disconnect();
 
         void SendMessage(string message);
+        void SendDirectMessage(string username, string message);
 
         IList<ChatUser> GetAllChatters();
 
