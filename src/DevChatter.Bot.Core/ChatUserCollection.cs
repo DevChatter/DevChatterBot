@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
+using DevChatter.Bot.Core.Extensions;
 
 namespace DevChatter.Bot.Core
 {
@@ -43,17 +44,21 @@ namespace DevChatter.Bot.Core
         }
 
         public void UpdateEachChatter(Action<ChatUser> updateToApply) =>
-            UpdateSpecficChatters(updateToApply, x => true);
+            UpdateSpecificChatters(updateToApply, ChatUserPolicy.All());
 
-        public void UpdateSpecficChatters(Action<ChatUser> updateToApply, Func<ChatUser, bool> filter)
+        public void UpdateSpecificChatters(Action<ChatUser> updateToApply, ISpecification<ChatUser> filter)
         {
             lock (_activeChatUsersLock)
             {
-                List<ChatUser> usersToUpdate = _activeChatUsers.Where(filter).ToList();
+                List<ChatUser> usersToUpdate = _repository.List(filter);
+
                 foreach (ChatUser chatUser in usersToUpdate)
                 {
                     updateToApply(chatUser);
+                    var userToUpdate = _activeChatUsers.Single(x => x.DisplayName.EqualsIns(chatUser.DisplayName));
+                    updateToApply(userToUpdate);
                 }
+                // TODO: Change this to do a refresh of the activeChatUsers instead of updating one-by-one
 
                 _repository.Update(usersToUpdate);
             }
@@ -72,7 +77,7 @@ namespace DevChatter.Bot.Core
             ChatUser chatUser = _activeChatUsers.SingleOrDefault(x => x.DisplayName == username);
             if (chatUser == null)
             {
-                chatUser = GetOrCreateChatUser(username, new ChatUser {DisplayName = username});
+                chatUser = GetOrCreateChatUser(username, new ChatUser { DisplayName = username });
                 WatchUser(chatUser);
             }
 
