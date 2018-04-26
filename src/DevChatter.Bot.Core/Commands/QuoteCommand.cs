@@ -1,7 +1,9 @@
+using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
+using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Util;
 using System.Collections.Generic;
@@ -11,6 +13,15 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class QuoteCommand : BaseCommand
     {
+        private List<ICommandOperation> _operations;
+
+        public List<ICommandOperation> Operations => _operations ?? (_operations = new List<ICommandOperation>
+        {
+            new GenericDeleteOperation<QuoteEntity>(Repository, UserRole.Mod,
+                e => QuoteEntityPolicy.ByQuoteId(e.Arguments?.ElementAtOrDefault(1).SafeToInt())),
+            new AddQuoteOperation(Repository),
+        });
+
         public QuoteCommand(IRepository repository)
             : base(repository, UserRole.Everyone)
         {
@@ -25,13 +36,19 @@ namespace DevChatter.Bot.Core.Commands
             string quoteText = eventArgs?.Arguments?.ElementAtOrDefault(1);
             string author = eventArgs?.Arguments?.ElementAtOrDefault(2);
 
+            var operationToUse = Operations.SingleOrDefault(x => x.ShouldExecute(argumentOne));
+
+            if (operationToUse != null)
+            {
+                string message = operationToUse.TryToExecute(eventArgs);
+                chatClient.SendMessage(message);
+                return;
+            }
+
             switch (argumentOne)
             {
                 case null:
                     HandleRandomQuoteRequest(chatClient);
-                    break;
-                case "add":
-                    AddNewQuote(chatClient, quoteText, author, eventArgs.ChatUser);
                     break;
                 default:
                     if (int.TryParse(argumentOne, out int requestQuoteId))
@@ -41,29 +58,6 @@ namespace DevChatter.Bot.Core.Commands
 
                     break;
             }
-        }
-
-        private void AddNewQuote(IChatClient chatClient, string quoteText, string author, ChatUser chatUser)
-        {
-            if (!chatUser.CanUserRunCommand(UserRole.Mod))
-            {
-                chatClient.SendMessage($"Please ask a moderator to add this quote, {chatUser.DisplayName}.");
-                return;
-            }
-
-            int count = Repository.List(QuoteEntityPolicy.All).Count;
-
-            var quoteEntity = new QuoteEntity
-            {
-                AddedBy = chatUser.DisplayName,
-                Text = quoteText,
-                Author = author,
-                QuoteId = count + 1
-            };
-
-            QuoteEntity updatedEntity = Repository.Create(quoteEntity);
-
-            chatClient.SendMessage($"Created quote # {updatedEntity.QuoteId}.");
         }
 
         private void HandleRandomQuoteRequest(IChatClient triggeringClient)
