@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Util;
 
@@ -11,6 +12,7 @@ namespace DevChatter.Bot.Core.Games.Heist
     public class HeistGame
     {
         private readonly IAutomatedActionSystem _automatedActionSystem;
+        private readonly ICurrencyGenerator _currencyGenerator;
         public bool IsGameRunning { get; private set; }
         private const UserRole ROLE_REQUIRED_TO_START = UserRole.Subscriber;
         private const int HEIST_DELAY_IN_SECONDS = 90;
@@ -21,8 +23,9 @@ namespace DevChatter.Bot.Core.Games.Heist
         private DelayedMessageAction _lastCallToJoin;
         private OneTimeCallBackAction _startHeistAction;
 
-        public HeistGame(IAutomatedActionSystem automatedActionSystem)
+        public HeistGame(IAutomatedActionSystem automatedActionSystem, ICurrencyGenerator currencyGenerator)
         {
+            _currencyGenerator = currencyGenerator;
             _automatedActionSystem = automatedActionSystem;
         }
 
@@ -52,7 +55,8 @@ namespace DevChatter.Bot.Core.Games.Heist
 
         private void ScheduleAutomatedActions(IChatClient chatClient)
         {
-            _lastCallToJoin = new DelayedMessageAction(HEIST_DELAY_IN_SECONDS - 30, "Only 30 seconds left to join the heist! Type !heist to join it!", chatClient);
+            _lastCallToJoin = new DelayedMessageAction(HEIST_DELAY_IN_SECONDS - 30,
+                "Only 30 seconds left to join the heist! Type !heist to join it!", chatClient);
             _automatedActionSystem.AddAction(_lastCallToJoin);
 
             _startHeistAction = new OneTimeCallBackAction(HEIST_DELAY_IN_SECONDS, () => StartHeist(chatClient));
@@ -68,6 +72,8 @@ namespace DevChatter.Bot.Core.Games.Heist
                 chatClient.SendMessage(resultMessage);
             }
 
+            _currencyGenerator.AddCurrencyTo(heistMissionResult.SurvivingMembers, 50);
+
             ResetHeist();
         }
 
@@ -82,14 +88,14 @@ namespace DevChatter.Bot.Core.Games.Heist
 
         public JoinGameResult AttemptToJoinHeist(string displayName, HeistRoles role)
         {
-            if (_heistMembers.ContainsKey(role))
-            {
-                return HeistJoinResults.RoleTakenResult(displayName, role);
-            }
-
             if (_heistMembers.ContainsValue(displayName))
             {
                 return HeistJoinResults.AlreadyInHeistResult(displayName);
+            }
+
+            if (_heistMembers.ContainsKey(role))
+            {
+                return HeistJoinResults.RoleTakenResult(displayName, role);
             }
 
             _heistMembers.Add(role, displayName);
