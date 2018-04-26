@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Util;
 using HR = DevChatter.Bot.Core.Games.Heist.HeistRoles;
@@ -9,7 +9,7 @@ namespace DevChatter.Bot.Core.Games.Heist
     {
         private readonly int _id;
 
-        private static readonly List<HeistMission> Missions = new List<HeistMission>
+        internal static readonly List<HeistMission> Missions = new List<HeistMission>
         {
             new HeistMission(1,"Bank Robbery", new []{HR.Thief, HR.Tech, HR.Grifter, HR.Driver, HR.Carrier}, 1000),
             new HeistMission(2,"Mob Bank Robbery", new []{HR.Thief, HR.Tech, HR.Grifter,  HR.Hitter, HR.Driver, HR.Carrier}, 1500),

@@ -15,6 +15,8 @@ namespace DevChatter.Bot.Core.Games.Heist
         private const UserRole ROLE_REQUIRED_TO_START = UserRole.Subscriber;
         private const int HEIST_DELAY_IN_SECONDS = 90;
 
+        private HeistMission _selectedHeist = null;
+
         private readonly Dictionary<HeistRoles, string> _heistMembers = new Dictionary<HeistRoles, string>();
         private DelayedMessageAction _lastCallToJoin;
         private OneTimeCallBackAction _startHeistAction;
@@ -37,8 +39,19 @@ namespace DevChatter.Bot.Core.Games.Heist
 
             // start the game
             IsGameRunning = true;
-            chatClient.SendMessage($"{chatUser.DisplayName} is organizing a heist. Type !heist or !heist [role] to join the team!");
+            SelectRandomHeist();
+            chatClient.SendMessage($"{chatUser.DisplayName} is organizing a {_selectedHeist.Name}. Type !heist or !heist [role] to join the team!");
 
+            ScheduleAutomatedActions(chatClient);
+        }
+
+        private void SelectRandomHeist()
+        {
+            (_, _selectedHeist) = MyRandom.ChooseRandomItem(HeistMission.Missions);
+        }
+
+        private void ScheduleAutomatedActions(IChatClient chatClient)
+        {
             _lastCallToJoin = new DelayedMessageAction(HEIST_DELAY_IN_SECONDS - 30, "Only 30 seconds left to join the heist! Type !heist to join it!", chatClient);
             _automatedActionSystem.AddAction(_lastCallToJoin);
 
@@ -65,6 +78,7 @@ namespace DevChatter.Bot.Core.Games.Heist
         {
             _heistMembers.Clear();
             IsGameRunning = false;
+            _selectedHeist = null;
             _automatedActionSystem.RemoveAction(_lastCallToJoin);
             _automatedActionSystem.RemoveAction(_startHeistAction);
         }
