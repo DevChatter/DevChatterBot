@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core
         private readonly object _userCreationLock = new object();
 
         private readonly object _activeChatUsersLock = new object();
-        private readonly List<ChatUser> _activeChatUsers = new List<ChatUser>();
+        private readonly List<string> _activeChatUsers = new List<string>();
 
         public ChatUserCollection(IRepository repository)
         {
@@ -25,19 +25,19 @@ namespace DevChatter.Bot.Core
         {
             // Don't lock in here
             // ReSharper disable once InconsistentlySynchronizedField
-            return _activeChatUsers.All(x => x.DisplayName != displayName);
+            return _activeChatUsers.All(activeDisplayName => activeDisplayName != displayName);
         }
 
 
-        public void WatchUser(ChatUser userFromDb)
+        public void WatchUser(string displayName)
         {
-            if (NeedToWatchUser(userFromDb.DisplayName))
+            if (NeedToWatchUser(displayName))
             {
                 lock (_activeChatUsersLock)
                 {
-                    if (NeedToWatchUser(userFromDb.DisplayName))
+                    if (NeedToWatchUser(displayName))
                     {
-                        _activeChatUsers.Add(userFromDb);
+                        _activeChatUsers.Add(displayName);
                     }
                 }
             }
@@ -55,10 +55,7 @@ namespace DevChatter.Bot.Core
                 foreach (ChatUser chatUser in usersToUpdate)
                 {
                     updateToApply(chatUser);
-                    var userToUpdate = _activeChatUsers.Single(x => x.DisplayName.EqualsIns(chatUser.DisplayName));
-                    updateToApply(userToUpdate);
                 }
-                // TODO: Change this to do a refresh of the activeChatUsers instead of updating one-by-one
 
                 _repository.Update(usersToUpdate);
             }
@@ -68,18 +65,14 @@ namespace DevChatter.Bot.Core
         {
             lock (_activeChatUsersLock)
             {
-                _activeChatUsers.RemoveAll(x => x.DisplayName == displayName);
+                _activeChatUsers.RemoveAll(x => x == displayName);
             }
         }
 
         public bool UserHasAtLeast(string username, int tokensToRemove)
         {
-            ChatUser chatUser = _activeChatUsers.SingleOrDefault(x => x.DisplayName == username);
-            if (chatUser == null)
-            {
-                chatUser = GetOrCreateChatUser(username, new ChatUser { DisplayName = username });
-                WatchUser(chatUser);
-            }
+            ChatUser chatUser = GetOrCreateChatUser(username);
+            WatchUser(chatUser.DisplayName);
 
             return chatUser.Tokens >= tokensToRemove;
         }
@@ -94,16 +87,8 @@ namespace DevChatter.Bot.Core
             }
         }
 
-        public bool UserExists(string username)
-        {
-            if (_activeChatUsers.Any(x => x.DisplayName.Equals(username, StringComparison.InvariantCultureIgnoreCase))
-                || _repository.Single(ChatUserPolicy.ByDisplayName(username)) != null)
-            {
-                return true;
-            }
-
-            return false;
-        }
+        public bool UserExists(string username) => _activeChatUsers.Any(x => x.EqualsIns(username))
+                || _repository.Single(ChatUserPolicy.ByDisplayName(username)) != null;
 
         public bool TryGiveCoins(string coinGiver, string coinReceiver, int coinsToGive)
         {
@@ -119,10 +104,8 @@ namespace DevChatter.Bot.Core
                     return false;
                 }
 
-                ChatUser giver = _activeChatUsers.SingleOrDefault(x => x.DisplayName == coinGiver)
-                                 ?? GetOrCreateChatUser(coinGiver);
-                ChatUser receiver = _activeChatUsers.SingleOrDefault(x => x.DisplayName == coinReceiver)
-                                    ?? GetOrCreateChatUser(coinReceiver);
+                ChatUser giver = GetOrCreateChatUser(coinGiver);
+                ChatUser receiver = GetOrCreateChatUser(coinReceiver);
 
                 giver.Tokens -= coinsToGive;
                 receiver.Tokens += coinsToGive;

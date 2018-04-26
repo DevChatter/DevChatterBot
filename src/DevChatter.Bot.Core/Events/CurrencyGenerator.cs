@@ -41,7 +41,7 @@ namespace DevChatter.Bot.Core.Events
             if (_chatUserCollection.NeedToWatchUser(displayName))
             {
                 ChatUser userFromDb = _chatUserCollection.GetOrCreateChatUser(displayName, chatUser);
-                _chatUserCollection.WatchUser(userFromDb);
+                _chatUserCollection.WatchUser(userFromDb.DisplayName);
             }
         }
 

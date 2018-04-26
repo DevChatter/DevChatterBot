@@ -22,8 +22,6 @@ namespace DevChatter.Bot.Startup
             builder.Register(ctx => botConfiguration.CommandHandlerSettings).AsSelf().SingleInstance();
             builder.Register(ctx => botConfiguration.TwitchClientSettings).AsSelf().SingleInstance();
 
-            builder.RegisterType<ConsoleChatClient>().AsImplementedInterfaces().SingleInstance();
-
             builder.Register(ctx => repository)
                    .As<IRepository>().SingleInstance();
 

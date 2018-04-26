@@ -53,7 +53,7 @@ namespace DevChatter.Bot.Core.Commands
             {
                 if (isVerboseMode)
                 {
-                    chatClient.SendMessage(requestedCommand.FullHelpText);
+                    chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, requestedCommand.FullHelpText);
                 }
                 else
                 {

@@ -128,8 +128,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         private void StartNewGame(IChatClient chatClient, string username)
         {
             chatClient.SendMessage(
-                $"{username} wants to play Rock-Paper-Scissors! You have {SECONDS_TO_JOIN_GAME} seconds to join!");
-            chatClient.SendMessage("To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.");
+                $"{username} wants to play Rock-Paper-Scissors! You have {SECONDS_TO_JOIN_GAME} seconds to join! To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.");
 
             _rockPaperScissorsEndGame = new RockPaperScissorsEndGame(SECONDS_TO_JOIN_GAME, this, chatClient);
             _automatedActionSystem.AddAction(_rockPaperScissorsEndGame);
