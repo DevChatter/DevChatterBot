@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
 using Moq;
@@ -38,8 +40,9 @@ namespace UnitTests.Core.Automation.CurrencyUpdateTests
         public void ReturnFalse_AfterInvokingAction()
         {
             const int intervalInMinutes = 1;
-            IRepository repository = new Mock<IRepository>().Object;
-            var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(repository));
+            var repository = new Mock<IRepository>();
+            repository.Setup(x => x.List(It.IsAny<ISpecification<ChatUser>>())).Returns(new List<ChatUser>());
+            var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(repository.Object));
             var fakeClock = new FakeClock();
             var currencyUpdate = new CurrencyUpdate(intervalInMinutes, currencyGenerator, fakeClock);
 
