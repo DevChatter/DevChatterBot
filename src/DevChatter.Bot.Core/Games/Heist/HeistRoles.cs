@@ -1,10 +1,10 @@
-﻿namespace DevChatter.Bot.Core.Games.Heist
+namespace DevChatter.Bot.Core.Games.Heist
 {
     public enum HeistRoles
     {
         Grifter,
         Hacker,
-        Hitter,
+        Thug,
         Thief,
         Tech,
         Carrier,

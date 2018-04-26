@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Core.Games.Heist
         internal static readonly List<HeistMission> Missions = new List<HeistMission>
         {
             new HeistMission(1,"Bank Robbery", new []{HR.Thief, HR.Tech, HR.Grifter, HR.Driver, HR.Carrier}, 1000),
-            new HeistMission(2,"Mob Bank Robbery", new []{HR.Thief, HR.Tech, HR.Grifter,  HR.Hitter, HR.Driver, HR.Carrier}, 1500),
+            new HeistMission(2,"Mob Bank Robbery", new []{HR.Thief, HR.Tech, HR.Grifter,  HR.Thug, HR.Driver, HR.Carrier}, 1500),
             new HeistMission(3,"Museum Heist", new []{HR.Thief, HR.Grifter, HR.Hacker, HR.Driver, HR.Carrier}, 1000),
             new HeistMission(4,"Jewelry Store", new []{HR.Grifter, HR.Hacker, HR.Driver, HR.Carrier}, 800),
         };
