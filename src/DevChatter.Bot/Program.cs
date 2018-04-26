@@ -25,7 +25,7 @@ namespace DevChatter.Bot
             ILifetimeScope scope = null;
             try
             {
-                IBotMain botMain = null;
+                BotMain botMain = null;
                 var command = "start";
                 while (true)
                 {
@@ -64,7 +64,7 @@ namespace DevChatter.Bot
             }
         }
 
-        private static void Stop(ILifetimeScope scope, IBotMain botMain)
+        private static void Stop(ILifetimeScope scope, BotMain botMain)
         {
             Console.WriteLine("Bot stopping....");
             botMain?.Stop();
@@ -73,11 +73,11 @@ namespace DevChatter.Bot
             Console.WriteLine("==============================");
         }
 
-        private static void Start(IContainer container, out ILifetimeScope scope, out IBotMain botMain)
+        private static void Start(IContainer container, out ILifetimeScope scope, out BotMain botMain)
         {
             Console.WriteLine("Bot starting....");
             scope = container.BeginLifetimeScope();
-            botMain = scope.Resolve<IBotMain>();
+            botMain = scope.Resolve<BotMain>();
             botMain.Run();
             Console.WriteLine("Bot started");
             Console.WriteLine("==============================");

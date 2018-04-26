@@ -63,7 +63,7 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<SubscriberHandler>().AsSelf().SingleInstance();
             builder.RegisterType<FollowableSystem>().AsImplementedInterfaces().SingleInstance();
 
-            builder.RegisterType<BotMain>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<BotMain>().AsSelf().SingleInstance();
         }
     }
 }

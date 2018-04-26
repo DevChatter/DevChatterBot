@@ -11,7 +11,7 @@ using DevChatter.Bot.Core.Systems.Streaming;
 
 namespace DevChatter.Bot.Core
 {
-    public class BotMain : IBotMain
+    public class BotMain
     {
         private readonly IList<IChatClient> _chatClients;
         private readonly IRepository _repository;
