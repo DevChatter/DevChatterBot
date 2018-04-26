@@ -61,10 +61,7 @@ namespace DevChatter.Bot.Core.Games.Heist
 
         public void StartHeist(IChatClient chatClient)
         {
-            // TODO Pick Random Heist from collection
-            var heistMission = new HeistMission(0, "failing heist", new []{HeistRoles.Hacker}, 0);
-
-            HeistMissionResult heistMissionResult = heistMission.AttemptHeist(_heistMembers);
+            HeistMissionResult heistMissionResult = _selectedHeist.AttemptHeist(_heistMembers);
 
             foreach (string resultMessage in heistMissionResult.ResultMessages)
             {
