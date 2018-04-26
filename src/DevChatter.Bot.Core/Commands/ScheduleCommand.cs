@@ -1,17 +1,15 @@
-using System;
-using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using NodaTime;
+using System;
+using System.Linq;
 
 namespace DevChatter.Bot.Core.Commands
 {
     public class ScheduleCommand : BaseCommand
     {
-        public string CommandText => "schedule";
-
         public ScheduleCommand(IRepository repository) : base(repository, UserRole.Everyone)
         {
             HelpText = "To see our schedule just type !schedule and to see it in another timezone, pass your UTC offset. Example: !schedule -4";

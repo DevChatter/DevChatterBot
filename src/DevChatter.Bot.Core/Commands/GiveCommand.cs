@@ -1,10 +1,9 @@
-﻿using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
+using System.Linq;
 
 namespace DevChatter.Bot.Core.Commands
 {
@@ -22,7 +21,7 @@ namespace DevChatter.Bot.Core.Commands
         public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string coinGiver = eventArgs?.ChatUser?.DisplayName;
-            string coinReceiver = eventArgs?.Arguments?.ElementAtOrDefault(0).NoAt();
+            string coinReceiver = eventArgs?.Arguments?.ElementAtOrDefault(0)?.NoAt();
             string coinsToGiveText = eventArgs?.Arguments?.ElementAtOrDefault(1);
 
             if (string.IsNullOrWhiteSpace(coinReceiver) || string.IsNullOrWhiteSpace(coinsToGiveText) ||

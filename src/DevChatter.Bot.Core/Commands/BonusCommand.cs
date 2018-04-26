@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
@@ -24,7 +24,7 @@ namespace DevChatter.Bot.Core.Commands
         {
             string bonusReceiver = (eventArgs?.Arguments?.ElementAtOrDefault(0) ?? "").NoAt();
             string bonusGiver = eventArgs?.ChatUser?.DisplayName;
-            if (bonusGiver == bonusReceiver)
+            if (bonusGiver.EqualsIns(bonusReceiver))
             {
                 chatClient.SendMessage($"Did you seriously think this would work, {bonusGiver}");
                 return;

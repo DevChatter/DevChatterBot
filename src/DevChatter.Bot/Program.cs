@@ -12,7 +12,7 @@ namespace DevChatter.Bot
             Console.WriteLine("Initializing the Bot...");
 
             var botConfiguration = SetUpConfig.InitializeConfiguration();
-            var container = SetUpBot.NewBotDepedencyContainer(botConfiguration);
+            var container = SetUpBot.NewBotDependencyContainer(botConfiguration);
             WaitForCommands(container);
         }
 
