@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 
 namespace DevChatter.Bot.Core
 {
@@ -10,7 +11,7 @@ namespace DevChatter.Bot.Core
         void StopWatching(string displayName);
         bool TryGiveCoins(string coinGiver, string coinReceiver, int coinsToGive);
         void UpdateEachChatter(Action<ChatUser> updateToApply);
-        void UpdateSpecficChatters(Action<ChatUser> updateToApply, Func<ChatUser, bool> filter);
+        void UpdateSpecificChatters(Action<ChatUser> updateToApply, ISpecification<ChatUser> filter);
         bool UserExists(string username);
         bool UserHasAtLeast(string username, int tokensToRemove);
         void WatchUser(ChatUser userFromDb);
