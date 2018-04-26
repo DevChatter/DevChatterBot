@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Infra.Twitch.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TwitchLib;
 using TwitchLib.Events.Client;
 using TwitchLib.Models.Client;
@@ -103,6 +102,14 @@ namespace DevChatter.Bot.Infra.Twitch
             var chatters = _twitchApi.Undocumented.GetChattersAsync(_settings.TwitchChannel).Result;
             var chatUsers = chatters.Select(x => x.ToChatUser()).ToList();
             return chatUsers;
+        }
+
+        public void SendDirectMessage(string username, string message)
+        {
+            if (_isReady)
+            {
+                _twitchClient.SendWhisper(username, message);
+            }
         }
 
         public event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
