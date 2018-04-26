@@ -11,7 +11,7 @@ namespace UnitTests.Core.Games.Heist.HeistGameTests
         [Fact]
         public void AllowJoining_GivenRandomSelectionForFirstTimer()
         {
-            var heistGame = new HeistGame(new Mock<IAutomatedActionSystem>().Object);
+            var heistGame = new HeistGame(new Mock<IAutomatedActionSystem>().Object, null);
 
             var displayName = "nameOfPerson";
             JoinGameResult attemptToJoinHeist = heistGame.AttemptToJoinHeist(displayName, out HeistRoles role);
@@ -22,7 +22,7 @@ namespace UnitTests.Core.Games.Heist.HeistGameTests
         [Fact]
         public void DisallowJoining_GivenSameJoiner()
         {
-            var heistGame = new HeistGame(new Mock<IAutomatedActionSystem>().Object);
+            var heistGame = new HeistGame(new Mock<IAutomatedActionSystem>().Object, null);
 
             var displayName = "nameOfPerson";
             JoinGameResult attemptToJoinHeist1 = heistGame.AttemptToJoinHeist(displayName, out HeistRoles role1);
