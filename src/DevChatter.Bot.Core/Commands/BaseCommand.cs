@@ -67,9 +67,8 @@ namespace DevChatter.Bot.Core.Commands
             else
             {
                 string timeRemaining = (Cooldown - timePassedSinceInvoke).ToExpandingString();
-
-                // TODO: This should probably be a PM. no sense spamming chat
-                chatClient.SendMessage($"That command is currently on cooldown @{eventArgs.ChatUser.DisplayName} - Remaining time: {timeRemaining}");
+                string cooldownMessage = $"That command is currently on cooldown - Remaining time: {timeRemaining}";
+                chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, cooldownMessage);
             }
         }
 

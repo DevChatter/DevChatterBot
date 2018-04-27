@@ -32,18 +32,25 @@ namespace DevChatter.Bot.Core.Commands
         public string HelpText { get; protected set; } = $"No help text for this command yet.";
         public string FullHelpText => HelpText;
 
-        TimeSpan IBotCommand.Cooldown => throw new NotImplementedException();
-
         public bool ShouldExecute(string commandText) => CommandText.EqualsIns(commandText);
 
         public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
+            TimeSpan timePassedSinceInvoke = DateTimeOffset.Now - _timeCommandLastInvoked;
             bool userCanBypassCooldown = eventArgs.ChatUser.Role?.EqualsAny(UserRole.Streamer, UserRole.Mod) ?? false;
-            if (userCanBypassCooldown || DateTimeOffset.Now - _timeCommandLastInvoked >= Cooldown)
+            if (userCanBypassCooldown || timePassedSinceInvoke >= Cooldown)
             {
+                _timeCommandLastInvoked = DateTimeOffset.Now;
+
                 IEnumerable<string> findTokens = StaticResponse.FindTokens();
                 string textToSend = ReplaceTokens(StaticResponse, findTokens, eventArgs);
                 chatClient.SendMessage(textToSend);
+            }
+            else
+            {
+                string timeRemaining = (Cooldown - timePassedSinceInvoke).ToExpandingString();
+                string cooldownMessage = $"That command is currently on cooldown - Remaining time: {timeRemaining}";
+                chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, cooldownMessage);
             }
         }
 
