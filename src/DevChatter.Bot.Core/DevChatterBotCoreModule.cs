@@ -32,7 +32,6 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<RockPaperScissorsCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<HangmanGame>().AsSelf().SingleInstance();
-            builder.RegisterType<HardcodedWordListProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<HangmanCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<TopCommand>().AsImplementedInterfaces().SingleInstance();
