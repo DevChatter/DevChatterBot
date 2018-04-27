@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data.Model;
@@ -30,6 +31,8 @@ namespace DevChatter.Bot.Core.Commands
         public string CommandText { get; protected set; }
         public string HelpText { get; protected set; } = $"No help text for this command yet.";
         public string FullHelpText => HelpText;
+
+        TimeSpan IBotCommand.Cooldown => throw new NotImplementedException();
 
         public bool ShouldExecute(string commandText) => CommandText.EqualsIns(commandText);
 
