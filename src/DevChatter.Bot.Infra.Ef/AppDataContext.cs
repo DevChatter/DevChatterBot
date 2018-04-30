@@ -1,4 +1,4 @@
-﻿using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Messaging;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +15,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<ChatUser> ChatUsers { get; set; }
         public DbSet<StreamerEntity> Streamers { get; set; }
         public DbSet<CommandWordEntity> CommandWords { get; set; }
+        public DbSet<HangmanWord> HangmanWords { get; set; }
 
         public AppDataContext(DbContextOptions<AppDataContext> options)
             : base(options)
