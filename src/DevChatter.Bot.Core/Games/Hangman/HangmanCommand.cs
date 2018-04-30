@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         public HangmanCommand(IRepository repository, HangmanGame hangmanGame)
             : base(repository, UserRole.Everyone)
         {
-            Cooldown = TimeSpan.FromMinutes(15);
+            Cooldown = TimeSpan.FromMinutes(10);
 
             _hangmanGame = hangmanGame;
             HelpText =
