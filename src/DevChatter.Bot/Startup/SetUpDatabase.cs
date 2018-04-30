@@ -51,11 +51,40 @@ namespace DevChatter.Bot.Startup
                 repository.Create(GetInitialQuotes());
             }
 
+            if (!repository.List<HangmanWord>().Any())
+            {
+                repository.Create(GetInitialHangmanWords());
+            }
+
             var missingCommandWords = GetMissingCommandWords(repository);
             if (missingCommandWords.Any())
             {
                 repository.Create(missingCommandWords);
             }
+        }
+
+        private static List<HangmanWord> GetInitialHangmanWords()
+        {
+            return new List<HangmanWord>
+            {
+                new HangmanWord("apple"),
+                new HangmanWord("banana"),
+                new HangmanWord("orange" ),
+                new HangmanWord("mango"),
+                new HangmanWord("watermellon"),
+                new HangmanWord("grapes"),
+                new HangmanWord("pizza"),
+                new HangmanWord("pasta"),
+                new HangmanWord("pepperoni"),
+                new HangmanWord("cheese"),
+                new HangmanWord("mushroom"),
+                new HangmanWord("csharp"),
+                new HangmanWord("javascript"),
+                new HangmanWord("cplusplus"),
+                new HangmanWord("nullreferenceexception"),
+                new HangmanWord("parameter"),
+                new HangmanWord("argument")
+            };
         }
 
         private static List<IntervalMessage> GetIntervalMessages()
