@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevChatter.Bot.Core.Commands
 {
@@ -14,11 +12,6 @@ namespace DevChatter.Bot.Core.Commands
         public TopCommand(IRepository repository) : base(repository, UserRole.Everyone)
         {
             HelpText = "List the biggest ballers in the chat!";
-        }
-
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
-        {
-            DisplayTopUsers(chatClient);
         }
 
         public void DisplayTopUsers(IChatClient triggeringClient)
@@ -41,6 +34,11 @@ namespace DevChatter.Bot.Core.Commands
         public List<ChatUser> GetTopUsers()
         {
             return new List<ChatUser>(Repository.List<ChatUser>().Where(u => u.Role != UserRole.Streamer).OrderByDescending(b => b.Tokens).Take(5));
+        }
+
+        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        {
+            DisplayTopUsers(chatClient);
         }
     }
 }

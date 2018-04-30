@@ -17,7 +17,7 @@ namespace DevChatter.Bot.Core.Commands
             HelpText = "Use \"!coins\" to see your current coin total, or use \"!coins SomeoneElse\" to see another user's coin total.";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             try
             {

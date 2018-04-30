@@ -6,7 +6,7 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.RockPaperScissors
 {
-    public class RockPaperScissorsGame
+    public class RockPaperScissorsGame : IGame
     {
         private const int SECONDS_TO_JOIN_GAME = 120;
         private const int TOKENS_FOR_WINNING = 100;
@@ -18,9 +18,10 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             new Dictionary<string, RockPaperScissors>();
 
         private readonly object _gameStartLock = new object();
-        private bool _isRunningGame;
         private RockPaperScissorsEndGame _rockPaperScissorsEndGame;
         private IIntervalAction _joinGameWarningMessage;
+
+        public bool IsRunning { get; private set; }
 
         public RockPaperScissorsGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem)
         {
@@ -65,7 +66,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         private void CleanUpAfterGame()
         {
             _competitors.Clear();
-            _isRunningGame = false;
+            IsRunning = false;
             _automatedActionSystem.RemoveAction(_rockPaperScissorsEndGame);
             _automatedActionSystem.RemoveAction(_joinGameWarningMessage);
         }
@@ -107,19 +108,19 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 
         public void AttemptToStartNewGame(IChatClient chatClient, string username)
         {
-            if (_isRunningGame)
+            if (IsRunning)
             {
                 return;
             }
 
             lock (_gameStartLock)
             {
-                if (_isRunningGame)
+                if (IsRunning)
                 {
                     return;
                 }
 
-                _isRunningGame = true;
+                IsRunning = true;
             }
 
             StartNewGame(chatClient, username);

@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Core.Commands
             HelpText = "To see our schedule just type !schedule and to see it in another timezone, pass your UTC offset. Example: !schedule -4";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             if (!int.TryParse(eventArgs?.Arguments?.ElementAtOrDefault(0), out int offset) || offset > 18 || offset < -18)
             {

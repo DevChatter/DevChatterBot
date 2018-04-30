@@ -17,7 +17,7 @@ namespace DevChatter.Bot.Core.Commands
 
         public IEnumerable<IBotCommand> AllCommands { get; set; }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             if (eventArgs.Arguments.Count == 0)
             {

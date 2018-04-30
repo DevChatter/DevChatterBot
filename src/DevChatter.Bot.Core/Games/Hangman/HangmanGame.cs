@@ -9,7 +9,7 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Hangman
 {
-    public class HangmanGame
+    public class HangmanGame : IGame
     {
         private const int GUESS_WAIT_IN_SECONDS = 30;
         private const UserRole ROLE_REQUIRE_TO_START = UserRole.Subscriber;
@@ -42,7 +42,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         private readonly IAutomatedActionSystem _automatedActionSystem;
         private readonly IRepository _repository;
 
-        private bool _isRunningGame;
+        public bool IsRunning { get; private set; }
 
         public HangmanGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem,
             IRepository repository)
@@ -54,7 +54,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         public void GuessWord(IChatClient chatClient, string guess, ChatUser chatUser)
         {
-            if (!_isRunningGame)
+            if (!IsRunning)
             {
                 SendGameNotStartedMessage(chatClient, chatUser);
                 return;
@@ -96,14 +96,14 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         private void ResetGame()
         {
-            _isRunningGame = false;
+            IsRunning = false;
             _guessedLetters.Clear();
             _password = null;
         }
 
         public void AskAboutLetter(IChatClient chatClient, string letterToAsk, ChatUser chatUser)
         {
-            if (!_isRunningGame)
+            if (!IsRunning)
             {
                 SendGameNotStartedMessage(chatClient, chatUser);
                 return;
@@ -145,7 +145,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         public void AttemptToStartGame(IChatClient chatClient, ChatUser chatUser)
         {
-            if (_isRunningGame)
+            if (IsRunning)
             {
                 SendGameAlreadyStartedMessage(chatClient, chatUser);
                 return;
@@ -158,7 +158,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 return;
             }
 
-            _isRunningGame = true;
+            IsRunning = true;
 
             chatClient.SendMessage($"Totally starting this game. You word to guess is {MaskedPassword}");
         }
