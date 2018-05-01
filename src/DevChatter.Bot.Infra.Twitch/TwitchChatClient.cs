@@ -1,7 +1,7 @@
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
-using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Extensions;
+using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Infra.Twitch.Extensions;
 using System;
 using System.Collections.Generic;

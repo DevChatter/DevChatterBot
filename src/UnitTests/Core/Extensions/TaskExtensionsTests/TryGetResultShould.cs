@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+using DevChatter.Bot.Core.Exceptions;
 using DevChatter.Bot.Core.Extensions;
 using FluentAssertions;
-using DevChatter.Bot.Core.Exceptions;
+using System;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace UnitTests.Core.Extensions.TaskExtensionsTests
 {
