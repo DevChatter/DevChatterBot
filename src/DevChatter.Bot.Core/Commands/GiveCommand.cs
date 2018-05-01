@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Commands
             HelpText = "Give coins to someone. Example !give LNGgrinds 10";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string coinGiver = eventArgs?.ChatUser?.DisplayName;
             string coinReceiver = eventArgs?.Arguments?.ElementAtOrDefault(0)?.NoAt();

@@ -25,7 +25,7 @@ namespace DevChatter.Bot.Core.Commands
 
         public IList<IBotCommand> AllCommands { get; set; }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string oper = eventArgs?.Arguments?.ElementAtOrDefault(0);
 

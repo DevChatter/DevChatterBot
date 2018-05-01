@@ -37,7 +37,6 @@ namespace DevChatter.Bot.Core
 
 
             builder.RegisterType<HangmanGame>().AsSelf().SingleInstance();
-            builder.RegisterType<HardcodedWordListProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<HangmanCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<TopCommand>().AsImplementedInterfaces().SingleInstance();
@@ -68,7 +67,7 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<SubscriberHandler>().AsSelf().SingleInstance();
             builder.RegisterType<FollowableSystem>().AsImplementedInterfaces().SingleInstance();
 
-            builder.RegisterType<BotMain>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<BotMain>().AsSelf().SingleInstance();
         }
     }
 }

@@ -1,8 +1,9 @@
+using System.Collections.Generic;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
-using System.Collections.Generic;
 
 namespace DevChatter.Bot.Core.Events
 {
@@ -40,7 +41,7 @@ namespace DevChatter.Bot.Core.Events
             if (_chatUserCollection.NeedToWatchUser(displayName))
             {
                 ChatUser userFromDb = _chatUserCollection.GetOrCreateChatUser(displayName, chatUser);
-                _chatUserCollection.WatchUser(userFromDb);
+                _chatUserCollection.WatchUser(userFromDb.DisplayName);
             }
         }
 
@@ -62,6 +63,11 @@ namespace DevChatter.Bot.Core.Events
             _chatUserCollection.UpdateSpecificChatters(x => x.Tokens += tokensToAdd, ChatUserPolicy.ByDisplayName(listOfNames));
         }
 
+        public void AddCurrencyTo(string displayName, int tokensToAdd)
+        { 
+            AddCurrencyTo(new List<string>() { displayName }, tokensToAdd); 
+        }
+
         public bool RemoveCurrencyFrom(string userName, int tokensToRemove)
         {
             if (!_chatUserCollection.UserHasAtLeast(userName, tokensToRemove))
@@ -69,7 +75,7 @@ namespace DevChatter.Bot.Core.Events
                 return false;
             }
 
-            _chatUserCollection.UpdateSpecificChatters(x => x.Tokens -= tokensToRemove,ChatUserPolicy.ByDisplayName(userName));
+            _chatUserCollection.UpdateSpecificChatters(x => x.Tokens -= tokensToRemove, ChatUserPolicy.ByDisplayName(userName));
             return true;
         }
     }

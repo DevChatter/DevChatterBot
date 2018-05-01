@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data.Model;
@@ -10,6 +11,9 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class SimpleCommand : DataEntity, IBotCommand
     {
+        private DateTimeOffset _timeCommandLastInvoked;
+        public TimeSpan Cooldown => TimeSpan.Zero;
+
         public SimpleCommand()
         {
         }
@@ -30,11 +34,24 @@ namespace DevChatter.Bot.Core.Commands
 
         public bool ShouldExecute(string commandText) => CommandText.EqualsIns(commandText);
 
-        public virtual void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            IEnumerable<string> findTokens = StaticResponse.FindTokens();
-            string textToSend = ReplaceTokens(StaticResponse, findTokens, eventArgs);
-            chatClient.SendMessage(textToSend);
+            TimeSpan timePassedSinceInvoke = DateTimeOffset.Now - _timeCommandLastInvoked;
+            bool userCanBypassCooldown = eventArgs.ChatUser.Role?.EqualsAny(UserRole.Streamer, UserRole.Mod) ?? false;
+            if (userCanBypassCooldown || timePassedSinceInvoke >= Cooldown)
+            {
+                _timeCommandLastInvoked = DateTimeOffset.Now;
+
+                IEnumerable<string> findTokens = StaticResponse.FindTokens();
+                string textToSend = ReplaceTokens(StaticResponse, findTokens, eventArgs);
+                chatClient.SendMessage(textToSend);
+            }
+            else
+            {
+                string timeRemaining = (Cooldown - timePassedSinceInvoke).ToExpandingString();
+                string cooldownMessage = $"That command is currently on cooldown - Remaining time: {timeRemaining}";
+                chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, cooldownMessage);
+            }
         }
 
         private string ReplaceTokens(string textToSend, IEnumerable<string> tokens, CommandReceivedEventArgs eventArgs)

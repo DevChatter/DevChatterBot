@@ -20,7 +20,7 @@ namespace DevChatter.Bot.Core.Commands
             HelpText = "Use the bonus command to give free coins to someone example: !bonus sadukie 50";
         }
 
-        public override void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string bonusReceiver = (eventArgs?.Arguments?.ElementAtOrDefault(0) ?? "").NoAt();
             string bonusGiver = eventArgs?.ChatUser?.DisplayName;
