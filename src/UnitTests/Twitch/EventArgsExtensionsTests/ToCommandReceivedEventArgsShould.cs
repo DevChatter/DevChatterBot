@@ -1,7 +1,6 @@
-﻿using DevChatter.Bot.Core;
+using DevChatter.Bot.Core;
 using DevChatter.Bot.Infra.Twitch;
-using TwitchLib.Events.Client;
-using TwitchLib.Models.Client;
+using TwitchLib.Client.Models;
 using Xunit;
 
 namespace UnitTests.Twitch.EventArgsExtensionsTests
@@ -24,11 +23,11 @@ namespace UnitTests.Twitch.EventArgsExtensionsTests
             //Assert.Equal(fullIrcString, resultArgs.CommandWord);
         }
 
-        private static ChatCommand GetTestCommand(string fullIrcString)
-        {
-            var messageEmoteCollection = new MessageEmoteCollection();
-            return new ChatCommand(fullIrcString,
-                new ChatMessage("botName", fullIrcString, ref messageEmoteCollection));
-        }
+        //private static ChatCommand GetTestCommand(string fullIrcString)
+        //{
+        //    var messageEmoteCollection = new MessageEmoteCollection();
+        //    return new ChatCommand(fullIrcString,
+        //        new ChatMessage("botName", fullIrcString, ref messageEmoteCollection));
+        //}
     }
 }

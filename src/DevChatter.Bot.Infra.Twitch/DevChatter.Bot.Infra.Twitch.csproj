@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.2" />
-    <PackageReference Include="TwitchLib" Version="1.6.1" />
+    <PackageReference Include="TwitchLib" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>

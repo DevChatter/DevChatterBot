@@ -1,6 +1,6 @@
 using Autofac;
 using DevChatter.Bot.Infra.Twitch.Events;
-using TwitchLib;
+using TwitchLib.Api;
 
 namespace DevChatter.Bot.Infra.Twitch
 {
@@ -9,7 +9,13 @@ namespace DevChatter.Bot.Infra.Twitch
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<TwitchFollowerService>().AsImplementedInterfaces().SingleInstance();
-            builder.Register(ctx => new TwitchAPI(ctx.Resolve<TwitchClientSettings>().TwitchClientId))
+            builder.Register(ctx => {
+                var api = new TwitchAPI();
+                var settings = ctx.Resolve<TwitchClientSettings>();
+                api.Settings.ClientId = settings.TwitchClientId;
+                api.Settings.AccessToken = settings.TwitchOAuth;
+                return api;
+            })
                    .AsImplementedInterfaces();
             builder.RegisterType<TwitchChatClient>().AsImplementedInterfaces().SingleInstance();
 

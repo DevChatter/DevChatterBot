@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Systems.Streaming;
-using TwitchLib;
+using TwitchLib.Api.Interfaces;
 
 namespace DevChatter.Bot.Infra.Twitch
 {
