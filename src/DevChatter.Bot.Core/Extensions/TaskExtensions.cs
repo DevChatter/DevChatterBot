@@ -14,9 +14,7 @@ namespace DevChatter.Bot.Core.Extensions
                 {
                     throw new RetryException(exception);
                 }
-                //var result = task.Result;
-                //return await Task.FromResult(result);
-                return await task; // make sure this works first
+                return await task;
             }
             catch (Exception ex) when (!(ex is RetryException)) // allow RetryExceptions to go unhandled
             {
