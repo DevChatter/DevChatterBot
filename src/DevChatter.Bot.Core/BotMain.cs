@@ -69,8 +69,7 @@ namespace DevChatter.Bot.Core
             {
                 while (_stopRequestSource.Token.IsCancellationRequested != true)
                 {
-                    Thread.Sleep(_refreshInterval);
-
+                    Task.Delay(_refreshInterval);
                     _automatedActionSystem.RunNecessaryActions();
                 }
             });
