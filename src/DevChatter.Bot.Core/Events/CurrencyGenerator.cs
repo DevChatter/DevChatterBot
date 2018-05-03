@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
@@ -60,12 +61,20 @@ namespace DevChatter.Bot.Core.Events
 
         public void AddCurrencyTo(List<string> listOfNames, int tokensToAdd)
         {
-            _chatUserCollection.UpdateSpecificChatters(x => x.Tokens += tokensToAdd, ChatUserPolicy.ByDisplayName(listOfNames));
+            _chatUserCollection.UpdateSpecificChatters(CappedTokenAdding, ChatUserPolicy.ByDisplayName(listOfNames));
+
+            void CappedTokenAdding(ChatUser chatUser)
+            {
+                checked
+                {
+                    chatUser.Tokens += tokensToAdd;
+                }
+            }
         }
 
         public void AddCurrencyTo(string displayName, int tokensToAdd)
         { 
-            AddCurrencyTo(new List<string>() { displayName }, tokensToAdd); 
+            AddCurrencyTo(new List<string> { displayName }, tokensToAdd); 
         }
 
         public bool RemoveCurrencyFrom(string userName, int tokensToRemove)
