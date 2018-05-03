@@ -4,6 +4,7 @@ using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using NodaTime;
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace DevChatter.Bot.Core.Commands
@@ -30,12 +31,17 @@ namespace DevChatter.Bot.Core.Commands
             Instant saturday = GetInstanceOf(DayOfWeek.Saturday, 17, 0);
 
             string message = "Our usual schedule is: "
-                        +  " Mondays at " + monday.InZone(timeZone).TimeOfDay
-                        + ", Tuesdays at " + tuesday.InZone(timeZone).TimeOfDay
-                        + ", Thursdays at " + thursday.InZone(timeZone).TimeOfDay
-                        + ", Saturdays at " + saturday.InZone(timeZone).TimeOfDay;
+                             + " Mondays at " + GetTimeDisplay(monday, timeZone)
+                             + ", Tuesdays at " + GetTimeDisplay(tuesday, timeZone)
+                             + ", Thursdays at " + GetTimeDisplay(thursday, timeZone)
+                             + ", Saturdays at " + GetTimeDisplay(saturday, timeZone);
 
             chatClient.SendMessage(message);
+        }
+
+        private static string GetTimeDisplay(Instant instant, DateTimeZone timeZone)
+        {
+            return $"{instant.InZone(timeZone).TimeOfDay:h:mm tt}";
         }
 
         private Instant GetInstanceOf(DayOfWeek dayOfWeek, int hour, int minutes)
