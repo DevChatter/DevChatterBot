@@ -1,14 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
-using DevChatter.Bot.Core.Messaging;
-using DevChatter.Bot.Core.Util;
 using DevChatter.Bot.Infra.Ef;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NodaTime;
 
 namespace DevChatter.Bot.Startup
 {
@@ -36,6 +35,10 @@ namespace DevChatter.Bot.Startup
 
         private static void EnsureInitialData(IRepository repository)
         {
+            if (!repository.List<ScheduleEntity>().Any())
+            {
+                repository.Create(GetDevChatterSchedule());
+            }
             if (!repository.List<IntervalMessage>().Any())
             {
                 repository.Create(GetIntervalMessages());
@@ -61,6 +64,17 @@ namespace DevChatter.Bot.Startup
             {
                 repository.Create(missingCommandWords);
             }
+        }
+
+        private static List<ScheduleEntity> GetDevChatterSchedule()
+        {
+            return new List<ScheduleEntity>
+            {
+                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 7, 18, 0, 0, TimeSpan.Zero) },
+                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 8, 18, 0, 0, TimeSpan.Zero) },
+                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 10, 16, 0, 0, TimeSpan.Zero) },
+                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 12, 17, 0, 0, TimeSpan.Zero) }
+            };
         }
 
         private static List<HangmanWord> GetInitialHangmanWords()

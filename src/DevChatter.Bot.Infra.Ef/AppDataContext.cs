@@ -1,6 +1,5 @@
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Messaging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +15,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<StreamerEntity> Streamers { get; set; }
         public DbSet<CommandWordEntity> CommandWords { get; set; }
         public DbSet<HangmanWord> HangmanWords { get; set; }
+        public DbSet<ScheduleEntity> ScheduleEntities { get; set; }
 
         public AppDataContext(DbContextOptions<AppDataContext> options)
             : base(options)
