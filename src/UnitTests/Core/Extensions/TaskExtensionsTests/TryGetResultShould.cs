@@ -29,12 +29,12 @@ namespace UnitTests.Core.Extensions.TaskExtensionsTests
 
         private async Task<bool> TestTask()
         {
-            return await Task.Run(() => { return true; });
+            return await Task.Run(() => true);
         }
 
         private async Task<bool> TestThrowingTask()
         {
-            Func<bool> func = () => { throw new Exception("Hi everybody!"); };
+            Func<bool> func = () => throw new Exception("Hi everybody!");
             return await Task.Run(func);
         }
     }
