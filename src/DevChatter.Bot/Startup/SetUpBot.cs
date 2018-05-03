@@ -1,10 +1,10 @@
-using System.Linq;
 using Autofac;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Infra.Twitch;
+using System.Linq;
 
 namespace DevChatter.Bot.Startup
 {
@@ -25,6 +25,7 @@ namespace DevChatter.Bot.Startup
             builder.Register(ctx => repository)
                    .As<IRepository>().SingleInstance();
 
+
             var simpleCommands = repository.List<SimpleCommand>();
             foreach (var command in simpleCommands)
             {
@@ -32,7 +33,7 @@ namespace DevChatter.Bot.Startup
                        .AsImplementedInterfaces()
                        .SingleInstance();
             }
-            
+
             var container = builder.Build();
 
             WireUpAliasNotifications(container);
