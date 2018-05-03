@@ -31,17 +31,17 @@ namespace DevChatter.Bot.Core.Commands
             Instant saturday = GetInstanceOf(DayOfWeek.Saturday, 17, 0);
 
             string message = "Our usual schedule is: "
-                             + " Mondays at " + GetTimeDisplay(monday, timeZone)
-                             + ", Tuesdays at " + GetTimeDisplay(tuesday, timeZone)
-                             + ", Thursdays at " + GetTimeDisplay(thursday, timeZone)
-                             + ", Saturdays at " + GetTimeDisplay(saturday, timeZone);
+                             + GetTimeDisplay(monday, timeZone) + ", "
+                             + GetTimeDisplay(tuesday, timeZone) + ", "
+                             + GetTimeDisplay(thursday, timeZone) + ", "
+                             + GetTimeDisplay(saturday, timeZone);
 
             chatClient.SendMessage(message);
         }
 
         private static string GetTimeDisplay(Instant instant, DateTimeZone timeZone)
         {
-            return $"{instant.InZone(timeZone).TimeOfDay:h:mm tt}";
+            return $"{instant.InZone(timeZone).DayOfWeek}s at {instant.InZone(timeZone).TimeOfDay:h:mm tt}";
         }
 
         private Instant GetInstanceOf(DayOfWeek dayOfWeek, int hour, int minutes)
