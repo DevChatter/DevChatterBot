@@ -8,12 +8,12 @@ namespace DevChatter.Bot.Core.Data.Model
         public UserRole? Role { get; set; }
         public int Tokens { get; set; }
 
-        public bool CanUserRunCommand(IBotCommand botCommand)
+        public bool CanRunCommand(IBotCommand botCommand)
         {
-            return CanUserRunCommand(botCommand.RoleRequired);
+            return IsInThisRoleOrHigher(botCommand.RoleRequired);
         }
 
-        public bool CanUserRunCommand(UserRole userRole)
+        public bool IsInThisRoleOrHigher(UserRole userRole)
         {
             return (Role ?? UserRole.Everyone) <= userRole;
         }

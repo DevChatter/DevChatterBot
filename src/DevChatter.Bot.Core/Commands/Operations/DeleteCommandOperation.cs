@@ -30,7 +30,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
             ChatUser chatUser = eventArgs.ChatUser;
             try
             {
-                if (!chatUser.CanUserRunCommand(UserRole.Mod))
+                if (!chatUser.IsInThisRoleOrHigher(UserRole.Mod))
                 {
                     return "You need to be a moderator to delete a command.";
                 }

@@ -151,7 +151,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 return;
             }
 
-            if (!chatUser.CanUserRunCommand(ROLE_REQUIRE_TO_START))
+            if (!chatUser.IsInThisRoleOrHigher(ROLE_REQUIRE_TO_START))
             {
                 chatClient.SendMessage(
                     $"You must be at least a {ROLE_REQUIRE_TO_START} to start a game, {chatUser.DisplayName}");

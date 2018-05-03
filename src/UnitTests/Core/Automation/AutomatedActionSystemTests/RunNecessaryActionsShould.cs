@@ -74,7 +74,7 @@ namespace UnitTests.Core.Automation.AutomatedActionSystemTests
         private static AutomatedActionSystem SetUpTestActionSystem(params IIntervalAction[] actions)
         {
             var intervalActions = new List<IIntervalAction>(actions);
-            var automateActionSystem = new AutomatedActionSystem(intervalActions, new FakeClock());
+            var automateActionSystem = new AutomatedActionSystem(intervalActions);
             return automateActionSystem;
         }
     }

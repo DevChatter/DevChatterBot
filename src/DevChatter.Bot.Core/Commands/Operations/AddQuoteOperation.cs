@@ -9,7 +9,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
 {
     public class AddQuoteOperation : BaseCommandOperation
     {
-        private IRepository _repository;
+        private readonly IRepository _repository;
         public AddQuoteOperation(IRepository repository)
         {
             _repository = repository;
@@ -24,7 +24,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
             string quoteText = eventArgs?.Arguments?.ElementAtOrDefault(1);
             string author = eventArgs?.Arguments?.ElementAtOrDefault(2);
 
-            if (!eventArgs.ChatUser.CanUserRunCommand(UserRole.Mod))
+            if (!eventArgs.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
             {
                 return $"Please ask a moderator to add this quote, {eventArgs.ChatUser.DisplayName}.";
             }

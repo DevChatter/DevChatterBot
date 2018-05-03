@@ -33,8 +33,6 @@ namespace DevChatter.Bot.Core.Commands
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string argumentOne = eventArgs?.Arguments?.ElementAtOrDefault(0);
-            string quoteText = eventArgs?.Arguments?.ElementAtOrDefault(1);
-            string author = eventArgs?.Arguments?.ElementAtOrDefault(2);
 
             var operationToUse = Operations.SingleOrDefault(x => x.ShouldExecute(argumentOne));
 
@@ -70,14 +68,7 @@ namespace DevChatter.Bot.Core.Commands
         private void HandleQuoteRequest(IChatClient triggeringClient, int requestQuoteId)
         {
             QuoteEntity quote = Repository.Single(QuoteEntityPolicy.ByQuoteId(requestQuoteId));
-            if (quote == null)
-            {
-                triggeringClient.SendMessage($"I'm sorry, but we don't have a quote {requestQuoteId}... Yet...");
-            }
-            else
-            {
-                triggeringClient.SendMessage(quote.ToString());
-            }
+            triggeringClient.SendMessage(quote?.ToString() ?? $"I'm sorry, but we don't have a quote {requestQuoteId}... Yet...");
         }
     }
 }
