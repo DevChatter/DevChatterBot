@@ -65,12 +65,11 @@ namespace DevChatter.Bot.Core
         private void BeginLoop()
         {
             _stopRequestSource = new CancellationTokenSource();
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 while (_stopRequestSource.Token.IsCancellationRequested != true)
                 {
-                    Thread.Sleep(_refreshInterval);
-
+                    await Task.Delay(_refreshInterval);
                     _automatedActionSystem.RunNecessaryActions();
                 }
             });

@@ -1,4 +1,4 @@
-﻿using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Commands;
 
 namespace DevChatter.Bot.Core.Data.Model
 {
