@@ -64,7 +64,7 @@ namespace DevChatter.Bot.Core.Commands
 
         private void ShowAvailableCommands(IChatClient chatClient, ChatUser chatUser)
         {
-            var commands = AllCommands.Where(chatUser.CanUserRunCommand).Select(x => $"!{x.PrimaryCommandText}");
+            var commands = AllCommands.Where(chatUser.CanRunCommand).Select(x => $"!{x.PrimaryCommandText}");
             string stringOfCommands = string.Join(", ", commands);
 
             string message =

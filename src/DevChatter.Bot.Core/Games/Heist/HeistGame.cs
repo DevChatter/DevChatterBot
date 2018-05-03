@@ -34,7 +34,7 @@ namespace DevChatter.Bot.Core.Games.Heist
             if (IsGameRunning) return;
 
             // role check here
-            if (!chatUser.CanUserRunCommand(ROLE_REQUIRED_TO_START))
+            if (!chatUser.IsInThisRoleOrHigher(ROLE_REQUIRED_TO_START))
             {
                 chatClient.SendMessage($"Sorry, {chatUser.DisplayName}, but you're not experience enough (sub only) to organize a heist like this one...");
                 return;

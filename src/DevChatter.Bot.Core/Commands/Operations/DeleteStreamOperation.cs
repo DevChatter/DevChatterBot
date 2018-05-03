@@ -22,7 +22,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
         {
             var chatUser = eventArgs.ChatUser;
             string channelName = eventArgs.Arguments?.ElementAtOrDefault(1);
-            if (chatUser.CanUserRunCommand(UserRole.Mod))
+            if (chatUser.IsInThisRoleOrHigher(UserRole.Mod))
             {
                 if (string.IsNullOrWhiteSpace(channelName))
                 {

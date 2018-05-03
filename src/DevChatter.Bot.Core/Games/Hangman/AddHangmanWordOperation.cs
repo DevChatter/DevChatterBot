@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
-            if (!eventArgs.ChatUser.CanUserRunCommand(UserRole.Mod))
+            if (!eventArgs.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
             {
                 return $"Sorry, {eventArgs.ChatUser.DisplayName}, only mods can add new words.";
             }

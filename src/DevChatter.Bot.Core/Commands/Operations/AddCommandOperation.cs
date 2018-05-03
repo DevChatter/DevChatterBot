@@ -26,7 +26,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
-            if (eventArgs?.ChatUser.CanUserRunCommand(UserRole.Mod) == false)
+            if (eventArgs?.ChatUser.IsInThisRoleOrHigher(UserRole.Mod) == false)
             {
                 return "You need to be a moderator to add a command.";
             }

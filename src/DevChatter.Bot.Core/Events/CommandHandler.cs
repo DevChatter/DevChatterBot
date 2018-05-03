@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
@@ -58,7 +58,7 @@ namespace DevChatter.Bot.Core.Events
         {
             try
             {
-                if (e.ChatUser.CanUserRunCommand(botCommand))
+                if (e.ChatUser.CanRunCommand(botCommand))
                 {
                     botCommand.Process(chatClient1, e);
                 }

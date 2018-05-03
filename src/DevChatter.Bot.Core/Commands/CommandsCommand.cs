@@ -43,7 +43,7 @@ namespace DevChatter.Bot.Core.Commands
 
         private void ShowAllCommands(IChatClient chatClient, ChatUser eventArgsChatUser)
         {
-            var listOfCommands = AllCommands.Where(eventArgsChatUser.CanUserRunCommand)
+            var listOfCommands = AllCommands.Where(eventArgsChatUser.CanRunCommand)
                 .Select(x => $"!{x.PrimaryCommandText}").ToList();
 
             string stringOfCommands = string.Join(", ", listOfCommands);
