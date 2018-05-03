@@ -26,25 +26,24 @@ namespace DevChatter.Bot.Core.Commands.Operations
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
+            if (eventArgs?.ChatUser.CanUserRunCommand(UserRole.Mod) == false)
+            {
+                return "You need to be a moderator to add a command.";
+            }
+
             string commandWord = eventArgs?.Arguments?.ElementAtOrDefault(1);
             string staticResponse = eventArgs?.Arguments?.ElementAtOrDefault(2);
             string roleText = eventArgs?.Arguments?.ElementAtOrDefault(3);
 
-            ChatUser chatUser = eventArgs.ChatUser;
+            if (!Enum.TryParse(roleText, true, out UserRole role))
+            {
+                role = UserRole.Everyone;
+            }
+
+            var command = new SimpleCommand(commandWord, staticResponse, role);
+
             try
             {
-                if (!chatUser.CanUserRunCommand(UserRole.Mod))
-                {
-                    return "You need to be a moderator to add a command.";
-                }
-
-                if (!Enum.TryParse(roleText, true, out UserRole role))
-                {
-                    role = UserRole.Everyone;
-                }
-
-                SimpleCommand command = new SimpleCommand(commandWord, staticResponse, role);
-
                 if (_repository.Single(CommandPolicy.ByCommandText(command.CommandText)) != null)
                 {
                     return $"There's already a command using !{command.CommandText}";
