@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Data;
@@ -7,6 +6,7 @@ using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
 using FluentAssertions;
 using Moq;
+using System.Collections.Generic;
 using Xunit;
 
 namespace UnitTests.Core.Commands.Operations.AddCommandOperationTests
@@ -18,11 +18,6 @@ namespace UnitTests.Core.Commands.Operations.AddCommandOperationTests
         {
             var commandResponse = "responseText";
             var commandWord = "commandWord";
-            var commandReceivedEventArgs = new CommandReceivedEventArgs
-            {
-                Arguments = new[] {"add", commandWord, commandResponse, "roleRequired"},
-                ChatUser = new ChatUser {Role = UserRole.Mod}
-            };
             var mockRepo = new Mock<IRepository>();
             mockRepo.Setup(repo => repo.Single(It.IsAny<CommandPolicy>()))
                 .Returns(new SimpleCommand(commandWord, commandResponse));
@@ -30,7 +25,7 @@ namespace UnitTests.Core.Commands.Operations.AddCommandOperationTests
 
             var addCommandOperation = new AddCommandOperation(mockRepo.Object, botCommands);
 
-            var message = addCommandOperation.TryToExecute(commandReceivedEventArgs);
+            var message = addCommandOperation.TryToExecute(GetTestEventArgs(commandWord, commandResponse, "role", UserRole.Mod));
 
             mockRepo.Verify(x => x.Create(It.IsAny<SimpleCommand>()), Times.Never);
             message.Should().Contain(commandWord);
@@ -39,17 +34,12 @@ namespace UnitTests.Core.Commands.Operations.AddCommandOperationTests
         [Fact]
         public void NotSaveCommand_WhenUserIsNotModerator()
         {
-            var commandReceivedEventArgs = new CommandReceivedEventArgs
-            {
-                Arguments = new[] {"add", "commandWord", "responseText", "roleRequired"},
-                ChatUser = new ChatUser {Role = UserRole.Everyone}
-            };
             var mockRepo = new Mock<IRepository>();
             var botCommands = new List<IBotCommand>();
 
             var addCommandOperation = new AddCommandOperation(mockRepo.Object, botCommands);
 
-            var message = addCommandOperation.TryToExecute(commandReceivedEventArgs);
+            var message = addCommandOperation.TryToExecute(GetTestEventArgs("commandWord", "response", "role", UserRole.Everyone));
 
             mockRepo.Verify(x => x.Create(It.IsAny<SimpleCommand>()), Times.Never);
             message.Should().Be("You need to be a moderator to add a command.");
@@ -59,20 +49,26 @@ namespace UnitTests.Core.Commands.Operations.AddCommandOperationTests
         public void SaveCommand_GivenValidArguments()
         {
             var newCommandword = "commandWord";
-            var commandReceivedEventArgs = new CommandReceivedEventArgs
-            {
-                Arguments = new[] {"add", newCommandword, "responseText", "roleRequired"},
-                ChatUser = new ChatUser {Role = UserRole.Mod}
-            };
             var mockRepo = new Mock<IRepository>();
             var botCommands = new List<IBotCommand>();
 
             var addCommandOperation = new AddCommandOperation(mockRepo.Object, botCommands);
 
-            var message = addCommandOperation.TryToExecute(commandReceivedEventArgs);
+            var message = addCommandOperation.TryToExecute(GetTestEventArgs(newCommandword, "response", "role", UserRole.Mod));
 
             mockRepo.Verify(x => x.Create(It.IsAny<SimpleCommand>()), Times.Once);
             message.Should().Contain(newCommandword);
+        }
+
+        private static CommandReceivedEventArgs GetTestEventArgs(string newWord, string response,
+            string roleRequired, UserRole userRole)
+        {
+            var commandReceivedEventArgs = new CommandReceivedEventArgs
+            {
+                Arguments = new[] {"add", newWord, response, roleRequired},
+                ChatUser = new ChatUser {Role = userRole}
+            };
+            return commandReceivedEventArgs;
         }
     }
 }
