@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
@@ -34,7 +35,7 @@ namespace DevChatter.Bot.Core.Events
                 _usageTracker.PurgeExpiredUserCommandCooldowns(DateTimeOffset.Now);
 
                 var previousUsage = _usageTracker.GetByUserDisplayName(userDisplayName);
-                if (previousUsage != null)
+                if (previousUsage != null && !e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
                 {
                     if (!previousUsage.WasUserWarned)
                     {
