@@ -1,0 +1,9 @@
+version: '3'
+services:
+  bot: 
+    build: . # use the local Dockerfile
+    command: bash --login
+
+  test: 
+    build: . # use the local Dockerfile
+    command: bash -c "cd /opt/devchatterbot/src/UnitTests && dotnet test"
