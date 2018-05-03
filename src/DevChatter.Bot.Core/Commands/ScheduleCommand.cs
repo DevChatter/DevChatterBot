@@ -4,7 +4,7 @@ using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using NodaTime;
 using System;
-using System.Globalization;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DevChatter.Bot.Core.Commands
@@ -25,16 +25,16 @@ namespace DevChatter.Bot.Core.Commands
 
             DateTimeZone timeZone = DateTimeZone.ForOffset(Offset.FromHours(offset));
 
-            Instant monday = GetInstanceOf(DayOfWeek.Monday, 18, 0);
-            Instant tuesday = GetInstanceOf(DayOfWeek.Tuesday, 18, 0);
-            Instant thursday = GetInstanceOf(DayOfWeek.Thursday, 16, 0);
-            Instant saturday = GetInstanceOf(DayOfWeek.Saturday, 17, 0);
+            List<Instant> streamTimes = new List<Instant>
+            {
+                GetInstanceOf(DayOfWeek.Monday, 18, 0),
+                GetInstanceOf(DayOfWeek.Tuesday, 18, 0),
+                GetInstanceOf(DayOfWeek.Thursday, 16, 0),
+                GetInstanceOf(DayOfWeek.Saturday, 17, 0),
+            };
 
-            string message = "Our usual schedule is: "
-                             + GetTimeDisplay(monday, timeZone) + ", "
-                             + GetTimeDisplay(tuesday, timeZone) + ", "
-                             + GetTimeDisplay(thursday, timeZone) + ", "
-                             + GetTimeDisplay(saturday, timeZone);
+
+            string message = "Our usual schedule is: " + string.Join(", ", streamTimes.Select(x => GetTimeDisplay(x, timeZone)));
 
             chatClient.SendMessage(message);
         }
