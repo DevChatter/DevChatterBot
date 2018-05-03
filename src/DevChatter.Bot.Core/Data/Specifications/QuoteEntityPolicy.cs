@@ -10,7 +10,7 @@ namespace DevChatter.Bot.Core.Data.Specifications
         {
         }
 
-        public static QuoteEntityPolicy All { get; } = new QuoteEntityPolicy(x => true);
+        public new static QuoteEntityPolicy All { get; } = new QuoteEntityPolicy(x => true);
 
         public static QuoteEntityPolicy ByQuoteId(int? quoteId)
         {

@@ -9,7 +9,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
 {
     public class AddQuoteOperation : BaseCommandOperation
     {
-        private IRepository _repository;
+        private readonly IRepository _repository;
         public AddQuoteOperation(IRepository repository)
         {
             _repository = repository;

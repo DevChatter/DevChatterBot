@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
 
-namespace DevChatter.Bot.Core.Commands.Operations
+namespace DevChatter.Bot.Core.Games.Hangman
 {
     public class AddHangmanWordOperation : BaseCommandOperation
     {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Core.Util
         {
             if (choices.Any())
             {
-                int randomNumber = MyRandom.RandomNumber(0, choices.Count);
+                int randomNumber = RandomNumber(0, choices.Count);
                 return (true, choices[randomNumber]);
             }
 

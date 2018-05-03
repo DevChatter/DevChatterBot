@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Events;
@@ -20,14 +20,8 @@ namespace DevChatter.Bot.Infra.Twitch.Events
 
         private UserFollow[] _userFollows;
 
-        private IEnumerable<UserFollow> UserFollows
-        {
-            get
-            {
-                return _userFollows ?? (_userFollows =
-                           _twitchApi.Users.v5.GetUserFollowsAsync(_settings.TwitchUserID).Result.Follows);
-            }
-        }
+        private IEnumerable<UserFollow> UserFollows => _userFollows
+                    ?? (_userFollows = _twitchApi.Users.v5.GetUserFollowsAsync(_settings.TwitchUserID).Result.Follows);
 
         public TwitchFollowerService(ITwitchAPI twitchApi, TwitchClientSettings settings)
         {

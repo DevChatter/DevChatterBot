@@ -12,7 +12,6 @@ namespace DevChatter.Bot.Core
         bool TryGiveCoins(string coinGiver, string coinReceiver, int coinsToGive);
         void UpdateEachChatter(Action<ChatUser> updateToApply);
         void UpdateSpecificChatters(Action<ChatUser> updateToApply, ISpecification<ChatUser> filter);
-        bool UserExists(string username);
         bool UserHasAtLeast(string username, int tokensToRemove);
         void WatchUser(string displayName);
     }
