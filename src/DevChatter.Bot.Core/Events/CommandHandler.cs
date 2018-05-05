@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -11,12 +12,14 @@ namespace DevChatter.Bot.Core.Events
 {
     public class CommandHandler : ICommandHandler
     {
+        private readonly IRepository _repository;
         private readonly ICommandUsageTracker _usageTracker;
         private readonly IList<IBotCommand> _commandMessages;
 
-        public CommandHandler(ICommandUsageTracker usageTracker, IEnumerable<IChatClient> chatClients,
+        public CommandHandler(IRepository repository, ICommandUsageTracker usageTracker, IEnumerable<IChatClient> chatClients,
             CommandList commandMessages)
         {
+            _repository = repository;
             _usageTracker = usageTracker;
             _commandMessages = commandMessages;
 
@@ -53,6 +56,13 @@ namespace DevChatter.Bot.Core.Events
             if (botCommand != null)
             {
                 AttemptToRunCommand(e, botCommand, chatClient);
+                _repository.Create(new CommandUsageEntity
+                {
+                    CommandWord = e.CommandWord,
+                    FullTypeName = botCommand.GetType().FullName,
+                    UserId = e.ChatUser.UserId,
+                    UserDisplayName = e.ChatUser.DisplayName,
+                });
                 _usageTracker.RecordUsage(new CommandUsage(userDisplayName, DateTimeOffset.Now, false));
             }
         }
