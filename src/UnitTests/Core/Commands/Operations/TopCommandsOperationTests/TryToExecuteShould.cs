@@ -39,6 +39,22 @@ namespace UnitTests.Core.Commands.Operations.TopCommandsOperationTests
         }
 
         [Fact]
+        public void DisplayOnlyNameOfType()
+        {
+            var mockRepo = new Mock<IRepository>();
+            string name = "Foo";
+            string notIncluded = "Buzz";
+            var entities = new List<CommandUsageEntity> { new CommandUsageEntity { FullTypeName = $"Bar.Fizz.{notIncluded}.{name}" } };
+            mockRepo.Setup(x => x.List<CommandUsageEntity>(null)).Returns(entities);
+            var topCommandsOperation = new TopCommandsOperation(mockRepo.Object);
+
+            string messageResult = topCommandsOperation.TryToExecute(new CommandReceivedEventArgs());
+
+            messageResult.Should().Contain(name);
+            messageResult.Should().NotContain(notIncluded);
+        }
+
+        [Fact]
         public void ReturnMultipleEntries_GivenMultipleCommandsData()
         {
             var mockRepo = new Mock<IRepository>();
