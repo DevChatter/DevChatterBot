@@ -15,9 +15,7 @@ namespace UnitTests.Core.Commands.Operations.TopCommandsOperationTests
         [Fact]
         public void ReturnSpecialMessage_GivenNoAnalyticsDataYet()
         {
-            var mockRepo = new Mock<IRepository>();
-            mockRepo.Setup(x => x.List<CommandUsageEntity>(null)).Returns(new List<CommandUsageEntity>());
-            var topCommandsOperation = new TopCommandsOperation(mockRepo.Object);
+            TopCommandsOperation topCommandsOperation = SetUpTest(new List<CommandUsageEntity>());
 
             string messageResult = topCommandsOperation.TryToExecute(new CommandReceivedEventArgs());
 
@@ -27,11 +25,9 @@ namespace UnitTests.Core.Commands.Operations.TopCommandsOperationTests
         [Fact]
         public void ReturnSingleEntry_GivenSameCommandAnalyticsData()
         {
-            var mockRepo = new Mock<IRepository>();
             var fullTypeName = Guid.NewGuid().ToString();
             var entities = new List<CommandUsageEntity> { new CommandUsageEntity { FullTypeName = fullTypeName }, new CommandUsageEntity { FullTypeName = fullTypeName }, new CommandUsageEntity { FullTypeName = fullTypeName } };
-            mockRepo.Setup(x => x.List<CommandUsageEntity>(null)).Returns(entities);
-            var topCommandsOperation = new TopCommandsOperation(mockRepo.Object);
+            TopCommandsOperation topCommandsOperation = SetUpTest(entities);
 
             string messageResult = topCommandsOperation.TryToExecute(new CommandReceivedEventArgs());
 
@@ -41,12 +37,10 @@ namespace UnitTests.Core.Commands.Operations.TopCommandsOperationTests
         [Fact]
         public void DisplayOnlyNameOfType()
         {
-            var mockRepo = new Mock<IRepository>();
             string name = "Foo";
             string notIncluded = "Buzz";
             var entities = new List<CommandUsageEntity> { new CommandUsageEntity { FullTypeName = $"Bar.Fizz.{notIncluded}.{name}" } };
-            mockRepo.Setup(x => x.List<CommandUsageEntity>(null)).Returns(entities);
-            var topCommandsOperation = new TopCommandsOperation(mockRepo.Object);
+            TopCommandsOperation topCommandsOperation = SetUpTest(entities);
 
             string messageResult = topCommandsOperation.TryToExecute(new CommandReceivedEventArgs());
 
@@ -57,7 +51,6 @@ namespace UnitTests.Core.Commands.Operations.TopCommandsOperationTests
         [Fact]
         public void ReturnMultipleEntries_GivenMultipleCommandsData()
         {
-            var mockRepo = new Mock<IRepository>();
             var fullTypeName1 = Guid.NewGuid().ToString();
             var fullTypeName2 = Guid.NewGuid().ToString();
             var entities = new List<CommandUsageEntity>
@@ -65,8 +58,7 @@ namespace UnitTests.Core.Commands.Operations.TopCommandsOperationTests
                 new CommandUsageEntity {FullTypeName = fullTypeName1},
                 new CommandUsageEntity {FullTypeName = fullTypeName2}
             };
-            mockRepo.Setup(x => x.List<CommandUsageEntity>(null)).Returns(entities);
-            var topCommandsOperation = new TopCommandsOperation(mockRepo.Object);
+            TopCommandsOperation topCommandsOperation = SetUpTest(entities);
 
             string messageResult = topCommandsOperation.TryToExecute(new CommandReceivedEventArgs());
 
@@ -77,15 +69,21 @@ namespace UnitTests.Core.Commands.Operations.TopCommandsOperationTests
         [Fact]
         public void ReturnOnlyTopFiveCommands_GivenDataForMoreThanFiveCommands()
         {
-            var mockRepo = new Mock<IRepository>();
             var fullTypeName = Guid.NewGuid().ToString();
             List<CommandUsageEntity> entities = GetTestEntities(fullTypeName, "1", "2", "3", "4", "5");
-            mockRepo.Setup(x => x.List<CommandUsageEntity>(null)).Returns(entities);
-            var topCommandsOperation = new TopCommandsOperation(mockRepo.Object);
+            TopCommandsOperation topCommandsOperation = SetUpTest(entities);
 
             string messageResult = topCommandsOperation.TryToExecute(new CommandReceivedEventArgs());
 
             messageResult.Should().NotContain(fullTypeName);
+        }
+
+        private static TopCommandsOperation SetUpTest(List<CommandUsageEntity> commandUsageEntities)
+        {
+            var mockRepo = new Mock<IRepository>();
+            mockRepo.Setup(x => x.List<CommandUsageEntity>(null)).Returns(commandUsageEntities);
+            var topCommandsOperation = new TopCommandsOperation(mockRepo.Object);
+            return topCommandsOperation;
         }
 
         private static List<CommandUsageEntity> GetTestEntities(params string[] names)
