@@ -16,6 +16,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<CommandWordEntity> CommandWords { get; set; }
         public DbSet<HangmanWord> HangmanWords { get; set; }
         public DbSet<ScheduleEntity> ScheduleEntities { get; set; }
+        public DbSet<CommandUsageEntity> CommandUsages { get; set; }
 
         public AppDataContext(DbContextOptions<AppDataContext> options)
             : base(options)
