@@ -28,30 +28,32 @@ namespace DevChatter.Bot.Core.Events
 
         public void CommandReceivedHandler(object sender, CommandReceivedEventArgs e)
         {
-            if (sender is IChatClient chatClient)
+            if (!(sender is IChatClient chatClient))
             {
-                string userDisplayName = e.ChatUser.DisplayName;
+                return;
+            }
 
-                _usageTracker.PurgeExpiredUserCommandCooldowns(DateTimeOffset.Now);
+            string userDisplayName = e.ChatUser.DisplayName;
 
-                var previousUsage = _usageTracker.GetByUserDisplayName(userDisplayName);
-                if (previousUsage != null && !e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
+            _usageTracker.PurgeExpiredUserCommandCooldowns(DateTimeOffset.Now);
+
+            var previousUsage = _usageTracker.GetByUserDisplayName(userDisplayName);
+            if (previousUsage != null && !e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
+            {
+                if (!previousUsage.WasUserWarned)
                 {
-                    if (!previousUsage.WasUserWarned)
-                    {
-                        chatClient.SendMessage($"Whoa {userDisplayName}! Slow down there cowboy!");
-                        previousUsage.WasUserWarned = true;
-                    }
-
-                    return;
+                    chatClient.SendMessage($"Whoa {userDisplayName}! Slow down there cowboy!");
+                    previousUsage.WasUserWarned = true;
                 }
 
-                IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
-                if (botCommand != null)
-                {
-                    AttemptToRunCommand(e, botCommand, chatClient);
-                    _usageTracker.RecordUsage(new CommandUsage(userDisplayName, DateTimeOffset.Now, false));
-                }
+                return;
+            }
+
+            IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
+            if (botCommand != null)
+            {
+                AttemptToRunCommand(e, botCommand, chatClient);
+                _usageTracker.RecordUsage(new CommandUsage(userDisplayName, DateTimeOffset.Now, false));
             }
         }
 
