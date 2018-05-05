@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
@@ -61,7 +61,7 @@ namespace UnitTests.Core.Events.CommandHandlerTests
             var commandUsageTracker = new CommandUsageTracker(new CommandHandlerSettings());
             var chatClients = new List<IChatClient> {new Mock<IChatClient>().Object};
             var commandMessages = new List<IBotCommand> {fakeCommand};
-            var commandHandler = new CommandHandler(commandUsageTracker, chatClients, new CommandList(commandMessages));
+            var commandHandler = new CommandHandler(new Mock<IRepository>().Object, commandUsageTracker, chatClients, new CommandList(commandMessages));
             return commandHandler;
         }
     }
