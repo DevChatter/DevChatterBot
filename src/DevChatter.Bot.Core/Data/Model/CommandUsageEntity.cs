@@ -6,7 +6,8 @@ namespace DevChatter.Bot.Core.Data.Model
     {
         public string CommandWord { get; set; }
         public string FullTypeName { get; set; }
+        public string UserId { get; set; }
         public string UserDisplayName { get; set; }
-        public DateTimeOffset DateTimeUsed { get; set; }
+        public DateTimeOffset DateTimeUsed { get; set; } = DateTimeOffset.UtcNow;
     }
 }

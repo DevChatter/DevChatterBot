@@ -4,6 +4,7 @@ namespace DevChatter.Bot.Core.Data.Model
 {
     public class ChatUser : DataEntity
     {
+        public string UserId { get; set; }
         public string DisplayName { get; set; }
         public UserRole? Role { get; set; }
         public int Tokens { get; set; }

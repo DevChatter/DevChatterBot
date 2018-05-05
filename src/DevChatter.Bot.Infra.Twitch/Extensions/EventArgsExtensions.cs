@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
@@ -22,6 +22,7 @@ namespace DevChatter.Bot.Infra.Twitch.Extensions
                 Arguments = src.Command.ArgumentsAsList,
                 ChatUser = new ChatUser
                 {
+                    UserId = commandChatMessage.UserId,
                     DisplayName = commandChatMessage.DisplayName,
                     Role = topRole
                 }
