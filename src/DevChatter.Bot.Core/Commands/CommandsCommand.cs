@@ -15,7 +15,8 @@ namespace DevChatter.Bot.Core.Commands
         public List<ICommandOperation> Operations => _operations ?? (_operations = new List<ICommandOperation>
         {
             new AddCommandOperation(Repository, AllCommands),
-            new DeleteCommandOperation(Repository, AllCommands)
+            new DeleteCommandOperation(Repository, AllCommands),
+            new TopCommandsOperation(Repository)
         });
 
         public CommandsCommand(IRepository repository)
