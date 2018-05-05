@@ -56,13 +56,9 @@ namespace DevChatter.Bot.Core.Events
             if (botCommand != null)
             {
                 AttemptToRunCommand(e, botCommand, chatClient);
-                _repository.Create(new CommandUsageEntity
-                {
-                    CommandWord = e.CommandWord,
-                    FullTypeName = botCommand.GetType().FullName,
-                    UserId = e.ChatUser.UserId,
-                    UserDisplayName = e.ChatUser.DisplayName,
-                });
+                var commandUsageEntity = new CommandUsageEntity(e.CommandWord, botCommand.GetType().FullName,
+                    e.ChatUser.UserId, e.ChatUser.DisplayName);
+                _repository.Create(commandUsageEntity);
                 _usageTracker.RecordUsage(new CommandUsage(userDisplayName, DateTimeOffset.Now, false));
             }
         }
