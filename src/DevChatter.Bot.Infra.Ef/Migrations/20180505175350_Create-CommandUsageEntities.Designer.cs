@@ -12,9 +12,10 @@ using System;
 namespace DevChatter.Bot.Infra.Ef.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20180505175350_Create-CommandUsageEntities")]
+    partial class CreateCommandUsageEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,8 +51,6 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
 
                     b.Property<int>("Tokens");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
 
                     b.ToTable("ChatUsers");
@@ -62,8 +61,6 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ChatClientUsed");
-
                     b.Property<string>("CommandWord");
 
                     b.Property<DateTimeOffset>("DateTimeUsed");
@@ -71,8 +68,6 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     b.Property<string>("FullTypeName");
 
                     b.Property<string>("UserDisplayName");
-
-                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 

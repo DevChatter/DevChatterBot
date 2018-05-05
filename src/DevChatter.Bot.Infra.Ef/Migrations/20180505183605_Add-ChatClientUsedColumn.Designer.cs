@@ -12,9 +12,10 @@ using System;
 namespace DevChatter.Bot.Infra.Ef.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20180505183605_Add-ChatClientUsedColumn")]
+    partial class AddChatClientUsedColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
