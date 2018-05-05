@@ -4,7 +4,7 @@ namespace DevChatter.Bot.Core.Data.Model
 {
     public class CommandUsageEntity : DataEntity
     {
-        protected CommandUsageEntity()
+        public CommandUsageEntity()
         {
         }
 
