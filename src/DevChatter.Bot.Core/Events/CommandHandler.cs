@@ -16,8 +16,8 @@ namespace DevChatter.Bot.Core.Events
         private readonly ICommandUsageTracker _usageTracker;
         private readonly IList<IBotCommand> _commandMessages;
 
-        public CommandHandler(IRepository repository, ICommandUsageTracker usageTracker, IEnumerable<IChatClient> chatClients,
-            CommandList commandMessages)
+        public CommandHandler(IRepository repository, ICommandUsageTracker usageTracker,
+            IEnumerable<IChatClient> chatClients, CommandList commandMessages)
         {
             _repository = repository;
             _usageTracker = usageTracker;
@@ -38,15 +38,15 @@ namespace DevChatter.Bot.Core.Events
 
             string userDisplayName = e.ChatUser.DisplayName;
 
-            _usageTracker.PurgeExpiredUserCommandCooldowns(DateTimeOffset.Now);
+            _usageTracker.PurgeExpiredUserCommandCooldowns(DateTimeOffset.UtcNow);
 
-            var previousUsage = _usageTracker.GetByUserDisplayName(userDisplayName);
-            if (previousUsage != null && !e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
+            List<CommandUsage> previousUsages = _usageTracker.GetByUserDisplayName(userDisplayName);
+            if (previousUsages != null && previousUsages.Any() && !e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
             {
-                if (!previousUsage.WasUserWarned)
+                if (!previousUsages.Any(x => x.WasUserWarned))
                 {
                     chatClient.SendMessage($"Whoa {userDisplayName}! Slow down there cowboy!");
-                    previousUsage.WasUserWarned = true;
+                    previousUsages.ForEach(x => x.WasUserWarned = true);
                 }
 
                 return;
@@ -59,7 +59,6 @@ namespace DevChatter.Bot.Core.Events
                 var commandUsageEntity = new CommandUsageEntity(e.CommandWord, botCommand.GetType().FullName,
                     e.ChatUser.UserId, e.ChatUser.DisplayName, chatClient.GetType().Name);
                 _repository.Create(commandUsageEntity);
-                //var commandUsage = new CommandUsage(userDisplayName, DateTimeOffset.Now, false);
                 _usageTracker.RecordUsage(commandUsage);
             }
         }
