@@ -8,5 +8,6 @@ namespace DevChatter.Bot.Core.Commands.Trackers
         List<CommandUsage> GetByUserDisplayName(string userDisplayName);
         void PurgeExpiredUserCommandCooldowns(DateTimeOffset currentTime);
         void RecordUsage(CommandUsage commandUsage);
+        List<CommandUsage> GetUsagesByUserSubjectToGlobalCooldown(string userDisplayName, DateTimeOffset currentTime);
     }
 }
