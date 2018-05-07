@@ -1,6 +1,7 @@
 using System;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Events;
+using FluentAssertions;
 using Xunit;
 
 namespace UnitTests.Core.Commands.Trackers.CommandCooldownTrackerTests
@@ -14,7 +15,7 @@ namespace UnitTests.Core.Commands.Trackers.CommandCooldownTrackerTests
 
             var usages = tracker.GetUsagesByUserSubjectToGlobalCooldown("brendan", DateTimeOffset.UtcNow);
 
-            Assert.Empty(usages);
+            usages.Should().BeEmpty();
         }
 
         [Fact]
@@ -26,7 +27,7 @@ namespace UnitTests.Core.Commands.Trackers.CommandCooldownTrackerTests
 
             var usages = tracker.GetUsagesByUserSubjectToGlobalCooldown("brendan", currentTime);
 
-            Assert.Single(usages);
+            usages.Should().HaveCount(1);
         }
 
         [Fact]
@@ -38,7 +39,7 @@ namespace UnitTests.Core.Commands.Trackers.CommandCooldownTrackerTests
 
             var usages = tracker.GetUsagesByUserSubjectToGlobalCooldown("brendan", currentTime);
 
-            Assert.Empty(usages);
+            usages.Should().BeEmpty();
         }
     }
 }
