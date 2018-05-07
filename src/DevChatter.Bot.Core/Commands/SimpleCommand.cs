@@ -37,11 +37,11 @@ namespace DevChatter.Bot.Core.Commands
 
         public CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            TimeSpan timePassedSinceInvoke = DateTimeOffset.Now - _timeCommandLastInvoked;
+            TimeSpan timePassedSinceInvoke = DateTimeOffset.UtcNow - _timeCommandLastInvoked;
             bool userCanBypassCooldown = eventArgs.ChatUser.Role?.EqualsAny(UserRole.Streamer, UserRole.Mod) ?? false;
             if (userCanBypassCooldown || timePassedSinceInvoke >= Cooldown)
             {
-                _timeCommandLastInvoked = DateTimeOffset.Now;
+                _timeCommandLastInvoked = DateTimeOffset.UtcNow;
 
                 IEnumerable<string> findTokens = StaticResponse.FindTokens();
                 string textToSend = ReplaceTokens(StaticResponse, findTokens, eventArgs);
@@ -53,7 +53,7 @@ namespace DevChatter.Bot.Core.Commands
                 string cooldownMessage = $"That command is currently on cooldown - Remaining time: {timeRemaining}";
                 chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, cooldownMessage);
             }
-            return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, false);
+            return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
         }
 
         private string ReplaceTokens(string textToSend, IEnumerable<string> tokens, CommandReceivedEventArgs eventArgs)

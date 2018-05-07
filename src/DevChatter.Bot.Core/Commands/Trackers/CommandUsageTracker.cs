@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Extensions;
@@ -36,9 +36,9 @@ namespace DevChatter.Bot.Core.Commands.Trackers
             }
         }
 
-        public CommandUsage GetByUserDisplayName(string userDisplayName)
+        public List<CommandUsage> GetByUserDisplayName(string userDisplayName)
         {
-            return _userCommandUsages.SingleOrDefault(x => x.DisplayName.EqualsIns(userDisplayName));
+            return _userCommandUsages.Where(x => x.DisplayName.EqualsIns(userDisplayName)).ToList();
         }
 
         public void RecordUsage(CommandUsage commandUsage)

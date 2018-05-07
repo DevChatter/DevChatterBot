@@ -59,10 +59,10 @@ namespace DevChatter.Bot.Core.Commands
                 isGameRunning = gameCommand.Game.IsRunning;
             }
 
-            TimeSpan timePassedSinceInvoke = DateTimeOffset.Now - _timeCommandLastInvoked;
+            TimeSpan timePassedSinceInvoke = DateTimeOffset.UtcNow - _timeCommandLastInvoked;
             if (isGameRunning || userCanBypassCooldown || timePassedSinceInvoke >= Cooldown)
             {
-                _timeCommandLastInvoked = DateTimeOffset.Now;
+                _timeCommandLastInvoked = DateTimeOffset.UtcNow;
                 HandleCommand(chatClient, eventArgs);
             }
             else
@@ -72,7 +72,7 @@ namespace DevChatter.Bot.Core.Commands
                 chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, cooldownMessage);
             }
 
-            return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, false);
+            return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
         }
 
         protected abstract void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
