@@ -21,12 +21,12 @@ namespace DevChatter.Bot.Core.Commands.Trackers
         {
             var expiredCooldowns = new List<CommandUsage>();
 
-            foreach (var cooldownPair in _userCommandUsages)
+            foreach (var usage in _userCommandUsages)
             {
-                var elapsedTime = currentTime - cooldownPair.TimeInvoked;
-                if (elapsedTime.TotalSeconds >= _settings.GlobalCommandCooldown)
+                var elapsedTime = currentTime - usage.TimeInvoked;
+                if (elapsedTime >= usage.CommandUsed.Cooldown)
                 {
-                    expiredCooldowns.Add(cooldownPair);
+                    expiredCooldowns.Add(usage);
                 }
             }
 
