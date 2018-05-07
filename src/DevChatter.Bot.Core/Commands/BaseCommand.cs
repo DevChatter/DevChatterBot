@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -49,7 +50,7 @@ namespace DevChatter.Bot.Core.Commands
 
         public bool ShouldExecute(string commandText) => _isEnabled && CommandWords.Any(x => x.EqualsIns(commandText));
 
-        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             bool userCanBypassCooldown = eventArgs.ChatUser.Role?.EqualsAny(UserRole.Streamer, UserRole.Mod) ?? false;
             bool isGameRunning = false;
@@ -70,6 +71,8 @@ namespace DevChatter.Bot.Core.Commands
                 string cooldownMessage = $"That command is currently on cooldown - Remaining time: {timeRemaining}";
                 chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, cooldownMessage);
             }
+
+            return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, false);
         }
 
         protected abstract void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs);

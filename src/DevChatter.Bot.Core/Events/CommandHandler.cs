@@ -55,32 +55,31 @@ namespace DevChatter.Bot.Core.Events
             IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
             if (botCommand != null)
             {
-                AttemptToRunCommand(e, botCommand, chatClient);
+                CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient);
                 var commandUsageEntity = new CommandUsageEntity(e.CommandWord, botCommand.GetType().FullName,
                     e.ChatUser.UserId, e.ChatUser.DisplayName, chatClient.GetType().Name);
                 _repository.Create(commandUsageEntity);
-                _usageTracker.RecordUsage(new CommandUsage(userDisplayName, DateTimeOffset.Now, false));
+                //var commandUsage = new CommandUsage(userDisplayName, DateTimeOffset.Now, false);
+                _usageTracker.RecordUsage(commandUsage);
             }
         }
 
-        private void AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand, IChatClient chatClient1)
+        private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand, IChatClient chatClient1)
         {
             try
             {
                 if (e.ChatUser.CanRunCommand(botCommand))
                 {
-                    botCommand.Process(chatClient1, e);
+                    return botCommand.Process(chatClient1, e);
                 }
-                else
-                {
-                    chatClient1.SendMessage(
-                        $"Sorry, {e.ChatUser.DisplayName}! You don't have permission to use the !{e.CommandWord} command.");
-                }
+                chatClient1.SendMessage(
+                    $"Sorry, {e.ChatUser.DisplayName}! You don't have permission to use the !{e.CommandWord} command.");
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
             }
+            return null;
         }
     }
 }
