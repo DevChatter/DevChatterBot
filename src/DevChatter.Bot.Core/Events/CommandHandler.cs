@@ -52,6 +52,10 @@ namespace DevChatter.Bot.Core.Events
                 return;
             }
 
+            // TODO: Check for any type of cooldown and respond accordingly
+                // TODO: Check for Global Cooldown
+                // TODO: Check for Command-based Cooldown
+
             IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
             if (botCommand != null)
             {
