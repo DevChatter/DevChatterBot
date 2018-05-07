@@ -6,13 +6,13 @@ using DevChatter.Bot.Core.Events;
 
 namespace DevChatter.Bot.Core.Commands.Trackers
 {
-    public class CommandUsageTracker : ICommandUsageTracker
+    public class CommandCooldownTracker : ICommandUsageTracker
     {
         private readonly CommandHandlerSettings _settings;
 
-        private readonly IList<CommandUsage> _userCommandUsages = new List<CommandUsage>();
+        private readonly List<CommandUsage> _userCommandUsages = new List<CommandUsage>();
 
-        public CommandUsageTracker(CommandHandlerSettings settings)
+        public CommandCooldownTracker(CommandHandlerSettings settings)
         {
             _settings = settings;
         }
@@ -44,6 +44,20 @@ namespace DevChatter.Bot.Core.Commands.Trackers
         public void RecordUsage(CommandUsage commandUsage)
         {
             _userCommandUsages.Add(commandUsage);
+        }
+
+        public List<CommandUsage> GetUsagesByUserSubjectToGlobalCooldown(string userDisplayName,
+            DateTimeOffset currentTime)
+        {
+            DateTimeOffset somethingSomethingGlobalCooldown = currentTime.AddSeconds(_settings.GlobalCommandCooldown * -1);
+
+            var userCommandUsages = _userCommandUsages
+                .Where(x => x.DisplayName.EqualsIns(userDisplayName))
+                .Where(IsWithinGlobalCooldown);
+            return userCommandUsages.ToList();
+
+
+            bool IsWithinGlobalCooldown(CommandUsage x) => x.TimeInvoked > somethingSomethingGlobalCooldown;
         }
     }
 }

@@ -40,13 +40,13 @@ namespace DevChatter.Bot.Core.Events
 
             _usageTracker.PurgeExpiredUserCommandCooldowns(DateTimeOffset.UtcNow);
 
-            List<CommandUsage> previousUsages = _usageTracker.GetByUserDisplayName(userDisplayName);
-            if (previousUsages != null && previousUsages.Any() && !e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
+            List<CommandUsage> globalCooldownUsages = _usageTracker.GetUsagesByUserSubjectToGlobalCooldown(userDisplayName, DateTimeOffset.UtcNow);
+            if (globalCooldownUsages != null && globalCooldownUsages.Any() && !e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
             {
-                if (!previousUsages.Any(x => x.WasUserWarned))
+                if (!globalCooldownUsages.Any(x => x.WasUserWarned))
                 {
                     chatClient.SendMessage($"Whoa {userDisplayName}! Slow down there cowboy!");
-                    previousUsages.ForEach(x => x.WasUserWarned = true);
+                    globalCooldownUsages.ForEach(x => x.WasUserWarned = true);
                 }
 
                 return;

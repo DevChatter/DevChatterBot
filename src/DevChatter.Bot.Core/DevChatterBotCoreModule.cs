@@ -62,7 +62,7 @@ namespace DevChatter.Bot.Core
                    .AsSelf()
                    .SingleInstance();
 
-            builder.RegisterType<CommandUsageTracker>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<CommandCooldownTracker>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CommandHandler>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<SubscriberHandler>().AsSelf().SingleInstance();
             builder.RegisterType<FollowableSystem>().AsImplementedInterfaces().SingleInstance();
