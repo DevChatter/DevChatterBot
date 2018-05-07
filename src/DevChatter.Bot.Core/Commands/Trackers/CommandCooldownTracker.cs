@@ -49,7 +49,7 @@ namespace DevChatter.Bot.Core.Commands.Trackers
         public List<CommandUsage> GetUsagesByUserSubjectToGlobalCooldown(string userDisplayName,
             DateTimeOffset currentTime)
         {
-            DateTimeOffset somethingSomethingGlobalCooldown = currentTime.AddSeconds(_settings.GlobalCommandCooldown * -1);
+            DateTimeOffset timeStillSubjectedToCooldown = currentTime.AddSeconds(_settings.GlobalCommandCooldown * -1);
 
             var userCommandUsages = _userCommandUsages
                 .Where(x => x.DisplayName.EqualsIns(userDisplayName))
@@ -57,7 +57,7 @@ namespace DevChatter.Bot.Core.Commands.Trackers
             return userCommandUsages.ToList();
 
 
-            bool IsWithinGlobalCooldown(CommandUsage x) => x.TimeInvoked > somethingSomethingGlobalCooldown;
+            bool IsWithinGlobalCooldown(CommandUsage x) => x.TimeInvoked > timeStillSubjectedToCooldown;
         }
     }
 }
