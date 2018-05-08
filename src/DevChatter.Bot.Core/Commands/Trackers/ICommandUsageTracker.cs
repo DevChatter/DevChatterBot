@@ -1,13 +1,13 @@
+using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Events;
 using System;
-using System.Collections.Generic;
 
 namespace DevChatter.Bot.Core.Commands.Trackers
 {
     public interface ICommandUsageTracker
     {
-        List<CommandUsage> GetByUserDisplayName(string userDisplayName);
         void PurgeExpiredUserCommandCooldowns(DateTimeOffset currentTime);
         void RecordUsage(CommandUsage commandUsage);
-        List<CommandUsage> GetUsagesByUserSubjectToGlobalCooldown(string userDisplayName, DateTimeOffset currentTime);
+        Cooldown GetActiveCooldown(ChatUser chatUser, IBotCommand botCommand);
     }
 }

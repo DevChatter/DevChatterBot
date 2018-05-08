@@ -15,5 +15,6 @@ namespace DevChatter.Bot.Core.Commands
         string FullHelpText { get; }
         bool ShouldExecute(string commandText);
         CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
+        TimeSpan GetCooldownTimeRemaining();
     }
 }

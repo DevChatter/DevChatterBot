@@ -38,27 +38,26 @@ namespace DevChatter.Bot.Core.Events
 
             string userDisplayName = e.ChatUser.DisplayName;
 
-            _usageTracker.PurgeExpiredUserCommandCooldowns(DateTimeOffset.UtcNow);
 
-            List<CommandUsage> globalCooldownUsages = _usageTracker.GetUsagesByUserSubjectToGlobalCooldown(userDisplayName, DateTimeOffset.UtcNow);
-            if (globalCooldownUsages != null && globalCooldownUsages.Any() && !e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
-            {
-                if (!globalCooldownUsages.Any(x => x.WasUserWarned))
-                {
-                    chatClient.SendMessage($"Whoa {userDisplayName}! Slow down there cowboy!");
-                    globalCooldownUsages.ForEach(x => x.WasUserWarned = true);
-                }
+            //List<CommandUsage> globalCooldownUsages = _usageTracker.GetUsagesByUserSubjectToGlobalCooldown(userDisplayName, DateTimeOffset.UtcNow);
+            //if (globalCooldownUsages != null && globalCooldownUsages.Any() && !e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
+            //{
+            //    if (!globalCooldownUsages.Any(x => x.WasUserWarned))
+            //    {
+            //        chatClient.SendMessage($"Whoa {userDisplayName}! Slow down there cowboy!");
+            //        globalCooldownUsages.ForEach(x => x.WasUserWarned = true);
+            //    }
 
-                return;
-            }
-
-            // TODO: Check for any type of cooldown and respond accordingly
-                // TODO: Check for Global Cooldown
-                // TODO: Check for Command-based Cooldown
+            //    return;
+            //}
 
             IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
             if (botCommand != null)
             {
+                var cooldowns = _usageTracker.GetActiveCooldown(e.ChatUser, botCommand);
+                chatClient.SendMessage(cooldowns.Message);
+                // TODO: prevent running the command if there was a cooldown
+
                 CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient);
                 var commandUsageEntity = new CommandUsageEntity(e.CommandWord, botCommand.GetType().FullName,
                     e.ChatUser.UserId, e.ChatUser.DisplayName, chatClient.GetType().Name);
