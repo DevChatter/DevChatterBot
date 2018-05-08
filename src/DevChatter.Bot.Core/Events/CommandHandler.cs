@@ -52,18 +52,41 @@ namespace DevChatter.Bot.Core.Events
             //}
 
             IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
-            if (botCommand != null)
+            if (botCommand == null)
             {
-                var cooldowns = _usageTracker.GetActiveCooldown(e.ChatUser, botCommand);
-                chatClient.SendMessage(cooldowns.Message);
-                // TODO: prevent running the command if there was a cooldown
-
-                CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient);
-                var commandUsageEntity = new CommandUsageEntity(e.CommandWord, botCommand.GetType().FullName,
-                    e.ChatUser.UserId, e.ChatUser.DisplayName, chatClient.GetType().Name);
-                _repository.Create(commandUsageEntity);
-                _usageTracker.RecordUsage(commandUsage);
+                return;
             }
+            var cooldown = _usageTracker.GetActiveCooldown(e.ChatUser, botCommand);
+            chatClient.SendMessage(cooldown.Message);
+            // TODO: prevent running the command if there was a cooldown
+
+            switch (cooldown)
+            {
+                case NoCooldown none:
+                    break;
+                case UserCooldown userCooldown:
+                    chatClient.SendDirectMessage(e.ChatUser.DisplayName, userCooldown.Message);
+                    break;
+                case UserCommandCooldown userCommandCooldown:
+                    chatClient.SendDirectMessage(e.ChatUser.DisplayName, userCommandCooldown.Message);
+                    break;
+                case CommandCooldown commandCooldown:
+                    chatClient.SendMessage(commandCooldown.Message);
+                    break;
+                default:
+                    break;
+            }
+
+            DoTheThing(e, chatClient, botCommand);
+        }
+
+        private void DoTheThing(CommandReceivedEventArgs e, IChatClient chatClient, IBotCommand botCommand)
+        {
+            CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient);
+            var commandUsageEntity = new CommandUsageEntity(e.CommandWord, botCommand.GetType().FullName,
+                e.ChatUser.UserId, e.ChatUser.DisplayName, chatClient.GetType().Name);
+            _repository.Create(commandUsageEntity);
+            _usageTracker.RecordUsage(commandUsage);
         }
 
         private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand, IChatClient chatClient1)
