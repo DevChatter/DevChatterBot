@@ -52,26 +52,8 @@ namespace DevChatter.Bot.Core.Commands
 
         public CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            bool userCanBypassCooldown = eventArgs.ChatUser.Role?.EqualsAny(UserRole.Streamer, UserRole.Mod) ?? false;
-            bool isGameRunning = false;
-            if (this is IGameCommand gameCommand)
-            {
-                isGameRunning = gameCommand.Game.IsRunning;
-            }
-
-            TimeSpan timePassedSinceInvoke = DateTimeOffset.UtcNow - _timeCommandLastInvoked;
-            if (isGameRunning || userCanBypassCooldown || timePassedSinceInvoke >= Cooldown)
-            {
-                _timeCommandLastInvoked = DateTimeOffset.UtcNow;
-                HandleCommand(chatClient, eventArgs);
-            }
-            else
-            {
-                string timeRemaining = GetCooldownTimeRemaining().ToExpandingString();
-                string cooldownMessage = $"That command is currently on cooldown - Remaining time: {timeRemaining}";
-                chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, cooldownMessage);
-            }
-
+            _timeCommandLastInvoked = DateTimeOffset.UtcNow;
+            HandleCommand(chatClient, eventArgs);
             return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
         }
 
