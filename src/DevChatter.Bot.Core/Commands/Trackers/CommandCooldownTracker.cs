@@ -68,7 +68,7 @@ namespace DevChatter.Bot.Core.Commands.Trackers
 
         public Cooldown GetActiveCooldown(ChatUser chatUser, IBotCommand botCommand)
         {
-            if (chatUser.IsInThisRoleOrHigher(UserRole.Mod))
+            if (chatUser.IsInThisRoleOrHigher(UserRole.Mod) || botCommand.IsActiveGame())
             {
                 return new NoCooldown();
             }
