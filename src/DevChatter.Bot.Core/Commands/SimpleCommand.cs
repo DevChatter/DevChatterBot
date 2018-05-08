@@ -73,5 +73,7 @@ namespace DevChatter.Bot.Core.Commands
             TimeSpan timePassedSinceInvoke = DateTimeOffset.UtcNow - _timeCommandLastInvoked;
             return (Cooldown - timePassedSinceInvoke);
         }
+
+        public bool IsActiveGame() => false;
     }
 }

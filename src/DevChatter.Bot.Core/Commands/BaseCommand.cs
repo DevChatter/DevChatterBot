@@ -82,5 +82,10 @@ namespace DevChatter.Bot.Core.Commands
         }
 
         protected abstract void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
+
+        public bool IsActiveGame()
+        {
+            return (this is IGameCommand gameCommand && gameCommand.Game.IsRunning);
+        }
     }
 }
