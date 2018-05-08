@@ -67,12 +67,18 @@ namespace DevChatter.Bot.Core.Commands
             }
             else
             {
-                string timeRemaining = (Cooldown - timePassedSinceInvoke).ToExpandingString();
+                string timeRemaining = GetCooldownTimeRemaining().ToExpandingString();
                 string cooldownMessage = $"That command is currently on cooldown - Remaining time: {timeRemaining}";
                 chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, cooldownMessage);
             }
 
             return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
+        }
+
+        public TimeSpan GetCooldownTimeRemaining()
+        {
+            TimeSpan timePassedSinceInvoke = DateTimeOffset.UtcNow - _timeCommandLastInvoked;
+            return (Cooldown - timePassedSinceInvoke);
         }
 
         protected abstract void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs);

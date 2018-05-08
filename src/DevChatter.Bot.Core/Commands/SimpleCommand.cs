@@ -67,5 +67,11 @@ namespace DevChatter.Bot.Core.Commands
 
             return newText;
         }
+
+        public TimeSpan GetCooldownTimeRemaining()
+        {
+            TimeSpan timePassedSinceInvoke = DateTimeOffset.UtcNow - _timeCommandLastInvoked;
+            return (Cooldown - timePassedSinceInvoke);
+        }
     }
 }
