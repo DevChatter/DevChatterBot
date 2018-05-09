@@ -1,5 +1,5 @@
 # DevChatter Chat Bot
-This project is a place for us to have fun and build a chat bot together. It's currently just a console application, but may gets in own GUI for local execution. I'm open to ideas about where we want to take this project. We could run it somewhere on the cloud, and we could decide that it needs a web interface. Let me know [on-stream](https://www.twitch.tv/devchatter) what you want to do.
+This project is a place for us to have fun and build a chat bot together. It's currently just a console application, but later, we might add a GUI for local execution. I'm open to ideas about where we want to take this project. We could run it somewhere on the cloud, and we could decide that it needs a web interface. Let me know [on-stream](https://www.twitch.tv/devchatter) what you want to do.
 
 ## Contributing
 Have I mentioned that you're awesome for even considering contributing to this project? Thanks!
