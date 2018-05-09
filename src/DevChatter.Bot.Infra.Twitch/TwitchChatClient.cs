@@ -31,7 +31,7 @@ namespace DevChatter.Bot.Infra.Twitch
             _twitchApi = twitchApi;
             var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchOAuth);
             _twitchClient = new TwitchClient();
-            _twitchClient.Initialize(credentials, settings.TwitchChannel);
+            _twitchClient.Initialize(credentials, channel:settings.TwitchChannel);
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
             _twitchClient.OnNewSubscriber += NewSubscriber;
             _twitchClient.OnUserJoined += TwitchClientOnOnUserJoined;
