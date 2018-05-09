@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.6.2" />
-    <PackageReference Include="NodaTime" Version="2.2.5" />
+    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="NodaTime" Version="2.2.6" />
   </ItemGroup>
 
 </Project>
