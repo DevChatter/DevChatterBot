@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
@@ -34,13 +35,13 @@ namespace DevChatter.Bot.Core.Commands
 
         public bool ShouldExecute(string commandText) => CommandText.EqualsIns(commandText);
 
-        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            TimeSpan timePassedSinceInvoke = DateTimeOffset.Now - _timeCommandLastInvoked;
+            TimeSpan timePassedSinceInvoke = DateTimeOffset.UtcNow - _timeCommandLastInvoked;
             bool userCanBypassCooldown = eventArgs.ChatUser.Role?.EqualsAny(UserRole.Streamer, UserRole.Mod) ?? false;
             if (userCanBypassCooldown || timePassedSinceInvoke >= Cooldown)
             {
-                _timeCommandLastInvoked = DateTimeOffset.Now;
+                _timeCommandLastInvoked = DateTimeOffset.UtcNow;
 
                 IEnumerable<string> findTokens = StaticResponse.FindTokens();
                 string textToSend = ReplaceTokens(StaticResponse, findTokens, eventArgs);
@@ -52,6 +53,7 @@ namespace DevChatter.Bot.Core.Commands
                 string cooldownMessage = $"That command is currently on cooldown - Remaining time: {timeRemaining}";
                 chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, cooldownMessage);
             }
+            return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
         }
 
         private string ReplaceTokens(string textToSend, IEnumerable<string> tokens, CommandReceivedEventArgs eventArgs)
@@ -65,5 +67,13 @@ namespace DevChatter.Bot.Core.Commands
 
             return newText;
         }
+
+        public TimeSpan GetCooldownTimeRemaining()
+        {
+            TimeSpan timePassedSinceInvoke = DateTimeOffset.UtcNow - _timeCommandLastInvoked;
+            return (Cooldown - timePassedSinceInvoke);
+        }
+
+        public bool IsActiveGame() => false;
     }
 }

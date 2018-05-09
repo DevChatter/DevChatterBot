@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
@@ -49,29 +50,24 @@ namespace DevChatter.Bot.Core.Commands
 
         public bool ShouldExecute(string commandText) => _isEnabled && CommandWords.Any(x => x.EqualsIns(commandText));
 
-        public void Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        public CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            bool userCanBypassCooldown = eventArgs.ChatUser.Role?.EqualsAny(UserRole.Streamer, UserRole.Mod) ?? false;
-            bool isGameRunning = false;
-            if (this is IGameCommand gameCommand)
-            {
-                isGameRunning = gameCommand.Game.IsRunning;
-            }
+            _timeCommandLastInvoked = DateTimeOffset.UtcNow;
+            HandleCommand(chatClient, eventArgs);
+            return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
+        }
 
-            TimeSpan timePassedSinceInvoke = DateTimeOffset.Now - _timeCommandLastInvoked;
-            if (isGameRunning || userCanBypassCooldown || timePassedSinceInvoke >= Cooldown)
-            {
-                _timeCommandLastInvoked = DateTimeOffset.Now;
-                HandleCommand(chatClient, eventArgs);
-            }
-            else
-            {
-                string timeRemaining = (Cooldown - timePassedSinceInvoke).ToExpandingString();
-                string cooldownMessage = $"That command is currently on cooldown - Remaining time: {timeRemaining}";
-                chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, cooldownMessage);
-            }
+        public TimeSpan GetCooldownTimeRemaining()
+        {
+            TimeSpan timePassedSinceInvoke = DateTimeOffset.UtcNow - _timeCommandLastInvoked;
+            return (Cooldown - timePassedSinceInvoke);
         }
 
         protected abstract void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
+
+        public bool IsActiveGame()
+        {
+            return (this is IGameCommand gameCommand && gameCommand.Game.IsRunning);
+        }
     }
 }
