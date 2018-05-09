@@ -13,7 +13,7 @@ namespace DevChatter.Bot.Infra.Twitch
                 var api = new TwitchAPI();
                 var settings = ctx.Resolve<TwitchClientSettings>();
                 api.Settings.ClientId = settings.TwitchClientId;
-                api.Settings.AccessToken = settings.TwitchOAuth; // need to verify this as well
+                api.Settings.AccessToken = settings.TwitchChannelOAuth; // need to verify this as well
                 return api;
             })
                    .AsImplementedInterfaces();

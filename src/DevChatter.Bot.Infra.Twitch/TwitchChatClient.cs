@@ -29,7 +29,7 @@ namespace DevChatter.Bot.Infra.Twitch
         {
             _settings = settings;
             _twitchApi = twitchApi;
-            var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchOAuth);
+            var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchBotOAuth);
             _twitchClient = new TwitchClient();
             _twitchClient.Initialize(credentials, channel:settings.TwitchChannel);
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
