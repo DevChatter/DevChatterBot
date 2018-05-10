@@ -112,7 +112,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
             if (CurrentPlayers.ContainsKey(chatUser.DisplayName))
             {
                 CurrentPlayers[chatUser.DisplayName] = guess.ToLower().Single();
-                return $"You updated you guess to {guess}, {chatUser.DisplayName}.";
+                return $"You updated your guess to {guess}, {chatUser.DisplayName}.";
             }
 
             return $"You aren't playing. Stop it, {chatUser.DisplayName}.";
