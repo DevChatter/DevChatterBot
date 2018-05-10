@@ -68,6 +68,10 @@ namespace DevChatter.Bot.Core.Games.Quiz
         private void CompleteQuestion(IChatClient chatClient, QuizQuestion randomQuestion)
         {
             chatClient.SendMessage($"The correct answer was... {randomQuestion.CorrectAnswer}");
+
+            // TODO: Congratulate the winners
+
+            // TODO: Reset the game (later we'll have multi-question)
         }
 
         private QuizQuestion GetRandomQuestion()
