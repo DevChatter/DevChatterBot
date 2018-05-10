@@ -1,4 +1,4 @@
-namespace DevChatter.Bot.Core.Games.Heist
+namespace DevChatter.Bot.Core.Games
 {
     public class JoinGameResult
     {

@@ -7,6 +7,7 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Games.Hangman;
 using DevChatter.Bot.Core.Games.Heist;
+using DevChatter.Bot.Core.Games.Quiz;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Core.Util;
@@ -34,6 +35,9 @@ namespace DevChatter.Bot.Core
 
             builder.RegisterType<HeistCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<HeistGame>().AsSelf().SingleInstance();
+
+            builder.RegisterType<QuizCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<QuizGame>().AsSelf().SingleInstance();
 
 
             builder.RegisterType<HangmanGame>().AsSelf().SingleInstance();
