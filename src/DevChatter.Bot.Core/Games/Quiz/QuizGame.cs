@@ -54,6 +54,34 @@ namespace DevChatter.Bot.Core.Games.Quiz
             _questionAskingStarted = true;
 
             chatClient.SendMessage($"Starting the quiz now! Our competitors are: {string.Join(", ", CurrentPlayerNames)}");
+
+            QuizQuestion randomQuestion = GetRandomQuestion();
+
+            chatClient.SendMessage(randomQuestion.MainQuestion);
+            chatClient.SendMessage(randomQuestion.SetAndReturnLetterString());
+
+            _automatedActionSystem.AddAction(new DelayedMessageAction(10, randomQuestion.Hint1, chatClient));
+            _automatedActionSystem.AddAction(new DelayedMessageAction(20, randomQuestion.Hint2, chatClient));
+            _automatedActionSystem.AddAction(new OneTimeCallBackAction(30, () => CompleteQuestion(chatClient, randomQuestion)));
+        }
+
+        private void CompleteQuestion(IChatClient chatClient, QuizQuestion randomQuestion)
+        {
+            chatClient.SendMessage($"The correct answer was... {randomQuestion.CorrectAnswer}");
+        }
+
+        private QuizQuestion GetRandomQuestion()
+        {
+            return new QuizQuestion
+            {
+                MainQuestion = "Who is the best C# Twitch Streamer?",
+                Hint1 = "We aren't wearing hats...",
+                Hint2 = "Brendan is modest enough, wouldn't you say?",
+                CorrectAnswer = "DevChatter",
+                WrongAnswer1 = "CSharpFritz",
+                WrongAnswer2 = "Certainly not any of these other choices Kappa ",
+                WrongAnswer3 = "robbiew_yt",
+            };
         }
 
         public JoinGameResult AttemptToJoin(ChatUser chatUser)
