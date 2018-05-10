@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         public override List<string> OperandWords { get; } = new List<string> { "a", "b", "c", "d" };
 
-        public override string HelpText => throw new System.NotImplementedException();
+        public override string HelpText => "Type \"!quiz a\" to guess choice \"a\" in the quiz. I think you can figure out the rest.";
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {

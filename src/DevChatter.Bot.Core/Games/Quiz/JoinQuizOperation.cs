@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         public override List<string> OperandWords { get; } = new List<string> { "join", "enter" };
 
-        public override string HelpText => throw new System.NotImplementedException();
+        public override string HelpText => "Type \"!quiz join\" to join the quiz game.";
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {

@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         public override List<string> OperandWords { get; } = new List<string> { "leave", "forfeit", "exit", "forfiet" };
 
-        public override string HelpText => throw new System.NotImplementedException();
+        public override string HelpText => "Type \"!quiz leave\" to forfeit the quiz game.";
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
