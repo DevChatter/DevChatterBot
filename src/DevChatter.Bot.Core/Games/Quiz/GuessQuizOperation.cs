@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events.Args;
@@ -22,7 +23,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
-            return "You are running the GuessQuizOperation";
+            return _game.UpdateGuess(eventArgs.ChatUser, eventArgs.Arguments.First());
         }
     }
 }

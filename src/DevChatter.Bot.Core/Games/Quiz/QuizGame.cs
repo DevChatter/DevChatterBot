@@ -13,7 +13,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
         private readonly IRepository _repository;
         private readonly IAutomatedActionSystem _automatedActionSystem;
 
-        public List<string> CurrentPlayerNames { get; set; } = new List<string>();
+        public Dictionary<string, char> CurrentPlayers { get; set; } = new Dictionary<string, char>();
 
         public QuizGame(IRepository repository, IAutomatedActionSystem automatedActionSystem)
         {
@@ -53,7 +53,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
             // TODO: Clean up the automated actions we created
             _questionAskingStarted = true;
 
-            chatClient.SendMessage($"Starting the quiz now! Our competitors are: {string.Join(", ", CurrentPlayerNames)}");
+            chatClient.SendMessage($"Starting the quiz now! Our competitors are: {string.Join(", ", CurrentPlayers.Keys)}");
 
             QuizQuestion randomQuestion = GetRandomQuestion();
 
@@ -65,11 +65,14 @@ namespace DevChatter.Bot.Core.Games.Quiz
             _automatedActionSystem.AddAction(new OneTimeCallBackAction(30, () => CompleteQuestion(chatClient, randomQuestion)));
         }
 
-        private void CompleteQuestion(IChatClient chatClient, QuizQuestion randomQuestion)
+        private void CompleteQuestion(IChatClient chatClient, QuizQuestion question)
         {
-            chatClient.SendMessage($"The correct answer was... {randomQuestion.CorrectAnswer}");
+            chatClient.SendMessage($"The correct answer was... {question.CorrectAnswer}");
 
             // TODO: Congratulate the winners
+            char correctLetter = question.LetterAssignment.Single(x => x.Value == question.CorrectAnswer).Key;
+            var winners = CurrentPlayers.Where(x => x.Value == correctLetter).Select(x => x.Key);
+            chatClient.SendMessage($"Congratulations to {string.Join(", ", winners)}");
 
             // TODO: Reset the game (later we'll have multi-question)
         }
@@ -90,7 +93,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         public JoinGameResult AttemptToJoin(ChatUser chatUser)
         {
-            if (CurrentPlayerNames.Any(x => x.EqualsIns(chatUser.DisplayName)))
+            if (CurrentPlayers.Any(x => x.Key.EqualsIns(chatUser.DisplayName)))
             {
                 return QuizJoinResults.AlreadyInGameResult(chatUser.DisplayName);
             }
@@ -100,8 +103,19 @@ namespace DevChatter.Bot.Core.Games.Quiz
                 return QuizJoinResults.NotJoinTimeResult(chatUser.DisplayName);
             }
 
-            CurrentPlayerNames.Add(chatUser.DisplayName);
+            CurrentPlayers[chatUser.DisplayName] = ' ';
             return QuizJoinResults.SuccessJoinResult(chatUser.DisplayName);
+        }
+
+        public string UpdateGuess(ChatUser chatUser, string guess)
+        {
+            if (CurrentPlayers.ContainsKey(chatUser.DisplayName))
+            {
+                CurrentPlayers[chatUser.DisplayName] = guess.ToLower().Single();
+                return $"You updated you guess to {guess}, {chatUser.DisplayName}.";
+            }
+
+            return $"You aren't playing. Stop it, {chatUser.DisplayName}.";
         }
     }
 
