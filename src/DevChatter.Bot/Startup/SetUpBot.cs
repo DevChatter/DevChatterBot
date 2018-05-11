@@ -23,15 +23,15 @@ namespace DevChatter.Bot.Startup
             builder.Register(ctx => botConfiguration.TwitchClientSettings).AsSelf().SingleInstance();
 
             builder.Register(ctx => repository)
-                   .As<IRepository>().SingleInstance();
+                .As<IRepository>().SingleInstance();
 
 
             var simpleCommands = repository.List<SimpleCommand>();
             foreach (var command in simpleCommands)
             {
                 builder.Register(ctx => command)
-                       .AsImplementedInterfaces()
-                       .SingleInstance();
+                    .AsImplementedInterfaces()
+                    .SingleInstance();
             }
 
             var container = builder.Build();

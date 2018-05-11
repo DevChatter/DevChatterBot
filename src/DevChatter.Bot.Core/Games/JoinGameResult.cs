@@ -28,6 +28,7 @@ namespace DevChatter.Bot.Core.Games
             Success = success;
             Message = message;
         }
+
         public bool Success { get; set; }
         public string Message { get; set; }
     }

@@ -56,6 +56,7 @@ namespace DevChatter.Bot.Core.Events
             {
                 return;
             }
+
             var cooldown = _usageTracker.GetActiveCooldown(e.ChatUser, botCommand);
             chatClient.SendMessage(cooldown.Message);
             // TODO: prevent running the command if there was a cooldown
@@ -89,7 +90,8 @@ namespace DevChatter.Bot.Core.Events
             _usageTracker.RecordUsage(commandUsage);
         }
 
-        private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand, IChatClient chatClient1)
+        private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand,
+            IChatClient chatClient1)
         {
             try
             {
@@ -97,6 +99,7 @@ namespace DevChatter.Bot.Core.Events
                 {
                     return botCommand.Process(chatClient1, e);
                 }
+
                 chatClient1.SendMessage(
                     $"Sorry, {e.ChatUser.DisplayName}! You don't have permission to use the !{e.CommandWord} command.");
             }
@@ -104,6 +107,7 @@ namespace DevChatter.Bot.Core.Events
             {
                 Console.WriteLine(exception);
             }
+
             return null;
         }
     }

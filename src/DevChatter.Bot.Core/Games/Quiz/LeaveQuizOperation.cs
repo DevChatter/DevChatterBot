@@ -16,7 +16,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
             _game = game;
         }
 
-        public override List<string> OperandWords { get; } = new List<string> { "leave", "forfeit", "exit", "forfiet" };
+        public override List<string> OperandWords { get; } = new List<string> {"leave", "forfeit", "exit", "forfiet"};
 
         public override string HelpText => "Type \"!quiz leave\" to forfeit the quiz game.";
 

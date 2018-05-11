@@ -10,7 +10,7 @@ namespace DevChatter.Bot.Infra.Twitch
         {
             builder.RegisterType<TwitchFollowerService>().AsImplementedInterfaces().SingleInstance();
             builder.Register(ctx => new TwitchAPI(ctx.Resolve<TwitchClientSettings>().TwitchClientId))
-                   .AsImplementedInterfaces();
+                .AsImplementedInterfaces();
             builder.RegisterType<TwitchChatClient>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<TwitchStreamingInfoService>().AsImplementedInterfaces().SingleInstance();

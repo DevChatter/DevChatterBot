@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
             _requiredRole = requiredRole;
         }
 
-        public override List<string> OperandWords { get; } = new List<string> { "del", "rem", "remove", "delete" };
+        public override List<string> OperandWords { get; } = new List<string> {"del", "rem", "remove", "delete"};
 
         public override string HelpText => "";
 
@@ -37,8 +37,6 @@ namespace DevChatter.Bot.Core.Commands.Operations
             _repository.Remove(dataItem);
 
             return $"The {typeof(T).Name} has been deleted.";
-
-
         }
     }
 }

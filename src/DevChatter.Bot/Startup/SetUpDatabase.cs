@@ -39,6 +39,7 @@ namespace DevChatter.Bot.Startup
             {
                 repository.Create(GetDevChatterSchedule());
             }
+
             if (!repository.List<IntervalMessage>().Any())
             {
                 repository.Create(GetIntervalMessages());
@@ -70,10 +71,10 @@ namespace DevChatter.Bot.Startup
         {
             return new List<ScheduleEntity>
             {
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 7, 18, 0, 0, TimeSpan.Zero) },
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 8, 18, 0, 0, TimeSpan.Zero) },
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 10, 16, 0, 0, TimeSpan.Zero) },
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 12, 17, 0, 0, TimeSpan.Zero) }
+                new ScheduleEntity {ExampleDateTime = new DateTimeOffset(2018, 5, 7, 18, 0, 0, TimeSpan.Zero)},
+                new ScheduleEntity {ExampleDateTime = new DateTimeOffset(2018, 5, 8, 18, 0, 0, TimeSpan.Zero)},
+                new ScheduleEntity {ExampleDateTime = new DateTimeOffset(2018, 5, 10, 16, 0, 0, TimeSpan.Zero)},
+                new ScheduleEntity {ExampleDateTime = new DateTimeOffset(2018, 5, 12, 17, 0, 0, TimeSpan.Zero)}
             };
         }
 
@@ -83,7 +84,7 @@ namespace DevChatter.Bot.Startup
             {
                 new HangmanWord("apple"),
                 new HangmanWord("banana"),
-                new HangmanWord("orange" ),
+                new HangmanWord("orange"),
                 new HangmanWord("mango"),
                 new HangmanWord("watermellon"),
                 new HangmanWord("grapes"),

@@ -11,8 +11,8 @@ namespace UnitTests.Core.Commands.TopCommandTests
         [Fact]
         public void IncludeNameAndTokens_GivenOnePerson()
         {
-            ChatUser chatUser = new ChatUser { DisplayName = "Brendan", Tokens = 10 };
-            List<ChatUser> topUsers = new List<ChatUser> { chatUser };
+            ChatUser chatUser = new ChatUser {DisplayName = "Brendan", Tokens = 10};
+            List<ChatUser> topUsers = new List<ChatUser> {chatUser};
             string message = TopCommand.GenerateMessage(topUsers);
 
             message.Should().Contain(chatUser.DisplayName);
@@ -22,9 +22,9 @@ namespace UnitTests.Core.Commands.TopCommandTests
         [Fact]
         public void IncludeNameAndTokens_GivenTwoPeople()
         {
-            ChatUser chatUser1 = new ChatUser { DisplayName = "Brendan", Tokens = 1213 };
-            ChatUser chatUser2 = new ChatUser { DisplayName = "Pritchett", Tokens = 521 };
-            List<ChatUser> topUsers = new List<ChatUser> { chatUser1, chatUser2 };
+            ChatUser chatUser1 = new ChatUser {DisplayName = "Brendan", Tokens = 1213};
+            ChatUser chatUser2 = new ChatUser {DisplayName = "Pritchett", Tokens = 521};
+            List<ChatUser> topUsers = new List<ChatUser> {chatUser1, chatUser2};
             string message = TopCommand.GenerateMessage(topUsers);
 
             message.Should().Contain(chatUser1.DisplayName);

@@ -26,7 +26,12 @@ namespace UnitTests.Core.Commands.Operations.TopCommandsOperationTests
         public void ReturnSingleEntry_GivenSameCommandAnalyticsData()
         {
             var fullTypeName = Guid.NewGuid().ToString();
-            var entities = new List<CommandUsageEntity> { new CommandUsageEntity { FullTypeName = fullTypeName }, new CommandUsageEntity { FullTypeName = fullTypeName }, new CommandUsageEntity { FullTypeName = fullTypeName } };
+            var entities = new List<CommandUsageEntity>
+            {
+                new CommandUsageEntity {FullTypeName = fullTypeName},
+                new CommandUsageEntity {FullTypeName = fullTypeName},
+                new CommandUsageEntity {FullTypeName = fullTypeName}
+            };
             TopCommandsOperation topCommandsOperation = SetUpTest(entities);
 
             string messageResult = topCommandsOperation.TryToExecute(new CommandReceivedEventArgs());
@@ -39,7 +44,10 @@ namespace UnitTests.Core.Commands.Operations.TopCommandsOperationTests
         {
             string name = "Foo";
             string notIncluded = "Buzz";
-            var entities = new List<CommandUsageEntity> { new CommandUsageEntity { FullTypeName = $"Bar.Fizz.{notIncluded}.{name}" } };
+            var entities = new List<CommandUsageEntity>
+            {
+                new CommandUsageEntity {FullTypeName = $"Bar.Fizz.{notIncluded}.{name}"}
+            };
             TopCommandsOperation topCommandsOperation = SetUpTest(entities);
 
             string messageResult = topCommandsOperation.TryToExecute(new CommandReceivedEventArgs());
@@ -92,11 +100,12 @@ namespace UnitTests.Core.Commands.Operations.TopCommandsOperationTests
 
             for (int i = 0; i < names.Length; i++)
             {
-                for (int j = 0; j < i+1; j++)
+                for (int j = 0; j < i + 1; j++)
                 {
-                    entities.Add(new CommandUsageEntity { FullTypeName = names[i] });
+                    entities.Add(new CommandUsageEntity {FullTypeName = names[i]});
                 }
             }
+
             return entities;
         }
     }

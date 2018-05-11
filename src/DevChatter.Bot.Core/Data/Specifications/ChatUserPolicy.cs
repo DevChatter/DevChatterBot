@@ -15,6 +15,7 @@ namespace DevChatter.Bot.Core.Data.Specifications
         {
             return new ChatUserPolicy(x => x.DisplayName == displayName);
         }
+
         public static ChatUserPolicy ByDisplayName(List<string> listOfNames)
         {
             return new ChatUserPolicy(x => listOfNames.Contains(x.DisplayName));

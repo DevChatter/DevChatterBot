@@ -25,8 +25,8 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<ChatUserCollection>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CurrencyGenerator>().AsImplementedInterfaces().SingleInstance();
             builder.Register(ctx => new CurrencyUpdate(1, ctx.Resolve<ICurrencyGenerator>(), ctx.Resolve<IClock>()))
-                   .AsImplementedInterfaces()
-                   .SingleInstance();
+                .AsImplementedInterfaces()
+                .SingleInstance();
 
             builder.RegisterType<AutomatedActionSystem>().AsImplementedInterfaces().SingleInstance();
 
@@ -56,15 +56,15 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<ScheduleCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.Register(ctx => new HelpCommand(ctx.Resolve<IRepository>()))
-                   .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
-                   .AsImplementedInterfaces();
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
             builder.Register(ctx => new CommandsCommand(ctx.Resolve<IRepository>()))
-                   .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
-                   .AsImplementedInterfaces();
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
 
             builder.Register(ctx => new CommandList(ctx.Resolve<IList<IBotCommand>>()))
-                   .AsSelf()
-                   .SingleInstance();
+                .AsSelf()
+                .SingleInstance();
 
             builder.RegisterType<CommandCooldownTracker>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CommandHandler>().AsImplementedInterfaces().SingleInstance();

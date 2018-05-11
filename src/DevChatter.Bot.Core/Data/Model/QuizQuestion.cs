@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Core.Data.Model
         {
             if (LetterAssignment == null)
             {
-                var randomSet = new[] { CorrectAnswer, WrongAnswer1, WrongAnswer2, WrongAnswer3 }
+                var randomSet = new[] {CorrectAnswer, WrongAnswer1, WrongAnswer2, WrongAnswer3}
                     .OrderBy(x => Guid.NewGuid()).ToList();
                 LetterAssignment = new Dictionary<char, string>
                 {

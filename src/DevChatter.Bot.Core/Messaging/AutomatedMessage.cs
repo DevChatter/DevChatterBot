@@ -15,7 +15,8 @@ namespace DevChatter.Bot.Core.Messaging
 
         public AutomatedMessage(IntervalMessage message, IList<IChatClient> chatClients)
             : this(message, chatClients, new SystemClock())
-        { }
+        {
+        }
 
         public AutomatedMessage(IntervalMessage message, IList<IChatClient> chatClients, IClock clock)
         {
