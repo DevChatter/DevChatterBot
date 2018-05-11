@@ -85,9 +85,9 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             {
                 string winners = string.Join(",", winnersList);
                 if (winnersList.Count() > 1)
-                    chatClient.SendMessage($"The winners are {winners}!");
+                    chatClient.SendMessage($"The winners are {winners}! They all win {TOKENS_FOR_WINNING} coins!");
                 else
-                    chatClient.SendMessage($"The winner is {winners}!");
+                    chatClient.SendMessage($"The winner is {winners}! {winners} wins {TOKENS_FOR_WINNING} coins!");
             }
             else
             {
