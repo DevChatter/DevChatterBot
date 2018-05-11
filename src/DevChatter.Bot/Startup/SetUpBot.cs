@@ -2,8 +2,8 @@ using Autofac;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
-using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Infra.Twitch;
+using DevChatter.Bot.Infra.Discord;
 using System.Linq;
 
 namespace DevChatter.Bot.Startup
@@ -18,14 +18,12 @@ namespace DevChatter.Bot.Startup
 
             builder.RegisterModule<DevChatterBotCoreModule>();
             builder.RegisterModule<DevChatterBotTwitchModule>();
+            builder.RegisterModule<DevChatterBotDiscordModule>();
 
             builder.Register(ctx => botConfiguration.CommandHandlerSettings).AsSelf().SingleInstance();
             builder.Register(ctx => botConfiguration.TwitchClientSettings).AsSelf().SingleInstance();
             builder.Register(ctx => botConfiguration.DiscordClientSettings).AsSelf().SingleInstance();
 
-            
-            builder.RegisterType<DiscordChatClient>().AsImplementedInterfaces().SingleInstance();
-            
             var simpleCommands = repository.List<SimpleCommand>();
             foreach (var command in simpleCommands)
             {

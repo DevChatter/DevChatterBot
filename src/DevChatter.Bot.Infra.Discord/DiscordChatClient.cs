@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Util;
 using DevChatter.Bot.Infra.Discord.Extensions;
@@ -90,7 +90,10 @@ namespace DevChatter.Bot.Infra.Discord
         private void GuildCommandReceived(IGuildUser user, int commandStartIndex, string message)
         {
             var commandInfo = CommandParser.Parse(message, commandStartIndex);
-            if (string.IsNullOrWhiteSpace(commandInfo.commandWord)) return;
+            if(string.IsNullOrWhiteSpace(commandInfo.commandWord))
+            {
+                return;
+            }
 
             RaiseOnCommandReceived(user, commandInfo.commandWord, commandInfo.arguments);
         }
@@ -98,7 +101,10 @@ namespace DevChatter.Bot.Infra.Discord
         private void DirectCommandReceieved(IUser user, int commandStartIndex, string message)
         {
             var commandInfo = CommandParser.Parse(message, commandStartIndex);
-            if (string.IsNullOrWhiteSpace(commandInfo.commandWord)) return;
+            if(string.IsNullOrWhiteSpace(commandInfo.commandWord))
+            {
+                return;
+            }
 
             // TODO: Do we want to handle direct message commands?
         }
@@ -147,10 +153,15 @@ namespace DevChatter.Bot.Infra.Discord
             RaiseOnUserLeft(arg);
         }
 
+        /// <summary>
+        /// If not connected to a guild 
+        /// </summary>
         public IList<ChatUser> GetAllChatters()
         {
-            if(!_isReady)
+            if (!_isReady)
+            {
                 return new List<ChatUser>();
+            }
 
             var chatUsers = _guild.Users.Select(user => user.ToChatUser(_settings)).ToList();
             return chatUsers;
@@ -163,7 +174,18 @@ namespace DevChatter.Bot.Infra.Discord
                 return;
             }
 
-            _textChannel.SendMessageAsync($"`{message}`").Wait();
+            _textChannel?.SendMessageAsync($"`{message}`").Wait();
+        }
+
+        public void SendDirectMessage(string username, string message)
+        {
+            if (!_isReady)
+            {
+                return;
+            }
+
+            var discordUser = _guild.Users.FirstOrDefault(u => u.Username == username);
+            discordUser?.SendMessageAsync(message);
         }
 
         private void RaiseOnCommandReceived(IGuildUser user, string commandWord, List<string> arguments)
