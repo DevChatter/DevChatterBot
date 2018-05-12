@@ -19,7 +19,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
-            return "You are running the LeaveQuizOperation";
+            return _game.AttemptToLeave(eventArgs.ChatUser);
         }
     }
 }

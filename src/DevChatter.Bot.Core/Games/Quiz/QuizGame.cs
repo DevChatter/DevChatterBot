@@ -133,6 +133,27 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
             return $"You aren't playing. Stop it, {chatUser.DisplayName}.";
         }
+
+        public string AttemptToLeave(ChatUser chatUser)
+        {
+            if (!IsRunning)
+            {
+                return "You can't leave a game that isn't being played."; // TODO: this needs to be a whisper
+            }
+
+            if (_questionAskingStarted)
+            {
+                return "The questions have started, you can't leave."; // TODO: this needs to be a whisper
+            }
+
+            if (CurrentPlayers.ContainsKey(chatUser.DisplayName))
+            {
+                CurrentPlayers.Remove(chatUser.DisplayName);
+                return $"{chatUser.DisplayName} has quit the game.";
+            }
+
+            return $"You aren't in this game, {chatUser.DisplayName}"; // TODO: this needs to be a whisper
+        }
     }
 
     public static class QuizJoinResults
