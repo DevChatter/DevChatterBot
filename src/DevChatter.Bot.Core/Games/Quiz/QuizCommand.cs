@@ -1,3 +1,4 @@
+using System;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Data;
@@ -25,6 +26,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
         {
             HelpText = "No Quiz HelpText yet.";
             _quizGame = quizGame;
+            Cooldown = TimeSpan.FromMinutes(2);
         }
 
         private readonly QuizGame _quizGame;
