@@ -7,12 +7,10 @@ namespace DevChatter.Bot.Core.Games.Quiz
 {
     internal class JoinQuizOperation : BaseCommandOperation
     {
-        private IRepository _repository;
-        private QuizGame _game;
+        private readonly QuizGame _game;
 
-        public JoinQuizOperation(IRepository repository, QuizGame game)
+        public JoinQuizOperation(QuizGame game)
         {
-            _repository = repository;
             _game = game;
         }
 

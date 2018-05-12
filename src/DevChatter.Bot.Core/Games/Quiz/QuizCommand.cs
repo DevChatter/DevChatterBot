@@ -16,9 +16,9 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         public List<ICommandOperation> Operations => _operations ?? (_operations = new List<ICommandOperation>
         {
-            new JoinQuizOperation(Repository, _quizGame),
-            new LeaveQuizOperation(Repository, _quizGame),
-            new GuessQuizOperation(Repository, _quizGame),
+            new JoinQuizOperation(_quizGame),
+            new LeaveQuizOperation(_quizGame),
+            new GuessQuizOperation(_quizGame),
         });
 
         public QuizCommand(IRepository repository, QuizGame quizGame)

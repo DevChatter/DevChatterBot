@@ -1,18 +1,15 @@
 using System.Collections.Generic;
 using DevChatter.Bot.Core.Commands.Operations;
-using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events.Args;
 
 namespace DevChatter.Bot.Core.Games.Quiz
 {
-    internal class LeaveQuizOperation : BaseCommandOperation
+    public class LeaveQuizOperation : BaseCommandOperation
     {
-        private IRepository _repository;
         private QuizGame _game;
 
-        public LeaveQuizOperation(IRepository repository, QuizGame game)
+        public LeaveQuizOperation(QuizGame game)
         {
-            _repository = repository;
             _game = game;
         }
 

@@ -1,19 +1,16 @@
+using DevChatter.Bot.Core.Commands.Operations;
+using DevChatter.Bot.Core.Events.Args;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.Commands.Operations;
-using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Core.Events.Args;
 
 namespace DevChatter.Bot.Core.Games.Quiz
 {
-    internal class GuessQuizOperation : BaseCommandOperation
+    public class GuessQuizOperation : BaseCommandOperation
     {
-        private IRepository _repository;
-        private QuizGame _game;
+        private readonly QuizGame _game;
 
-        public GuessQuizOperation(IRepository repository, QuizGame game)
+        public GuessQuizOperation(QuizGame game)
         {
-            _repository = repository;
             _game = game;
         }
 
