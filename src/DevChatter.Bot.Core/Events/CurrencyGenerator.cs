@@ -57,7 +57,7 @@ namespace DevChatter.Bot.Core.Events
             _chatUserCollection.UpdateEachChatter(x => x.Tokens += 1);
         }
 
-        public void AddCurrencyTo(List<string> listOfNames, int tokensToAdd)
+        public void AddCurrencyTo(IEnumerable<string> listOfNames, int tokensToAdd)
         {
             _chatUserCollection.UpdateSpecificChatters(CappedTokenAdding, ChatUserPolicy.ByDisplayName(listOfNames));
 

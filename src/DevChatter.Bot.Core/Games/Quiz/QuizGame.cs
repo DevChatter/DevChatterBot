@@ -5,25 +5,29 @@ using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Events;
 
 namespace DevChatter.Bot.Core.Games.Quiz
 {
     public class QuizGame : IGame
     {
-        private readonly IRepository _repository;
+        private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IAutomatedActionSystem _automatedActionSystem;
 
         public Dictionary<string, char> CurrentPlayers { get; set; } = new Dictionary<string, char>();
 
-        public QuizGame(IRepository repository, IAutomatedActionSystem automatedActionSystem)
+        public QuizGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem)
         {
-            _repository = repository;
+            _currencyGenerator = currencyGenerator;
             _automatedActionSystem = automatedActionSystem;
         }
 
         public bool IsRunning { get; private set; }
 
         private bool _questionAskingStarted = false;
+        private DelayedMessageAction _messageHint1;
+        private DelayedMessageAction _messageHint2;
+        private OneTimeCallBackAction _oneTimeActionEndingQuestion;
 
         private bool IsGameJoinable => IsRunning && !_questionAskingStarted;
 
@@ -60,21 +64,39 @@ namespace DevChatter.Bot.Core.Games.Quiz
             chatClient.SendMessage(randomQuestion.MainQuestion);
             chatClient.SendMessage(randomQuestion.SetAndReturnLetterString());
 
-            _automatedActionSystem.AddAction(new DelayedMessageAction(10, randomQuestion.Hint1, chatClient));
-            _automatedActionSystem.AddAction(new DelayedMessageAction(20, randomQuestion.Hint2, chatClient));
-            _automatedActionSystem.AddAction(new OneTimeCallBackAction(30, () => CompleteQuestion(chatClient, randomQuestion)));
+            _messageHint1 = new DelayedMessageAction(10, $"Hint 1: {randomQuestion.Hint1}", chatClient);
+            _automatedActionSystem.AddAction(_messageHint1);
+            _messageHint2 = new DelayedMessageAction(20, $"Hint 2: {randomQuestion.Hint2}", chatClient);
+            _automatedActionSystem.AddAction(_messageHint2);
+            _oneTimeActionEndingQuestion = new OneTimeCallBackAction(30, () => CompleteQuestion(chatClient, randomQuestion));
+            _automatedActionSystem.AddAction(_oneTimeActionEndingQuestion);
         }
 
         private void CompleteQuestion(IChatClient chatClient, QuizQuestion question)
         {
             chatClient.SendMessage($"The correct answer was... {question.CorrectAnswer}");
 
-            // TODO: Congratulate the winners
-            char correctLetter = question.LetterAssignment.Single(x => x.Value == question.CorrectAnswer).Key;
-            var winners = CurrentPlayers.Where(x => x.Value == correctLetter).Select(x => x.Key);
-            chatClient.SendMessage($"Congratulations to {string.Join(", ", winners)}");
+            AwardWinners(chatClient, question);
 
-            // TODO: Reset the game (later we'll have multi-question)
+            ResetGame();
+        }
+
+        private void AwardWinners(IChatClient chatClient, QuizQuestion question)
+        {
+            char correctLetter = question.LetterAssignment.Single(x => x.Value == question.CorrectAnswer).Key;
+            List<string> winners = CurrentPlayers.Where(x => x.Value == correctLetter).Select(x => x.Key).ToList();
+            chatClient.SendMessage($"Congratulations to {string.Join(", ", winners)}");
+            _currencyGenerator.AddCurrencyTo(winners, 10);
+        }
+
+        private void ResetGame()
+        {
+            IsRunning = false;
+            _questionAskingStarted = false;
+            CurrentPlayers.Clear();
+            _automatedActionSystem.RemoveAction(_messageHint1);
+            _automatedActionSystem.RemoveAction(_messageHint2);
+            _automatedActionSystem.RemoveAction(_oneTimeActionEndingQuestion);
         }
 
         private QuizQuestion GetRandomQuestion()
