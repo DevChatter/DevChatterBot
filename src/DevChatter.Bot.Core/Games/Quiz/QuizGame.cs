@@ -65,7 +65,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
             QuizQuestion randomQuestion = GetRandomQuestion();
 
             chatClient.SendMessage(randomQuestion.MainQuestion);
-            chatClient.SendMessage(randomQuestion.SetAndReturnLetterString());
+            chatClient.SendMessage(randomQuestion.GetRandomizedAnswers());
 
             _messageHint1 = new DelayedMessageAction(10, $"Hint 1: {randomQuestion.Hint1}", chatClient);
             _automatedActionSystem.AddAction(_messageHint1);

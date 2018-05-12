@@ -16,7 +16,11 @@ namespace DevChatter.Bot.Core.Data.Model
 
         public Dictionary<char, string> LetterAssignment { get; private set; }
 
-        public string SetAndReturnLetterString()
+        /// <summary>
+        /// Randomizes the list of answers, doing their letter assignment.
+        /// </summary>
+        /// <returns>String containing the letters and assigned answers.</returns>
+        public string GetRandomizedAnswers()
         {
             if (LetterAssignment == null)
             {
