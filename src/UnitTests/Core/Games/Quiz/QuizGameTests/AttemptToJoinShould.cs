@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Games.Quiz;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -42,9 +44,12 @@ namespace UnitTests.Core.Games.Quiz.QuizGameTests
         public void PreventJoining_GivenQuestionsBeingAsked()
         {
             var automatedActionSystem = new FakeActionSystem();
-            var quizGame = new QuizGame(new Mock<IRepository>().Object, new Mock<ICurrencyGenerator>().Object, automatedActionSystem);
+            var mockRepo = new Mock<IRepository>();
+            var quizGame = new QuizGame(mockRepo.Object, new Mock<ICurrencyGenerator>().Object, automatedActionSystem);
             string displayName = Guid.NewGuid().ToString();
             quizGame.StartGame(new Mock<IChatClient>().Object);
+            mockRepo.Setup(x => x.List(It.IsAny<DataItemPolicy<QuizQuestion>>()))
+                .Returns(new List<QuizQuestion> { new QuizQuestion() });
             automatedActionSystem.IntervalAction.Invoke(); // run the action, starting the questions
 
             var result = quizGame.AttemptToJoin(new ChatUser {DisplayName = displayName});
