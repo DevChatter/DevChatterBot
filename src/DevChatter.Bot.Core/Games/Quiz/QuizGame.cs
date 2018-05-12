@@ -5,18 +5,23 @@ using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Data.Specifications;
+using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Games.Quiz
 {
     public class QuizGame : IGame
     {
+        private readonly IRepository _repository;
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IAutomatedActionSystem _automatedActionSystem;
 
         public Dictionary<string, char> CurrentPlayers { get; set; } = new Dictionary<string, char>();
 
-        public QuizGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem)
+        public QuizGame(IRepository repository, ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem)
         {
+            _repository = repository;
             _currencyGenerator = currencyGenerator;
             _automatedActionSystem = automatedActionSystem;
         }
@@ -99,16 +104,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         private QuizQuestion GetRandomQuestion()
         {
-            return new QuizQuestion
-            {
-                MainQuestion = "Who is the best C# Twitch Streamer?",
-                Hint1 = "We aren't wearing hats...",
-                Hint2 = "Brendan is modest enough, wouldn't you say?",
-                CorrectAnswer = "DevChatter",
-                WrongAnswer1 = "CSharpFritz",
-                WrongAnswer2 = "Certainly not any of these other choices Kappa ",
-                WrongAnswer3 = "robbiew_yt",
-            };
+            return MyRandom.ChooseRandomItem(_repository.List(DataItemPolicy<QuizQuestion>.All())).ChosenItem;
         }
 
         public JoinGameResult AttemptToJoin(ChatUser chatUser)

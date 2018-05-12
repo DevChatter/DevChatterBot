@@ -14,7 +14,7 @@ namespace UnitTests.Core.Games.Quiz.QuizGameTests
         [Fact]
         public void BeFalse_ByDefault()
         {
-            var quizGame = new QuizGame(new Mock<ICurrencyGenerator>().Object, new Mock<IAutomatedActionSystem>().Object);
+            var quizGame = new QuizGame(new Mock<IRepository>().Object, new Mock<ICurrencyGenerator>().Object, new Mock<IAutomatedActionSystem>().Object);
 
             quizGame.IsRunning.Should().BeFalse();
         }
@@ -22,7 +22,7 @@ namespace UnitTests.Core.Games.Quiz.QuizGameTests
         [Fact]
         public void BeTrue_AfterStarting()
         {
-            var quizGame = new QuizGame(new Mock<ICurrencyGenerator>().Object, new Mock<IAutomatedActionSystem>().Object);
+            var quizGame = new QuizGame(new Mock<IRepository>().Object, new Mock<ICurrencyGenerator>().Object, new Mock<IAutomatedActionSystem>().Object);
 
             quizGame.StartGame(new Mock<IChatClient>().Object);
 

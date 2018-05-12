@@ -17,7 +17,7 @@ namespace DevChatter.Bot.Core.Util
             }
         }
 
-        public static (bool, T) ChooseRandomItem<T>(IList<T> choices)
+        public static (bool Success, T ChosenItem) ChooseRandomItem<T>(IList<T> choices)
         {
             if (choices.Any())
             {

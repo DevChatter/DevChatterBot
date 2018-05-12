@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NodaTime;
+using QuizQuestion = DevChatter.Bot.Core.Data.Model.QuizQuestion;
 
 namespace DevChatter.Bot.Startup
 {
@@ -60,11 +60,43 @@ namespace DevChatter.Bot.Startup
                 repository.Create(GetInitialHangmanWords());
             }
 
+            if (!repository.List<QuizQuestion>().Any())
+            {
+                repository.Create(GetInitialQuizQuestions());
+            }
+
             var missingCommandWords = GetMissingCommandWords(repository);
             if (missingCommandWords.Any())
             {
                 repository.Create(missingCommandWords);
             }
+        }
+
+        private static List<QuizQuestion> GetInitialQuizQuestions()
+        {
+            return new List<QuizQuestion>
+            {
+                new QuizQuestion
+                {
+                    MainQuestion = "Who is the best C# Twitch Streamer?",
+                    Hint1 = "We aren't wearing hats...",
+                    Hint2 = "Brendan is modest enough, wouldn't you say?",
+                    CorrectAnswer = "DevChatter",
+                    WrongAnswer1 = "CSharpFritz",
+                    WrongAnswer2 = "Certainly not any of these other choices Kappa ",
+                    WrongAnswer3 = "robbiew_yt",
+                },
+                new QuizQuestion
+                {
+                    MainQuestion = "Which of these is NOT valid in C#?",
+                    Hint1 = "Tuples are OK by me.",
+                    Hint2 = "Should I give three hints?",
+                    CorrectAnswer = "int c, int d = 3;",
+                    WrongAnswer1 = "int x = 4;",
+                    WrongAnswer2 = "(int x, int y) = (1,2);",
+                    WrongAnswer3 = "int a = 5, b = 6;",
+                },
+            };
         }
 
         private static List<ScheduleEntity> GetDevChatterSchedule()

@@ -17,7 +17,7 @@ namespace UnitTests.Core.Games.Quiz.QuizGameTests
         [Fact]
         public void PreventJoining_GivenAlreadyCompetingUser()
         {
-            var quizGame = new QuizGame(new Mock<ICurrencyGenerator>().Object, new Mock<IAutomatedActionSystem>().Object);
+            var quizGame = new QuizGame(new Mock<IRepository>().Object, new Mock<ICurrencyGenerator>().Object, new Mock<IAutomatedActionSystem>().Object);
 
             var chatUser = new ChatUser {DisplayName = "Brendan"};
             quizGame.StartGame(new Mock<IChatClient>().Object);
@@ -30,7 +30,7 @@ namespace UnitTests.Core.Games.Quiz.QuizGameTests
         [Fact]
         public void PreventJoining_GivenGameNotStarted()
         {
-            var quizGame = new QuizGame(new Mock<ICurrencyGenerator>().Object, new Mock<IAutomatedActionSystem>().Object);
+            var quizGame = new QuizGame(new Mock<IRepository>().Object, new Mock<ICurrencyGenerator>().Object, new Mock<IAutomatedActionSystem>().Object);
 
             string displayName = Guid.NewGuid().ToString();
             var result = quizGame.AttemptToJoin(new ChatUser {DisplayName = displayName});
@@ -42,7 +42,7 @@ namespace UnitTests.Core.Games.Quiz.QuizGameTests
         public void PreventJoining_GivenQuestionsBeingAsked()
         {
             var automatedActionSystem = new FakeActionSystem();
-            var quizGame = new QuizGame(new Mock<ICurrencyGenerator>().Object, automatedActionSystem);
+            var quizGame = new QuizGame(new Mock<IRepository>().Object, new Mock<ICurrencyGenerator>().Object, automatedActionSystem);
             string displayName = Guid.NewGuid().ToString();
             quizGame.StartGame(new Mock<IChatClient>().Object);
             automatedActionSystem.IntervalAction.Invoke(); // run the action, starting the questions
@@ -55,7 +55,7 @@ namespace UnitTests.Core.Games.Quiz.QuizGameTests
         [Fact]
         public void AllowJoining_GivenNewUserDuringJoinWindow()
         {
-            var quizGame = new QuizGame(new Mock<ICurrencyGenerator>().Object, new Mock<IAutomatedActionSystem>().Object);
+            var quizGame = new QuizGame(new Mock<IRepository>().Object, new Mock<ICurrencyGenerator>().Object, new Mock<IAutomatedActionSystem>().Object);
 
             string displayName = Guid.NewGuid().ToString();
             quizGame.StartGame(new Mock<IChatClient>().Object);
