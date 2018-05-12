@@ -1,11 +1,10 @@
 using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.Events;
 
 namespace DevChatter.Bot.Core.Games.Quiz
 {
@@ -54,7 +53,6 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         private void StartAskingQuestions(IChatClient chatClient)
         {
-            // TODO: Clean up the automated actions we created
             _questionAskingStarted = true;
 
             chatClient.SendMessage($"Starting the quiz now! Our competitors are: {string.Join(", ", CurrentPlayers.Keys)}");
