@@ -43,8 +43,10 @@ namespace DevChatter.Bot.Core
             }
         }
 
-        public void UpdateEachChatter(Action<ChatUser> updateToApply) =>
-            UpdateSpecificChatters(updateToApply, ChatUserPolicy.All());
+        public void UpdateEachChatter(Action<ChatUser> updateToApply)
+        {
+            UpdateSpecificChatters(updateToApply, ChatUserPolicy.ByDisplayName(_activeChatUsers));
+        }
 
         public void UpdateSpecificChatters(Action<ChatUser> updateToApply, ISpecification<ChatUser> filter)
         {
