@@ -1,13 +1,13 @@
 using DevChatter.Bot.Core.Automation;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Util;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Core.Data.Specifications;
-using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Games.Quiz
 {
@@ -19,7 +19,8 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         public Dictionary<string, char> CurrentPlayers { get; set; } = new Dictionary<string, char>();
 
-        public QuizGame(IRepository repository, ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem)
+        public QuizGame(IRepository repository, ICurrencyGenerator currencyGenerator,
+            IAutomatedActionSystem automatedActionSystem)
         {
             _repository = repository;
             _currencyGenerator = currencyGenerator;

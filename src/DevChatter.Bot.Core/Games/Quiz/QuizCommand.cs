@@ -34,7 +34,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            string argumentOne = eventArgs?.Arguments?.FirstOrDefault();
+            string argumentOne = eventArgs.Arguments?.FirstOrDefault();
 
             var operationToUse = Operations.SingleOrDefault(x => x.ShouldExecute(argumentOne));
             if (operationToUse != null)
