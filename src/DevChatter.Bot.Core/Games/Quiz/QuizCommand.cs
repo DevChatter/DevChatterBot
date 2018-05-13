@@ -44,11 +44,11 @@ namespace DevChatter.Bot.Core.Games.Quiz
             }
             else
             {
-                PerformDefaultTask(argumentOne, eventArgs.ChatUser, chatClient);
+                PerformDefaultTask(eventArgs.ChatUser, chatClient);
             }
         }
 
-        public void PerformDefaultTask(string argumentOne, ChatUser chatUser, IChatClient chatClient)
+        public void PerformDefaultTask(ChatUser chatUser, IChatClient chatClient)
         {
             if (_quizGame.IsRunning)
             {
