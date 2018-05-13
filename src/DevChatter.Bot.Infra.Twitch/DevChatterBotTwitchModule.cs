@@ -10,13 +10,14 @@ namespace DevChatter.Bot.Infra.Twitch
         {
             builder.RegisterType<TwitchFollowerService>().AsImplementedInterfaces().SingleInstance();
 
-            builder.Register(ctx => {
-                var api = new TwitchAPI();
-                var settings = ctx.Resolve<TwitchClientSettings>();
-                api.Settings.ClientId = settings.TwitchClientId;
-                api.Settings.AccessToken = settings.TwitchChannelOAuth; // need to verify this as well
-                return api;
-            })
+            builder.Register(ctx =>
+                {
+                    var api = new TwitchAPI();
+                    var settings = ctx.Resolve<TwitchClientSettings>();
+                    api.Settings.ClientId = settings.TwitchClientId;
+                    api.Settings.AccessToken = settings.TwitchChannelOAuth; // need to verify this as well
+                    return api;
+                })
                    .AsImplementedInterfaces();
 
             builder.RegisterType<TwitchChatClient>().AsImplementedInterfaces().SingleInstance();
