@@ -1,4 +1,4 @@
-namespace DevChatter.Bot.Core.Games.Heist
+namespace DevChatter.Bot.Core.Games
 {
     public class JoinGameResult
     {
@@ -28,6 +28,7 @@ namespace DevChatter.Bot.Core.Games.Heist
             Success = success;
             Message = message;
         }
+
         public bool Success { get; set; }
         public string Message { get; set; }
     }

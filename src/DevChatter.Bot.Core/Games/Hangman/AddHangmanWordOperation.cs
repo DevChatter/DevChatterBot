@@ -17,7 +17,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             _repository = repository;
         }
 
-        public override List<string> OperandWords { get; } = new List<string> { "add" };
+        public override List<string> OperandWords { get; } = new List<string> {"add"};
         public override string HelpText { get; } = "Use \"!hangman add word\" to add an \"word\" as a new word.";
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
@@ -26,6 +26,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             {
                 return $"Sorry, {eventArgs.ChatUser.DisplayName}, only mods can add new words.";
             }
+
             var word = eventArgs?.Arguments?.ElementAtOrDefault(1)?.ToLowerInvariant();
 
             if (string.IsNullOrEmpty(word))

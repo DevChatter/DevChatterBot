@@ -15,7 +15,7 @@ namespace UnitTests.Core.Commands.Operations.AddAliasOperationTests
         [Fact]
         public void NotSave_GivenMissingAlias()
         {
-            var commandReceivedEventArgs = new CommandReceivedEventArgs { Arguments = new[] { "add", "alias" } };
+            var commandReceivedEventArgs = new CommandReceivedEventArgs {Arguments = new[] {"add", "alias"}};
             var mockRepo = new Mock<IRepository>();
             var addAliasOperation = new AddAliasOperation(mockRepo.Object);
 
@@ -27,7 +27,7 @@ namespace UnitTests.Core.Commands.Operations.AddAliasOperationTests
         [Fact]
         public void NotSave_GivenMissingExistingWord()
         {
-            var commandReceivedEventArgs = new CommandReceivedEventArgs { Arguments = new[] { "add" } };
+            var commandReceivedEventArgs = new CommandReceivedEventArgs {Arguments = new[] {"add"}};
             var mockRepo = new Mock<IRepository>();
             var addAliasOperation = new AddAliasOperation(mockRepo.Object);
 
@@ -39,10 +39,10 @@ namespace UnitTests.Core.Commands.Operations.AddAliasOperationTests
         [Fact]
         public void NotSave_GivenAliasAlreadyUsed()
         {
-            var commandReceivedEventArgs = new CommandReceivedEventArgs { Arguments = new[] { "add", "foo", "bar" } };
+            var commandReceivedEventArgs = new CommandReceivedEventArgs {Arguments = new[] {"add", "foo", "bar"}};
             var mockRepo = new Mock<IRepository>();
             var addAliasOperation = new AddAliasOperation(mockRepo.Object);
-            var existingWord = new CommandWordEntity { CommandWord = Guid.NewGuid().ToString() };
+            var existingWord = new CommandWordEntity {CommandWord = Guid.NewGuid().ToString()};
             mockRepo.Setup(x => x.Single(It.IsAny<CommandWordPolicy>())).Returns(existingWord);
 
             string message = addAliasOperation.TryToExecute(commandReceivedEventArgs);
@@ -55,10 +55,10 @@ namespace UnitTests.Core.Commands.Operations.AddAliasOperationTests
         public void SaveAlias_GivenValidArguments()
         {
             var newAlias = Guid.NewGuid().ToString();
-            var commandReceivedEventArgs = new CommandReceivedEventArgs { Arguments = new[] { "add", "foo", newAlias } };
+            var commandReceivedEventArgs = new CommandReceivedEventArgs {Arguments = new[] {"add", "foo", newAlias}};
             var mockRepo = new Mock<IRepository>();
             var addAliasOperation = new AddAliasOperation(mockRepo.Object);
-            var existingWord = new CommandWordEntity { CommandWord = Guid.NewGuid().ToString() };
+            var existingWord = new CommandWordEntity {CommandWord = Guid.NewGuid().ToString()};
             mockRepo.Setup(x => x.Single(It.IsAny<CommandWordPolicy>()))
                 .Returns(existingWord); // call for type to alias
             mockRepo.Setup(x => x.Single(It.IsAny<CommandWordPolicy>()))

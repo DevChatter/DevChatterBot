@@ -14,6 +14,7 @@ namespace DevChatter.Bot.Core.Extensions
                 {
                     throw new RetryException(exception);
                 }
+
                 return await task;
             }
             catch (Exception ex) when (!(ex is RetryException)) // allow RetryExceptions to go unhandled

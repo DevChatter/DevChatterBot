@@ -1,4 +1,5 @@
 using DevChatter.Bot.Core.Automation;
+using DevChatter.Bot.Core.Games;
 using DevChatter.Bot.Core.Games.Heist;
 using FluentAssertions;
 using Moq;

@@ -57,7 +57,7 @@ namespace DevChatter.Bot.Core.Events
             _chatUserCollection.UpdateEachChatter(x => x.Tokens += 1);
         }
 
-        public void AddCurrencyTo(List<string> listOfNames, int tokensToAdd)
+        public void AddCurrencyTo(IEnumerable<string> listOfNames, int tokensToAdd)
         {
             _chatUserCollection.UpdateSpecificChatters(CappedTokenAdding, ChatUserPolicy.ByDisplayName(listOfNames));
 
@@ -71,8 +71,8 @@ namespace DevChatter.Bot.Core.Events
         }
 
         public void AddCurrencyTo(string displayName, int tokensToAdd)
-        { 
-            AddCurrencyTo(new List<string> { displayName }, tokensToAdd); 
+        {
+            AddCurrencyTo(new List<string> {displayName}, tokensToAdd);
         }
 
         public bool RemoveCurrencyFrom(string userName, int tokensToRemove)
@@ -82,7 +82,8 @@ namespace DevChatter.Bot.Core.Events
                 return false;
             }
 
-            _chatUserCollection.UpdateSpecificChatters(x => x.Tokens -= tokensToRemove, ChatUserPolicy.ByDisplayName(userName));
+            _chatUserCollection.UpdateSpecificChatters(x => x.Tokens -= tokensToRemove,
+                ChatUserPolicy.ByDisplayName(userName));
             return true;
         }
     }

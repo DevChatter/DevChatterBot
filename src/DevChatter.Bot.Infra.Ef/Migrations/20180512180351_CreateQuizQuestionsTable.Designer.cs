@@ -12,9 +12,10 @@ using System;
 namespace DevChatter.Bot.Infra.Ef.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20180512180351_CreateQuizQuestionsTable")]
+    partial class CreateQuizQuestionsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

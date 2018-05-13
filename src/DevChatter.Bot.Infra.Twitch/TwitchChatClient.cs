@@ -101,7 +101,8 @@ namespace DevChatter.Bot.Infra.Twitch
 
         public IList<ChatUser> GetAllChatters()
         {
-            List<ChatterFormatted> chatters = _twitchApi.Undocumented.GetChattersAsync(_settings.TwitchChannel).TryGetResult(10).Result;
+            List<ChatterFormatted> chatters = _twitchApi.Undocumented.GetChattersAsync(_settings.TwitchChannel)
+                .TryGetResult(10).Result;
             var chatUsers = chatters.Select(x => x.ToChatUser()).ToList();
             return chatUsers;
         }

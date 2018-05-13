@@ -19,7 +19,8 @@ namespace DevChatter.Bot.Core.Commands.Operations
             _allCommands = allCommands;
         }
 
-        public override List<string> OperandWords { get; } = new List<string> { "del", "rem", "remove", "delete" };
+        public override List<string> OperandWords { get; } = new List<string> {"del", "rem", "remove", "delete"};
+
         public override string HelpText { get; } =
             "Use \"!commands del commandWord\" to delete a command.";
 
@@ -46,6 +47,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
                 {
                     _allCommands.Remove(botCommand);
                 }
+
                 _repository.Remove(command);
                 return $"Removing the !{commandWord} command.";
             }
