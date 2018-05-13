@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NodaTime;
+using QuizQuestion = DevChatter.Bot.Core.Data.Model.QuizQuestion;
 
 namespace DevChatter.Bot.Startup
 {
@@ -39,6 +39,7 @@ namespace DevChatter.Bot.Startup
             {
                 repository.Create(GetDevChatterSchedule());
             }
+
             if (!repository.List<IntervalMessage>().Any())
             {
                 repository.Create(GetIntervalMessages());
@@ -59,6 +60,11 @@ namespace DevChatter.Bot.Startup
                 repository.Create(GetInitialHangmanWords());
             }
 
+            if (!repository.List<QuizQuestion>().Any())
+            {
+                repository.Create(GetInitialQuizQuestions());
+            }
+
             var missingCommandWords = GetMissingCommandWords(repository);
             if (missingCommandWords.Any())
             {
@@ -66,14 +72,41 @@ namespace DevChatter.Bot.Startup
             }
         }
 
+        private static List<QuizQuestion> GetInitialQuizQuestions()
+        {
+            return new List<QuizQuestion>
+            {
+                new QuizQuestion
+                {
+                    MainQuestion = "Who is the best C# Twitch Streamer?",
+                    Hint1 = "We aren't wearing hats...",
+                    Hint2 = "Brendan is modest enough, wouldn't you say?",
+                    CorrectAnswer = "DevChatter",
+                    WrongAnswer1 = "CSharpFritz",
+                    WrongAnswer2 = "Certainly not any of these other choices Kappa ",
+                    WrongAnswer3 = "robbiew_yt",
+                },
+                new QuizQuestion
+                {
+                    MainQuestion = "Which of these is NOT valid in C#?",
+                    Hint1 = "Tuples are OK by me.",
+                    Hint2 = "Should I give three hints?",
+                    CorrectAnswer = "int c, int d = 3;",
+                    WrongAnswer1 = "int x = 4;",
+                    WrongAnswer2 = "(int x, int y) = (1,2);",
+                    WrongAnswer3 = "int a = 5, b = 6;",
+                },
+            };
+        }
+
         private static List<ScheduleEntity> GetDevChatterSchedule()
         {
             return new List<ScheduleEntity>
             {
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 7, 18, 0, 0, TimeSpan.Zero) },
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 8, 18, 0, 0, TimeSpan.Zero) },
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 10, 16, 0, 0, TimeSpan.Zero) },
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 5, 12, 17, 0, 0, TimeSpan.Zero) }
+                new ScheduleEntity {ExampleDateTime = new DateTimeOffset(2018, 5, 7, 18, 0, 0, TimeSpan.Zero)},
+                new ScheduleEntity {ExampleDateTime = new DateTimeOffset(2018, 5, 8, 18, 0, 0, TimeSpan.Zero)},
+                new ScheduleEntity {ExampleDateTime = new DateTimeOffset(2018, 5, 10, 16, 0, 0, TimeSpan.Zero)},
+                new ScheduleEntity {ExampleDateTime = new DateTimeOffset(2018, 5, 12, 17, 0, 0, TimeSpan.Zero)}
             };
         }
 
@@ -83,7 +116,7 @@ namespace DevChatter.Bot.Startup
             {
                 new HangmanWord("apple"),
                 new HangmanWord("banana"),
-                new HangmanWord("orange" ),
+                new HangmanWord("orange"),
                 new HangmanWord("mango"),
                 new HangmanWord("watermellon"),
                 new HangmanWord("grapes"),

@@ -16,8 +16,9 @@ namespace DevChatter.Bot.Core.Commands.Operations
             _repository = repository;
         }
 
-        public override List<string> OperandWords { get; } = new List<string> { "add" };
+        public override List<string> OperandWords { get; } = new List<string> {"add"};
         public override string HelpText { get; } = "";
+
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
             var chatUser = eventArgs.ChatUser;
@@ -32,7 +33,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
                 StreamerEntity entity = _repository.Single(StreamerEntityPolicy.ByChannel(channelName));
                 if (entity == null)
                 {
-                    _repository.Create(new StreamerEntity { ChannelName = channelName });
+                    _repository.Create(new StreamerEntity {ChannelName = channelName});
                     return $"Added {channelName} to our list of streams! Thanks, {chatUser.DisplayName} !";
                 }
 

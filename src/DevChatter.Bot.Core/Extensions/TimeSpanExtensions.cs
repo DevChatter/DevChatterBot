@@ -13,7 +13,7 @@ namespace DevChatter.Bot.Core.Extensions
         /// <param name="timeSpan"></param>
         public static string ToExpandingString(this TimeSpan timeSpan)
         {
-            if(timeSpan.Days > 0)
+            if (timeSpan.Days > 0)
             {
                 return timeSpan.ToString("d\\.hh\\:mm\\:ss");
             }

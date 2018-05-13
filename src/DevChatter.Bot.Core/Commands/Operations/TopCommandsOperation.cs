@@ -18,8 +18,9 @@ namespace DevChatter.Bot.Core.Commands.Operations
 
         public const string NO_DATA_MESSAGE = "There's no analytics data yet";
 
-        public override List<string> OperandWords { get; } = new List<string> { "top" };
+        public override List<string> OperandWords { get; } = new List<string> {"top"};
         public override string HelpText { get; } = $"Call \"!command top\" to see the most used commands.";
+
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
             List<string> commandUseCountStrings = _repository.List<CommandUsageEntity>()

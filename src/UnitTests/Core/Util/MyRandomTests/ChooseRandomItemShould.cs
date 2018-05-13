@@ -19,7 +19,7 @@ namespace UnitTests.Core.Util.MyRandomTests
         [Fact]
         public void ReturnOnlyOption_GivenOneItem()
         {
-            var (_, role) = MyRandom.ChooseRandomItem(new List<HeistRoles>{ HeistRoles.Hacker });
+            var (_, role) = MyRandom.ChooseRandomItem(new List<HeistRoles> {HeistRoles.Hacker});
 
             role.Should().Be(HeistRoles.Hacker);
         }
@@ -48,6 +48,5 @@ namespace UnitTests.Core.Util.MyRandomTests
         //    Assert.Equal(notRandomChoice1, chosen1);
         //    Assert.Equal(notRandomChoice2, chosen2);
         //}
-
     }
 }

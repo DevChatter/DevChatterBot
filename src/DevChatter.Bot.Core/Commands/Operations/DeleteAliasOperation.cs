@@ -16,7 +16,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
             _repository = repository;
         }
 
-        public override List<string> OperandWords { get; } = new List<string>{"del", "rem", "remove"};
+        public override List<string> OperandWords { get; } = new List<string> {"del", "rem", "remove"};
         public override string HelpText { get; } = "Use \"!alias del commandToDelete\" to delete an existing alias.";
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)

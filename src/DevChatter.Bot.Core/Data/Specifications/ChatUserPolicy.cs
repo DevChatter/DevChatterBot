@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using DevChatter.Bot.Core.Data.Model;
 
@@ -15,7 +16,8 @@ namespace DevChatter.Bot.Core.Data.Specifications
         {
             return new ChatUserPolicy(x => x.DisplayName == displayName);
         }
-        public static ChatUserPolicy ByDisplayName(List<string> listOfNames)
+
+        public static ChatUserPolicy ByDisplayName(IEnumerable<string> listOfNames)
         {
             return new ChatUserPolicy(x => listOfNames.Contains(x.DisplayName));
         }

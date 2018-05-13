@@ -52,7 +52,6 @@ namespace DevChatter.Bot.Core.Games.Hangman
             {
                 HandleGamePlayingRequests(argumentOne, chatUser, chatClient);
             }
-
         }
 
         public void HandleGamePlayingRequests(string argumentOne, ChatUser chatUser, IChatClient chatClient)

@@ -9,6 +9,7 @@ namespace DevChatter.Bot.Infra.Twitch
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<TwitchFollowerService>().AsImplementedInterfaces().SingleInstance();
+
             builder.Register(ctx => {
                 var api = new TwitchAPI();
                 var settings = ctx.Resolve<TwitchClientSettings>();
@@ -17,6 +18,7 @@ namespace DevChatter.Bot.Infra.Twitch
                 return api;
             })
                    .AsImplementedInterfaces();
+
             builder.RegisterType<TwitchChatClient>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<TwitchStreamingInfoService>().AsImplementedInterfaces().SingleInstance();
