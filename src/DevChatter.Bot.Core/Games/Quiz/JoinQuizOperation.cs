@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Data;
@@ -11,7 +12,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         public JoinQuizOperation(QuizGame game)
         {
-            _game = game;
+            _game = game ?? throw new ArgumentNullException(nameof(game));
         }
 
         public override List<string> OperandWords { get; } = new List<string> {"join", "enter"};

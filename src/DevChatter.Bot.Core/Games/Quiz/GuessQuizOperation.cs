@@ -1,3 +1,4 @@
+using System;
 using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Events.Args;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         public GuessQuizOperation(QuizGame game)
         {
-            _game = game;
+            _game = game ?? throw new ArgumentNullException(nameof(game));
         }
 
         public override List<string> OperandWords { get; } = new List<string> { "a", "b", "c", "d" };
