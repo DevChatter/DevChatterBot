@@ -7,10 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TwitchLib;
-using TwitchLib.Events.Client;
-using TwitchLib.Models.API.Undocumented.Chatters;
-using TwitchLib.Models.Client;
+using TwitchLib.Api.Interfaces;
+using TwitchLib.Api.Models.Undocumented.Chatters;
+using TwitchLib.Client;
+using TwitchLib.Client.Events;
+using TwitchLib.Client.Interfaces;
+using TwitchLib.Client.Models;
 
 namespace DevChatter.Bot.Infra.Twitch
 {
@@ -27,8 +29,9 @@ namespace DevChatter.Bot.Infra.Twitch
         {
             _settings = settings;
             _twitchApi = twitchApi;
-            var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchOAuth);
-            _twitchClient = new TwitchClient(credentials, settings.TwitchChannel);
+            var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchBotOAuth);
+            _twitchClient = new TwitchClient();
+            _twitchClient.Initialize(credentials, channel:settings.TwitchChannel);
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
             _twitchClient.OnNewSubscriber += NewSubscriber;
             _twitchClient.OnUserJoined += TwitchClientOnOnUserJoined;
@@ -71,7 +74,7 @@ namespace DevChatter.Bot.Infra.Twitch
             _isReady = true;
             _connectionCompletionTask.SetResult(true);
             _disconnectionCompletionTask = new TaskCompletionSource<bool>();
-            _twitchClient.SendMessage("Hello World! The bot has arrived!");
+            SendMessage("Hello World! The bot has arrived!");
         }
 
         public async Task Disconnect()
@@ -95,7 +98,7 @@ namespace DevChatter.Bot.Infra.Twitch
         {
             if (_isReady)
             {
-                _twitchClient.SendMessage(message);
+                _twitchClient.SendMessage(_settings.TwitchChannel, message);
             }
         }
 

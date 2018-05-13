@@ -1,11 +1,10 @@
+using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Events.Args;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.Events.Args;
-using TwitchLib.Events.Client;
-using TwitchLib.Events.Services.FollowerService;
-using TwitchLib.Models.Client;
+using TwitchLib.Api.Services.Events.FollowerService;
+using TwitchLib.Client.Events;
+using TwitchLib.Client.Models;
 
 namespace DevChatter.Bot.Infra.Twitch.Extensions
 {
