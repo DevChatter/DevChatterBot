@@ -7,6 +7,7 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Events
 {
@@ -15,13 +16,15 @@ namespace DevChatter.Bot.Core.Events
         private readonly IRepository _repository;
         private readonly ICommandUsageTracker _usageTracker;
         private readonly IList<IBotCommand> _commandMessages;
+        private readonly ILoggerAdapter<CommandHandler> _logger;
 
         public CommandHandler(IRepository repository, ICommandUsageTracker usageTracker,
-            IEnumerable<IChatClient> chatClients, CommandList commandMessages)
+            IEnumerable<IChatClient> chatClients, CommandList commandMessages, ILoggerAdapter<CommandHandler> logger)
         {
             _repository = repository;
             _usageTracker = usageTracker;
             _commandMessages = commandMessages;
+            _logger = logger;
 
             foreach (var chatClient in chatClients)
             {
@@ -35,21 +38,6 @@ namespace DevChatter.Bot.Core.Events
             {
                 return;
             }
-
-            string userDisplayName = e.ChatUser.DisplayName;
-
-
-            //List<CommandUsage> globalCooldownUsages = _usageTracker.GetUsagesByUserSubjectToGlobalCooldown(userDisplayName, DateTimeOffset.UtcNow);
-            //if (globalCooldownUsages != null && globalCooldownUsages.Any() && !e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
-            //{
-            //    if (!globalCooldownUsages.Any(x => x.WasUserWarned))
-            //    {
-            //        chatClient.SendMessage($"Whoa {userDisplayName}! Slow down there cowboy!");
-            //        globalCooldownUsages.ForEach(x => x.WasUserWarned = true);
-            //    }
-
-            //    return;
-            //}
 
             IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
             if (botCommand == null)
@@ -95,6 +83,8 @@ namespace DevChatter.Bot.Core.Events
         {
             try
             {
+                _logger.LogInformation($"{e.ChatUser.DisplayName} is running the {botCommand.GetType().Name} Command.");
+
                 if (e.ChatUser.CanRunCommand(botCommand))
                 {
                     return botCommand.Process(chatClient1, e);
@@ -105,7 +95,7 @@ namespace DevChatter.Bot.Core.Events
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
+                _logger.LogError(exception, "Failed to run a command.");
             }
 
             return null;
