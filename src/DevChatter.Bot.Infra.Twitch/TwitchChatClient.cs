@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.Util;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Undocumented.Chatters;
 using TwitchLib.Client;
@@ -20,15 +21,17 @@ namespace DevChatter.Bot.Infra.Twitch
     {
         private readonly TwitchClientSettings _settings;
         private readonly ITwitchAPI _twitchApi;
+        private readonly ILoggerAdapter<TwitchChatClient> _logger;
         private readonly ITwitchClient _twitchClient;
         private TaskCompletionSource<bool> _connectionCompletionTask = new TaskCompletionSource<bool>();
         private TaskCompletionSource<bool> _disconnectionCompletionTask = new TaskCompletionSource<bool>();
         private bool _isReady = false;
 
-        public TwitchChatClient(TwitchClientSettings settings, ITwitchAPI twitchApi)
+        public TwitchChatClient(TwitchClientSettings settings, ITwitchAPI twitchApi, ILoggerAdapter<TwitchChatClient> logger)
         {
             _settings = settings;
             _twitchApi = twitchApi;
+            _logger = logger;
             var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchBotOAuth);
             _twitchClient = new TwitchClient();
             _twitchClient.Initialize(credentials, channel:settings.TwitchChannel);
@@ -69,6 +72,7 @@ namespace DevChatter.Bot.Infra.Twitch
 
         private void TwitchClientConnected(object sender, OnConnectedArgs onConnectedArgs)
         {
+            _logger.LogInformation("Twitch Client Connected");
             _twitchClient.OnConnected -= TwitchClientConnected;
 
             _isReady = true;
@@ -87,6 +91,7 @@ namespace DevChatter.Bot.Infra.Twitch
 
         private void TwitchClientOnOnDisconnected(object sender, OnDisconnectedArgs onDisconnectedArgs)
         {
+            _logger.LogInformation("Twitch Client Disconnected");
             _twitchClient.OnDisconnected -= TwitchClientOnOnDisconnected;
             _isReady = false;
 
@@ -104,9 +109,11 @@ namespace DevChatter.Bot.Infra.Twitch
 
         public IList<ChatUser> GetAllChatters()
         {
+            _logger.LogInformation("Getting All Twitch Chatters");
             List<ChatterFormatted> chatters = _twitchApi.Undocumented.GetChattersAsync(_settings.TwitchChannel)
                 .TryGetResult(10).Result;
             var chatUsers = chatters.Select(x => x.ToChatUser()).ToList();
+            _logger.LogInformation("Returning All Twitch Chatters");
             return chatUsers;
         }
 
