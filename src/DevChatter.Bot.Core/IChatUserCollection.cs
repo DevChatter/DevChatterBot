@@ -7,12 +7,12 @@ namespace DevChatter.Bot.Core
     public interface IChatUserCollection
     {
         ChatUser GetOrCreateChatUser(string displayName, ChatUser chatUser = null);
-        bool NeedToWatchUser(string displayName);
+        bool NeedToWatchUser(string displayName, ChatUser chatUser);
         void StopWatching(string displayName);
         bool TryGiveCoins(string coinGiver, string coinReceiver, int coinsToGive);
         void UpdateEachChatter(Action<ChatUser> updateToApply);
         void UpdateSpecificChatters(Action<ChatUser> updateToApply, ISpecification<ChatUser> filter);
         bool UserHasAtLeast(string username, int tokensToRemove);
-        void WatchUser(string displayName);
+        void WatchUser(string displayName, ChatUser chatUser);
     }
 }

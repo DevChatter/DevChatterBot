@@ -5,37 +5,55 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Extensions;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core
 {
     public class ChatUserCollection : IChatUserCollection
     {
         private readonly IRepository _repository;
+        private readonly IKnownBotService _knownBotService;
         private readonly object _userCreationLock = new object();
 
         private readonly object _activeChatUsersLock = new object();
         private readonly List<string> _activeChatUsers = new List<string>();
 
-        public ChatUserCollection(IRepository repository)
+        public ChatUserCollection(IRepository repository, IKnownBotService knownBotService)
         {
             _repository = repository;
+            _knownBotService = knownBotService;
         }
 
-        public bool NeedToWatchUser(string displayName)
+        public bool NeedToWatchUser(string displayName, ChatUser chatUser)
         {
+            ChatUser chatUserFromDb = GetOrCreateChatUser(displayName, chatUser);
+
+            if (chatUserFromDb.IsKnownBot == null)
+            {
+                lock (_activeChatUsersLock)
+                {
+                    bool isKnownBot = _knownBotService.IsKnownBot(chatUserFromDb.DisplayName).GetAwaiter().GetResult();
+                    chatUserFromDb.IsKnownBot = isKnownBot;
+                    _repository.Update(chatUserFromDb);
+                }
+            }
+
+            if (chatUserFromDb.IsKnownBot.Value)
+                return false;
+
             // Don't lock in here
             // ReSharper disable once InconsistentlySynchronizedField
             return _activeChatUsers.All(activeDisplayName => activeDisplayName != displayName);
         }
 
 
-        public void WatchUser(string displayName)
+        public void WatchUser(string displayName, ChatUser chatUser)
         {
-            if (NeedToWatchUser(displayName))
+            if (NeedToWatchUser(displayName, chatUser))
             {
                 lock (_activeChatUsersLock)
                 {
-                    if (NeedToWatchUser(displayName))
+                    if (NeedToWatchUser(displayName, chatUser))
                     {
                         _activeChatUsers.Add(displayName);
                     }
@@ -74,7 +92,7 @@ namespace DevChatter.Bot.Core
         public bool UserHasAtLeast(string username, int tokensToRemove)
         {
             ChatUser chatUser = GetOrCreateChatUser(username);
-            WatchUser(chatUser.DisplayName);
+            WatchUser(chatUser.DisplayName, chatUser);
 
             return chatUser.Tokens >= tokensToRemove;
         }

@@ -12,9 +12,10 @@ using System;
 namespace DevChatter.Bot.Infra.Ef.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20180513054353_Add-IsKnownBotColumn")]
+    partial class AddIsKnownBotColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,30 +124,6 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("IntervalMessages");
-                });
-
-            modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.QuizQuestion", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CorrectAnswer");
-
-                    b.Property<string>("Hint1");
-
-                    b.Property<string>("Hint2");
-
-                    b.Property<string>("MainQuestion");
-
-                    b.Property<string>("WrongAnswer1");
-
-                    b.Property<string>("WrongAnswer2");
-
-                    b.Property<string>("WrongAnswer3");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("QuizQuestions");
                 });
 
             modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.QuoteEntity", b =>

@@ -8,6 +8,7 @@ namespace DevChatter.Bot.Core.Data.Model
         public string DisplayName { get; set; }
         public UserRole? Role { get; set; }
         public int Tokens { get; set; }
+        public bool? IsKnownBot { get; set; }
 
         public bool CanRunCommand(IBotCommand botCommand)
         {

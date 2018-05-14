@@ -37,13 +37,12 @@ namespace DevChatter.Bot.Core.Events
 
         private void WatchUserIfNeeded(string displayName, ChatUser chatUser)
         {
-            if (_chatUserCollection.NeedToWatchUser(displayName))
+            if (_chatUserCollection.NeedToWatchUser(displayName, chatUser))
             {
                 ChatUser userFromDb = _chatUserCollection.GetOrCreateChatUser(displayName, chatUser);
-                _chatUserCollection.WatchUser(userFromDb.DisplayName);
+                _chatUserCollection.WatchUser(userFromDb.DisplayName, userFromDb);
             }
         }
-
 
         private void ChatClientOnUserLeft(object sender, UserStatusEventArgs eventArgs)
         {
