@@ -24,9 +24,9 @@ namespace DevChatter.Bot.Core
             _knownBotService = knownBotService;
         }
 
-        public bool NeedToWatchUser(string displayName, ChatUser chatUser)
+        public bool NeedToWatchUser(string displayName)
         {
-            ChatUser chatUserFromDb = GetOrCreateChatUser(displayName, chatUser);
+            ChatUser chatUserFromDb = GetOrCreateChatUser(displayName);
 
             if (chatUserFromDb.IsKnownBot == null)
             {
@@ -47,13 +47,13 @@ namespace DevChatter.Bot.Core
         }
 
 
-        public void WatchUser(string displayName, ChatUser chatUser)
+        public void WatchUser(string displayName)
         {
-            if (NeedToWatchUser(displayName, chatUser))
+            if (NeedToWatchUser(displayName))
             {
                 lock (_activeChatUsersLock)
                 {
-                    if (NeedToWatchUser(displayName, chatUser))
+                    if (NeedToWatchUser(displayName))
                     {
                         _activeChatUsers.Add(displayName);
                     }
@@ -92,7 +92,7 @@ namespace DevChatter.Bot.Core
         public bool UserHasAtLeast(string username, int tokensToRemove)
         {
             ChatUser chatUser = GetOrCreateChatUser(username);
-            WatchUser(chatUser.DisplayName, chatUser);
+            WatchUser(chatUser.DisplayName);
 
             return chatUser.Tokens >= tokensToRemove;
         }
