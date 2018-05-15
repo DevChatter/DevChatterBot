@@ -3,6 +3,7 @@ using System.Linq;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Games.RockPaperScissors
 {
@@ -13,6 +14,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         private const int TOKENS_REQUIRED_TO_PLAY = 30;
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IAutomatedActionSystem _automatedActionSystem;
+        private readonly ILoggerAdapter<RockPaperScissorsGame> _logger;
 
         private readonly IDictionary<string, RockPaperScissors> _competitors =
             new Dictionary<string, RockPaperScissors>();
@@ -23,10 +25,11 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 
         public bool IsRunning { get; private set; }
 
-        public RockPaperScissorsGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem)
+        public RockPaperScissorsGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem, ILoggerAdapter<RockPaperScissorsGame> logger)
         {
             _currencyGenerator = currencyGenerator;
             _automatedActionSystem = automatedActionSystem;
+            _logger = logger;
         }
 
         public void JoinMatch(IChatClient chatClient, (string username, RockPaperScissors choice) userChoice)
@@ -128,6 +131,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 
         private void StartNewGame(IChatClient chatClient, string username)
         {
+            _logger.LogInformation($"{nameof(StartNewGame)}({chatClient.GetType().Name}, {username}) - Starting Game");
             chatClient.SendMessage(
                 $"{username} wants to play Rock-Paper-Scissors! You have {SECONDS_TO_JOIN_GAME} seconds to join! To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.");
 

@@ -24,12 +24,7 @@ namespace DevChatter.Bot.Core.Commands
         public string HelpText { get; protected set; }
         public virtual string FullHelpText => HelpText;
 
-        protected BaseCommand(IRepository repository, UserRole roleRequired)
-            : this(repository, roleRequired, true)
-        {
-        }
-
-        protected BaseCommand(IRepository repository, UserRole roleRequired, bool isEnabled)
+        protected BaseCommand(IRepository repository, UserRole roleRequired, bool isEnabled = true)
         {
             Repository = repository;
             RoleRequired = roleRequired;
