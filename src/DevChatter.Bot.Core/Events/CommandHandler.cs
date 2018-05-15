@@ -83,7 +83,7 @@ namespace DevChatter.Bot.Core.Events
         {
             try
             {
-                _logger.LogInformation($"{e.ChatUser.DisplayName} is running the {botCommand.GetType().Name} Command.");
+                _logger.LogInformation($"{e.ChatUser.DisplayName} is running the {botCommand.GetType().Name} command.");
 
                 if (e.ChatUser.CanRunCommand(botCommand))
                 {

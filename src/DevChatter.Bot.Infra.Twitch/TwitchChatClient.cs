@@ -72,7 +72,7 @@ namespace DevChatter.Bot.Infra.Twitch
 
         private void TwitchClientConnected(object sender, OnConnectedArgs onConnectedArgs)
         {
-            _logger.LogInformation("Twitch Client Connected");
+            _logger.LogInformation($"{nameof(TwitchChatClient)} connected");
             _twitchClient.OnConnected -= TwitchClientConnected;
 
             _isReady = true;
@@ -91,7 +91,7 @@ namespace DevChatter.Bot.Infra.Twitch
 
         private void TwitchClientOnOnDisconnected(object sender, OnDisconnectedArgs onDisconnectedArgs)
         {
-            _logger.LogInformation("Twitch Client Disconnected");
+            _logger.LogInformation($"{nameof(TwitchChatClient)} disconnected");
             _twitchClient.OnDisconnected -= TwitchClientOnOnDisconnected;
             _isReady = false;
 
@@ -109,11 +109,11 @@ namespace DevChatter.Bot.Infra.Twitch
 
         public IList<ChatUser> GetAllChatters()
         {
-            _logger.LogInformation("Getting All Twitch Chatters");
+            _logger.LogInformation("Getting all Twitch chatters");
             List<ChatterFormatted> chatters = _twitchApi.Undocumented.GetChattersAsync(_settings.TwitchChannel)
                 .TryGetResult(10).Result;
             var chatUsers = chatters.Select(x => x.ToChatUser()).ToList();
-            _logger.LogInformation("Returning All Twitch Chatters");
+            _logger.LogInformation("Returning all Twitch chatters");
             return chatUsers;
         }
 

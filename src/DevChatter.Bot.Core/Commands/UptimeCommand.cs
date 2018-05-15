@@ -29,7 +29,7 @@ namespace DevChatter.Bot.Core.Commands
                 TimeSpan? timeSpan = _streamingPlatform.GetUptimeAsync().Result;
                 string message = timeSpan.HasValue
                     ? $"The stream has been going for {timeSpan:hh\\:mm\\:ss}"
-                    : "Something's Wrong. Are we live right now?";
+                    : "Something's wrong. Are we live right now?";
                 chatClient.SendMessage(message);
             }
             catch (Exception e)
