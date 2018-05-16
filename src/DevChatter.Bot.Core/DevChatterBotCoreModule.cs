@@ -11,6 +11,7 @@ using DevChatter.Bot.Core.Games.Quiz;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Core.Util;
+using Microsoft.Extensions.Logging;
 
 namespace DevChatter.Bot.Core
 {
@@ -21,6 +22,9 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<StreamingPlatform>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<SystemClock>().AsImplementedInterfaces().SingleInstance();
+
+            builder.RegisterGeneric(typeof(Logger<>)).As(typeof(ILogger<>));
+            builder.RegisterGeneric(typeof(LoggerAdapter<>)).AsImplementedInterfaces();
 
             builder.RegisterType<ChatUserCollection>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CurrencyGenerator>().AsImplementedInterfaces().SingleInstance();
