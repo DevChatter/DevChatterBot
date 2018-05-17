@@ -1,0 +1,49 @@
+﻿@page
+@model DevChatter.Bot.Web.Pages.Quotes.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>QuoteEntity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteEntity.QuoteId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteEntity.QuoteId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteEntity.Text)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteEntity.Text)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteEntity.Author)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteEntity.Author)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteEntity.AddedBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteEntity.AddedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteEntity.DateAdded)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteEntity.DateAdded)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.QuoteEntity.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
