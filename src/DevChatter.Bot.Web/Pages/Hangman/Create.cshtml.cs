@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using DevChatter.Bot.Core.Data.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Infra.Ef;
+using System.Threading.Tasks;
 
 namespace DevChatter.Bot.Web.Pages.Hangman
 {
