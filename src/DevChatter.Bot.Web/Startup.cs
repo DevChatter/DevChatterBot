@@ -1,3 +1,6 @@
+using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Infra.Ef;
+using DevChatter.Bot.Infra.Twitch;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +12,7 @@ namespace DevChatter.Bot.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
         }
@@ -26,6 +29,10 @@ namespace DevChatter.Bot.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.Configure<CommandHandlerSettings>(Configuration.GetSection("CommandHandlerSettings"));
+            services.Configure<TwitchClientSettings>(Configuration.GetSection("TwitchClientSettings"));
+
+            services.AddDbContext<AppDataContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -46,6 +53,7 @@ namespace DevChatter.Bot.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
 
             app.UseMvc();
         }
