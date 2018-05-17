@@ -1,0 +1,65 @@
+﻿@page
+@model DevChatter.Bot.Web.Pages.QuizQuestions.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>QuizQuestion</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="QuizQuestion.MainQuestion" class="control-label"></label>
+                <input asp-for="QuizQuestion.MainQuestion" class="form-control" />
+                <span asp-validation-for="QuizQuestion.MainQuestion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuizQuestion.Hint1" class="control-label"></label>
+                <input asp-for="QuizQuestion.Hint1" class="form-control" />
+                <span asp-validation-for="QuizQuestion.Hint1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuizQuestion.Hint2" class="control-label"></label>
+                <input asp-for="QuizQuestion.Hint2" class="form-control" />
+                <span asp-validation-for="QuizQuestion.Hint2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuizQuestion.CorrectAnswer" class="control-label"></label>
+                <input asp-for="QuizQuestion.CorrectAnswer" class="form-control" />
+                <span asp-validation-for="QuizQuestion.CorrectAnswer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuizQuestion.WrongAnswer1" class="control-label"></label>
+                <input asp-for="QuizQuestion.WrongAnswer1" class="form-control" />
+                <span asp-validation-for="QuizQuestion.WrongAnswer1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuizQuestion.WrongAnswer2" class="control-label"></label>
+                <input asp-for="QuizQuestion.WrongAnswer2" class="form-control" />
+                <span asp-validation-for="QuizQuestion.WrongAnswer2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuizQuestion.WrongAnswer3" class="control-label"></label>
+                <input asp-for="QuizQuestion.WrongAnswer3" class="form-control" />
+                <span asp-validation-for="QuizQuestion.WrongAnswer3" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="QuizQuestion.Id" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
