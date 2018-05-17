@@ -17,7 +17,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Pages\Hangman\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
@@ -26,6 +25,13 @@
     <ProjectReference Include="..\DevChatter.Bot.Core\DevChatter.Bot.Core.csproj" />
     <ProjectReference Include="..\DevChatter.Bot.Infra.Ef\DevChatter.Bot.Infra.Ef.csproj" />
     <ProjectReference Include="..\DevChatter.Bot.Infra.Twitch\DevChatter.Bot.Infra.Twitch.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 
