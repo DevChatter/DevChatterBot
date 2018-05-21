@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Web.Pages.Hangman
+namespace DevChatter.Bot.Web.Pages.Games.Hangman
 {
     public class EditModel : PageModel
     {

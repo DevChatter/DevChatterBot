@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Web.Pages.Hangman
+namespace DevChatter.Bot.Web.Pages.Games.Hangman
 {
     public class IndexModel : PageModel
     {

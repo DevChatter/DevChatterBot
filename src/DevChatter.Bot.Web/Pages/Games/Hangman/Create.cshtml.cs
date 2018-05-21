@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Web.Pages.Hangman
+namespace DevChatter.Bot.Web.Pages.Games.Hangman
 {
     public class CreateModel : PageModel
     {

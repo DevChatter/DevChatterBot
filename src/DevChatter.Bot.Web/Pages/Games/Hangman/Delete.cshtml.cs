@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Web.Pages.Hangman
+namespace DevChatter.Bot.Web.Pages.Games.Hangman
 {
     public class DeleteModel : PageModel
     {
