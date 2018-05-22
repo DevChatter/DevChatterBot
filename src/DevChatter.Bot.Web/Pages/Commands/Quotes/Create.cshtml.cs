@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Web.Pages.Quotes
+namespace DevChatter.Bot.Web.Pages.Commands.Quotes
 {
     public class CreateModel : PageModel
     {

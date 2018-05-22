@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Web.Pages.Quotes
+namespace DevChatter.Bot.Web.Pages.Commands.Quotes
 {
     public class EditModel : PageModel
     {

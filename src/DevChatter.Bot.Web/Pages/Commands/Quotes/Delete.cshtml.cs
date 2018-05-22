@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Web.Pages.Quotes
+namespace DevChatter.Bot.Web.Pages.Commands.Quotes
 {
     public class DeleteModel : PageModel
     {
