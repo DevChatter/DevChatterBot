@@ -28,7 +28,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
         {
             if (eventArgs?.ChatUser.IsInThisRoleOrHigher(UserRole.Mod) == false)
             {
-                return "You need to be a moderator to add a command.";
+                return "You need to be a moderator to add a command."; // give KuteKetX mod :)
             }
 
             string commandWord = eventArgs?.Arguments?.ElementAtOrDefault(1);
