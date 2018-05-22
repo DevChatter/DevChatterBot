@@ -1,8 +1,7 @@
-using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace DevChatter.Bot.Web.Pages.Schedule
 {
@@ -15,11 +14,11 @@ namespace DevChatter.Bot.Web.Pages.Schedule
             _context = context;
         }
 
-        public IList<ScheduleEntity> ScheduleEntity { get;set; }
+        public IList<ScheduleViewModel> ScheduleEntity { get;set; }
 
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            ScheduleEntity = await _context.ScheduleEntities.ToListAsync();
+            ScheduleEntity = _context.ScheduleEntities.Select(ScheduleViewModel.FromScheduleEntity).ToList();
         }
     }
 }

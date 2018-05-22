@@ -76,10 +76,10 @@
         <div class="panel-body">
             This is the schedule:
             <ul>
-                <li>Mondays at 2 PM EDT</li>
-                <li>Tuesdays at 2 PM EDT</li>
-                <li>Thursdays at 12 PM EDT</li>
-                <li>Saturdays at 1 PM EDT</li>
+                @foreach (var item in Model.ScheduleViewModels)
+                {
+                    <li>@Html.DisplayFor(modelItem => item.ExampleDateTime)</li>
+                }
             </ul>
 
             <p><a asp-page="Schedule/Index">Edit the Schedule</a></p>
