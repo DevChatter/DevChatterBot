@@ -22,15 +22,15 @@ namespace DevChatter.Bot.Core.Games.Mud
             Hide
         }
 
-        public Dictionary<Moves, string> moveDict = new Dictionary<Moves, string>();
-        public Dictionary<Actions, string> actionDict = new Dictionary<Actions, string>();
+        public Dictionary<Moves, string> MoveDict = new Dictionary<Moves, string>();
+        public Dictionary<Actions, string> ActionDict = new Dictionary<Actions, string>();
 
-        public List<string> roomsVisited = new List<string>();
+        public List<string> RoomsVisited = new List<string>();
         public static List<string> Inventory = new List<string>();
         public static List<string> Equipped = new List<string>();
 
         public static bool SoundEnabled = true;
 
-        public static List<State> statesIhaveSeen = new List<State>();
+        public static List<State> StatesSeen = new List<State>();
     }
 }

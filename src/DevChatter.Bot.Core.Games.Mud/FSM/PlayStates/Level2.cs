@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
 {
@@ -15,9 +14,9 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
         {
             //Console.WriteLine("You came from the south direction, through the Window of all things");
             Console.Write("Available actions are");
-            foreach (var act in availableActions)
+            foreach (var act in AvailableActions)
             {
-                Console.Write(", " + act.ToString());
+                Console.Write(", " + act);
             }
             Console.WriteLine();
 
@@ -40,7 +39,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
             switch (read)
             {
                 case "south":
-                    State state = CharacterInfo.statesIhaveSeen[CharacterInfo.statesIhaveSeen.Count - 1];
+                    State state = CharacterInfo.StatesSeen[CharacterInfo.StatesSeen.Count - 1];
                     StateMachine.PlayInstance.RemoveState();
                     StateMachine.PlayInstance.AddState(state);
                     break;

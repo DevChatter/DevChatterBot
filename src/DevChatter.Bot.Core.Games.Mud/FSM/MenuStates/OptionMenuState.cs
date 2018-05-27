@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
         {
             bool run = true;
 
-            Menu m = new Menu(new string[] { "Sound", "Controls", "Back" });
+            Menu m = new Menu(new[] { "Sound", "Controls", "Back" });
             var k = m.PrintMenuInt();
             switch (k)
             {
