@@ -1,18 +1,17 @@
-using DevChatter.Bot.Core.Games.Mud.FSM.PlayStates;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace DevChatter.Bot.Core.Games.Mud.FSM
+namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
 {
     class GameStartState : State
     {
-
-        Dictionary<string, string> itemsHere;
+        private readonly Dictionary<string, string> _itemsHere;
         public GameStartState(string name) : base(name)
         {
-            itemsHere = new Dictionary<string, string>();
-            itemsHere.Add("lamp", "a Lamp sits on the table, ");
+            _itemsHere = new Dictionary<string, string>
+            {
+                ["lamp"] = "a Lamp sits on the table, ",
+            };
         }
 
         public override void Enter()
@@ -30,23 +29,18 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM
 
         public override bool Run()
         {
-            string read = Console.ReadLine().ToLower();
+            string read = Console.ReadLine()?.ToLower();
 
             CharacterInfo action = new CharacterInfo();
             if (read.Contains("take"))
             {
-                int? index = read.IndexOf("lamp");
-                if (index != null)
-                {
-                    int i = (int)index;
-                    string thing = read.Substring(i, 4);
-                    Console.WriteLine($"You reach out and try to take the {thing}.");
-                    Console.WriteLine($"Your fingers gently lift the {thing} and you are now the proud owner of it.\nGood job you!");
-                    CharacterInfo.Inventory.Add(thing);
-                    itemsHere.Remove(thing);
-
-                }
-
+                int index = read.IndexOf("lamp");
+                int i = (int)index;
+                string thing = read.Substring(i, 4);
+                Console.WriteLine($"You reach out and try to take the {thing}.");
+                Console.WriteLine($"Your fingers gently lift the {thing} and you are now the proud owner of it.\nGood job you!");
+                CharacterInfo.Inventory.Add(thing);
+                _itemsHere.Remove(thing);
             }
             else if (read.Contains("use") && CharacterInfo.Inventory.Count >= 1)
             {
@@ -76,9 +70,9 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM
                 switch (read)
                 {
                     case "look":
-                        if (itemsHere.Count >= 1)
+                        if (_itemsHere.Count >= 1)
                         {
-                            Console.WriteLine($"You see {itemsHere["lamp"]} an open window to the north, a closed door to the west.");
+                            Console.WriteLine($"You see {_itemsHere["lamp"]} an open window to the north, a closed door to the west.");
                             break;
                         }
                         Console.WriteLine($"You see an open window to the north, a closed door to the west.");
