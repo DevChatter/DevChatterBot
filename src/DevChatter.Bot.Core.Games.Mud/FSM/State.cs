@@ -2,9 +2,9 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM
 {
     public abstract class State
     {
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public State(string name)
+        protected State(string name)
         {
             Name = name;
         }

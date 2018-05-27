@@ -40,8 +40,8 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
             switch (read)
             {
                 case "south":
-                    CharacterInfo.statesIhaveSeen.Add(this);
-                    StateMachine.PlayInstance.AddState(CharacterInfo.statesIhaveSeen[CharacterInfo.statesIhaveSeen.Count - 2]); // go to previous room again
+                    CharacterInfo.StatesSeen.Add(this);
+                    StateMachine.PlayInstance.AddState(CharacterInfo.StatesSeen[CharacterInfo.StatesSeen.Count - 2]); // go to previous room again
                     break;
                 case "west":
                     State state = new Level2("second room",

@@ -1,72 +1,35 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DevChatter.Bot.Core.Games.Mud.FSM
 {
-        public class StateMachine
+    public class StateMachine
         {
-            Stack<State> states = new Stack<State>();
+            private readonly Stack<State> _states = new Stack<State>();
 
+            private static StateMachine _menuInstance;
+            public static StateMachine MenuInstance => _menuInstance ?? (_menuInstance = new StateMachine());
 
-            /// <summary>
-            /// DIS IS SINGLETON
-            /// </summary>
-            static StateMachine menuInstance;
-            static StateMachine playInstance;
-            static StateMachine actionInstance;
+            private static StateMachine _playInstance;
+            public static StateMachine PlayInstance => _playInstance ?? (_playInstance = new StateMachine());
 
-            public static StateMachine MenuInstance
-            {
-                get
-                {
-                    if (menuInstance == null)
-                    {
-                        menuInstance = new StateMachine();
-                    }
-                    return menuInstance;
-                }
-            }
-
-            public static StateMachine PlayInstance
-            {
-                get
-                {
-                    if (playInstance == null)
-                    {
-                        playInstance = new StateMachine();
-                    }
-                    return playInstance;
-                }
-            }
-
-            public static StateMachine ActionInstance
-            {
-                get
-                {
-                    if (actionInstance == null)
-                    {
-                        actionInstance = new StateMachine();
-                    }
-                    return actionInstance;
-                }
-            }
+            private static StateMachine _actionInstance;
+            public static StateMachine ActionInstance => _actionInstance ?? (_actionInstance = new StateMachine());
 
             public void AddState(State state)
             {
                 state.Exit();
-                states.Push(state);
+                _states.Push(state);
                 state.Enter();
             }
 
             public void RemoveState()
             {
-                State state = states.Peek();
+                State state = _states.Peek();
                 state.Exit();
 
 
-                states.Pop();
-                State nState = states.Peek();
+                _states.Pop();
+                State nState = _states.Peek();
                 nState.Enter();
 
             }
@@ -74,7 +37,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM
             public bool Update()
             {
 
-                State state = states.Peek();
+                State state = _states.Peek();
                 return state.Run();
             }
 

@@ -40,7 +40,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
             switch (read)
             {
                 case "south":
-                    State state = CharacterInfo.statesIhaveSeen[CharacterInfo.statesIhaveSeen.Count - 1];
+                    State state = CharacterInfo.StatesSeen[CharacterInfo.StatesSeen.Count - 1];
                     StateMachine.PlayInstance.RemoveState();
                     StateMachine.PlayInstance.AddState(state);
                     break;
