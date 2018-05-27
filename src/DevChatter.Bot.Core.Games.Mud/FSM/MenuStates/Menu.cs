@@ -1,18 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
 {
     public class Menu
     {
-        private string[] MenuItems;
-        private bool Indented = false;
+        private readonly string[] _menuItems;
+        private bool _indented = false;
 
         public Menu(string[] menuItems, bool indented = false)
         {
-            MenuItems = menuItems;
-            Indented = indented;
+            _menuItems = menuItems;
+            _indented = indented;
         }
 
 
@@ -22,12 +20,13 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
             int topOffset = Console.CursorTop;
             int bottomOffset = 0;
             int selectedItem = 0;
-            ConsoleKeyInfo kb;
 
             Console.CursorVisible = false;
 
             if (indent)
-                Indented = true;
+            {
+                _indented = true;
+            }
 
 
             //this will complain if the window is not big enough
@@ -44,31 +43,14 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
                 for (int i = 0; i < inArray.Length; i++)
                 {
                     if (i == selectedItem)
-                    {//This section is what highlights the selected item
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        if (Indented)
-                        {
-                            Console.WriteLine("   " + inArray[i]);
-                        }
-                        else
-                        {
-
-                            Console.WriteLine(" " + inArray[i]);
-                        }
-                        Console.ResetColor();
+                    {
+                        //This section is what highlights the selected item
+                        PrintSelectedItems(inArray, i);
                     }
                     else
-                    {//this section is what prints unselected items
-                        if (Indented)
-                        {
-                            Console.WriteLine("   " + inArray[i]);
-                        }
-                        else
-                        {
-                            Console.WriteLine(" " + inArray[i]);
-
-                        }
+                    {
+                        //this section is what prints unselected items
+                        PrintItems(inArray, i);
                     }
                 }
 
@@ -78,7 +60,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
 				 * User input phase
 				 * */
 
-                kb = Console.ReadKey(true); //read the keyboard
+                var kb = Console.ReadKey(true);
 
                 switch (kb.Key)
                 { //react to input
@@ -118,21 +100,37 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
             return selectedItem;
         }
 
+        private void PrintItems(string[] inArray, int i)
+        {
+            if (_indented)
+            {
+                Console.WriteLine("   " + inArray[i]);
+            }
+            else
+            {
+                Console.WriteLine(" " + inArray[i]);
+            }
+        }
+
+        private void PrintSelectedItems(string[] inArray, int i)
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            PrintItems(inArray, i);
+
+            Console.ResetColor();
+        }
+
         public static bool YesNo()
         {
-            var yesNo = new Menu(new string[] { "Yes", "No" }, true);
-            if (yesNo.PrintMenuInt() == 0) //yes returns 0, no returns 1
-                return true;
-            else
-                return false;
+            var yesNo = new Menu(new[] { "Yes", "No" }, true);
+            return yesNo.PrintMenuInt() == 0;
         }
 
         public int PrintMenuInt()
         {
-            return DrawMenu(MenuItems);
+            return DrawMenu(_menuItems);
         }
-
-
-
     }
 }
