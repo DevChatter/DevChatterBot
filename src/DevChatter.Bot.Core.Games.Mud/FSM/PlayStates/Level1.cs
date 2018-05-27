@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
         {
             //Console.WriteLine("You came from the south direction, through the Window of all things");
             Console.Write("Available actions are");
-            foreach (var act in availableActions)
+            foreach (var act in AvailableActions)
             {
                 Console.Write(", " + act.ToString());
             }
