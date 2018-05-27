@@ -81,8 +81,8 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
                     case "north":
                         CharacterInfo.StatesSeen.Add(this);
                         StateMachine.PlayInstance.AddState(new Level1("First room",
-                                                           new List<CharacterInfo.Actions>() { CharacterInfo.Actions.Look, CharacterInfo.Actions.Take },
-                                                           new List<CharacterInfo.Moves>() { CharacterInfo.Moves.North, CharacterInfo.Moves.South, CharacterInfo.Moves.West },
+                                                           new List<Actions>() { Actions.Look, Actions.Take },
+                                                           new List<Moves>() { Moves.North, Moves.South, Moves.West },
                                                            new List<string>() { "a Window", "Some pebbles", "a sword" }));
                         break;
                     case "west":

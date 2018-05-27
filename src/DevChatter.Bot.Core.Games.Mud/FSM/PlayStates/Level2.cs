@@ -5,7 +5,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
 {
     class Level2 : RoomState
     {
-        public Level2(string name, List<CharacterInfo.Actions> actionList, List<CharacterInfo.Moves> moveList, List<string> things) :
+        public Level2(string name, List<Actions> actionList, List<Moves> moveList, List<string> things) :
             base(name, actionList, moveList, things)
         {
         }
