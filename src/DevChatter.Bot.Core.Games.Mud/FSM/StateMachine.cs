@@ -37,6 +37,5 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM
             State state = _states.Peek();
             return state.Run();
         }
-
     }
 }

@@ -18,20 +18,18 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
             {
                 Console.Write(", " + act);
             }
-            Console.WriteLine();
 
+            Console.WriteLine();
         }
 
         public override void Exit()
         {
             Console.Clear();
             Console.WriteLine("You go up to the window and climb out");
-
         }
 
         public override bool Run()
         {
-
             bool run = true;
             string read = Console.ReadLine().ToLower();
 
@@ -40,13 +38,14 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
             {
                 case "south":
                     CharacterInfo.StatesSeen.Add(this);
-                    StateMachine.PlayInstance.AddState(CharacterInfo.StatesSeen[CharacterInfo.StatesSeen.Count - 2]); // go to previous room again
+                    StateMachine.PlayInstance.AddState(
+                        CharacterInfo.StatesSeen[CharacterInfo.StatesSeen.Count - 2]); // go to previous room again
                     break;
                 case "west":
                     State state = new Level2("second room",
-                                                        new List<Actions>() { Actions.Take, Actions.Look, Actions.Hide },
-                                                        new List<Moves>() { Moves.North, Moves.South, Moves.East, Moves.West },
-                                                        new List<string>() { "Fork", "Shovel", "Map" });
+                        new List<Actions>() {Actions.Take, Actions.Look, Actions.Hide},
+                        new List<Moves>() {Moves.North, Moves.South, Moves.East, Moves.West},
+                        new List<string>() {"Fork", "Shovel", "Map"});
                     StateMachine.PlayInstance.AddState(state);
                     //StateMachine.MenuInstance.AddState(new ControlOptionState("Controls"));
                     break;
@@ -58,6 +57,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
                 default:
                     break;
             }
+
             return run;
         }
     }

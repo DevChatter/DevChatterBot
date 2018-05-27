@@ -14,6 +14,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
             {
                 return true;
             }
+
             return true;
         }
 
@@ -21,10 +22,9 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
         {
             StateMachine.PlayInstance.AddState(new GameStartState("New Game"));
         }
+
         public override void Exit()
         {
-
         }
-
     }
 }

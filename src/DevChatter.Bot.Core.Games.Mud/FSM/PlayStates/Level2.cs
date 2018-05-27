@@ -18,20 +18,18 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
             {
                 Console.Write(", " + act);
             }
-            Console.WriteLine();
 
+            Console.WriteLine();
         }
 
         public override void Exit()
         {
             Console.Clear();
             Console.WriteLine("You go up to the window and climb out");
-
         }
 
         public override bool Run()
         {
-
             bool run = true;
             string read = Console.ReadLine().ToLower();
 
@@ -49,6 +47,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
                 default:
                     break;
             }
+
             return run;
         }
     }

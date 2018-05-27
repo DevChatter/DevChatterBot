@@ -8,7 +8,8 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
         protected List<Moves> AvailableMoves;
         protected List<Actions> AvailableActions;
 
-        protected RoomState(string name, List<Actions> actionList, List<Moves> moveList, List<string> things) : base(name)
+        protected RoomState(string name, List<Actions> actionList, List<Moves> moveList, List<string> things) :
+            base(name)
         {
             ThingsInRoom = things;
             AvailableActions = actionList;
