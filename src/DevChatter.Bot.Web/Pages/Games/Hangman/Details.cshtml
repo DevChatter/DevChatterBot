@@ -1,0 +1,25 @@
+@page
+@model DevChatter.Bot.Web.Pages.Games.Hangman.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>HangmanWord</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.HangmanWord.Word)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HangmanWord.Word)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.HangmanWord.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

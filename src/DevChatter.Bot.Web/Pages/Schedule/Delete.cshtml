@@ -1,0 +1,28 @@
+﻿@page
+@model DevChatter.Bot.Web.Pages.Schedule.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ScheduleEntity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ScheduleEntity.ExampleDateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ScheduleEntity.ExampleDateTime)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="ScheduleEntity.Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

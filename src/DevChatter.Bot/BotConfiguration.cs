@@ -1,4 +1,4 @@
-﻿using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Infra.Twitch;
 
 namespace DevChatter.Bot

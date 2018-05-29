@@ -1,0 +1,72 @@
+﻿@page
+@model DevChatter.Bot.Web.Pages.QuizQuestions.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizQuestion[0].MainQuestion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizQuestion[0].Hint1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizQuestion[0].Hint2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizQuestion[0].CorrectAnswer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizQuestion[0].WrongAnswer1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizQuestion[0].WrongAnswer2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuizQuestion[0].WrongAnswer3)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.QuizQuestion) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MainQuestion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hint1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hint2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CorrectAnswer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WrongAnswer1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WrongAnswer2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WrongAnswer3)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
