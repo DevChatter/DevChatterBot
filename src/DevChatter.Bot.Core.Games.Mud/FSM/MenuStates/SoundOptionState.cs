@@ -1,10 +1,11 @@
 using System;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
 {
     public class SoundOptionState : State
     {
-        public SoundOptionState(string name) : base(name)
+        public SoundOptionState(string name, IChatClient chatClient) : base(name, chatClient)
         {
         }
 

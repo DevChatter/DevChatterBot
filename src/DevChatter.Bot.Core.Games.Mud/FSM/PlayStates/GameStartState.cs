@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
 {
@@ -7,7 +8,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
     {
         private readonly Dictionary<string, string> _itemsHere;
 
-        public GameStartState(string name) : base(name)
+        public GameStartState(string name, IChatClient chatClient) : base(name, chatClient)
         {
             _itemsHere = new Dictionary<string, string>
             {
@@ -84,7 +85,8 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
                         StateMachine.PlayInstance.AddState(new Level1("First room",
                             new List<Actions>() {Actions.Look, Actions.Take},
                             new List<Moves>() {Moves.North, Moves.South, Moves.West},
-                            new List<string>() {"a Window", "Some pebbles", "a sword"}));
+                            new List<string>() {"a Window", "Some pebbles", "a sword"},
+                            _chatClient));
                         break;
                     case "west":
                         Console.WriteLine("You approach the door, it seems blocked, you are unable to move it.");

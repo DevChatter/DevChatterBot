@@ -1,10 +1,11 @@
 using System;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
 {
     internal class ControlOptionState : State
     {
-        public ControlOptionState(string name) : base(name)
+        public ControlOptionState(string name, IChatClient chatClient) : base(name, chatClient)
         {
         }
 

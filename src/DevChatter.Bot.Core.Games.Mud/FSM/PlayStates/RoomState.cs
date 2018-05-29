@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
 {
@@ -8,8 +9,9 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
         protected List<Moves> AvailableMoves;
         protected List<Actions> AvailableActions;
 
-        protected RoomState(string name, List<Actions> actionList, List<Moves> moveList, List<string> things) :
-            base(name)
+        protected RoomState(string name, List<Actions> actionList, List<Moves> moveList, List<string> things,
+            IChatClient chatClient) :
+            base(name, chatClient)
         {
             ThingsInRoom = things;
             AvailableActions = actionList;
