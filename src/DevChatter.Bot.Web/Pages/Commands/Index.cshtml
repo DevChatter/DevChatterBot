@@ -1,0 +1,43 @@
+@page
+@model DevChatter.Bot.Web.Pages.Commands.IndexModel
+@{
+    ViewData["Title"] = "Manage Commands";
+}
+
+<div class="col-md-3">
+
+    <ul class="list-group affix">
+        <li class="list-group-item">Configure Commands Command</li>
+        <li class="list-group-item">Configure Quotes Command</li>
+    </ul>
+
+</div>
+
+<div class="col-md-9">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Configure Commands Command</h3>
+        </div>
+        <div class="panel-body">
+
+            <p>Edit Cooldown</p>
+
+            <p><a asp-page="CommandsCommand/Index">Edit Simple Commands</a></p>
+
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Configure Quotes Command</h3>
+        </div>
+        <div class="panel-body">
+
+            <p>Edit Cooldown</p>
+
+            <p><a asp-page="Quotes/Index">Edit Quotes</a></p>
+
+        </div>
+    </div>
+</div>
+
+

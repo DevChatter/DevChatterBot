@@ -1,0 +1,62 @@
+@page
+@model DevChatter.Bot.Web.Pages.Games.IndexModel
+@{
+    ViewData["Title"] = "Manage Games";
+}
+
+<div class="col-md-3">
+
+    <ul class="list-group affix">
+        <li class="list-group-item">Manage Hangman Game</li>
+        <li class="list-group-item">Manage Heist Game</li>
+        <li class="list-group-item">Manage Quiz Game</li>
+    </ul>
+
+</div>
+
+<div class="col-md-9">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Manage Hangman Game</h3>
+        </div>
+        <div class="panel-body">
+
+            <p>Configure Cooldown</p>
+
+            <p>Set Starting Text</p>
+
+            <p>Configure Mask Settings (* versus _)</p>
+
+            <p><a asp-page="Hangman/Index">Manage Hangman Words</a></p>
+
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Manage Heist Game</h3>
+        </div>
+        <div class="panel-body">
+
+            <p>Configure Roles</p>
+            <p>Configure Heists</p>
+            <p>Set Cooldown</p>
+            <p>Set Wait Times</p>
+
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Manage Quiz Game</h3>
+        </div>
+        <div class="panel-body">
+
+            <p>Set Cooldown</p>
+            <p>Edit Questions</p>
+            <p>Set Cost for entry</p>
+            <p>Edit Messages</p>
+
+            <p><a asp-page="QuizQuestions/Index">Edit Questions</a></p>
+
+        </div>
+    </div>
+</div>
