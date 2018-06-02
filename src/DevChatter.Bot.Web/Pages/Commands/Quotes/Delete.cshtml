@@ -1,0 +1,52 @@
+@page
+@model DevChatter.Bot.Web.Pages.Commands.Quotes.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>QuoteEntity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteEntity.QuoteId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteEntity.QuoteId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteEntity.Text)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteEntity.Text)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteEntity.Author)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteEntity.Author)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteEntity.AddedBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteEntity.AddedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuoteEntity.DateAdded)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuoteEntity.DateAdded)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="QuoteEntity.Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>
