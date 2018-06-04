@@ -53,7 +53,10 @@ namespace DevChatter.Bot.Core.Commands.Trackers
 
         public void RecordUsage(CommandUsage commandUsage)
         {
-            _userCommandUsages.Add(commandUsage);
+            if (commandUsage != null)
+            {
+                _userCommandUsages.Add(commandUsage);
+            }
         }
 
         public List<CommandUsage> GetUsagesByUserSubjectToCooldown(string userDisplayName,
