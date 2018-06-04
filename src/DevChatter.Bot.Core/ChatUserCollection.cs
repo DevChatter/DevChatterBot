@@ -115,5 +115,28 @@ namespace DevChatter.Bot.Core
                 return true;
             }
         }
+
+        public bool ReduceCoins(string username, int coinsToTake)
+        {
+            lock (_activeChatUsersLock)
+            {
+                if (!UserExists(username))
+                {
+                    return false;
+                }
+
+                ChatUser user = GetOrCreateChatUser(username);
+
+                user.Tokens -= coinsToTake;
+
+                if (user.Tokens < 0)
+                {
+                    user.Tokens = 0;
+                }
+
+                return true;
+            }
+        }
+
     }
 }
