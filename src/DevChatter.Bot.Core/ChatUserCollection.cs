@@ -65,9 +65,12 @@ namespace DevChatter.Bot.Core
 
         public void StopWatching(string displayName)
         {
-            lock (_activeChatUsersLock)
+            if (_activeChatUsers.Contains(displayName))
             {
-                _activeChatUsers.RemoveAll(x => x == displayName);
+                lock (_activeChatUsersLock)
+                {
+                    _activeChatUsers.RemoveAll(x => x == displayName);
+                }
             }
         }
 
