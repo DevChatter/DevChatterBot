@@ -50,6 +50,7 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<TopCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<UptimeCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<TaxCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<GiveCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CoinsCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<BonusCommand>().AsImplementedInterfaces().SingleInstance();
