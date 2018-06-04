@@ -12,8 +12,8 @@ namespace DevChatter.Bot.Core
     {
         private readonly IRepository _repository;
         private readonly object _userCreationLock = new object();
-
         private readonly object _activeChatUsersLock = new object();
+        private readonly object _currencyLock = new object();
         private readonly List<string> _activeChatUsers = new List<string>();
 
         public ChatUserCollection(IRepository repository)
@@ -25,7 +25,7 @@ namespace DevChatter.Bot.Core
         {
             // Don't lock in here
             // ReSharper disable once InconsistentlySynchronizedField
-            return _activeChatUsers.All(activeDisplayName => activeDisplayName != displayName);
+            return _activeChatUsers.All(name => name != displayName);
         }
 
 
@@ -92,12 +92,15 @@ namespace DevChatter.Bot.Core
             }
         }
 
-        public bool UserExists(string username) => _activeChatUsers.Any(x => x.EqualsIns(username))
-                || _repository.Single(ChatUserPolicy.ByDisplayName(username)) != null;
+        public bool UserExists(string username)
+        {
+            return _activeChatUsers.Any(x => x.EqualsIns(username))
+                   || _repository.Single(ChatUserPolicy.ByDisplayName(username)) != null;
+        }
 
         public bool TryGiveCoins(string coinGiver, string coinReceiver, int coinsToGive)
         {
-            lock (_activeChatUsersLock)
+            lock (_currencyLock)
             {
                 if (!UserHasAtLeast(coinGiver, coinsToGive))
                 {
