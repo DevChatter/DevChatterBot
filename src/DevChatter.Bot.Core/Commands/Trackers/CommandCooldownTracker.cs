@@ -4,18 +4,22 @@ using System.Linq;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Commands.Trackers
 {
     public class CommandCooldownTracker : ICommandUsageTracker
     {
         private readonly CommandHandlerSettings _settings;
+        private readonly ILoggerAdapter<CommandCooldownTracker> _loggerAdapter;
 
         private readonly List<CommandUsage> _userCommandUsages = new List<CommandUsage>();
 
-        public CommandCooldownTracker(CommandHandlerSettings settings)
+        public CommandCooldownTracker(CommandHandlerSettings settings,
+            ILoggerAdapter<CommandCooldownTracker> loggerAdapter)
         {
             _settings = settings;
+            _loggerAdapter = loggerAdapter;
         }
 
         public void PurgeExpiredUserCommandCooldowns(DateTimeOffset currentTime)
@@ -73,7 +77,14 @@ namespace DevChatter.Bot.Core.Commands.Trackers
                 return new NoCooldown();
             }
 
-            PurgeExpiredUserCommandCooldowns(DateTimeOffset.UtcNow);
+            try
+            {
+                PurgeExpiredUserCommandCooldowns(DateTimeOffset.UtcNow);
+            }
+            catch (Exception e)
+            {
+                _loggerAdapter.LogError(e, "Failed to Purge Expried User Command Cooldowns");
+            }
 
             List<CommandUsage> global = GetUsagesByUserSubjectToCooldown(chatUser.DisplayName, DateTimeOffset.UtcNow);
             if (global != null && global.Any())
