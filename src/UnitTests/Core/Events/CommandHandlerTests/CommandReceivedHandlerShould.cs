@@ -60,7 +60,7 @@ namespace UnitTests.Core.Events.CommandHandlerTests
 
         private static CommandHandler GetTestCommandHandler(FakeCommand fakeCommand)
         {
-            var commandUsageTracker = new CommandCooldownTracker(new CommandHandlerSettings());
+            var commandUsageTracker = new CommandCooldownTracker(new CommandHandlerSettings(), new LoggerAdapter<CommandCooldownTracker>(new NullLogger<CommandCooldownTracker>()));
             var chatClients = new List<IChatClient> {new Mock<IChatClient>().Object};
             var commandMessages = new List<IBotCommand> {fakeCommand};
             var commandHandler = new CommandHandler(new Mock<IRepository>().Object, commandUsageTracker, chatClients,
