@@ -14,5 +14,6 @@ namespace DevChatter.Bot.Core
         void UpdateSpecificChatters(Action<ChatUser> updateToApply, ISpecification<ChatUser> filter);
         bool UserHasAtLeast(string username, int tokensToRemove);
         void WatchUser(string displayName);
+        bool ReduceCoins(string username, int coinsToTake);
     }
 }

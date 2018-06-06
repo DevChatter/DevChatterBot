@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Systems.Streaming;
-using TwitchLib;
+using TwitchLib.Api.Interfaces;
 
 namespace DevChatter.Bot.Infra.Twitch
 {
@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Infra.Twitch
 
         public async Task<TimeSpan?> GetUptimeAsync()
         {
-            return await _twitchApi.Streams.v5.GetUptimeAsync(_twitchClientSettings.TwitchUserID);
+            return await _twitchApi.Streams.v5.GetUptimeAsync(_twitchClientSettings.TwitchChannelID);
         }
     }
 }

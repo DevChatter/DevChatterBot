@@ -7,9 +7,11 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Games.Hangman;
 using DevChatter.Bot.Core.Games.Heist;
+using DevChatter.Bot.Core.Games.Quiz;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Core.Util;
+using Microsoft.Extensions.Logging;
 
 namespace DevChatter.Bot.Core
 {
@@ -21,11 +23,14 @@ namespace DevChatter.Bot.Core
 
             builder.RegisterType<SystemClock>().AsImplementedInterfaces().SingleInstance();
 
+            builder.RegisterGeneric(typeof(Logger<>)).As(typeof(ILogger<>));
+            builder.RegisterGeneric(typeof(LoggerAdapter<>)).AsImplementedInterfaces();
+
             builder.RegisterType<ChatUserCollection>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CurrencyGenerator>().AsImplementedInterfaces().SingleInstance();
             builder.Register(ctx => new CurrencyUpdate(1, ctx.Resolve<ICurrencyGenerator>(), ctx.Resolve<IClock>()))
-                   .AsImplementedInterfaces()
-                   .SingleInstance();
+                .AsImplementedInterfaces()
+                .SingleInstance();
 
             builder.RegisterType<AutomatedActionSystem>().AsImplementedInterfaces().SingleInstance();
 
@@ -35,6 +40,9 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<HeistCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<HeistGame>().AsSelf().SingleInstance();
 
+            builder.RegisterType<QuizCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<QuizGame>().AsSelf().SingleInstance();
+
 
             builder.RegisterType<HangmanGame>().AsSelf().SingleInstance();
             builder.RegisterType<HangmanCommand>().AsImplementedInterfaces().SingleInstance();
@@ -42,6 +50,7 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<TopCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<UptimeCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<TaxCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<GiveCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CoinsCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<BonusCommand>().AsImplementedInterfaces().SingleInstance();
@@ -52,15 +61,15 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<ScheduleCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.Register(ctx => new HelpCommand(ctx.Resolve<IRepository>()))
-                   .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
-                   .AsImplementedInterfaces();
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
             builder.Register(ctx => new CommandsCommand(ctx.Resolve<IRepository>()))
-                   .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
-                   .AsImplementedInterfaces();
+                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
+                .AsImplementedInterfaces();
 
             builder.Register(ctx => new CommandList(ctx.Resolve<IList<IBotCommand>>()))
-                   .AsSelf()
-                   .SingleInstance();
+                .AsSelf()
+                .SingleInstance();
 
             builder.RegisterType<CommandCooldownTracker>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CommandHandler>().AsImplementedInterfaces().SingleInstance();

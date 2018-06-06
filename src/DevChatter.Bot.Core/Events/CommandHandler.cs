@@ -7,6 +7,7 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Events
 {
@@ -15,13 +16,15 @@ namespace DevChatter.Bot.Core.Events
         private readonly IRepository _repository;
         private readonly ICommandUsageTracker _usageTracker;
         private readonly IList<IBotCommand> _commandMessages;
+        private readonly ILoggerAdapter<CommandHandler> _logger;
 
         public CommandHandler(IRepository repository, ICommandUsageTracker usageTracker,
-            IEnumerable<IChatClient> chatClients, CommandList commandMessages)
+            IEnumerable<IChatClient> chatClients, CommandList commandMessages, ILoggerAdapter<CommandHandler> logger)
         {
             _repository = repository;
             _usageTracker = usageTracker;
             _commandMessages = commandMessages;
+            _logger = logger;
 
             foreach (var chatClient in chatClients)
             {
@@ -36,26 +39,12 @@ namespace DevChatter.Bot.Core.Events
                 return;
             }
 
-            string userDisplayName = e.ChatUser.DisplayName;
-
-
-            //List<CommandUsage> globalCooldownUsages = _usageTracker.GetUsagesByUserSubjectToGlobalCooldown(userDisplayName, DateTimeOffset.UtcNow);
-            //if (globalCooldownUsages != null && globalCooldownUsages.Any() && !e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
-            //{
-            //    if (!globalCooldownUsages.Any(x => x.WasUserWarned))
-            //    {
-            //        chatClient.SendMessage($"Whoa {userDisplayName}! Slow down there cowboy!");
-            //        globalCooldownUsages.ForEach(x => x.WasUserWarned = true);
-            //    }
-
-            //    return;
-            //}
-
             IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
             if (botCommand == null)
             {
                 return;
             }
+
             var cooldown = _usageTracker.GetActiveCooldown(e.ChatUser, botCommand);
             chatClient.SendMessage(cooldown.Message);
             // TODO: prevent running the command if there was a cooldown
@@ -89,22 +78,27 @@ namespace DevChatter.Bot.Core.Events
             _usageTracker.RecordUsage(commandUsage);
         }
 
-        private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand, IChatClient chatClient1)
+        private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand,
+            IChatClient chatClient1)
         {
             try
             {
+                _logger.LogInformation($"{e.ChatUser.DisplayName} is running the {botCommand.GetType().Name} command.");
+
                 if (e.ChatUser.CanRunCommand(botCommand))
                 {
                     return botCommand.Process(chatClient1, e);
                 }
+
                 chatClient1.SendMessage(
                     $"Sorry, {e.ChatUser.DisplayName}! You don't have permission to use the !{e.CommandWord} command.");
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
+                _logger.LogError(exception, "Failed to run a command.");
             }
-            return null;
+
+            return new CommandUsage(e.ChatUser.DisplayName, DateTimeOffset.UtcNow, botCommand);
         }
     }
 }

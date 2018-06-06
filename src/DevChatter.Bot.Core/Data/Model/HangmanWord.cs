@@ -1,4 +1,5 @@
 using System;
+
 namespace DevChatter.Bot.Core.Data.Model
 {
     public class HangmanWord : DataEntity
@@ -12,6 +13,6 @@ namespace DevChatter.Bot.Core.Data.Model
             Word = word;
         }
 
-        public string Word { get; protected set; }
+        public string Word { get; set; }
     }
 }

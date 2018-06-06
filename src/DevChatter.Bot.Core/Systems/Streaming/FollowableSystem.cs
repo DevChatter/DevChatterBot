@@ -7,14 +7,14 @@ namespace DevChatter.Bot.Core.Systems.Streaming
 {
     public class FollowableSystem : IFollowableSystem
     {
-
         private const int TOKENS_FOR_FOLLOWING = 100;
 
         private readonly IList<IChatClient> _chatClients;
         private readonly IFollowerService _followerService;
         private readonly ICurrencyGenerator _currencyGenerator;
 
-        public FollowableSystem(IList<IChatClient> chatClients, IFollowerService followerService, ICurrencyGenerator currencyGenerator)
+        public FollowableSystem(IList<IChatClient> chatClients, IFollowerService followerService,
+            ICurrencyGenerator currencyGenerator)
         {
             _chatClients = chatClients;
             _followerService = followerService;

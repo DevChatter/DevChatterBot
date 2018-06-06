@@ -11,7 +11,6 @@ using Xunit;
 
 namespace UnitTests.Core.Commands.Operations.DeleteCommandOperationTests
 {
-
     public class TryToExecuteShould
     {
         private readonly Mock<IRepository> _repositoryMock;

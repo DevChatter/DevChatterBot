@@ -123,6 +123,30 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     b.ToTable("IntervalMessages");
                 });
 
+            modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.QuizQuestion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CorrectAnswer");
+
+                    b.Property<string>("Hint1");
+
+                    b.Property<string>("Hint2");
+
+                    b.Property<string>("MainQuestion");
+
+                    b.Property<string>("WrongAnswer1");
+
+                    b.Property<string>("WrongAnswer2");
+
+                    b.Property<string>("WrongAnswer3");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuizQuestions");
+                });
+
             modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.QuoteEntity", b =>
                 {
                     b.Property<Guid>("Id")

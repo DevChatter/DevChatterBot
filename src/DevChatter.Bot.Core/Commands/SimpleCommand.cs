@@ -53,6 +53,7 @@ namespace DevChatter.Bot.Core.Commands
                 string cooldownMessage = $"That command is currently on cooldown - Remaining time: {timeRemaining}";
                 chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, cooldownMessage);
             }
+
             return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
         }
 

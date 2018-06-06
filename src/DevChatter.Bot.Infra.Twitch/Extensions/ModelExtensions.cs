@@ -1,6 +1,6 @@
-﻿using DevChatter.Bot.Core.Data.Model;
-using TwitchLib.Enums;
-using TwitchLib.Models.API.Undocumented.Chatters;
+using DevChatter.Bot.Core.Data.Model;
+using TwitchLib.Api.Enums;
+using TwitchLib.Api.Models.Undocumented.Chatters;
 
 namespace DevChatter.Bot.Infra.Twitch.Extensions
 {

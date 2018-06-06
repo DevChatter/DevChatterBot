@@ -5,10 +5,10 @@ using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Infra.Twitch.Extensions;
-using TwitchLib;
-using TwitchLib.Events.Services.FollowerService;
-using TwitchLib.Models.API.v5.Users;
-using TwitchLib.Services;
+using TwitchLib.Api.Interfaces;
+using TwitchLib.Api.Models.v5.Users;
+using TwitchLib.Api.Services;
+using TwitchLib.Api.Services.Events.FollowerService;
 
 namespace DevChatter.Bot.Infra.Twitch.Events
 {
@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
         private UserFollow[] _userFollows;
 
         private IEnumerable<UserFollow> UserFollows => _userFollows
-                    ?? (_userFollows = _twitchApi.Users.v5.GetUserFollowsAsync(_settings.TwitchUserID).Result.Follows);
+                    ?? (_userFollows = _twitchApi.Users.v5.GetUserFollowsAsync(_settings.TwitchChannelID).Result.Follows);
 
         public TwitchFollowerService(ITwitchAPI twitchApi, TwitchClientSettings settings)
         {
@@ -31,7 +31,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
 
             _followerService = new FollowerService(twitchApi);
 
-            _followerService.SetChannelByName(settings.TwitchChannel);
+            _followerService.SetChannelByChannelId(settings.TwitchChannelID);
 
             _followerService.StartService().Wait();
 

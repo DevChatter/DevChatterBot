@@ -17,14 +17,26 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<HangmanWord> HangmanWords { get; set; }
         public DbSet<ScheduleEntity> ScheduleEntities { get; set; }
         public DbSet<CommandUsageEntity> CommandUsages { get; set; }
+        public DbSet<QuizQuestion> QuizQuestions { get; set; }
 
         public AppDataContext(DbContextOptions<AppDataContext> options)
             : base(options)
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            string connectionString =
+                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["DatabaseConnectionString"];
+            optionsBuilder.UseSqlServer(connectionString);
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<QuizQuestion>()
+                .Ignore(x => x.LetterAssignment);
+
             modelBuilder.Entity<QuoteEntity>()
                 .HasIndex(b => b.QuoteId);
 

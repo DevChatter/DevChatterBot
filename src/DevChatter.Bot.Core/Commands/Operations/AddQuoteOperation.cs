@@ -10,12 +10,13 @@ namespace DevChatter.Bot.Core.Commands.Operations
     public class AddQuoteOperation : BaseCommandOperation
     {
         private readonly IRepository _repository;
+
         public AddQuoteOperation(IRepository repository)
         {
             _repository = repository;
         }
 
-        public override List<string> OperandWords => new List<string> { "add", "new", "create" };
+        public override List<string> OperandWords => new List<string> {"add", "new", "create"};
 
         public override string HelpText => "";
 

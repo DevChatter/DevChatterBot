@@ -7,10 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TwitchLib;
-using TwitchLib.Events.Client;
-using TwitchLib.Models.API.Undocumented.Chatters;
-using TwitchLib.Models.Client;
+using DevChatter.Bot.Core.Util;
+using TwitchLib.Api.Interfaces;
+using TwitchLib.Api.Models.Undocumented.Chatters;
+using TwitchLib.Client;
+using TwitchLib.Client.Events;
+using TwitchLib.Client.Interfaces;
+using TwitchLib.Client.Models;
 
 namespace DevChatter.Bot.Infra.Twitch
 {
@@ -18,17 +21,20 @@ namespace DevChatter.Bot.Infra.Twitch
     {
         private readonly TwitchClientSettings _settings;
         private readonly ITwitchAPI _twitchApi;
+        private readonly ILoggerAdapter<TwitchChatClient> _logger;
         private readonly ITwitchClient _twitchClient;
         private TaskCompletionSource<bool> _connectionCompletionTask = new TaskCompletionSource<bool>();
         private TaskCompletionSource<bool> _disconnectionCompletionTask = new TaskCompletionSource<bool>();
         private bool _isReady = false;
 
-        public TwitchChatClient(TwitchClientSettings settings, ITwitchAPI twitchApi)
+        public TwitchChatClient(TwitchClientSettings settings, ITwitchAPI twitchApi, ILoggerAdapter<TwitchChatClient> logger)
         {
             _settings = settings;
             _twitchApi = twitchApi;
-            var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchOAuth);
-            _twitchClient = new TwitchClient(credentials, settings.TwitchChannel);
+            _logger = logger;
+            var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchBotOAuth);
+            _twitchClient = new TwitchClient();
+            _twitchClient.Initialize(credentials, channel:settings.TwitchChannel);
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
             _twitchClient.OnNewSubscriber += NewSubscriber;
             _twitchClient.OnUserJoined += TwitchClientOnOnUserJoined;
@@ -66,12 +72,13 @@ namespace DevChatter.Bot.Infra.Twitch
 
         private void TwitchClientConnected(object sender, OnConnectedArgs onConnectedArgs)
         {
+            _logger.LogInformation($"{nameof(TwitchChatClient)} connected");
             _twitchClient.OnConnected -= TwitchClientConnected;
 
             _isReady = true;
             _connectionCompletionTask.SetResult(true);
             _disconnectionCompletionTask = new TaskCompletionSource<bool>();
-            _twitchClient.SendMessage("Hello World! The bot has arrived!");
+            SendMessage("Hello World! The bot has arrived!");
         }
 
         public async Task Disconnect()
@@ -84,6 +91,7 @@ namespace DevChatter.Bot.Infra.Twitch
 
         private void TwitchClientOnOnDisconnected(object sender, OnDisconnectedArgs onDisconnectedArgs)
         {
+            _logger.LogInformation($"{nameof(TwitchChatClient)} disconnected");
             _twitchClient.OnDisconnected -= TwitchClientOnOnDisconnected;
             _isReady = false;
 
@@ -95,14 +103,17 @@ namespace DevChatter.Bot.Infra.Twitch
         {
             if (_isReady)
             {
-                _twitchClient.SendMessage(message);
+                _twitchClient.SendMessage(_settings.TwitchChannel, message);
             }
         }
 
         public IList<ChatUser> GetAllChatters()
         {
-            List<ChatterFormatted> chatters = _twitchApi.Undocumented.GetChattersAsync(_settings.TwitchChannel).TryGetResult(10).Result;
+            _logger.LogInformation("Getting all Twitch chatters");
+            List<ChatterFormatted> chatters = _twitchApi.Undocumented.GetChattersAsync(_settings.TwitchChannel)
+                .TryGetResult(10).Result;
             var chatUsers = chatters.Select(x => x.ToChatUser()).ToList();
+            _logger.LogInformation("Returning all Twitch chatters");
             return chatUsers;
         }
 

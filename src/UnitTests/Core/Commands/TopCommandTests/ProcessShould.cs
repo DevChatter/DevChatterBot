@@ -89,37 +89,38 @@ namespace UnitTests.Core.Commands.TopCommandTests
 
         private static List<ChatUser> GetTestUsers()
         {
-            List<ChatUser> users = new List<ChatUser> {
+            List<ChatUser> users = new List<ChatUser>
+            {
                 new ChatUser()
-            {
-                DisplayName = "Kaladin",
-                Tokens = 40
-            },
-            new ChatUser()
-            {
-                DisplayName = "Shallan",
-                Tokens = 39
-            },
-            new ChatUser()
-            {
-                DisplayName = "Dalinar",
-                Tokens = 38
-            },
-            new ChatUser()
-            {
-                DisplayName = "Jasnah",
-                Tokens = 37
-            },
-            new ChatUser()
-            {
-                DisplayName = "Szeth",
-                Tokens = 36
-            },
-            new ChatUser()
-            {
-                DisplayName = "Rock",
-                Tokens = 35
-            }
+                {
+                    DisplayName = "Kaladin",
+                    Tokens = 40
+                },
+                new ChatUser()
+                {
+                    DisplayName = "Shallan",
+                    Tokens = 39
+                },
+                new ChatUser()
+                {
+                    DisplayName = "Dalinar",
+                    Tokens = 38
+                },
+                new ChatUser()
+                {
+                    DisplayName = "Jasnah",
+                    Tokens = 37
+                },
+                new ChatUser()
+                {
+                    DisplayName = "Szeth",
+                    Tokens = 36
+                },
+                new ChatUser()
+                {
+                    DisplayName = "Rock",
+                    Tokens = 35
+                }
             };
 
             return users;

@@ -16,8 +16,9 @@ namespace DevChatter.Bot.Core.Commands.Operations
             _repository = repository;
         }
 
-        public override List<string> OperandWords { get; } = new List<string> { "del", "rem", "delete", "remove", "rm" };
+        public override List<string> OperandWords { get; } = new List<string> {"del", "rem", "delete", "remove", "rm"};
         public override string HelpText { get; } = "";
+
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
             var chatUser = eventArgs.ChatUser;
