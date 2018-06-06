@@ -98,7 +98,7 @@ namespace DevChatter.Bot.Core.Events
                 _logger.LogError(exception, "Failed to run a command.");
             }
 
-            return null;
+            return new CommandUsage(e.ChatUser.DisplayName, DateTimeOffset.UtcNow, botCommand);
         }
     }
 }
