@@ -38,7 +38,6 @@ namespace DevChatter.Bot.Core.Commands
 
             List<Instant> streamTimes = Repository.List(DataItemPolicy<ScheduleEntity>.All()).Select(x => x.Instant).ToList();
 
-            //string message = "Our usual schedule is: " + string.Join(", ", streamTimes.Select(x => GetTimeDisplay(x, timeZone)));
             string message = $"Our usual schedule (at UTC {offset}) is: " + string.Join(", ", streamTimes.Select(x => GetTimeDisplay(x, timeZone)));
 
             chatClient.SendMessage(message);
