@@ -18,16 +18,28 @@ namespace DevChatter.Bot.Core.Commands
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            if (!int.TryParse(eventArgs?.Arguments?.ElementAtOrDefault(0), out int offset) || offset > 18 || offset < -18)
+
+            int offset;
+            if (eventArgs.Arguments.Count == 0)
             {
-                return;
+                offset = 0;
+            }
+            else
+            {
+                if (!int.TryParse(eventArgs?.Arguments?.ElementAtOrDefault(0), out int chatUserOffset) || chatUserOffset > 18 || chatUserOffset < -18)
+                {
+                    chatClient.SendMessage("UTC offset must be a whole number between -18 and +18");
+                    return;
+                }
+                offset = chatUserOffset;
             }
 
             DateTimeZone timeZone = DateTimeZone.ForOffset(Offset.FromHours(offset));
 
             List<Instant> streamTimes = Repository.List(DataItemPolicy<ScheduleEntity>.All()).Select(x => x.Instant).ToList();
 
-            string message = "Our usual schedule is: " + string.Join(", ", streamTimes.Select(x => GetTimeDisplay(x, timeZone)));
+            //string message = "Our usual schedule is: " + string.Join(", ", streamTimes.Select(x => GetTimeDisplay(x, timeZone)));
+            string message = $"Our usual schedule (at UTC {offset}) is: " + string.Join(", ", streamTimes.Select(x => GetTimeDisplay(x, timeZone)));
 
             chatClient.SendMessage(message);
         }
