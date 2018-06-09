@@ -12,9 +12,9 @@ namespace DevChatter.Bot.Core.Data
             _repository = repository;
         }
 
-        public RouletteSettings GetRouletteSettings()
+        public T GetRouletteSettings<T>() where T : RouletteSettings, new() // TODO: change RouletteSettings to class once tests are in place.
         {
-            var rouletteSettings = new RouletteSettings();
+            var rouletteSettings = new T();
 
             var settings = _repository.List(CommandSettingsPolicy.BySettingsName(nameof(RouletteSettings)));
 

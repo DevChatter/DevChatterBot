@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Games.Roulette
             : base(repository, UserRole.Everyone)
         {
             _currencyGenerator = currencyGenerator;
-            _rouletteSettings = settingsFactory.GetRouletteSettings();
+            _rouletteSettings = settingsFactory.GetRouletteSettings<RouletteSettings>();
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
