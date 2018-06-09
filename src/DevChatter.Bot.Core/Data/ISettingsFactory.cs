@@ -4,7 +4,7 @@ namespace DevChatter.Bot.Core.Data
 {
     public interface ISettingsFactory
     {
-        T GetRouletteSettings<T>() where T : RouletteSettings, new();
+        T GetSettings<T>() where T : RouletteSettings, new();
 
     }
 }
