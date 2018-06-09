@@ -64,37 +64,5 @@ namespace DevChatter.Bot.Core.Commands
         {
             return (this is IGameCommand gameCommand && gameCommand.Game.IsRunning);
         }
-
-        protected string GetSetting(string key, string defaultValue = null)
-        {
-            CommandSettingsEntity settings = Repository.Single(CommandSettingsPolicy.ByCommandNameAndKey(PrimaryCommandText, key));
-            return settings?.Value ?? defaultValue;
-        }
-
-        protected TValue GetSetting<TValue>(string key, string defaultValue = null)
-        {
-            return (TValue)Convert.ChangeType(GetSetting(key, defaultValue), typeof(TValue));
-        }
-
-        protected void SetSetting(string key, string value)
-        {
-            var settings = Repository.Single(CommandSettingsPolicy.ByCommandNameAndKey(PrimaryCommandText, key));
-            if (settings != null)
-            {
-                settings.Value = value;
-                Repository.Update(settings);
-            }
-            else
-            {
-                settings = new CommandSettingsEntity
-                {
-                    CommandNameFull = PrimaryCommandText,
-                    Key = key,
-                    Value = value
-                };
-    
-                Repository.Create(settings);
-            }
-        }
     }
 }
