@@ -1,6 +1,8 @@
+using System;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Games.Roulette;
 using System.Linq;
+using System.Reflection;
 
 namespace DevChatter.Bot.Core.Data
 {
@@ -12,38 +14,21 @@ namespace DevChatter.Bot.Core.Data
             _repository = repository;
         }
 
-        public T GetSettings<T>() where T : RouletteSettings, new() // TODO: change RouletteSettings to class once tests are in place.
+        public T GetSettings<T>() where T : class, new()
         {
-            var rouletteSettings = new T();
+            var settings = new T();
 
-            var settings = _repository.List(CommandSettingsPolicy.BySettingsName(nameof(RouletteSettings)));
+            var settingsEntities = _repository.List(CommandSettingsPolicy.BySettingsName(settings.GetType().Name));
 
-            // yes, I'm aware this is ugly, it's going away.....
-            var coinsReward = settings.SingleOrDefault(x => x.Key == nameof(rouletteSettings.CoinsReward));
-            if (coinsReward != null)
+            foreach (PropertyInfo propertyInfo in settings.GetType().GetProperties())
             {
-                rouletteSettings.CoinsReward = int.Parse(coinsReward.Value);
+                var settingsEntity = settingsEntities.SingleOrDefault(x => x.Key == propertyInfo.Name);
+                if (settingsEntity != null)
+                {
+                    propertyInfo.SetValue(settings, Convert.ChangeType(settingsEntity.Value, propertyInfo.PropertyType));
+                }
             }
-
-            var protectSubscribers = settings.SingleOrDefault(x => x.Key == nameof(rouletteSettings.ProtectSubscribers));
-            if (protectSubscribers != null)
-            {
-                rouletteSettings.ProtectSubscribers = bool.Parse(protectSubscribers.Value);
-            }
-
-            var timeoutDuration = settings.SingleOrDefault(x => x.Key == nameof(rouletteSettings.TimeoutDurationInSeconds));
-            if (timeoutDuration != null)
-            {
-                rouletteSettings.TimeoutDurationInSeconds = int.Parse(timeoutDuration.Value);
-            }
-
-            var winPercentageChance = settings.SingleOrDefault(x => x.Key == nameof(rouletteSettings.WinPercentageChance));
-            if (winPercentageChance != null)
-            {
-                rouletteSettings.WinPercentageChance = int.Parse(winPercentageChance.Value);
-            }
-
-            return rouletteSettings;
+            return settings;
         }
     }
 }
