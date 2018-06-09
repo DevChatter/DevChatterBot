@@ -10,14 +10,9 @@ namespace DevChatter.Bot.Core.Data.Specifications
         {
         }
 
-        public static CommandSettingsPolicy ByCommandName(string commandName)
+        public static CommandSettingsPolicy BySettingsName(string settingsName)
         {
-            return new CommandSettingsPolicy(x => x.CommandNameFull == commandName);
-        }
-
-        public static CommandSettingsPolicy ByCommandNameAndKey(string commandName, string key)
-        {
-            return new CommandSettingsPolicy(x => x.CommandNameFull == commandName && x.Key == key);
+            return new CommandSettingsPolicy(x => x.CommandNameFull == settingsName);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace DevChatter.Bot.Core.Data
         {
             var rouletteSettings = new RouletteSettings();
 
-            var settings = _repository.List(CommandSettingsPolicy.ByCommandName(nameof(RouletteSettings)));
+            var settings = _repository.List(CommandSettingsPolicy.BySettingsName(nameof(RouletteSettings)));
 
             // yes, I'm aware this is ugly, it's going away.....
             var coinsReward = settings.SingleOrDefault(x => x.Key == nameof(rouletteSettings.CoinsReward));

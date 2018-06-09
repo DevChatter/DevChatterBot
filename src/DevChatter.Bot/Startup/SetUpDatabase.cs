@@ -78,7 +78,7 @@ namespace DevChatter.Bot.Startup
         private static void CreateInitialRouletteSettingsIfNeeded(IRepository repository)
         {
             var defaultInstance = new RouletteSettings();
-            var settings = repository.List(CommandSettingsPolicy.ByCommandName(nameof(RouletteSettings)));
+            var settings = repository.List(CommandSettingsPolicy.BySettingsName(nameof(RouletteSettings)));
 
             if (settings.All(x => x.Key != nameof(defaultInstance.WinPercentageChance)))
             {
