@@ -34,6 +34,8 @@ namespace DevChatter.Bot.Core
 
             builder.RegisterType<AutomatedActionSystem>().AsImplementedInterfaces().SingleInstance();
 
+            builder.RegisterType<RouletteCommand>().AsImplementedInterfaces().SingleInstance();
+
             builder.RegisterType<RockPaperScissorsGame>().AsSelf().SingleInstance();
             builder.RegisterType<RockPaperScissorsCommand>().AsImplementedInterfaces().SingleInstance();
 

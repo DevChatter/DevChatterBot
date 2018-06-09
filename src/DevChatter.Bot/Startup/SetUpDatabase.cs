@@ -65,10 +65,58 @@ namespace DevChatter.Bot.Startup
                 repository.Create(GetInitialQuizQuestions());
             }
 
+            CreateInitialRouletteSettingsIfNeeded(repository);
+
             var missingCommandWords = GetMissingCommandWords(repository);
             if (missingCommandWords.Any())
             {
                 repository.Create(missingCommandWords);
+            }
+        }
+
+        private static void CreateInitialRouletteSettingsIfNeeded(IRepository repository)
+        {
+            var commandName = "roulette";
+            var settings = repository.List(CommandSettingsPolicy.ByCommandName(commandName));
+
+            if (settings.All(x => x.Key != "win_percentage_chance"))
+            {
+                repository.Create(new CommandSettingsEntity
+                {
+                    CommandNameFull = commandName,
+                    Key = "win_percentage_chance",
+                    Value = "20"
+                });
+            }
+
+            if (settings.All(x => x.Key != "timeout_duration_in_seconds"))
+            {
+                repository.Create(new CommandSettingsEntity
+                {
+                    CommandNameFull = commandName,
+                    Key = "timeout_duration_in_seconds",
+                    Value = "10"
+                });
+            }
+
+            if (settings.All(x => x.Key != "protect_subscribers"))
+            {
+                repository.Create(new CommandSettingsEntity
+                {
+                    CommandNameFull = commandName,
+                    Key = "protect_subscribers",
+                    Value = "true"
+                });
+            }
+
+            if (settings.All(x => x.Key != "coins_reward"))
+            {
+                repository.Create(new CommandSettingsEntity
+                {
+                    CommandNameFull = commandName,
+                    Key = "coins_reward",
+                    Value = "100"
+                });
             }
         }
 
