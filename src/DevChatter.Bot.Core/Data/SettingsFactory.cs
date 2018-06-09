@@ -44,7 +44,7 @@ namespace DevChatter.Bot.Core.Data
                 {
                     _repository.Create(new CommandSettingsEntity
                     {
-                        CommandNameFull = settings.GetType().Name,
+                        SettingsTypeName = settings.GetType().Name,
                         Key = propertyInfo.Name,
                         Value = propertyInfo.GetValue(settings).ToString()
                     });

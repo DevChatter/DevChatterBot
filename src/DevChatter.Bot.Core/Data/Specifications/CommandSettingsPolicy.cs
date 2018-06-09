@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Core.Data.Specifications
 
         public static CommandSettingsPolicy BySettingsName(string settingsName)
         {
-            return new CommandSettingsPolicy(x => x.CommandNameFull == settingsName);
+            return new CommandSettingsPolicy(x => x.SettingsTypeName == settingsName);
         }
     }
 }
