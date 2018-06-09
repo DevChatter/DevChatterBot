@@ -9,6 +9,7 @@ using DevChatter.Bot.Core.Games.Hangman;
 using DevChatter.Bot.Core.Games.Heist;
 using DevChatter.Bot.Core.Games.Quiz;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
+using DevChatter.Bot.Core.Games.Roulette;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Core.Util;
 using Microsoft.Extensions.Logging;
@@ -34,6 +35,7 @@ namespace DevChatter.Bot.Core
 
             builder.RegisterType<AutomatedActionSystem>().AsImplementedInterfaces().SingleInstance();
 
+            builder.RegisterType<SettingsFactory>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<RouletteCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<RockPaperScissorsGame>().AsSelf().SingleInstance();

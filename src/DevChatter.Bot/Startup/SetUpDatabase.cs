@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Games.Roulette;
 using QuizQuestion = DevChatter.Bot.Core.Data.Model.QuizQuestion;
 
 namespace DevChatter.Bot.Startup
@@ -76,46 +77,46 @@ namespace DevChatter.Bot.Startup
 
         private static void CreateInitialRouletteSettingsIfNeeded(IRepository repository)
         {
-            var commandName = "roulette";
-            var settings = repository.List(CommandSettingsPolicy.ByCommandName(commandName));
+            var defaultInstance = new RouletteSettings();
+            var settings = repository.List(CommandSettingsPolicy.ByCommandName(nameof(RouletteSettings)));
 
-            if (settings.All(x => x.Key != "win_percentage_chance"))
+            if (settings.All(x => x.Key != nameof(defaultInstance.WinPercentageChance)))
             {
                 repository.Create(new CommandSettingsEntity
                 {
-                    CommandNameFull = commandName,
-                    Key = "win_percentage_chance",
-                    Value = "20"
+                    CommandNameFull = nameof(RouletteSettings),
+                    Key = nameof(defaultInstance.WinPercentageChance),
+                    Value = defaultInstance.WinPercentageChance.ToString()
                 });
             }
 
-            if (settings.All(x => x.Key != "timeout_duration_in_seconds"))
+            if (settings.All(x => x.Key != nameof(defaultInstance.TimeoutDurationInSeconds)))
             {
                 repository.Create(new CommandSettingsEntity
                 {
-                    CommandNameFull = commandName,
-                    Key = "timeout_duration_in_seconds",
-                    Value = "10"
+                    CommandNameFull = nameof(RouletteSettings),
+                    Key = nameof(defaultInstance.TimeoutDurationInSeconds),
+                    Value = defaultInstance.TimeoutDurationInSeconds.ToString()
                 });
             }
 
-            if (settings.All(x => x.Key != "protect_subscribers"))
+            if (settings.All(x => x.Key != nameof(defaultInstance.ProtectSubscribers)))
             {
                 repository.Create(new CommandSettingsEntity
                 {
-                    CommandNameFull = commandName,
-                    Key = "protect_subscribers",
-                    Value = "true"
+                    CommandNameFull = nameof(RouletteSettings),
+                    Key = nameof(defaultInstance.ProtectSubscribers),
+                    Value = defaultInstance.ProtectSubscribers.ToString()
                 });
             }
 
-            if (settings.All(x => x.Key != "coins_reward"))
+            if (settings.All(x => x.Key != nameof(defaultInstance.CoinsReward)))
             {
                 repository.Create(new CommandSettingsEntity
                 {
-                    CommandNameFull = commandName,
-                    Key = "coins_reward",
-                    Value = "100"
+                    CommandNameFull = nameof(RouletteSettings),
+                    Key = nameof(defaultInstance.CoinsReward),
+                    Value = defaultInstance.CoinsReward.ToString()
                 });
             }
         }
