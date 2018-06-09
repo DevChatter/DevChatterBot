@@ -3,6 +3,7 @@ using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Games.Roulette;
 using System.Linq;
 using System.Reflection;
+using DevChatter.Bot.Core.Data.Model;
 
 namespace DevChatter.Bot.Core.Data
 {
@@ -29,6 +30,26 @@ namespace DevChatter.Bot.Core.Data
                 }
             }
             return settings;
+        }
+
+        public void CreateDefaultSettingsIfNeeded<T>() where T : class, new()
+        {
+            var settings = new T();
+
+            var settingsEntities = _repository.List(CommandSettingsPolicy.BySettingsName(settings.GetType().Name));
+
+            foreach (PropertyInfo propertyInfo in settings.GetType().GetProperties())
+            {
+                if (settingsEntities.All(x => x.Key != propertyInfo.Name))
+                {
+                    _repository.Create(new CommandSettingsEntity
+                    {
+                        CommandNameFull = settings.GetType().Name,
+                        Key = propertyInfo.Name,
+                        Value = propertyInfo.GetValue(settings).ToString()
+                    });
+                }
+            }
         }
     }
 }
