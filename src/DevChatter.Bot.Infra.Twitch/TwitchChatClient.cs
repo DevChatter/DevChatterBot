@@ -12,6 +12,7 @@ using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Undocumented.Chatters;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
+using TwitchLib.Client.Extensions;
 using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
 
@@ -105,6 +106,16 @@ namespace DevChatter.Bot.Infra.Twitch
             {
                 _twitchClient.SendMessage(_settings.TwitchChannel, message);
             }
+        }
+
+        public void Timeout(string username, TimeSpan duration, string reason)
+        {
+            _twitchClient.TimeoutUser(username, duration, reason);
+        }
+
+        public void Ban(string username, string reason)
+        {
+            _twitchClient.BanUser(username, reason, false);
         }
 
         public IList<ChatUser> GetAllChatters()

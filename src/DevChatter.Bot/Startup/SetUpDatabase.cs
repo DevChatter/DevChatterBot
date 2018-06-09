@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Games.Roulette;
 using QuizQuestion = DevChatter.Bot.Core.Data.Model.QuizQuestion;
 
 namespace DevChatter.Bot.Startup
@@ -65,11 +66,19 @@ namespace DevChatter.Bot.Startup
                 repository.Create(GetInitialQuizQuestions());
             }
 
+            CreateDefaultSettingsIfNeeded(repository);
+
             var missingCommandWords = GetMissingCommandWords(repository);
             if (missingCommandWords.Any())
             {
                 repository.Create(missingCommandWords);
             }
+        }
+
+        private static void CreateDefaultSettingsIfNeeded(IRepository repository)
+        {
+            var settingsFactory = new SettingsFactory(repository);
+            settingsFactory.CreateDefaultSettingsIfNeeded<RouletteSettings>();
         }
 
         private static List<QuizQuestion> GetInitialQuizQuestions()
