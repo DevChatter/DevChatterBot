@@ -63,6 +63,7 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<QuoteCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<AliasCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ScheduleCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<WallOfShameCommand>().AsImplementedInterfaces().SingleInstance();
 
             builder.Register(ctx => new HelpCommand(ctx.Resolve<IRepository>()))
                 .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
