@@ -28,7 +28,8 @@ namespace DevChatter.Bot.Infra.Twitch
         private TaskCompletionSource<bool> _disconnectionCompletionTask = new TaskCompletionSource<bool>();
         private bool _isReady = false;
 
-        public TwitchChatClient(TwitchClientSettings settings, ITwitchAPI twitchApi, ILoggerAdapter<TwitchChatClient> logger)
+        public TwitchChatClient(TwitchClientSettings settings,
+            ITwitchAPI twitchApi, ILoggerAdapter<TwitchChatClient> logger)
         {
             _settings = settings;
             _twitchApi = twitchApi;

@@ -11,7 +11,9 @@
 
 
   <ItemGroup>
+    <PackageReference Include="HangFire" Version="1.6.19" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
   </ItemGroup>
 
 

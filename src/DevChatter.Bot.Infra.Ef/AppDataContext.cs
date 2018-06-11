@@ -20,6 +20,10 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<QuizQuestion> QuizQuestions { get; set; }
         public DbSet<CommandSettingsEntity> CommandSettings { get; set; }
 
+        public AppDataContext()
+        {
+        }
+
         public AppDataContext(DbContextOptions<AppDataContext> options)
             : base(options)
         {
