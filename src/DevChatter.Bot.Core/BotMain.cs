@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
@@ -9,6 +5,9 @@ using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DevChatter.Bot.Core
 {
@@ -16,7 +15,6 @@ namespace DevChatter.Bot.Core
     {
         private readonly IList<IChatClient> _chatClients;
         private readonly IRepository _repository;
-        private readonly IAutomatedActionSystem _autoActionSystem;
         private readonly ICommandHandler _commandHandler;
         private readonly SubscriberHandler _subscriberHandler;
         private readonly IFollowableSystem _followableSystem; // This will eventually be a list of these
@@ -26,7 +24,7 @@ namespace DevChatter.Bot.Core
 
         public BotMain(IList<IChatClient> chatClients, IRepository repository, IFollowableSystem followableSystem,
             IAutomatedActionSystem automatedActionSystem, ICommandHandler commandHandler,
-            SubscriberHandler subscriberHandler, IAutomatedActionSystem autoActionSystem)
+            SubscriberHandler subscriberHandler)
         {
             _chatClients = chatClients;
             _repository = repository;
@@ -34,7 +32,6 @@ namespace DevChatter.Bot.Core
             _automatedActionSystem = automatedActionSystem;
             _commandHandler = commandHandler;
             _subscriberHandler = subscriberHandler;
-            _autoActionSystem = autoActionSystem;
         }
 
         public void Run()
@@ -82,7 +79,7 @@ namespace DevChatter.Bot.Core
             var messages = _repository.List<IntervalMessage>();
             foreach (IntervalMessage message in messages)
             {
-                _autoActionSystem.AddAction(new AutomatedMessage(message, _chatClients));
+                _automatedActionSystem.AddAction(new AutomatedMessage(message, _chatClients));
             }
         }
 
