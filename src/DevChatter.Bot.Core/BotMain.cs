@@ -41,8 +41,6 @@ namespace DevChatter.Bot.Core
             ConnectChatClients();
 
             _followableSystem.HandleFollowerNotifications();
-
-            BeginLoop();
         }
 
 
@@ -60,26 +58,13 @@ namespace DevChatter.Bot.Core
             _stopRequestSource.Cancel();
         }
 
-        private void BeginLoop()
-        {
-            _stopRequestSource = new CancellationTokenSource();
-            Task.Run(async () =>
-            {
-                while (_stopRequestSource.Token.IsCancellationRequested != true)
-                {
-                    await Task.Delay(_refreshInterval);
-                    _automatedActionSystem.RunNecessaryActions();
-                }
-            });
-        }
-
-
         private void ScheduleAutomatedMessages()
         {
             var messages = _repository.List<IntervalMessage>();
             foreach (IntervalMessage message in messages)
             {
-                _automatedActionSystem.AddAction(new AutomatedMessage(message, _chatClients));
+                var action = new AutomatedMessage(message.MessageText, message.DelayInMinutes, _chatClients, message.Id.ToString());
+                _automatedActionSystem.AddAction(action);
             }
         }
 

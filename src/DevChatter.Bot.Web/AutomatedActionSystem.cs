@@ -1,22 +1,25 @@
+using DevChatter.Bot.Core.Automation;
+using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
+using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Core.Systems.Chat;
+using Hangfire;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Messaging;
-using Hangfire;
 
 namespace DevChatter.Bot.Web
 {
     public class HangfireAutomationSystem : IAutomatedActionSystem
     {
-        public HangfireAutomationSystem()
-        {
-        }
+        private readonly IRepository _repository;
+        private readonly IList<IChatClient> _chatClients;
 
-        public void RunNecessaryActions()
+        public HangfireAutomationSystem(IRepository repository, IList<IChatClient> chatClients)
         {
-            // Hangfire does this for us.
+            _repository = repository;
+            _chatClients = chatClients;
         }
 
         public void AddAction(IIntervalAction actionToAdd)
@@ -35,9 +38,17 @@ namespace DevChatter.Bot.Web
                     BackgroundJob.Schedule(action, oneTimeCallBackAction.DelayTimeSpan);
                     break;
                 case AutomatedMessage automatedMessage:
-                    RecurringJob.AddOrUpdate(action, Cron.MinuteInterval(automatedMessage.Message.DelayInMinutes));
+                    RecurringJob.AddOrUpdate(() => InvokeAutomatedMessage(automatedMessage.Name),
+                        Cron.MinuteInterval(automatedMessage.IntervalInMinutes));
                     break;
             }
+        }
+
+        public void InvokeAutomatedMessage(string id)
+        {
+            var message = _repository.Single(DataItemPolicy<IntervalMessage>.ById(Guid.Parse(id)));
+            var automatedMessage = new AutomatedMessage(message.MessageText, message.DelayInMinutes, _chatClients, id);
+            automatedMessage.Invoke();
         }
 
         public void RemoveAction(IIntervalAction actionToRemove)

@@ -135,10 +135,10 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             chatClient.SendMessage(
                 $"{username} wants to play Rock-Paper-Scissors! You have {SECONDS_TO_JOIN_GAME} seconds to join! To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.");
 
-            _rockPaperScissorsEndGame = new OneTimeCallBackAction(SECONDS_TO_JOIN_GAME, () => PlayMatch(chatClient));
+            _rockPaperScissorsEndGame = new OneTimeCallBackAction(SECONDS_TO_JOIN_GAME, () => PlayMatch(chatClient), "RockPaperScissorsEndGame");
             _automatedActionSystem.AddAction(_rockPaperScissorsEndGame);
             _joinGameWarningMessage = new DelayedMessageAction(SECONDS_TO_JOIN_GAME - 30,
-                "Only 30 seconds left to join! Type \"!rps rock\", \"!rps paper\", or \"!rps scissors\"", chatClient);
+                "Only 30 seconds left to join! Type \"!rps rock\", \"!rps paper\", or \"!rps scissors\"", chatClient, "RockPaperScissorsWarning");
             _automatedActionSystem.AddAction(_joinGameWarningMessage);
         }
     }

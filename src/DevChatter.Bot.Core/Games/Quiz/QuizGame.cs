@@ -50,10 +50,10 @@ namespace DevChatter.Bot.Core.Games.Quiz
 
         private void CreateGameJoinWindow(IChatClient chatClient)
         {
-            var joinWarning = new DelayedMessageAction(30, "You only have 30 seconds left to join the quiz game! Type \"!quiz join\" to join the game!", chatClient);
+            var joinWarning = new DelayedMessageAction(30, "You only have 30 seconds left to join the quiz game! Type \"!quiz join\" to join the game!", chatClient, "QuizGameJoinWarning");
             _automatedActionSystem.AddAction(joinWarning);
 
-            var startAskingQuestions = new OneTimeCallBackAction(60, () => StartAskingQuestions(chatClient));
+            var startAskingQuestions = new OneTimeCallBackAction(60, () => StartAskingQuestions(chatClient), "QuizQuesitonStart");
             _automatedActionSystem.AddAction(startAskingQuestions);
         }
 
@@ -68,11 +68,11 @@ namespace DevChatter.Bot.Core.Games.Quiz
             chatClient.SendMessage(randomQuestion.MainQuestion);
             chatClient.SendMessage(randomQuestion.GetRandomizedAnswers());
 
-            _messageHint1 = new DelayedMessageAction(10, $"Hint 1: {randomQuestion.Hint1}", chatClient);
+            _messageHint1 = new DelayedMessageAction(10, $"Hint 1: {randomQuestion.Hint1}", chatClient, "QuizHint1");
             _automatedActionSystem.AddAction(_messageHint1);
-            _messageHint2 = new DelayedMessageAction(20, $"Hint 2: {randomQuestion.Hint2}", chatClient);
+            _messageHint2 = new DelayedMessageAction(20, $"Hint 2: {randomQuestion.Hint2}", chatClient, "QuizHint2");
             _automatedActionSystem.AddAction(_messageHint2);
-            _oneTimeActionEndingQuestion = new OneTimeCallBackAction(30, () => CompleteQuestion(chatClient, randomQuestion));
+            _oneTimeActionEndingQuestion = new OneTimeCallBackAction(30, () => CompleteQuestion(chatClient, randomQuestion), "QuizQuestionEnd");
             _automatedActionSystem.AddAction(_oneTimeActionEndingQuestion);
         }
 

@@ -71,10 +71,9 @@ namespace DevChatter.Bot.Web
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             services.AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 
-
             services.AddSingleton<IChatUserCollection, ChatUserCollection>();
             services.AddSingleton<ICurrencyGenerator, CurrencyGenerator>();
-            services.AddSingleton<IAutomatedActionSystem, AutomatedActionSystem>();
+            services.AddSingleton<IAutomatedActionSystem, HangfireAutomationSystem>();
             services.AddSingleton<ISettingsFactory, SettingsFactory>();
             services.AddSingleton<IBotCommand, RouletteCommand>();
             services.AddSingleton<RockPaperScissorsGame>();
