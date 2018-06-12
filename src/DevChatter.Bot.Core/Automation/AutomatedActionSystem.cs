@@ -28,7 +28,10 @@ namespace DevChatter.Bot.Core.Automation
             }
         }
 
-        public void AddAction(IIntervalAction actionToAdd) => _actions.Add(actionToAdd);
+        public void AddAction(IIntervalAction actionToAdd)
+        {
+            _actions.Add(actionToAdd);
+        }
 
         public void RemoveAction(IIntervalAction actionToRemove) =>
             _actions.Remove(actionToRemove); // Relies on reference equality

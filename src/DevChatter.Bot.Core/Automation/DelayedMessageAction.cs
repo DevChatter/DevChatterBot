@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Automation
@@ -8,9 +8,11 @@ namespace DevChatter.Bot.Core.Automation
         private readonly string _message;
         private readonly IChatClient _chatClient;
         private DateTime _nextRunTime;
+        public TimeSpan DelayTimeSpan;
 
         public DelayedMessageAction(int delayInSeconds, string message, IChatClient chatClient)
         {
+            DelayTimeSpan = TimeSpan.FromSeconds(delayInSeconds);
             _message = message;
             _chatClient = chatClient;
             _nextRunTime = DateTime.Now.AddSeconds(delayInSeconds);

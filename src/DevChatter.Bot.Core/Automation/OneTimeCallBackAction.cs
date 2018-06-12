@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace DevChatter.Bot.Core.Automation
 {
@@ -6,9 +6,11 @@ namespace DevChatter.Bot.Core.Automation
     {
         private readonly Action _actionToCall;
         private DateTime _timeOfNextRun;
+        public TimeSpan DelayTimeSpan;
 
         public OneTimeCallBackAction(int delayInSeconds, Action actionToCall)
         {
+            DelayTimeSpan = TimeSpan.FromSeconds(delayInSeconds);
             _actionToCall = actionToCall;
             _timeOfNextRun = DateTime.UtcNow.AddSeconds(delayInSeconds);
         }

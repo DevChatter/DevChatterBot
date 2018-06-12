@@ -9,7 +9,7 @@ namespace DevChatter.Bot.Core.Messaging
 {
     public class AutomatedMessage : IIntervalAction
     {
-        private readonly IntervalMessage _message;
+        public readonly IntervalMessage Message;
         private readonly IClock _clock;
         private readonly IList<IChatClient> _chatClients;
 
@@ -20,10 +20,10 @@ namespace DevChatter.Bot.Core.Messaging
 
         public AutomatedMessage(IntervalMessage message, IList<IChatClient> chatClients, IClock clock)
         {
-            _message = message;
+            Message = message;
             _clock = clock;
             _chatClients = chatClients;
-            _nextRunTime = _clock.UtcNow.AddMinutes(_message.DelayInMinutes);
+            _nextRunTime = _clock.UtcNow.AddMinutes(Message.DelayInMinutes);
         }
 
         private DateTime _nextRunTime;
@@ -35,10 +35,10 @@ namespace DevChatter.Bot.Core.Messaging
 
         public void Invoke()
         {
-            _nextRunTime = _clock.UtcNow.AddMinutes(_message.DelayInMinutes);
+            _nextRunTime = _clock.UtcNow.AddMinutes(Message.DelayInMinutes);
             foreach (IChatClient chatClient in _chatClients)
             {
-                chatClient.SendMessage(_message.MessageText);
+                chatClient.SendMessage(Message.MessageText);
             }
         }
     }
