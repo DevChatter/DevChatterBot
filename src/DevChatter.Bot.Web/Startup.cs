@@ -51,16 +51,20 @@ namespace DevChatter.Bot.Web
 
             services.Configure<CommandHandlerSettings>(Configuration.GetSection("CommandHandlerSettings"));
             services.Configure<TwitchClientSettings>(Configuration.GetSection("TwitchClientSettings"));
-            var twitchClientSettings = Configuration.GetSection("TwitchClientSettings").Get<TwitchClientSettings>();
-            var commandHandlerSettings = Configuration.GetSection("CommandHandlerSettings").Get<CommandHandlerSettings>();
 
-            services.AddSingleton(twitchClientSettings);
-            services.AddSingleton(commandHandlerSettings);
+            var fullConfig = Configuration.Get<BotConfiguration>();
+
+            services.AddSingleton(fullConfig.TwitchClientSettings);
+            services.AddSingleton(fullConfig.CommandHandlerSettings);
 
             services.Configure<BotConfiguration>(Configuration);
 
             services.AddSingleton<ILoggerFactory,LoggerFactory>();
-            services.AddSingleton<IRepository, EfGenericRepo>();
+
+            IRepository repository = SetUpDatabase.SetUpRepository(fullConfig.DatabaseConnectionString);
+
+            services.AddSingleton(repository);
+
             services.AddSingleton<IStreamingPlatform, StreamingPlatform>();
             services.AddSingleton<IClock, SystemClock>();
 
@@ -78,6 +82,7 @@ namespace DevChatter.Bot.Web
             services.AddSingleton<IBotCommand, HeistCommand>();
             services.AddSingleton<HeistGame>();
             services.AddSingleton<IBotCommand, QuizCommand>();
+            services.AddSingleton<QuizGame>();
 
             services.AddSingleton<HangmanGame>();
             services.AddSingleton<IBotCommand, HangmanCommand>();
@@ -117,8 +122,8 @@ namespace DevChatter.Bot.Web
             services.AddSingleton<IFollowerService, TwitchFollowerService>();
 
             var api = new TwitchAPI();
-            api.Settings.ClientId = twitchClientSettings.TwitchClientId;
-            api.Settings.AccessToken = twitchClientSettings.TwitchChannelOAuth;
+            api.Settings.ClientId = fullConfig.TwitchClientSettings.TwitchClientId;
+            api.Settings.AccessToken = fullConfig.TwitchClientSettings.TwitchChannelOAuth;
             services.AddSingleton<ITwitchAPI>(api);
 
             services.AddSingleton<IChatClient, TwitchChatClient>();
@@ -129,7 +134,7 @@ namespace DevChatter.Bot.Web
 
             services.AddDbContext<AppDataContext>(ServiceLifetime.Transient);
 
-            services.AddHangfire(cfg => cfg.UseSqlServerStorage("Server=(localdb)\\mssqllocaldb;Database=DevChatterBot;Trusted_Connection=True;MultipleActiveResultSets=true"));
+            services.AddHangfire(cfg => cfg.UseSqlServerStorage(fullConfig.DatabaseConnectionString));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
