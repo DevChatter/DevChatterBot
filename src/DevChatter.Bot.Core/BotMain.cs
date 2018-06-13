@@ -44,13 +44,13 @@ namespace DevChatter.Bot.Core
         }
 
 
-        public void Stop()
+        public async Task Stop()
         {
             StopLoop();
 
             _followableSystem.StopHandlingNotifications();
 
-            DisconnectChatClients();
+            await DisconnectChatClients();
         }
 
         private void StopLoop()
@@ -68,7 +68,7 @@ namespace DevChatter.Bot.Core
             }
         }
 
-        private void DisconnectChatClients()
+        private async Task DisconnectChatClients()
         {
             foreach (var chatClient in _chatClients)
             {
@@ -80,11 +80,10 @@ namespace DevChatter.Bot.Core
             {
                 disconnectedTasks.Add(chatClient.Disconnect());
             }
-
-            Task.WhenAll(disconnectedTasks);
+            await Task.WhenAll(disconnectedTasks);
         }
 
-        private void ConnectChatClients()
+        private async void ConnectChatClients()
         {
             var getUserTasks = new List<Task>();
 
@@ -93,7 +92,7 @@ namespace DevChatter.Bot.Core
                 getUserTasks.Add(chatClient.Connect());
             }
 
-            Task.WhenAll(getUserTasks);
+            await Task.WhenAll(getUserTasks);
         }
     }
 }
