@@ -24,9 +24,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TwitchLib.Api;
 using TwitchLib.Api.Interfaces;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web
 {
@@ -130,6 +132,8 @@ namespace DevChatter.Bot.Web
             services.AddSingleton<IStreamingInfoService, TwitchStreamingInfoService>();
 
             services.AddSingleton<BotMain>();
+
+            services.AddSingleton<IHostedService, DevChatterBotBackgroundWorker>();
 
             services.AddDbContext<AppDataContext>(ServiceLifetime.Transient);
 

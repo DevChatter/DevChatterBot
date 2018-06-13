@@ -1,46 +1,37 @@
+using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Util;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using System.Threading;
 using System.Threading.Tasks;
-using DevChatter.Bot.Core;
 
 namespace DevChatter.Bot.Web
 {
-    public class DevChatterBotBackgroundWorker : BackgroundService
+    public class DevChatterBotBackgroundWorker : IHostedService
     {
         private readonly ILoggerAdapter<DevChatterBotBackgroundWorker> _logger;
+        private readonly IAutomatedActionSystem _automatedActionSystem;
         private readonly BotMain _botMain;
-        private readonly BotConfiguration _settings;
 
-        public DevChatterBotBackgroundWorker(IOptions<BotConfiguration> settings,
-            ILoggerAdapter<DevChatterBotBackgroundWorker> logger, BotMain botMain)
+        public DevChatterBotBackgroundWorker(BotMain botMain,
+            IAutomatedActionSystem automatedActionSystem,
+            ILoggerAdapter<DevChatterBotBackgroundWorker> logger)
         {
-            _settings = settings.Value;
             _logger = logger;
+            _automatedActionSystem = automatedActionSystem;
             _botMain = botMain;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"DevChatterBotBackgroundWorker is starting.");
-
-            stoppingToken.Register(() =>
-                _logger.LogInformation($" DevChatterBotBackgroundWorker is stopping."));
-
-            //while (!stoppingToken.IsCancellationRequested)
-            //{
-            //    _logger.LogInformation($"DevChatterBotBackgroundWorker doing background work.");
-
-            //    await Task.Delay(_settings.CheckUpdateTime, stoppingToken);
-            //}
-
-            _logger.LogInformation($"DevChatterBotBackgroundWorker is stopping.");
+            _logger.LogInformation("DevChatterBotBackgroundWorker StartAsync");
+            return _botMain.Run();
         }
 
-        public override async Task StopAsync(CancellationToken stoppingToken)
+        public Task StopAsync(CancellationToken stoppingToken)
         {
-            await _botMain.Stop();
+            _logger.LogInformation("DevChatterBotBackgroundWorker StopAsync");
+            return _botMain.Stop();
         }
     }
 

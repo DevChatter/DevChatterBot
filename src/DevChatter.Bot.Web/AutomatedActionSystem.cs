@@ -22,6 +22,11 @@ namespace DevChatter.Bot.Web
             _chatClients = chatClients;
         }
 
+        public void RunNecessaryActions()
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddAction(IIntervalAction actionToAdd)
         {
             Expression<Action> action = () => actionToAdd.Invoke();

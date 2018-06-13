@@ -34,13 +34,14 @@ namespace DevChatter.Bot.Core
             _subscriberHandler = subscriberHandler;
         }
 
-        public void Run()
+        public async Task Run()
         {
             ScheduleAutomatedMessages();
 
             ConnectChatClients();
 
             _followableSystem.HandleFollowerNotifications();
+            await Task.Delay(1);
         }
 
 
