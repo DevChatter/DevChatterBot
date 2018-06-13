@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core;
@@ -99,6 +100,7 @@ namespace DevChatter.Bot.Web
             services.AddSingleton<IBotCommand, AliasCommand>();
             services.AddSingleton<IBotCommand, ScheduleCommand>();
             services.AddSingleton(typeof(IList<>), typeof(List<>));
+            services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
 
             services.AddSingleton<IBotCommand, HelpCommand>(); // TODO: make these work
             services.AddSingleton<IBotCommand, CommandsCommand>(); // TODO: make these work
@@ -163,6 +165,14 @@ namespace DevChatter.Bot.Web
             app.UseHangfireServer();
 
             app.UseMvc();
+        }
+    }
+
+    internal class Lazier<T> : Lazy<T> where T : class
+    {
+        public Lazier(IServiceProvider provider)
+            : base(provider.GetRequiredService<T>)
+        {
         }
     }
 }

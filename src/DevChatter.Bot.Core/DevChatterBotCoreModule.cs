@@ -64,13 +64,6 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<AliasCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ScheduleCommand>().AsImplementedInterfaces().SingleInstance();
 
-            builder.Register(ctx => new HelpCommand(ctx.Resolve<IRepository>()))
-                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
-                .AsImplementedInterfaces();
-            builder.Register(ctx => new CommandsCommand(ctx.Resolve<IRepository>()))
-                .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
-                .AsImplementedInterfaces();
-
             builder.Register(ctx => new CommandList(ctx.Resolve<IList<IBotCommand>>()))
                 .AsSelf()
                 .SingleInstance();
