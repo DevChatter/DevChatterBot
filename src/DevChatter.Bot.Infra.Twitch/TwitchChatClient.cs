@@ -105,7 +105,7 @@ namespace DevChatter.Bot.Infra.Twitch
         {
             if (_isReady)
             {
-                _twitchClient.SendMessage("aflamebot", message);
+                _twitchClient.SendMessage(_settings.TwitchChannel, message);
             }
         }
 
