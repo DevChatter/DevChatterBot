@@ -5,6 +5,7 @@ using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Games.DealNoDeal;
 using DevChatter.Bot.Core.Games.Hangman;
 using DevChatter.Bot.Core.Games.Heist;
 using DevChatter.Bot.Core.Games.Quiz;
@@ -43,6 +44,9 @@ namespace DevChatter.Bot.Core
             builder.RegisterType<QuizCommand>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<QuizGame>().AsSelf().SingleInstance();
 
+            builder.RegisterType<DNDCommand>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<DealNoDealGame>().AsSelf().SingleInstance();
+            
 
             builder.RegisterType<HangmanGame>().AsSelf().SingleInstance();
             builder.RegisterType<HangmanCommand>().AsImplementedInterfaces().SingleInstance();

@@ -33,7 +33,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
 
             _followerService.SetChannelByChannelId(settings.TwitchChannelID);
 
-            _followerService.StartService().Wait();
+           // _followerService.StartService().Wait();
 
             _followerService.OnNewFollowersDetected += FollowerServiceOnOnNewFollowersDetected;
         }
