@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 using Xunit;
 
 namespace UnitTests
@@ -14,6 +15,14 @@ namespace UnitTests
             IEnumerable<int> enumerable = ints.Take(10);
 
             Assert.Equal(5, enumerable.Count());
+        }
+
+        [Fact]
+        public void CheckNumberSignFormatting()
+        {
+            int negativeNumber = -4;
+            int positiveNumber = 2;
+            $"{negativeNumber:+#;-#;0} {positiveNumber:+#;-#;0} {0:+#;-#;+0}".Should().Be("-4 +2 +0");
         }
     }
 }

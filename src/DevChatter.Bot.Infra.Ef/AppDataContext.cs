@@ -18,6 +18,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<ScheduleEntity> ScheduleEntities { get; set; }
         public DbSet<CommandUsageEntity> CommandUsages { get; set; }
         public DbSet<QuizQuestion> QuizQuestions { get; set; }
+        public DbSet<CommandSettingsEntity> CommandSettings { get; set; }
 
         public AppDataContext(DbContextOptions<AppDataContext> options)
             : base(options)
