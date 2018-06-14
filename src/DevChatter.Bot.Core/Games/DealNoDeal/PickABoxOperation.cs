@@ -54,7 +54,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                     if (alreadyPickedABox)
                     {
                         _chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, "You already picked a box");
-                        //return "";
+                        return "";
                     }
                     
                     Box chosenBox = _dealNoDealGame.StartingBoxes.Find(b => b.Id == int.Parse(namePicked));
