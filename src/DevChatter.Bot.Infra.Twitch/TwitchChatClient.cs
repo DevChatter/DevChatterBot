@@ -33,9 +33,9 @@ namespace DevChatter.Bot.Infra.Twitch
             _settings = settings;
             _twitchApi = twitchApi;
             _logger = logger;
-            var credentials = new ConnectionCredentials("aflamebot", "oauth:dv6wwmdfyy374c47r2p2s4vloz7pnc");
+            var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchBotOAuth);
             _twitchClient = new TwitchClient();
-            _twitchClient.Initialize(credentials, "aflamebot");
+            _twitchClient.Initialize(credentials, channel: settings.TwitchChannel);
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
             _twitchClient.OnNewSubscriber += NewSubscriber;
             _twitchClient.OnUserJoined += TwitchClientOnOnUserJoined;
