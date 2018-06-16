@@ -27,15 +27,15 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
 
         public List<Box> StartingBoxes;
         public List<Box> BoxesWithOwners;
-    
+
         public DealNoDealGameState GameState = DealNoDealGameState.GAME_NOT_RUNNING;
         private IIntervalAction _actionBeingPerformed;
 
         public ChatUser MainPlayer;
         public int DealOffer = 0;
-        
 
-        public DealNoDealGame(IChatClient chatClient,ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem)
+
+        public DealNoDealGame(IChatClient chatClient, ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem)
         {
             _chatClient = chatClient;
             _automatedActionFactory = new AutomatedActionFactory(this, _chatClient);
@@ -47,11 +47,11 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IAutomatedActionSystem _automatedActionSystem;
         private readonly AutomatedActionFactory _automatedActionFactory;
-    
+
 
         public void AttemptToStartGame(ChatUser chatUser)
         {
- 
+
             if (IsRunning)
             {
                 SendGameAlreadyStartedMessage(_chatClient, chatUser);
@@ -70,7 +70,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                 MainPlayer = chatUser;
                 IsRunning = true;
                 BoxesWithOwners = new List<Box>();
-                StartingBoxes =  ShuffleBoxes();
+                StartingBoxes = ShuffleBoxes();
                 _chatClient.SendMessage(
                     $"{MainPlayer.DisplayName} started a Deal or No Deal game! Please choose a box everyone by typing \"!dnd pick x\" ... Pick a box between numbers 1 and 15");
 
@@ -79,7 +79,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             }
             else
             {
-                _chatClient.SendMessage($"Not enough tokens to start a game, {chatUser}" );
+                _chatClient.SendMessage($"Not enough tokens to start a game, {chatUser}");
             }
 
         }
@@ -311,7 +311,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             //NOTE: This just spits out a value around -20 value +20   or the value
             string result = "";
             Random randy = new Random();
-            
+
             int r = randy.Next(10);
             //every 4th value should be concrete
             if (r % 4 == 0)
