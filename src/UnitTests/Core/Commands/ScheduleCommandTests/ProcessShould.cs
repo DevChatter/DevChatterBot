@@ -22,10 +22,8 @@ namespace UnitTests.Core.Commands.ScheduleCommandTests
         {
             var entities = new List<ScheduleEntity>
             {
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018,6,18,18, 0, 0, 0, TimeSpan.Zero)},
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018,6,19,18, 0, 0, 0, TimeSpan.Zero)},
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018,6,21,16, 0, 0, 0, TimeSpan.Zero)},
-                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018,6,23,17, 0, 0, 0, TimeSpan.Zero)},
+                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 6, 19, 18, 0, 0, 0, TimeSpan.Zero)},
+                new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 6, 21, 16, 0, 0, 0, TimeSpan.Zero)},
             };
             _repositoryMock.Setup(x => x.List(It.IsAny<DataItemPolicy<ScheduleEntity>>())).Returns(entities);
             _scheduleCommand = new ScheduleCommand(_repositoryMock.Object);
@@ -34,6 +32,7 @@ namespace UnitTests.Core.Commands.ScheduleCommandTests
         [Theory]
         [InlineData("-19")]
         [InlineData("+999")]
+        [InlineData("19")]
         [InlineData("stoptryingtobreakstuff")]
         public void SendErrorMessage_GivenInvalidArguments(string argument)
         {
@@ -47,15 +46,16 @@ namespace UnitTests.Core.Commands.ScheduleCommandTests
         }
 
         [Theory]
-        [InlineData("", "Our usual schedule (at UTC +0) is: Mondays at 6:00 PM, Tuesdays at 6:00 PM, Thursdays at 4:00 PM, Saturdays at 5:00 PM")]
-        [InlineData("-4", "Our usual schedule (at UTC -4) is: Mondays at 2:00 PM, Tuesdays at 2:00 PM, Thursdays at 12:00 PM, Saturdays at 1:00 PM")]
-        [InlineData("+8", "Our usual schedule (at UTC +8) is: Tuesdays at 2:00 AM, Wednesdays at 2:00 AM, Fridays at 12:00 AM, Sundays at 1:00 AM")]
+        [InlineData("",   "Our usual schedule (at UTC +0) is: Tuesdays at 6:00 PM, Thursdays at 4:00 PM")]
+        [InlineData("-4", "Our usual schedule (at UTC -4) is: Tuesdays at 2:00 PM, Thursdays at 12:00 PM")]
+        [InlineData("+8", "Our usual schedule (at UTC +8) is: Wednesdays at 2:00 AM, Fridays at 12:00 AM")]
         public void SendMatchingScheduleMessage_GivenValidArguments(string argument, string expectedMessage)
         {
-            List<string> arguments = new List<string>
+            List<string> arguments = new List<string>();
+            if (!string.IsNullOrWhiteSpace(argument))
             {
-                argument
-            };
+                arguments.Add(argument);
+            }
             _commandReceivedEventArgs.Arguments = arguments;
             _scheduleCommand.Process(_chatClientMock.Object, _commandReceivedEventArgs);
             _chatClientMock.Verify(x => x.SendMessage(expectedMessage));
