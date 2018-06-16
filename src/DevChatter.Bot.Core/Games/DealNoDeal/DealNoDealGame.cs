@@ -34,7 +34,6 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         public ChatUser MainPlayer;
         public int DealOffer = 0;
 
-
         public DealNoDealGame(IChatClient chatClient, ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem)
         {
             _chatClient = chatClient;
@@ -43,7 +42,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             _automatedActionSystem = automatedActionSystem;
         }
 
-        private IChatClient _chatClient;
+        private readonly IChatClient _chatClient;
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IAutomatedActionSystem _automatedActionSystem;
         private readonly AutomatedActionFactory _automatedActionFactory;
