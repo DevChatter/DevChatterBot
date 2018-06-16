@@ -29,7 +29,7 @@ namespace DevChatter.Bot.Core.Automation
         public void Invoke()
         {
                 _chatClient.SendMessage("Picking a random Box. User did not respond");
-                _dealNoDealGame.PickRandomBox(_dealNoDealGame._MainPlayer.DisplayName);
+                _dealNoDealGame.PickRandomBox(_dealNoDealGame.MainPlayer.DisplayName);
         }
 
         private void SetNextRunTime()

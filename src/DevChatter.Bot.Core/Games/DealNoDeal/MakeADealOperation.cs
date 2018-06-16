@@ -29,7 +29,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                 return null;
             }
 
-            bool isMainPlayer = _dealNoDealGame._MainPlayer != eventArgs.ChatUser;
+            bool isMainPlayer = _dealNoDealGame.MainPlayer != eventArgs.ChatUser;
             string pick = eventArgs.Arguments[0];
             if (string.IsNullOrWhiteSpace(pick))
             {

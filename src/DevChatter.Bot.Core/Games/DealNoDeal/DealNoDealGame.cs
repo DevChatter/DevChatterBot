@@ -5,6 +5,7 @@ using DevChatter.Bot.Core.Systems.Chat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Extensions;
 
 namespace DevChatter.Bot.Core.Games.DealNoDeal
 {
@@ -28,9 +29,9 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         public List<Box> BoxesWithOwners;
     
         public DealNoDealGameState GameState = DealNoDealGameState.GAME_NOT_RUNNING;
-        private IIntervalAction ActionBeingPerformed;
+        private IIntervalAction _actionBeingPerformed;
 
-        public ChatUser _MainPlayer;
+        public ChatUser MainPlayer;
         public int DealOffer = 0;
         
 
@@ -66,12 +67,12 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             bool transactionComplete = ChargeTokensForStartingAGame(_chatClient, chatUser);
             if (transactionComplete)
             {
-                _MainPlayer = chatUser;
+                MainPlayer = chatUser;
                 IsRunning = true;
                 BoxesWithOwners = new List<Box>();
                 StartingBoxes =  ShuffleBoxes();
                 _chatClient.SendMessage(
-                    $"{_MainPlayer.DisplayName} started a Deal or No Deal game! Please choose a box everyone by typing \"!dnd pick x\" ... Pick a box between numbers 1 and 15");
+                    $"{MainPlayer.DisplayName} started a Deal or No Deal game! Please choose a box everyone by typing \"!dnd pick x\" ... Pick a box between numbers 1 and 15");
 
                 GameState = DealNoDealGameState.CHOSING_STARTING_BOXES;
                 SetActionForGameState(DealNoDealGameState.CHOSING_STARTING_BOXES);
@@ -87,19 +88,19 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         {
             if (gameState == DealNoDealGameState.GAME_NOT_RUNNING)
             {
-                _automatedActionSystem.RemoveAction(ActionBeingPerformed);
+                _automatedActionSystem.RemoveAction(_actionBeingPerformed);
                 return;
             }
             //Remove all Game-actions and start a new one
-            _automatedActionSystem.RemoveAction(ActionBeingPerformed);
-            ActionBeingPerformed = _automatedActionFactory.GetIntervalAction(gameState);
-            _automatedActionSystem.AddAction(ActionBeingPerformed);
+            _automatedActionSystem.RemoveAction(_actionBeingPerformed);
+            _actionBeingPerformed = _automatedActionFactory.GetIntervalAction(gameState);
+            _automatedActionSystem.AddAction(_actionBeingPerformed);
         }
 
         public void QuitGame(IChatClient chatClient)
         {
             IsRunning = false;
-            _MainPlayer = null;
+            MainPlayer = null;
             DealOffer = 0;
             GameState = DealNoDealGameState.GAME_NOT_RUNNING;
             SetActionForGameState(DealNoDealGameState.GAME_NOT_RUNNING);
@@ -107,7 +108,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         private void SendGameAlreadyStartedMessage(IChatClient chatClient, ChatUser chatUser)
         {
             chatClient.SendMessage(
-                $"There is already a {nameof(DealNoDealGame)} running by {_MainPlayer.DisplayName}, {chatUser.DisplayName}. Wait for the game to finish!");
+                $"There is already a {nameof(DealNoDealGame)} running by {MainPlayer.DisplayName}, {chatUser.DisplayName}. Wait for the game to finish!");
         }
 
         private void SendGameNotStartedMessage(IChatClient chatClient, ChatUser chatUser)
@@ -174,79 +175,78 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         }
         public void AcceptDeal(IChatClient chatClient)
         {
-            _currencyGenerator.AddCurrencyTo(_MainPlayer.DisplayName, DealOffer);
-            chatClient.SendMessage($" {_MainPlayer.DisplayName} ACCEPTED THE OFFER!");
-            chatClient.SendMessage($"GAME OVER! {_MainPlayer.DisplayName} recieved {DealOffer} tokens!");
+            _currencyGenerator.AddCurrencyTo(MainPlayer.DisplayName, DealOffer);
+            chatClient.SendMessage($" {MainPlayer.DisplayName} ACCEPTED THE OFFER!");
+            chatClient.SendMessage($"GAME OVER! {MainPlayer.DisplayName} recieved {DealOffer} tokens!");
             DealOffer = 0;
             QuitGame(chatClient);
         }
         public void DeclineDeal(IChatClient chatClient)
         {
-            chatClient.SendMessage($"{_MainPlayer.DisplayName} declined the Deal of  {DealOffer} tokens!");
+            chatClient.SendMessage($"{MainPlayer.DisplayName} declined the Deal of  {DealOffer} tokens!");
             DealOffer = 0;
             GameState = DealNoDealGameState.PICKING_BOXES;
             SetActionForGameState(DealNoDealGameState.PICKING_BOXES);
         }
+
         public bool CheckIfGameIsWon()
         {
-            if (BoxesWithOwners.Count > 1)
+            if (BoxesWithOwners.Count != 1)
             {
                 return false;
             }
-            else if (BoxesWithOwners.Count == 1)
-            {
-                int LastTokens = BoxesWithOwners.FirstOrDefault().TokenValue;
-                _chatClient.SendMessage($"GAME FINISHED!");
-                _chatClient.SendMessage($"A LAST BOX WITH {LastTokens} TOKENS REMAINS!");
-                _chatClient.SendMessage($"{_MainPlayer.DisplayName} recieved {LastTokens} tokens! ");
-                _currencyGenerator.AddCurrencyTo(_MainPlayer.DisplayName, LastTokens);
-                QuitGame(_chatClient);
-                return true;
-            }
 
-            return false;
+            int lastTokens = BoxesWithOwners.Single().TokenValue;
+            _chatClient.SendMessage($"GAME FINISHED!");
+            _chatClient.SendMessage($"A LAST BOX WITH {lastTokens} TOKENS REMAINS!");
+            _chatClient.SendMessage($"{MainPlayer.DisplayName} recieved {lastTokens} tokens! ");
+            _currencyGenerator.AddCurrencyTo(MainPlayer.DisplayName, lastTokens);
+            QuitGame(_chatClient);
+            return true;
         }
+
         private List<Box> ShuffleBoxes()
         {
-            List<Box> ShuffledBoxes = new List<Box>();
-            List<int> PricesToShfufle = new List<int>(InitialPrices);
+            List<Box> shuffledBoxes = new List<Box>();
+            List<int> pricesToShfufle = new List<int>(InitialPrices);
             Random r = new Random();
-            int TotalBoxesCount = InitialPrices.Count;
+            int totalBoxesCount = InitialPrices.Count;
 
-            for (int i = 0; i < TotalBoxesCount; i++)
+            for (int i = 0; i < totalBoxesCount; i++)
             {
                 //get a new random with a range of left indexes
-                int indexToRemoveAt = r.Next(TotalBoxesCount - i);
-                ShuffledBoxes.Add(new Box(i, PricesToShfufle[indexToRemoveAt]));
-                PricesToShfufle.RemoveAt(indexToRemoveAt);
+                int indexToRemoveAt = r.Next(totalBoxesCount - i);
+                shuffledBoxes.Add(new Box(i, pricesToShfufle[indexToRemoveAt]));
+                pricesToShfufle.RemoveAt(indexToRemoveAt);
             }
-            return ShuffledBoxes;
+            return shuffledBoxes;
         }
-        public void PickRandomBox(string DisplayName)
+
+        public void PickRandomBox(string displayName)
         {
             Random randy = new Random();
             Box randomBox = BoxesWithOwners[randy.Next(BoxesWithOwners.Count)];
-            string boxValue = PickABox(randomBox.Owner, DisplayName);
+            // TODO: Do something with this variable or don't store it here.
+            string boxValue = PickABox(randomBox.Owner, displayName);
         }
 
-        public string PickABox(string namePicked, string DisplayName)
+        public string PickABox(string namePicked, string displayName)
         {
-            Box chosenBox = BoxesWithOwners.Find(b => b.Owner.ToLower() == namePicked.ToLower());
+            Box chosenBox = BoxesWithOwners.Find(b => b.Owner.EqualsIns(namePicked));
             if (chosenBox == null)
             {
                 _chatClient.SendMessage("That user does not hold a box, please chose another one");
                 return null;
             }
-            else
-            {
-                //OpenBox
-                _chatClient.SendMessage($"{DisplayName}, opened a box with a value of {chosenBox.TokenValue}");
-                BoxesWithOwners.Remove(chosenBox);
-                UpdateGameState();
-            }
+
+            //OpenBox
+            _chatClient.SendMessage($"{displayName}, opened a box with a value of {chosenBox.TokenValue}");
+            BoxesWithOwners.Remove(chosenBox);
+            UpdateGameState();
 
             return GetBoxValue(chosenBox.TokenValue);
         }
+
         public void PrintBoxesRemaining()
         {
             string allPrices = "Prices left: ";
@@ -289,28 +289,27 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
              * 33% chance that you will get lied.
              * The tokenvalue will either be between some values or the exact one
              */
-            string Result = "";
+            string result = "";
             Random randy = new Random();
             bool shouldLie = randy.Next(3) == 0;
-            int randomBoxValue = 0;
             if (shouldLie)
             {
                 //Lie to the user
-                randomBoxValue = BoxesWithOwners[randy.Next(BoxesWithOwners.Count)].TokenValue;
-                Result = GetAproximateValue(randomBoxValue);
+                var randomBoxValue = BoxesWithOwners[randy.Next(BoxesWithOwners.Count)].TokenValue;
+                result = GetAproximateValue(randomBoxValue);
             }
             else
             {
                 //dont lie but tell him aproximately
-                Result = GetAproximateValue(tokenValue);
+                result = GetAproximateValue(tokenValue);
             }
-            return Result;
+            return result;
         }
 
         public string GetAproximateValue(int value)
         {
             //NOTE: This just spits out a value around -20 value +20   or the value
-            string Result = "";
+            string result = "";
             Random randy = new Random();
             
             int r = randy.Next(10);
@@ -320,17 +319,18 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                 //return the exact one
                 return value.ToString();
             }
-            else
-            {
-                //return aproximate value
-                int lowerValue = value - r - randy.Next(10);
-                if (lowerValue < 0) lowerValue = 0;
 
-                int higherValue = value + r + randy.Next(10);
-                Result = "Between " + (lowerValue).ToString() + " - " + (higherValue).ToString();
+            //return aproximate value
+            int lowerValue = value - r - randy.Next(10);
+            if (lowerValue < 0)
+            {
+                lowerValue = 0;
             }
 
-            return Result;
+            int higherValue = value + r + randy.Next(10);
+            result = "Between " + (lowerValue).ToString() + " - " + (higherValue).ToString();
+
+            return result;
 
         }
     }

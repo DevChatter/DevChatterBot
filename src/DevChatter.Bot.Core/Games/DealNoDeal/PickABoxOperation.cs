@@ -38,7 +38,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                 return "";
             }
 
-            bool isMainPlayer = _dealNoDealGame._MainPlayer != eventArgs.ChatUser;
+            bool isMainPlayer = _dealNoDealGame.MainPlayer != eventArgs.ChatUser;
             string namePicked = eventArgs.Arguments[1];
             if (string.IsNullOrWhiteSpace(namePicked))
             {
