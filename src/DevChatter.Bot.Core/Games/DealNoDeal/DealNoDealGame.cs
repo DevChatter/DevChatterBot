@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
-using DevChatter.Bot.Core.Util;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevChatter.Bot.Core.Games.DealNoDeal
 {
@@ -16,7 +13,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         public bool IsRunning { get; private set; }
 
         //Configuration
-        public const UserRole ROLE_REQUIRE_TO_START = UserRole.Everyone;
+        public const UserRole ROLE_REQUIRED_TO_START = UserRole.Everyone;
         public const int SECONDS_TO_CHOSE_BOXES = 30;
         public const int TOKENS_TO_PLAY = 25;
         public const int MIN_PLAYABLE_BOXES = 5;
@@ -60,10 +57,10 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                 return;
             }
 
-            if (!chatUser.IsInThisRoleOrHigher(ROLE_REQUIRE_TO_START))
+            if (!chatUser.IsInThisRoleOrHigher(ROLE_REQUIRED_TO_START))
             {
                 _chatClient.SendMessage(
-                    $"You must be at least a {ROLE_REQUIRE_TO_START} to start a game, {chatUser.DisplayName}");
+                    $"You must be at least a {ROLE_REQUIRED_TO_START} to start a game, {chatUser.DisplayName}");
                 return;
             }
             bool transactionComplete = ChargeTokensForStartingAGame(_chatClient, chatUser);
