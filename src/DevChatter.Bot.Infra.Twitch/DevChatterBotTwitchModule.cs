@@ -23,6 +23,8 @@ namespace DevChatter.Bot.Infra.Twitch
             builder.RegisterType<TwitchChatClient>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<TwitchStreamingInfoService>().AsImplementedInterfaces().SingleInstance();
+
+            builder.RegisterType<TwitchKnownBotService>().AsImplementedInterfaces().SingleInstance();
         }
     }
 }

@@ -42,7 +42,9 @@ namespace UnitTests.Core.Automation.CurrencyUpdateTests
             const int intervalInMinutes = 1;
             var repository = new Mock<IRepository>();
             repository.Setup(x => x.List(It.IsAny<ISpecification<ChatUser>>())).Returns(new List<ChatUser>());
-            var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(repository.Object));
+            var knownBotService = new Mock<IKnownBotService>();
+            var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(),
+                new ChatUserCollection(repository.Object, knownBotService.Object));
             var fakeClock = new FakeClock();
             var currencyUpdate = new CurrencyUpdate(intervalInMinutes, currencyGenerator, fakeClock);
 
