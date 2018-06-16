@@ -23,7 +23,7 @@ namespace DevChatter.Bot.Core.Automation
             _dealNoDealGame.PrintBoxesRemaining();
             _chatClient.SendMessage($"***DEAL OFFER: {dealNoDealGame.DealOffer} TOKENS!");
             _chatClient.SendMessage(" type \"!dnd accept\" or \"!dnd decline\"  to accept or decline offer ");
-            _chatClient.SendMessage($"You have {DealNoDealGame.SECONDS_TO_CHOSE_BOXES} seconds or the deal will be automatically accepted");
+            _chatClient.SendMessage($"You have {DealNoDealGame.SECONDS_TO_CHOOSE_BOXES} seconds or the deal will be automatically accepted");
             SetNextRunTime();
         }
 
@@ -32,13 +32,13 @@ namespace DevChatter.Bot.Core.Automation
 
         public void Invoke()
         {
-            _chatClient.SendMessage($"Automatically accepting deal! {DealNoDealGame.SECONDS_TO_CHOSE_BOXES} seconds passed");
+            _chatClient.SendMessage($"Automatically accepting deal! {DealNoDealGame.SECONDS_TO_CHOOSE_BOXES} seconds passed");
             _dealNoDealGame.AcceptDeal(_chatClient);
         }
 
         private void SetNextRunTime()
         {
-            _nextRunTime = _clock.Now.AddSeconds(DealNoDealGame.SECONDS_TO_CHOSE_BOXES);
+            _nextRunTime = _clock.Now.AddSeconds(DealNoDealGame.SECONDS_TO_CHOOSE_BOXES);
         }
     }
 }

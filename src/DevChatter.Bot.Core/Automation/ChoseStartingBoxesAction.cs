@@ -22,7 +22,7 @@ namespace DevChatter.Bot.Core.Automation
             _dealNoDealGame = dealNoDealGame;
             _chatClient = chatClient;
             _clock = clock;
-            _chatClient.SendMessage($"everyone has {DealNoDealGame.SECONDS_TO_CHOSE_BOXES} seconds to choose a box!");
+            _chatClient.SendMessage($"everyone has {DealNoDealGame.SECONDS_TO_CHOOSE_BOXES} seconds to choose a box!");
             SetNextRunTime();
         }
 
@@ -42,7 +42,7 @@ namespace DevChatter.Bot.Core.Automation
 
         private void SetNextRunTime()
         {
-            _nextRunTime = _clock.Now.AddSeconds(DealNoDealGame.SECONDS_TO_CHOSE_BOXES);
+            _nextRunTime = _clock.Now.AddSeconds(DealNoDealGame.SECONDS_TO_CHOOSE_BOXES);
         }
     }
 }

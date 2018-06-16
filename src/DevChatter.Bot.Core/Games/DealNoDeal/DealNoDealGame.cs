@@ -1,11 +1,11 @@
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.Extensions;
 
 namespace DevChatter.Bot.Core.Games.DealNoDeal
 {
@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
 
         //Configuration
         public const UserRole ROLE_REQUIRED_TO_START = UserRole.Everyone;
-        public const int SECONDS_TO_CHOSE_BOXES = 30;
+        public const int SECONDS_TO_CHOOSE_BOXES = 30;
         public const int TOKENS_TO_PLAY = 25;
         public const int MIN_PLAYABLE_BOXES = 5;
         //Change these if you don't like the rewards
@@ -104,6 +104,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             GameState = DealNoDealGameState.GAME_NOT_RUNNING;
             SetActionForGameState(DealNoDealGameState.GAME_NOT_RUNNING);
         }
+
         private void SendGameAlreadyStartedMessage(IChatClient chatClient, ChatUser chatUser)
         {
             chatClient.SendMessage(
@@ -114,11 +115,13 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         {
             chatClient.SendMessage($"There's no {nameof(DealNoDealGame)} running, {chatUser.DisplayName}.");
         }
+
         private bool ChargeTokensForStartingAGame(IChatClient chatClient, ChatUser chatUser)
         {
             chatClient.SendMessage($"{TOKENS_TO_PLAY} tokens are being charged for starting a game.");
             return _currencyGenerator.RemoveCurrencyFrom(chatUser.DisplayName, TOKENS_TO_PLAY);
         }
+
         public void UpdateGameState()
         {
             if (CheckIfGameIsWon())
@@ -149,7 +152,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         private int GetADeal()
         {
             //average
-            int Result = BoxesWithOwners.Sum(b => b.TokenValue) / BoxesWithOwners.Count;
+            int result = BoxesWithOwners.Sum(b => b.TokenValue) / BoxesWithOwners.Count;
 
             //randomize offer
             Random r = new Random();
@@ -158,20 +161,21 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             //if the offer is 10. the offer would be subtracted or added either 5 or 15
             if (shouldSubtract)
             {
-                Result -= value;
+                result -= value;
             }
             else
             {
-                Result += value;
+                result += value;
             }
 
             //Ensure offer is > 0
-            if (Result <= 0)
+            if (result <= 0)
             {
-                Result = 1;
+                result = 1;
             }
-            return Result;
+            return result;
         }
+
         public void AcceptDeal(IChatClient chatClient)
         {
             _currencyGenerator.AddCurrencyTo(MainPlayer.DisplayName, DealOffer);
@@ -180,6 +184,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             DealOffer = 0;
             QuitGame(chatClient);
         }
+
         public void DeclineDeal(IChatClient chatClient)
         {
             chatClient.SendMessage($"{MainPlayer.DisplayName} declined the Deal of  {DealOffer} tokens!");
@@ -269,6 +274,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             allBoxes += $" type \"!dnd pick x\" ";
             _chatClient.SendMessage(allBoxes);
         }
+
         public void EnsureMinPlayableBoxes()
         {
             if (StartingBoxes.Count <= 0) return;
@@ -282,6 +288,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                 StartingBoxes.Remove(box);
             }
         }
+
         public string GetBoxValue(int tokenValue)
         {
             /*
@@ -330,7 +337,6 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             result = "Between " + (lowerValue).ToString() + " - " + (higherValue).ToString();
 
             return result;
-
         }
     }
 }
