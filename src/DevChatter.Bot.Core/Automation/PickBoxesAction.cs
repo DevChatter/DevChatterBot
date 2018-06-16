@@ -34,7 +34,7 @@ namespace DevChatter.Bot.Core.Automation
 
         private void SetNextRunTime()
         {
-            _nextRunTime = _clock.Now.AddSeconds(DealNoDealGame.SECONDS_TO_CHOSE_BOXES);
+            _nextRunTime = _clock.Now.AddSeconds(DealNoDealGame.SECONDS_TO_CHOOSE_BOXES);
         }
     }
 }
