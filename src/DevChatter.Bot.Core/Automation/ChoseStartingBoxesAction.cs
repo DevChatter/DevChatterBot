@@ -36,8 +36,8 @@ namespace DevChatter.Bot.Core.Automation
 
             _dealNoDealGame.EnsureMinPlayableBoxes();
             _chatClient.SendMessage("Game Started!");
-            _dealNoDealGame.GameState = DealNoDealGameState.PICKING_BOXES;
-            _dealNoDealGame.SetActionForGameState(DealNoDealGameState.PICKING_BOXES);
+            _dealNoDealGame.GameState = DealNoDealGameState.PickingBoxes;
+            _dealNoDealGame.SetActionForGameState(DealNoDealGameState.PickingBoxes);
         }
 
         private void SetNextRunTime()

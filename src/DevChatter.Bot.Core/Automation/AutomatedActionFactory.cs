@@ -19,15 +19,15 @@ namespace DevChatter.Bot.Core.Automation
         }
         public IIntervalAction GetIntervalAction(DealNoDealGameState gameState)
         {
-            if (gameState == DealNoDealGameState.CHOSING_STARTING_BOXES)
+            if (gameState == DealNoDealGameState.ChosingStartingBoxes)
             {
                 return new ChoseStartingBoxesAction(_dealNoDealGame,_chatClient,new SystemClock());
             }
-            if (gameState == DealNoDealGameState.PICKING_BOXES)
+            if (gameState == DealNoDealGameState.PickingBoxes)
             {
                 return new PickBoxesAction(_dealNoDealGame, _chatClient, new SystemClock());
             }
-            if (gameState == DealNoDealGameState.MAKING_A_DEAL)
+            if (gameState == DealNoDealGameState.MakingADeal)
             {
                 return new OfferDealAction(_dealNoDealGame, _chatClient, new SystemClock());
             }

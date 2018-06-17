@@ -1,28 +1,23 @@
-using System.Collections.Generic;
-using System.Linq;
 using DevChatter.Bot.Core.Commands.Operations;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
+using System.Collections.Generic;
 
 namespace DevChatter.Bot.Core.Games.DealNoDeal
 {
-    /*
-     * Picking starting boxes and the MainPlayer choosing a box are the same operation,
-     * based on CHOSING_STARTING_BOXES or PICKING_BOXES the proper operations are performed
-     * the OperandWords are the same !dnd pick x
-     */
+    /// <summary>
+    ///  Picking starting boxes and the MainPlayer choosing a box are the same operation,
+    ///  based on CHOSING_STARTING_BOXES or PICKING_BOXES the proper operations are performed
+    ///  the OperandWords are the same !dnd pick x
+    /// </summary>
     public class PickABoxOperation : BaseCommandOperation
     {
-        private DealNoDealGame _dealNoDealGame;
-        private IChatClient _chatClient;
-        private ICurrencyGenerator _currencyGenerator;
+        private readonly DealNoDealGame _dealNoDealGame;
+        private readonly IChatClient _chatClient;
 
 
-        public PickABoxOperation(DealNoDealGame dealNoDealGame, IChatClient chatClient,
-            ICurrencyGenerator currencyGenerator)
+        public PickABoxOperation(DealNoDealGame dealNoDealGame, IChatClient chatClient)
         {
-            _currencyGenerator = currencyGenerator;
             _chatClient = chatClient;
             _dealNoDealGame = dealNoDealGame;
         }
@@ -45,7 +40,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                 return "";
             }
 
-            if (_dealNoDealGame.GameState == DealNoDealGameState.CHOSING_STARTING_BOXES)
+            if (_dealNoDealGame.GameState == DealNoDealGameState.ChosingStartingBoxes)
             {
                 //Note: Only other players can choose a starting box
                 if (!isMainPlayer)
@@ -73,7 +68,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                     }
                 }
             }
-            if (_dealNoDealGame.GameState == DealNoDealGameState.PICKING_BOXES)
+            if (_dealNoDealGame.GameState == DealNoDealGameState.PickingBoxes)
             {
                 if (isMainPlayer)
                 {

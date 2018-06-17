@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace DevChatter.Bot.Core.Games.DealNoDeal
 {
     public class Box
@@ -12,12 +8,12 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             TokenValue = value;
             Owner = owner;
         }
+
         public Box(int id, int value)
         {
             Id = id;
             TokenValue = value;
         }
-
 
         public int Id { get; set; }
         public int TokenValue { get; set; }

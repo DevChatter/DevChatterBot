@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using DevChatter.Bot.Core.Commands.Operations;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
+using System.Collections.Generic;
 
 namespace DevChatter.Bot.Core.Games.DealNoDeal
 {
     public class MakeADealOperation : BaseCommandOperation
     {
-        private DealNoDealGame _dealNoDealGame;
-        private IChatClient _chatClient;
+        private readonly DealNoDealGame _dealNoDealGame;
+        private readonly IChatClient _chatClient;
 
         public MakeADealOperation(DealNoDealGame dealNoDealGame, IChatClient chatClient)
         {
@@ -36,7 +33,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                 _chatClient.SendMessage(HelpText);
                 return null;
             }
-            if (_dealNoDealGame.GameState == DealNoDealGameState.MAKING_A_DEAL)
+            if (_dealNoDealGame.GameState == DealNoDealGameState.MakingADeal)
             {
                 //Note: Only other players can choose a starting box
                 if (isMainPlayer)
@@ -53,7 +50,8 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                        _dealNoDealGame.AcceptDeal(_chatClient);
                         return "Deal Accepted";
                     }
-                    else if(pick == "decline")
+
+                    if(pick == "decline")
                     {
                         _dealNoDealGame.DeclineDeal(_chatClient);
                         return "Deal Declined";

@@ -28,7 +28,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         public List<Box> StartingBoxes;
         public List<Box> BoxesWithOwners;
 
-        public DealNoDealGameState GameState = DealNoDealGameState.GAME_NOT_RUNNING;
+        public DealNoDealGameState GameState = DealNoDealGameState.GameNotRunning;
         private IIntervalAction _actionBeingPerformed;
 
         public ChatUser MainPlayer;
@@ -73,8 +73,8 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
                 _chatClient.SendMessage(
                     $"{MainPlayer.DisplayName} started a Deal or No Deal game! Please choose a box everyone by typing \"!dnd pick x\" ... Pick a box between numbers 1 and 15");
 
-                GameState = DealNoDealGameState.CHOSING_STARTING_BOXES;
-                SetActionForGameState(DealNoDealGameState.CHOSING_STARTING_BOXES);
+                GameState = DealNoDealGameState.ChosingStartingBoxes;
+                SetActionForGameState(DealNoDealGameState.ChosingStartingBoxes);
             }
             else
             {
@@ -85,7 +85,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
 
         public void SetActionForGameState(DealNoDealGameState gameState)
         {
-            if (gameState == DealNoDealGameState.GAME_NOT_RUNNING)
+            if (gameState == DealNoDealGameState.GameNotRunning)
             {
                 _automatedActionSystem.RemoveAction(_actionBeingPerformed);
                 return;
@@ -101,8 +101,8 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             IsRunning = false;
             MainPlayer = null;
             DealOffer = 0;
-            GameState = DealNoDealGameState.GAME_NOT_RUNNING;
-            SetActionForGameState(DealNoDealGameState.GAME_NOT_RUNNING);
+            GameState = DealNoDealGameState.GameNotRunning;
+            SetActionForGameState(DealNoDealGameState.GameNotRunning);
         }
 
         private void SendGameAlreadyStartedMessage(IChatClient chatClient, ChatUser chatUser)
@@ -137,14 +137,14 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             if (shouldOfferDeal)
             {
                 DealOffer = GetADeal();
-                GameState = DealNoDealGameState.MAKING_A_DEAL;
-                SetActionForGameState(DealNoDealGameState.MAKING_A_DEAL);
+                GameState = DealNoDealGameState.MakingADeal;
+                SetActionForGameState(DealNoDealGameState.MakingADeal);
             }
             else
             {
                 //Restart timer
-                GameState = DealNoDealGameState.PICKING_BOXES;
-                SetActionForGameState(DealNoDealGameState.PICKING_BOXES);
+                GameState = DealNoDealGameState.PickingBoxes;
+                SetActionForGameState(DealNoDealGameState.PickingBoxes);
             }
         }
 
@@ -189,8 +189,8 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         {
             chatClient.SendMessage($"{MainPlayer.DisplayName} declined the Deal of  {DealOffer} tokens!");
             DealOffer = 0;
-            GameState = DealNoDealGameState.PICKING_BOXES;
-            SetActionForGameState(DealNoDealGameState.PICKING_BOXES);
+            GameState = DealNoDealGameState.PickingBoxes;
+            SetActionForGameState(DealNoDealGameState.PickingBoxes);
         }
 
         public bool CheckIfGameIsWon()

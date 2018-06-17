@@ -1,14 +1,11 @@
 using DevChatter.Bot.Core.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevChatter.Bot.Core.Games.DealNoDeal
 {
@@ -17,21 +14,19 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         private readonly DealNoDealGame _dealNoDealGame;
         public IGame Game => _dealNoDealGame;
 
-        public DNDCommand(IRepository repository,  DealNoDealGame dealNoDealGame, IChatClient chatClient, ICurrencyGenerator currencyGenerator) : base(repository, UserRole.Everyone)
+        public DNDCommand(IRepository repository,  DealNoDealGame dealNoDealGame, IChatClient chatClient) : base(repository, UserRole.Everyone)
         {
             _dealNoDealGame = dealNoDealGame;
             _chatClient = chatClient;
-            _currencyGenerator = currencyGenerator;
             HelpText =
                 "Use \"!dnd\" to start a game. Use \"!dnd pick x\" to pick/guess a box. Use \"!dnd accept\" or \"!dnd decline\"  to accept or decline offers .";
         }
         private List<ICommandOperation> _operations;
-        private IChatClient _chatClient;
-        private ICurrencyGenerator _currencyGenerator;
+        private readonly IChatClient _chatClient;
 
         public List<ICommandOperation> Operations => _operations ?? (_operations = new List<ICommandOperation>
         {
-           new PickABoxOperation(_dealNoDealGame,_chatClient,_currencyGenerator),
+           new PickABoxOperation(_dealNoDealGame,_chatClient),
            new MakeADealOperation(_dealNoDealGame,_chatClient)
         });
 
