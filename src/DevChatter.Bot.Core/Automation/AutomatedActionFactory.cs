@@ -17,23 +17,28 @@ namespace DevChatter.Bot.Core.Automation
             _dealNoDealGame = dealNoDealGame;
             _chatClient = chatClient;
         }
+
         public IIntervalAction GetIntervalAction(DealNoDealGameState gameState)
         {
-            if (gameState == DealNoDealGameState.ChosingStartingBoxes)
+            switch (gameState)
             {
-                return new ChoseStartingBoxesAction(_dealNoDealGame,_chatClient);
+                case DealNoDealGameState.ChosingStartingBoxes:
+                {
+                    return new ChoseStartingBoxesAction(_dealNoDealGame, _chatClient);
+                }
+                case DealNoDealGameState.PickingBoxes:
+                {
+                    return new PickBoxesAction(_dealNoDealGame, _chatClient);
+                }
+                case DealNoDealGameState.MakingADeal:
+                {
+                    return new OfferDealAction(_dealNoDealGame, _chatClient);
+                }
+                default:
+                {
+                    return null;
+                }
             }
-            if (gameState == DealNoDealGameState.PickingBoxes)
-            {
-                return new PickBoxesAction(_dealNoDealGame, _chatClient);
-            }
-            if (gameState == DealNoDealGameState.MakingADeal)
-            {
-                return new OfferDealAction(_dealNoDealGame, _chatClient);
-            }
-
-            return null;
         }
-
     }
 }
