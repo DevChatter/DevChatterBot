@@ -28,7 +28,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             get
             {
                 return new string(
-                    Password.Select(x =>
+                    Password.ToLowerInvariant().Select(x =>
                         {
                             var guessedLetters = _guessedLetters.Select(g => g.Letter);
                             return guessedLetters.Contains(x.ToString()) ? x : '*';
@@ -116,7 +116,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             }
 
             _guessedLetters.Add(new HangmanGuess(letterToAsk, chatUser));
-            if (Password.Contains(letterToAsk))
+            if (Password.ToLowerInvariant().Contains(letterToAsk))
             {
                 if (Password == MaskedPassword)
                 {
