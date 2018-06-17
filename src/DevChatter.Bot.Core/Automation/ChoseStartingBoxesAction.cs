@@ -17,11 +17,11 @@ namespace DevChatter.Bot.Core.Automation
         private DealNoDealGame _dealNoDealGame;
 
 
-        public ChoseStartingBoxesAction(DealNoDealGame dealNoDealGame, IChatClient chatClient, IClock clock)
+        public ChoseStartingBoxesAction(DealNoDealGame dealNoDealGame, IChatClient chatClient)
         {
             _dealNoDealGame = dealNoDealGame;
             _chatClient = chatClient;
-            _clock = clock;
+            _clock = new SystemClock();
             _chatClient.SendMessage($"everyone has {DealNoDealGame.SECONDS_TO_CHOOSE_BOXES} seconds to choose a box!");
             SetNextRunTime();
         }

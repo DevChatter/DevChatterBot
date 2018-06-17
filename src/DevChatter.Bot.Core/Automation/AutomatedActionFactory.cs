@@ -21,15 +21,15 @@ namespace DevChatter.Bot.Core.Automation
         {
             if (gameState == DealNoDealGameState.ChosingStartingBoxes)
             {
-                return new ChoseStartingBoxesAction(_dealNoDealGame,_chatClient,new SystemClock());
+                return new ChoseStartingBoxesAction(_dealNoDealGame,_chatClient);
             }
             if (gameState == DealNoDealGameState.PickingBoxes)
             {
-                return new PickBoxesAction(_dealNoDealGame, _chatClient, new SystemClock());
+                return new PickBoxesAction(_dealNoDealGame, _chatClient);
             }
             if (gameState == DealNoDealGameState.MakingADeal)
             {
-                return new OfferDealAction(_dealNoDealGame, _chatClient, new SystemClock());
+                return new OfferDealAction(_dealNoDealGame, _chatClient);
             }
 
             return null;

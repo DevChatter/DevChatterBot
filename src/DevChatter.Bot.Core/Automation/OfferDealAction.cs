@@ -15,11 +15,11 @@ namespace DevChatter.Bot.Core.Automation
         private DealNoDealGame _dealNoDealGame;
 
 
-        public OfferDealAction(DealNoDealGame dealNoDealGame, IChatClient chatClient, IClock clock)
+        public OfferDealAction(DealNoDealGame dealNoDealGame, IChatClient chatClient)
         {
             _dealNoDealGame = dealNoDealGame;
             _chatClient = chatClient;
-            _clock = clock;
+            _clock = new SystemClock();
             _dealNoDealGame.PrintBoxesRemaining();
             _chatClient.SendMessage($"***DEAL OFFER: {dealNoDealGame.DealOffer} TOKENS!");
             _chatClient.SendMessage(" type \"!dnd accept\" or \"!dnd decline\"  to accept or decline offer ");
