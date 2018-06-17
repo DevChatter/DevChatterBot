@@ -4,7 +4,7 @@ namespace DevChatter.Bot.Infra.Twitch
     {
         public string TwitchUsername { get; set; }
         public string TwitchChannelId { get; set; }
-        public string TwitchBotUserID { get; set; }
+        public string TwitchBotUserId { get; set; }
         public string TwitchBotOAuth { get; set; }
         public string TwitchChannelOAuth { get; set; }
         public string TwitchChannel { get; set; }
