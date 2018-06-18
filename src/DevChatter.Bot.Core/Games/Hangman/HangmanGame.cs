@@ -21,14 +21,14 @@ namespace DevChatter.Bot.Core.Games.Hangman
         private string _password;
 
         public string Password =>
-            _password ?? (_password = _repository.List<HangmanWord>().OrderBy(x => Guid.NewGuid()).FirstOrDefault().Word);
+            _password ?? (_password = _repository.List<HangmanWord>().OrderBy(x => Guid.NewGuid()).FirstOrDefault().Word.ToLowerInvariant());
 
         public string MaskedPassword
         {
             get
             {
                 return new string(
-                    Password.ToLowerInvariant().Select(x =>
+                    Password.Select(x =>
                         {
                             var guessedLetters = _guessedLetters.Select(g => g.Letter);
                             return guessedLetters.Contains(x.ToString()) ? x : '*';
@@ -116,7 +116,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             }
 
             _guessedLetters.Add(new HangmanGuess(letterToAsk, chatUser));
-            if (Password.ToLowerInvariant().Contains(letterToAsk))
+            if (Password.Contains(letterToAsk))
             {
                 if (Password == MaskedPassword)
                 {
