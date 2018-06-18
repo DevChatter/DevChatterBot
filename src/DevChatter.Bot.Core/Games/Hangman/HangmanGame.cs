@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         private string _password;
 
         public string Password =>
-            _password ?? (_password = _repository.List<HangmanWord>().OrderBy(x => Guid.NewGuid()).FirstOrDefault().Word);
+            _password ?? (_password = _repository.List<HangmanWord>().OrderBy(x => Guid.NewGuid()).FirstOrDefault().Word.ToLowerInvariant());
 
         public string MaskedPassword
         {
