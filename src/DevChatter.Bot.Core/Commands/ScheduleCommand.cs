@@ -28,7 +28,7 @@ namespace DevChatter.Bot.Core.Commands
             {
                 if (!int.TryParse(eventArgs?.Arguments?.ElementAtOrDefault(0), out int chatUserOffset) || chatUserOffset > 18 || chatUserOffset < -18)
                 {
-                    chatClient.SendMessage("UTC offset must be a whole number between -18 and +18");
+                    chatClient.SendMessage(Messages.OUT_OF_RANGE);
                     return;
                 }
                 offset = chatUserOffset;
@@ -46,6 +46,11 @@ namespace DevChatter.Bot.Core.Commands
         private static string GetTimeDisplay(Instant instant, DateTimeZone timeZone)
         {
             return $"{instant.InZone(timeZone).DayOfWeek}s at {instant.InZone(timeZone).TimeOfDay:h:mm tt}";
+        }
+
+        public static class Messages
+        {
+            public const string OUT_OF_RANGE = "UTC offset must be a whole number between -18 and +18";
         }
     }
 }
