@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Infra.Twitch
 
         public async Task<TimeSpan?> GetUptimeAsync()
         {
-            return await _twitchApi.Streams.v5.GetUptimeAsync(_twitchClientSettings.TwitchChannelID);
+            return await _twitchApi.Streams.v5.GetUptimeAsync(_twitchClientSettings.TwitchChannelId);
         }
     }
 }
