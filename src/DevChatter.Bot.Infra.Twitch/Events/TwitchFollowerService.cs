@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
         private UserFollow[] _userFollows;
 
         private IEnumerable<UserFollow> UserFollows => _userFollows
-                    ?? (_userFollows = _twitchApi.Users.v5.GetUserFollowsAsync(_settings.TwitchChannelID).Result.Follows);
+                    ?? (_userFollows = _twitchApi.Users.v5.GetUserFollowsAsync(_settings.TwitchChannelId).Result.Follows);
 
         public TwitchFollowerService(ITwitchAPI twitchApi, TwitchClientSettings settings)
         {
@@ -31,7 +31,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
 
             _followerService = new FollowerService(twitchApi);
 
-            _followerService.SetChannelByChannelId(settings.TwitchChannelID);
+            _followerService.SetChannelByChannelId(settings.TwitchChannelId);
 
             _followerService.StartService().Wait();
 
