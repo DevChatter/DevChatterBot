@@ -19,6 +19,7 @@ using DevChatter.Bot.Core.Util;
 using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.Twitch;
 using DevChatter.Bot.Infra.Twitch.Events;
+using DevChatter.Bot.Web.Extensions;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -103,7 +104,7 @@ namespace DevChatter.Bot.Web
             services.AddSingleton(typeof(IList<>), typeof(List<>));
             services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
 
-            SetUpSimpleCommands(services, repository);
+            services.AddSimpleCommandsFromRepository(repository);
 
             services.AddSingleton<IBotCommand, HelpCommand>(); // TODO: make these work
             services.AddSingleton<IBotCommand, CommandsCommand>(); // TODO: make these work
@@ -145,16 +146,6 @@ namespace DevChatter.Bot.Web
             services.AddHangfire(cfg => cfg.UseSqlServerStorage(fullConfig.DatabaseConnectionString));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-        }
-
-        private void SetUpSimpleCommands(IServiceCollection services, IRepository repository)
-        {
-            List<SimpleCommand> simpleCommands = repository.List(CommandPolicy.All());
-
-            foreach (SimpleCommand simpleCommand in simpleCommands)
-            {
-                services.AddSingleton<IBotCommand>(simpleCommand);
-            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
