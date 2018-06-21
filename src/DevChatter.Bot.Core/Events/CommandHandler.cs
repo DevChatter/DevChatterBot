@@ -70,6 +70,14 @@ namespace DevChatter.Bot.Core.Events
             DoTheThing(e, chatClient, botCommand);
         }
 
+        public void SetUpSimpleCommands(IList<SimpleCommand> simpleCommands)
+        {
+            foreach (SimpleCommand simpleCommand in simpleCommands)
+            {
+                _commandMessages.Add(simpleCommand);
+            }
+        }
+
         private void DoTheThing(CommandReceivedEventArgs e, IChatClient chatClient, IBotCommand botCommand)
         {
             CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient);

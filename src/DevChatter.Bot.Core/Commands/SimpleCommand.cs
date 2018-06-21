@@ -19,7 +19,8 @@ namespace DevChatter.Bot.Core.Commands
         {
         }
 
-        public SimpleCommand(string commandText, string staticResponse, UserRole roleRequired = UserRole.Everyone)
+        public SimpleCommand(string commandText, string staticResponse,
+            UserRole roleRequired = UserRole.Everyone)
         {
             StaticResponse = staticResponse;
             RoleRequired = roleRequired;
