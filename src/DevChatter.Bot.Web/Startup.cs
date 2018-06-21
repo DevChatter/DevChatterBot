@@ -6,6 +6,7 @@ using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Games.Hangman;
 using DevChatter.Bot.Core.Games.Heist;
@@ -102,6 +103,8 @@ namespace DevChatter.Bot.Web
             services.AddSingleton(typeof(IList<>), typeof(List<>));
             services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
 
+            SetUpSimpleCommands(services, repository);
+
             services.AddSingleton<IBotCommand, HelpCommand>(); // TODO: make these work
             services.AddSingleton<IBotCommand, CommandsCommand>(); // TODO: make these work
 
@@ -142,6 +145,16 @@ namespace DevChatter.Bot.Web
             services.AddHangfire(cfg => cfg.UseSqlServerStorage(fullConfig.DatabaseConnectionString));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        }
+
+        private void SetUpSimpleCommands(IServiceCollection services, IRepository repository)
+        {
+            List<SimpleCommand> simpleCommands = repository.List(CommandPolicy.All());
+
+            foreach (SimpleCommand simpleCommand in simpleCommands)
+            {
+                services.AddSingleton<IBotCommand>(simpleCommand);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

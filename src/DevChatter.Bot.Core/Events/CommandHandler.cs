@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Core.Events
     {
         private readonly IRepository _repository;
         private readonly ICommandUsageTracker _usageTracker;
-        private readonly IList<IBotCommand> _commandMessages;
+        private readonly CommandList _commandMessages;
         private readonly ILoggerAdapter<CommandHandler> _logger;
 
         public CommandHandler(IRepository repository, ICommandUsageTracker usageTracker,
@@ -68,14 +68,6 @@ namespace DevChatter.Bot.Core.Events
             }
 
             DoTheThing(e, chatClient, botCommand);
-        }
-
-        public void SetUpSimpleCommands(IList<SimpleCommand> simpleCommands)
-        {
-            foreach (SimpleCommand simpleCommand in simpleCommands)
-            {
-                _commandMessages.Add(simpleCommand);
-            }
         }
 
         private void DoTheThing(CommandReceivedEventArgs e, IChatClient chatClient, IBotCommand botCommand)

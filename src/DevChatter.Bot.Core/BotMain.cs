@@ -41,26 +41,10 @@ namespace DevChatter.Bot.Core
         {
             ScheduleAutomatedMessages();
 
-            SetUpSimpleCommands();
-
             ConnectChatClients();
 
             _followableSystem.HandleFollowerNotifications();
             await Task.Delay(1);
-        }
-
-        private void SetUpSimpleCommands()
-        {
-            if (_areSimpleCommandsSetUp)
-            {
-                return;
-            }
-
-            List<SimpleCommand> simpleCommands = _repository.List(CommandPolicy.All());
-
-            _commandHandler.SetUpSimpleCommands(simpleCommands);
-
-            _areSimpleCommandsSetUp = true;
         }
 
         public async Task Stop()
