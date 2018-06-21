@@ -1,16 +1,14 @@
-using System;
 using DevChatter.Bot.Core.Automation;
+using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using DevChatter.Bot.Core.Commands;
-using DevChatter.Bot.Core.Data.Specifications;
 
 namespace DevChatter.Bot.Core
 {
@@ -22,8 +20,6 @@ namespace DevChatter.Bot.Core
         private readonly SubscriberHandler _subscriberHandler;
         private readonly IFollowableSystem _followableSystem; // This will eventually be a list of these
         private readonly IAutomatedActionSystem _automatedActionSystem;
-        private CancellationTokenSource _stopRequestSource;
-        private readonly int _refreshInterval = 1000; //the milliseconds the bot waits before checking for new messages
         private bool _areSimpleCommandsSetUp = false;
 
         public BotMain(IList<IChatClient> chatClients,
@@ -69,16 +65,9 @@ namespace DevChatter.Bot.Core
 
         public async Task Stop()
         {
-            StopLoop();
-
             _followableSystem.StopHandlingNotifications();
 
             await DisconnectChatClients();
-        }
-
-        private void StopLoop()
-        {
-            _stopRequestSource.Cancel();
         }
 
         private void ScheduleAutomatedMessages()
