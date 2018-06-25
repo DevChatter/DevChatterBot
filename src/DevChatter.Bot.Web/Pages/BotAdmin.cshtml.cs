@@ -1,14 +1,15 @@
-using System.ComponentModel;
-using System.Linq;
 using DevChatter.Bot.Core;
 using Hangfire;
 using Hangfire.Server;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Linq;
 
 namespace DevChatter.Bot.Web.Pages
 {
     public class BotAdminModel : PageModel
     {
+        public string Message { get; set; }
+
         public void OnGet()
         {
 
@@ -25,8 +26,6 @@ namespace DevChatter.Bot.Web.Pages
                 BackgroundJob.Enqueue<BotWorker>(bw => bw.Start());
             }
         }
-
-        public string Message { get; set; }
 
         public class BotWorker : Worker
         {
