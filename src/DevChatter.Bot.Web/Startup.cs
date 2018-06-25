@@ -111,17 +111,6 @@ namespace DevChatter.Bot.Web
 
             services.AddSingleton(provider => new CommandList(provider.GetServices<IBotCommand>().ToList()));
 
-            //builder.Register(ctx => new HelpCommand(ctx.Resolve<IRepository>()))
-            //    .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
-            //    .AsImplementedInterfaces();
-            //builder.Register(ctx => new CommandsCommand(ctx.Resolve<IRepository>()))
-            //    .OnActivated(e => e.Instance.AllCommands = e.Context.Resolve<CommandList>())
-            //    .AsImplementedInterfaces();
-
-            //builder.Register(ctx => new CommandList(ctx.Resolve<IList<IBotCommand>>()))
-            //    .AsSelf()
-            //    .SingleInstance();
-
             services.AddSingleton<ICommandUsageTracker, CommandCooldownTracker>();
             services.AddSingleton<ICommandHandler, CommandHandler>();
             services.AddSingleton<SubscriberHandler>();
