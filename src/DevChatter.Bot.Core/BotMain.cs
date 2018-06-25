@@ -44,7 +44,7 @@ namespace DevChatter.Bot.Core
             ConnectChatClients();
 
             _followableSystem.HandleFollowerNotifications();
-            await Task.Delay(1);
+            await Task.CompletedTask;
         }
 
         public async Task Stop()
