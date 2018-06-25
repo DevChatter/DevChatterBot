@@ -53,7 +53,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
             var joinWarning = new DelayedMessageAction(30, "You only have 30 seconds left to join the quiz game! Type \"!quiz join\" to join the game!", chatClient, "QuizGameJoinWarning");
             _automatedActionSystem.AddAction(joinWarning);
 
-            var startAskingQuestions = new OneTimeCallBackAction(60, () => StartAskingQuestions(chatClient), "QuizQuesitonStart");
+            var startAskingQuestions = new OneTimeCallBackAction(60, () => StartAskingQuestions(chatClient), "QuizQuestionStart");
             _automatedActionSystem.AddAction(startAskingQuestions);
         }
 
