@@ -8,6 +8,8 @@ using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Games;
+using DevChatter.Bot.Core.Games.DealNoDeal;
 using DevChatter.Bot.Core.Games.Hangman;
 using DevChatter.Bot.Core.Games.Heist;
 using DevChatter.Bot.Core.Games.Quiz;
@@ -67,6 +69,9 @@ namespace DevChatter.Bot.Web
             services.AddSingleton<ILoggerFactory,LoggerFactory>();
 
             IRepository repository = SetUpDatabase.SetUpRepository(fullConfig.DatabaseConnectionString);
+
+            services.AddSingleton<IBotCommand, DNDCommand>();
+            services.AddSingleton<DealNoDealGame>();
 
             services.AddSingleton(repository);
 

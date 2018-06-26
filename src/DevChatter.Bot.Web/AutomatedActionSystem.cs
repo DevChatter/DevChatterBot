@@ -37,7 +37,8 @@ namespace DevChatter.Bot.Web
                     RecurringJob.AddOrUpdate(action, Cron.MinuteInterval(currencyUpdate.IntervalInMinutes));
                     break;
                 case DelayedMessageAction delayedMessageAction:
-                    BackgroundJob.Schedule(action, delayedMessageAction.DelayTimeSpan);
+                    BackgroundJob.Schedule(() => InvokeDelayedMessageAction(delayedMessageAction.Message),
+                        delayedMessageAction.DelayTimeSpan);
                     break;
                 case OneTimeCallBackAction oneTimeCallBackAction:
                     BackgroundJob.Schedule(action, oneTimeCallBackAction.DelayTimeSpan);
@@ -46,6 +47,14 @@ namespace DevChatter.Bot.Web
                     RecurringJob.AddOrUpdate(() => InvokeAutomatedMessage(automatedMessage.Name),
                         Cron.MinuteInterval(automatedMessage.IntervalInMinutes));
                     break;
+            }
+        }
+
+        public void InvokeDelayedMessageAction(string message)
+        {
+            foreach (IChatClient chatClient in _chatClients)
+            {
+                chatClient.SendMessage(message);
             }
         }
 

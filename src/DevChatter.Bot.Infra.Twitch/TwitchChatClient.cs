@@ -36,7 +36,7 @@ namespace DevChatter.Bot.Infra.Twitch
             _logger = logger;
             var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchBotOAuth);
             _twitchClient = new TwitchClient();
-            _twitchClient.Initialize(credentials, channel:settings.TwitchChannel);
+            _twitchClient.Initialize(credentials, channel: settings.TwitchChannel);
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
             _twitchClient.OnNewSubscriber += NewSubscriber;
             _twitchClient.OnUserJoined += TwitchClientOnOnUserJoined;
@@ -74,6 +74,7 @@ namespace DevChatter.Bot.Infra.Twitch
 
         private void TwitchClientConnected(object sender, OnConnectedArgs onConnectedArgs)
         {
+
             _logger.LogInformation($"{nameof(TwitchChatClient)} connected");
             _twitchClient.OnConnected -= TwitchClientConnected;
 
