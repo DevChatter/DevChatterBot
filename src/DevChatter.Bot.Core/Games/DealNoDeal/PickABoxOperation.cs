@@ -22,7 +22,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             _dealNoDealGame = dealNoDealGame;
         }
 
-        public override List<string> OperandWords { get;  } = new List<string>(){"pick"};
+        public override List<string> OperandWords { get; } = new List<string>(){ "pick", "pcik", "pikc", "ipck" };
         public override string HelpText { get;  } =
             "Use \"!dnd pick x\" to pick/guess a box.";
 
