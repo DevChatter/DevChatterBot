@@ -70,7 +70,7 @@ namespace DevChatter.Bot.Web
 
             IRepository repository = SetUpDatabase.SetUpRepository(fullConfig.DatabaseConnectionString);
 
-            services.AddSingleton<IGameCommand, DNDCommand>();
+            services.AddSingleton<IBotCommand, DNDCommand>();
             services.AddSingleton<DealNoDealGame>();
 
             services.AddSingleton(repository);
