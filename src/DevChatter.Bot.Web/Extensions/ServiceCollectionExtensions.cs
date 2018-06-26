@@ -1,9 +1,11 @@
-using System;
-using System.Collections.Generic;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Specifications;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
+using DevChatter.Bot.Core.Events;
 
 namespace DevChatter.Bot.Web.Extensions
 {
@@ -19,6 +21,50 @@ namespace DevChatter.Bot.Web.Extensions
             {
                 services.AddSingleton<IBotCommand>(simpleCommand);
             }
+
+            return services;
+        }
+
+        /// <summary>
+        /// Registering the commands for adding, removing, checking, and managing tokens.
+        /// </summary>
+        public static IServiceCollection AddCurrencyCommands(this IServiceCollection services)
+        {
+            services.AddSingleton<ICurrencyGenerator, CurrencyGenerator>();
+            services.AddSingleton<IBotCommand, TaxCommand>();
+            services.AddSingleton<IBotCommand, GiveCommand>();
+            services.AddSingleton<IBotCommand, CoinsCommand>();
+            services.AddSingleton<IBotCommand, BonusCommand>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Register commands dealing with the stream, shout outs, lists of users and quotes, etc.
+        /// </summary>
+        public static IServiceCollection AddStreamMetaCommands(this IServiceCollection services)
+        {
+            services.AddSingleton<IBotCommand, TopCommand>();
+            services.AddSingleton<IBotCommand, UptimeCommand>();
+            services.AddSingleton<IBotCommand, StreamsCommand>();
+            services.AddSingleton<IBotCommand, ScheduleCommand>();
+            services.AddSingleton<IBotCommand, ShoutOutCommand>();
+            services.AddSingleton<IBotCommand, QuoteCommand>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddCommandSystem(this IServiceCollection services)
+        {
+            services.AddSingleton<IBotCommand, AliasCommand>();
+            services.AddSingleton<IBotCommand, HelpCommand>();
+            services.AddSingleton<IBotCommand, CommandsCommand>();
+
+            services.AddSingleton(p => new CommandList(p.GetServices<IBotCommand>().ToList()));
+
+            services.AddSingleton<ICommandUsageTracker, CommandCooldownTracker>();
+            services.AddSingleton<ICommandHandler, CommandHandler>();
+
 
             return services;
         }

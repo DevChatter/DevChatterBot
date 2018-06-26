@@ -75,56 +75,25 @@ namespace DevChatter.Bot.Web
 
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             services.AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
+            services.AddSingleton<ISettingsFactory, SettingsFactory>();
 
             services.AddSingleton<IChatUserCollection, ChatUserCollection>();
-            services.AddSingleton<ICurrencyGenerator, CurrencyGenerator>();
             services.AddSingleton<IAutomatedActionSystem, HangfireAutomationSystem>();
-            services.AddSingleton<ISettingsFactory, SettingsFactory>();
-            services.AddSingleton<IBotCommand, RouletteCommand>();
-            services.AddSingleton<RockPaperScissorsGame>();
-            services.AddSingleton<IBotCommand, RockPaperScissorsCommand>();
-            services.AddSingleton<IBotCommand, HeistCommand>();
-            services.AddSingleton<HeistGame>();
-            services.AddSingleton<IBotCommand, QuizCommand>();
-            services.AddSingleton<QuizGame>();
 
-            services.AddSingleton<HangmanGame>();
-            services.AddSingleton<IBotCommand, HangmanCommand>();
-            services.AddSingleton<IBotCommand, TopCommand>();
-            services.AddSingleton<IBotCommand, UptimeCommand>();
-            services.AddSingleton<IBotCommand, TaxCommand>();
-            services.AddSingleton<IBotCommand, GiveCommand>();
-            services.AddSingleton<IBotCommand, CoinsCommand>();
-            services.AddSingleton<IBotCommand, BonusCommand>();
-            services.AddSingleton<IBotCommand, StreamsCommand>();
-            services.AddSingleton<IBotCommand, ShoutOutCommand>();
-            services.AddSingleton<IBotCommand, QuoteCommand>();
-            services.AddSingleton<IBotCommand, AliasCommand>();
-            services.AddSingleton<IBotCommand, ScheduleCommand>();
             services.AddSingleton(typeof(IList<>), typeof(List<>));
             services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
 
+            services.AddAllGames();
+
+            services.AddStreamMetaCommands();
+
+            services.AddCurrencyCommands();
+
             services.AddSimpleCommandsFromRepository(repository);
 
-            services.AddSingleton<IBotCommand, HelpCommand>(); // TODO: make these work
-            services.AddSingleton<IBotCommand, CommandsCommand>(); // TODO: make these work
+            services.AddCommandSystem();
 
-            services.AddSingleton(provider => new CommandList(provider.GetServices<IBotCommand>().ToList()));
-
-            services.AddSingleton<ICommandUsageTracker, CommandCooldownTracker>();
-            services.AddSingleton<ICommandHandler, CommandHandler>();
-            services.AddSingleton<SubscriberHandler>();
-            services.AddSingleton<IFollowableSystem, FollowableSystem>();
-            services.AddSingleton<IFollowerService, TwitchFollowerService>();
-
-            var api = new TwitchAPI();
-            api.Settings.ClientId = fullConfig.TwitchClientSettings.TwitchClientId;
-            api.Settings.AccessToken = fullConfig.TwitchClientSettings.TwitchChannelOAuth;
-            services.AddSingleton<ITwitchAPI>(api);
-
-            services.AddSingleton<IChatClient, TwitchChatClient>();
-
-            services.AddSingleton<IStreamingInfoService, TwitchStreamingInfoService>();
+            services.AddTwitchLibConnection(fullConfig.TwitchClientSettings);
 
             services.AddSingleton<BotMain>();
 
