@@ -26,6 +26,7 @@ namespace DevChatter.Bot.Core.Automation
             SetNextRunTime();
         }
 
+        public string Name { get; } = nameof(ChoseStartingBoxesAction);
         public bool IsTimeToRun() => _clock.Now >= _nextRunTime;
 
         public void Invoke()

@@ -2,6 +2,8 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,13 +11,20 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class HelpCommand : BaseCommand
     {
-        public HelpCommand(IRepository repository)
+        private readonly IServiceProvider _provider;
+
+        public HelpCommand(IRepository repository, IServiceProvider provider)
             : base(repository, UserRole.Everyone)
         {
+            _provider = provider;
             HelpText = "I think you figured this out already...";
         }
 
-        public IEnumerable<IBotCommand> AllCommands { get; set; }
+        private IList<IBotCommand> _allCommands;
+        public IList<IBotCommand> AllCommands
+        {
+            get { return _allCommands ?? (_allCommands = _provider.GetService<IList<IBotCommand>>()); }
+        }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {

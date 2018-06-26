@@ -6,11 +6,10 @@ namespace DevChatter.Bot.Core.Automation
 {
     public class AutomatedActionSystem : IAutomatedActionSystem
     {
-        private readonly IList<IIntervalAction> _actions;
+        private readonly IList<IIntervalAction> _actions = new List<IIntervalAction>();
 
-        public AutomatedActionSystem(IList<IIntervalAction> actions)
+        public AutomatedActionSystem()
         {
-            _actions = actions;
         }
 
         public void RunNecessaryActions()
@@ -29,7 +28,10 @@ namespace DevChatter.Bot.Core.Automation
             }
         }
 
-        public void AddAction(IIntervalAction actionToAdd) => _actions.Add(actionToAdd);
+        public void AddAction(IIntervalAction actionToAdd)
+        {
+            _actions.Add(actionToAdd);
+        }
 
         public void RemoveAction(IIntervalAction actionToRemove) =>
             _actions.Remove(actionToRemove); // Relies on reference equality

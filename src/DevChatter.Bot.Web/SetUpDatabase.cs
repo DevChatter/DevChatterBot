@@ -1,16 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
+using DevChatter.Bot.Core.Games.Roulette;
 using DevChatter.Bot.Infra.Ef;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DevChatter.Bot.Core.Games.Roulette;
 using QuizQuestion = DevChatter.Bot.Core.Data.Model.QuizQuestion;
 
-namespace DevChatter.Bot.Startup
+namespace DevChatter.Bot.Web
 {
     public static class SetUpDatabase
     {

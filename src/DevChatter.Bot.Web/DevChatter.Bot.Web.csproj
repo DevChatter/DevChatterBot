@@ -5,18 +5,17 @@
     <UserSecretsId>63F09C73-F9A9-463C-B66E-72D242AE113F</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\DevChatter.Bot\BotConfiguration.cs" Link="BotConfiguration.cs" />
-  </ItemGroup>
-
 
   <ItemGroup>
+    <PackageReference Include="HangFire" Version="1.6.19" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
   </ItemGroup>
 
 
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\lib\jquery\dist\" />
   </ItemGroup>
 
 

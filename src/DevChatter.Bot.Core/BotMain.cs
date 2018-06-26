@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using DevChatter.Bot.Core.Automation;
+using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DevChatter.Bot.Core
 {
@@ -16,17 +16,18 @@ namespace DevChatter.Bot.Core
     {
         private readonly IList<IChatClient> _chatClients;
         private readonly IRepository _repository;
-        private readonly IAutomatedActionSystem _autoActionSystem;
         private readonly ICommandHandler _commandHandler;
         private readonly SubscriberHandler _subscriberHandler;
         private readonly IFollowableSystem _followableSystem; // This will eventually be a list of these
         private readonly IAutomatedActionSystem _automatedActionSystem;
-        private CancellationTokenSource _stopRequestSource;
-        private readonly int _refreshInterval = 1000; //the milliseconds the bot waits before checking for new messages
+        private bool _areSimpleCommandsSetUp = false;
 
-        public BotMain(IList<IChatClient> chatClients, IRepository repository, IFollowableSystem followableSystem,
-            IAutomatedActionSystem automatedActionSystem, ICommandHandler commandHandler,
-            SubscriberHandler subscriberHandler, IAutomatedActionSystem autoActionSystem)
+        public BotMain(IList<IChatClient> chatClients,
+            IRepository repository,
+            IFollowableSystem followableSystem,
+            IAutomatedActionSystem automatedActionSystem,
+            ICommandHandler commandHandler,
+            SubscriberHandler subscriberHandler)
         {
             _chatClients = chatClients;
             _repository = repository;
@@ -34,59 +35,36 @@ namespace DevChatter.Bot.Core
             _automatedActionSystem = automatedActionSystem;
             _commandHandler = commandHandler;
             _subscriberHandler = subscriberHandler;
-            _autoActionSystem = autoActionSystem;
         }
 
-        public void Run()
+        public async Task Run()
         {
             ScheduleAutomatedMessages();
 
             ConnectChatClients();
 
             _followableSystem.HandleFollowerNotifications();
-
-            BeginLoop();
+            await Task.CompletedTask;
         }
 
-
-        public void Stop()
+        public async Task Stop()
         {
-            StopLoop();
-
             _followableSystem.StopHandlingNotifications();
 
-            DisconnectChatClients();
+            await DisconnectChatClients();
         }
-
-        private void StopLoop()
-        {
-            _stopRequestSource.Cancel();
-        }
-
-        private void BeginLoop()
-        {
-            _stopRequestSource = new CancellationTokenSource();
-            Task.Run(async () =>
-            {
-                while (_stopRequestSource.Token.IsCancellationRequested != true)
-                {
-                    await Task.Delay(_refreshInterval);
-                    _automatedActionSystem.RunNecessaryActions();
-                }
-            });
-        }
-
 
         private void ScheduleAutomatedMessages()
         {
             var messages = _repository.List<IntervalMessage>();
             foreach (IntervalMessage message in messages)
             {
-                _autoActionSystem.AddAction(new AutomatedMessage(message, _chatClients));
+                var action = new AutomatedMessage(message.MessageText, message.DelayInMinutes, _chatClients, message.Id.ToString());
+                _automatedActionSystem.AddAction(action);
             }
         }
 
-        private void DisconnectChatClients()
+        private async Task DisconnectChatClients()
         {
             foreach (var chatClient in _chatClients)
             {
@@ -98,11 +76,10 @@ namespace DevChatter.Bot.Core
             {
                 disconnectedTasks.Add(chatClient.Disconnect());
             }
-
-            Task.WhenAll(disconnectedTasks);
+            await Task.WhenAll(disconnectedTasks);
         }
 
-        private void ConnectChatClients()
+        private async void ConnectChatClients()
         {
             var getUserTasks = new List<Task>();
 
@@ -111,7 +88,7 @@ namespace DevChatter.Bot.Core
                 getUserTasks.Add(chatClient.Connect());
             }
 
-            Task.WhenAll(getUserTasks);
+            await Task.WhenAll(getUserTasks);
         }
     }
 }

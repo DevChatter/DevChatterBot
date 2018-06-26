@@ -56,10 +56,10 @@ namespace DevChatter.Bot.Core.Games.Heist
         private void ScheduleAutomatedActions(IChatClient chatClient)
         {
             _lastCallToJoin = new DelayedMessageAction(HEIST_DELAY_IN_SECONDS - 30,
-                "Only 30 seconds left to join the heist! Type !heist to join it!", chatClient);
+                "Only 30 seconds left to join the heist! Type !heist to join it!", chatClient, "LastCallToJoinHeist");
             _automatedActionSystem.AddAction(_lastCallToJoin);
 
-            _startHeistAction = new OneTimeCallBackAction(HEIST_DELAY_IN_SECONDS, () => StartHeist(chatClient));
+            _startHeistAction = new OneTimeCallBackAction(HEIST_DELAY_IN_SECONDS, () => StartHeist(chatClient), "StartHeistAction");
             _automatedActionSystem.AddAction(_startHeistAction);
         }
 
