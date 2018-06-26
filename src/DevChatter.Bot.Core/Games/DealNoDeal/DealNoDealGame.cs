@@ -212,7 +212,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         private List<Box> ShuffleBoxes()
         {
             List<Box> shuffledBoxes = new List<Box>();
-            List<int> pricesToShfufle = new List<int>(InitialPrices);
+            List<int> pricesToShuffle = new List<int>(InitialPrices);
             Random r = new Random();
             int totalBoxesCount = InitialPrices.Count;
 
@@ -220,8 +220,8 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             {
                 //get a new random with a range of left indexes
                 int indexToRemoveAt = r.Next(totalBoxesCount - i);
-                shuffledBoxes.Add(new Box(i, pricesToShfufle[indexToRemoveAt]));
-                pricesToShfufle.RemoveAt(indexToRemoveAt);
+                shuffledBoxes.Add(new Box(i, pricesToShuffle[indexToRemoveAt]));
+                pricesToShuffle.RemoveAt(indexToRemoveAt);
             }
             return shuffledBoxes;
         }
