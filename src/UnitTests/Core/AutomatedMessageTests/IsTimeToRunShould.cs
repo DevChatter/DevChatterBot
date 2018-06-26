@@ -55,8 +55,8 @@ namespace UnitTests.Core.AutomatedMessageTests
         private static (AutomatedMessage, FakeClock) GetTestMessage()
         {
             var fakeClock = new FakeClock();
-            var intervalMessage = new AutomatedMessage(new IntervalMessage(_delayInMinutes, "Hello there!"),
-                new List<IChatClient>(), fakeClock);
+            var intervalMessage = new AutomatedMessage("Hello there!", _delayInMinutes,
+                new List<IChatClient>(), fakeClock, "fakeMessage");
             return (intervalMessage, fakeClock);
         }
     }

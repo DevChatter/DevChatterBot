@@ -15,11 +15,12 @@ namespace DevChatter.Bot.Core.Events
     {
         private readonly IRepository _repository;
         private readonly ICommandUsageTracker _usageTracker;
-        private readonly IList<IBotCommand> _commandMessages;
+        private readonly CommandList _commandMessages;
         private readonly ILoggerAdapter<CommandHandler> _logger;
 
         public CommandHandler(IRepository repository, ICommandUsageTracker usageTracker,
-            IEnumerable<IChatClient> chatClients, CommandList commandMessages, ILoggerAdapter<CommandHandler> logger)
+            IEnumerable<IChatClient> chatClients, CommandList commandMessages,
+            ILoggerAdapter<CommandHandler> logger)
         {
             _repository = repository;
             _usageTracker = usageTracker;
