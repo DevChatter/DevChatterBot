@@ -16,6 +16,11 @@ namespace UnitTests.Fakes
             throw new System.NotImplementedException();
         }
 
+        public void InvokeAction(string id)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void RunNecessaryActions()
         {
             throw new System.NotImplementedException();
