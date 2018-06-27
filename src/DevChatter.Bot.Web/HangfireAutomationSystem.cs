@@ -1,25 +1,23 @@
 using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Messaging;
-using DevChatter.Bot.Core.Systems.Chat;
 using Hangfire;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Web
 {
     public class HangfireAutomationSystem : IAutomatedActionSystem
     {
-        private readonly IRepository _repository;
-        private readonly IList<IChatClient> _chatClients;
+        private readonly ILoggerAdapter<HangfireAutomationSystem> _logger;
+        private readonly IDictionary<string, IIntervalAction> _actions;
 
-        public HangfireAutomationSystem(IRepository repository, IList<IChatClient> chatClients)
+        public HangfireAutomationSystem(ILoggerAdapter<HangfireAutomationSystem> logger)
         {
-            _repository = repository;
-            _chatClients = chatClients;
+            _logger = logger;
+            _actions = new ConcurrentDictionary<string, IIntervalAction>();
         }
 
         public void RunNecessaryActions()
@@ -29,31 +27,57 @@ namespace DevChatter.Bot.Web
 
         public void AddAction(IIntervalAction actionToAdd)
         {
-            Expression<Action> action = () => actionToAdd.Invoke();
+            var id = actionToAdd.Name;
+            _actions.Add(actionToAdd.Name, actionToAdd);
+
+            // If we use Action e.g. Expression<Action> expression = () => this.InvokeAction(id);
+            // Hangfire would create its own instance which we dont want since we need our _actions field
+            // so instead we use Action<IAutomatedActionSystem> to tell Hangfire to use DI
+            // to resolve the IAutomatedActionSystem parameter from our DI container
+            Expression<Action<IAutomatedActionSystem>> expression = x => x.InvokeAction(id);
 
             switch (actionToAdd)
             {
                 case CurrencyUpdate currencyUpdate:
-                    RecurringJob.AddOrUpdate(action, Cron.MinuteInterval(currencyUpdate.IntervalInMinutes));
+                    RecurringJob.AddOrUpdate(expression, Cron.MinuteInterval(currencyUpdate.IntervalInMinutes));
                     break;
+
                 case DelayedMessageAction delayedMessageAction:
-                    BackgroundJob.Schedule(action, delayedMessageAction.DelayTimeSpan);
+                    BackgroundJob.Schedule(expression, delayedMessageAction.DelayTimeSpan);
                     break;
+
                 case OneTimeCallBackAction oneTimeCallBackAction:
-                    BackgroundJob.Schedule(action, oneTimeCallBackAction.DelayTimeSpan);
+                    BackgroundJob.Schedule(expression, oneTimeCallBackAction.DelayTimeSpan);
                     break;
+
                 case AutomatedMessage automatedMessage:
-                    RecurringJob.AddOrUpdate(() => InvokeAutomatedMessage(automatedMessage.Name),
-                        Cron.MinuteInterval(automatedMessage.IntervalInMinutes));
+                    RecurringJob.AddOrUpdate(expression, Cron.MinuteInterval(automatedMessage.IntervalInMinutes));
                     break;
             }
         }
 
-        public void InvokeAutomatedMessage(string id)
+        public void InvokeAction(string id)
         {
-            var message = _repository.Single(DataItemPolicy<IntervalMessage>.ById(Guid.Parse(id)));
-            var automatedMessage = new AutomatedMessage(message.MessageText, message.DelayInMinutes, _chatClients, id);
-            automatedMessage.Invoke();
+            if (_actions.TryGetValue(id, out var action))
+            {
+                action.Invoke();
+
+                // Remove one time actions which always get queued again by the bot(e.g. messages from games)
+                switch (action)
+                {
+                    case DelayedMessageAction _:
+                        _actions.Remove(id);
+                        break;
+
+                    case OneTimeCallBackAction _:
+                        _actions.Remove(id);
+                        break;
+                }
+            }
+            else
+            {
+                _logger.LogError(null, $"Unable to find automated action with id {id}");
+            }
         }
 
         public void RemoveAction(IIntervalAction actionToRemove)

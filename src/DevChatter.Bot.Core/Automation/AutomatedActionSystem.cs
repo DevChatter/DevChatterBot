@@ -35,5 +35,10 @@ namespace DevChatter.Bot.Core.Automation
 
         public void RemoveAction(IIntervalAction actionToRemove) =>
             _actions.Remove(actionToRemove); // Relies on reference equality
+
+        public void InvokeAction(string id)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

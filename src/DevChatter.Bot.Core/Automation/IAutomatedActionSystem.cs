@@ -1,3 +1,5 @@
+using System;
+
 namespace DevChatter.Bot.Core.Automation
 {
     public interface IAutomatedActionSystem
@@ -5,5 +7,6 @@ namespace DevChatter.Bot.Core.Automation
         void RunNecessaryActions();
         void AddAction(IIntervalAction actionToAdd);
         void RemoveAction(IIntervalAction actionToRemove);
+        void InvokeAction(string id);
     }
 }
