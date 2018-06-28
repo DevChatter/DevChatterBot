@@ -86,7 +86,7 @@ namespace DevChatter.Bot.Web
 
             services.AddStreamMetaCommands();
 
-            services.AddCurrencyCommands();
+            services.AddCurrencySystem();
 
             services.AddSimpleCommandsFromRepository(repository);
 
