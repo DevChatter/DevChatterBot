@@ -6,20 +6,17 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Web
 {
     public class HangfireAutomationSystem : IAutomatedActionSystem
     {
         private readonly ILoggerAdapter<HangfireAutomationSystem> _logger;
-        private readonly IChatClient _chatClient;
         private readonly IDictionary<string, IIntervalAction> _actions;
 
-        public HangfireAutomationSystem(ILoggerAdapter<HangfireAutomationSystem> logger, IChatClient chatClient)
+        public HangfireAutomationSystem(ILoggerAdapter<HangfireAutomationSystem> logger)
         {
             _logger = logger;
-            _chatClient = chatClient;
             _actions = new ConcurrentDictionary<string, IIntervalAction>();
         }
 
@@ -41,8 +38,7 @@ namespace DevChatter.Bot.Web
                     break;
 
                 case DelayedMessageAction delayedMessageAction:
-                    string message = delayedMessageAction.Message;
-                    BackgroundJob.Schedule(() => _chatClient.SendMessage(message), delayedMessageAction.DelayTimeSpan);
+                    BackgroundJob.Schedule(expression, delayedMessageAction.DelayTimeSpan);
                     break;
 
                 case OneTimeCallBackAction oneTimeCallBackAction:
