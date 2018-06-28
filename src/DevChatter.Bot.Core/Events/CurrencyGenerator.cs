@@ -3,16 +3,20 @@ using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using System.Collections.Generic;
+using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Settings;
 
 namespace DevChatter.Bot.Core.Events
 {
     public class CurrencyGenerator : ICurrencyGenerator
     {
         private readonly IChatUserCollection _chatUserCollection;
+        private readonly CurrencySettings _currencySettings;
 
-        public CurrencyGenerator(IList<IChatClient> chatClients, IChatUserCollection chatUserCollection)
+        public CurrencyGenerator(IList<IChatClient> chatClients, IChatUserCollection chatUserCollection, ISettingsFactory settingsFactory)
         {
             _chatUserCollection = chatUserCollection;
+            _currencySettings = settingsFactory.GetSettings<CurrencySettings>();
             foreach (IChatClient chatClient in chatClients)
             {
                 AddCurrentChatters(chatClient);
@@ -54,7 +58,7 @@ namespace DevChatter.Bot.Core.Events
 
         public void UpdateCurrency()
         {
-            _chatUserCollection.UpdateEachChatter(x => x.Tokens += 1);
+            _chatUserCollection.UpdateEachChatter(x => x.Tokens += _currencySettings.CoinsPerInterval);
         }
 
         public void AddCurrencyTo(IEnumerable<string> listOfNames, int tokensToAdd)

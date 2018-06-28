@@ -6,6 +6,7 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Games.Roulette;
+using DevChatter.Bot.Core.Settings;
 using DevChatter.Bot.Infra.Ef;
 using Microsoft.EntityFrameworkCore;
 using QuizQuestion = DevChatter.Bot.Core.Data.Model.QuizQuestion;
@@ -79,6 +80,7 @@ namespace DevChatter.Bot.Web
         {
             var settingsFactory = new SettingsFactory(repository);
             settingsFactory.CreateDefaultSettingsIfNeeded<RouletteSettings>();
+            settingsFactory.CreateDefaultSettingsIfNeeded<CurrencySettings>();
         }
 
         private static List<QuizQuestion> GetInitialQuizQuestions()
