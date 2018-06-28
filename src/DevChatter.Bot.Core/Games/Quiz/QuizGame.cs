@@ -98,9 +98,6 @@ namespace DevChatter.Bot.Core.Games.Quiz
             IsRunning = false;
             _questionAskingStarted = false;
             CurrentPlayers.Clear();
-            _automatedActionSystem.RemoveAction(_messageHint1);
-            _automatedActionSystem.RemoveAction(_messageHint2);
-            _automatedActionSystem.RemoveAction(_oneTimeActionEndingQuestion);
         }
 
         private QuizQuestion GetRandomQuestion()

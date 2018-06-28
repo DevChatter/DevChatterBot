@@ -78,7 +78,6 @@ namespace DevChatter.Bot.Web
             services.AddSingleton<ISettingsFactory, SettingsFactory>();
 
             services.AddSingleton<IChatUserCollection, ChatUserCollection>();
-            services.AddSingleton<IAutomatedActionSystem, HangfireAutomationSystem>();
 
             services.AddSingleton(typeof(IList<>), typeof(List<>));
             services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
@@ -94,6 +93,8 @@ namespace DevChatter.Bot.Web
             services.AddCommandSystem();
 
             services.AddTwitchLibConnection(fullConfig.TwitchClientSettings);
+
+            services.AddSingleton<IAutomatedActionSystem, HangfireAutomationSystem>();
 
             services.AddSingleton<BotMain>();
 

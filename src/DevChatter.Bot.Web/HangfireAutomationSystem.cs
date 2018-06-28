@@ -1,28 +1,26 @@
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Core.Util;
 using Hangfire;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using DevChatter.Bot.Core.Util;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Web
 {
     public class HangfireAutomationSystem : IAutomatedActionSystem
     {
         private readonly ILoggerAdapter<HangfireAutomationSystem> _logger;
+        private readonly IChatClient _chatClient;
         private readonly IDictionary<string, IIntervalAction> _actions;
 
-        public HangfireAutomationSystem(ILoggerAdapter<HangfireAutomationSystem> logger)
+        public HangfireAutomationSystem(ILoggerAdapter<HangfireAutomationSystem> logger, IChatClient chatClient)
         {
             _logger = logger;
+            _chatClient = chatClient;
             _actions = new ConcurrentDictionary<string, IIntervalAction>();
-        }
-
-        public void RunNecessaryActions()
-        {
-            throw new NotImplementedException();
         }
 
         public void AddAction(IIntervalAction actionToAdd)
@@ -43,7 +41,8 @@ namespace DevChatter.Bot.Web
                     break;
 
                 case DelayedMessageAction delayedMessageAction:
-                    BackgroundJob.Schedule(expression, delayedMessageAction.DelayTimeSpan);
+                    string message = delayedMessageAction.Message;
+                    BackgroundJob.Schedule(() => _chatClient.SendMessage(message), delayedMessageAction.DelayTimeSpan);
                     break;
 
                 case OneTimeCallBackAction oneTimeCallBackAction:
@@ -62,27 +61,15 @@ namespace DevChatter.Bot.Web
             {
                 action.Invoke();
 
-                // Remove one time actions which always get queued again by the bot(e.g. messages from games)
-                switch (action)
+                if (action is IDelayed)
                 {
-                    case DelayedMessageAction _:
-                        _actions.Remove(id);
-                        break;
-
-                    case OneTimeCallBackAction _:
-                        _actions.Remove(id);
-                        break;
+                    _actions.Remove(id);
                 }
             }
             else
             {
                 _logger.LogError(null, $"Unable to find automated action with id {id}");
             }
-        }
-
-        public void RemoveAction(IIntervalAction actionToRemove)
-        {
-            // I don't think hangfire needs this...
         }
     }
 }
