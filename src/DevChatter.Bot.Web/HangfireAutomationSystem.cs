@@ -13,17 +13,16 @@ namespace DevChatter.Bot.Web
     {
         private readonly ILoggerAdapter<HangfireAutomationSystem> _logger;
         private readonly IList<IChatClient> _chatClients;
-        private readonly IDictionary<string, IIntervalAction> _actions;
 
         public HangfireAutomationSystem(ILoggerAdapter<HangfireAutomationSystem> logger, IList<IChatClient> chatClients)
         {
             _logger = logger;
             _chatClients = chatClients;
-            _actions = new ConcurrentDictionary<string, IIntervalAction>();
         }
 
         public void AddAction(IIntervalAction actionToAdd)
         {
+            _logger.LogInformation($"Attempting to add, {actionToAdd.Name}.");
             switch (actionToAdd)
             {
                 case CurrencyUpdate currencyUpdate:
