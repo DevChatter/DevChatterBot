@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 
 namespace DevChatter.Bot.Core.Automation
 {
@@ -6,11 +7,11 @@ namespace DevChatter.Bot.Core.Automation
         : IIntervalAction, IAutomatedItem, IAutomatedAction, IDelayed
     {
         private DateTime _timeOfNextRun;
-        public Action Action { get; }
+        public Expression<Action> Action { get; }
         public TimeSpan DelayTimeSpan { get; }
         public string Name { get; }
 
-        public OneTimeCallBackAction(int delayInSeconds, Action actionToCall, string name)
+        public OneTimeCallBackAction(int delayInSeconds, Expression<Action> actionToCall, string name)
         {
             DelayTimeSpan = TimeSpan.FromSeconds(delayInSeconds);
             Action = actionToCall;
@@ -23,7 +24,7 @@ namespace DevChatter.Bot.Core.Automation
         public void Invoke()
         {
             _timeOfNextRun = DateTime.MaxValue;
-            Action();
+            Action.Compile().Invoke();
         }
 
     }

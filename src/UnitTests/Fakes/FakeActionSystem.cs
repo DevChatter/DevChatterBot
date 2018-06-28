@@ -10,10 +10,5 @@ namespace UnitTests.Fakes
         {
             IntervalAction = actionToAdd;
         }
-
-        public void InvokeAction(string id)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

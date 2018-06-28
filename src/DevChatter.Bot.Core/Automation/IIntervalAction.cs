@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 
 namespace DevChatter.Bot.Core.Automation
 {
@@ -16,7 +17,7 @@ namespace DevChatter.Bot.Core.Automation
 
     public interface IAutomatedAction
     {
-        Action Action { get; }
+        Expression<Action> Action { get; }
     }
 
     public interface IAutomatedMessage
