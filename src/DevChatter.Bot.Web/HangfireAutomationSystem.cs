@@ -38,7 +38,10 @@ namespace DevChatter.Bot.Web
             switch (actionToAdd)
             {
                 case CurrencyUpdate currencyUpdate:
-                    RecurringJob.AddOrUpdate(expression, Cron.MinuteInterval(currencyUpdate.IntervalInMinutes));
+                    RecurringJob.AddOrUpdate(
+                        currencyUpdate.Name,
+                        expression,
+                        Cron.MinuteInterval(currencyUpdate.IntervalInMinutes));
                     break;
 
                 case DelayedMessageAction delayedMessageAction:
@@ -52,7 +55,10 @@ namespace DevChatter.Bot.Web
 
                 case AutomatedMessage automatedMessage:
                     string message = automatedMessage.Message;
-                    RecurringJob.AddOrUpdate(() => _chatClients.Single().SendMessage(message), Cron.MinuteInterval(automatedMessage.IntervalInMinutes));
+                    RecurringJob.AddOrUpdate(
+                        automatedMessage.Name,
+                        () => _chatClients.Single().SendMessage(message),
+                        Cron.MinuteInterval(automatedMessage.IntervalInMinutes));
                     break;
             }
         }
