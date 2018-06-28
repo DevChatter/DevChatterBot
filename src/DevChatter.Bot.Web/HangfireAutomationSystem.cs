@@ -5,18 +5,22 @@ using Hangfire;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Web
 {
     public class HangfireAutomationSystem : IAutomatedActionSystem
     {
         private readonly ILoggerAdapter<HangfireAutomationSystem> _logger;
+        private readonly IList<IChatClient> _chatClients;
         private readonly IDictionary<string, IIntervalAction> _actions;
 
-        public HangfireAutomationSystem(ILoggerAdapter<HangfireAutomationSystem> logger)
+        public HangfireAutomationSystem(ILoggerAdapter<HangfireAutomationSystem> logger, IList<IChatClient> chatClients)
         {
             _logger = logger;
+            _chatClients = chatClients;
             _actions = new ConcurrentDictionary<string, IIntervalAction>();
         }
 
@@ -38,7 +42,8 @@ namespace DevChatter.Bot.Web
                     break;
 
                 case DelayedMessageAction delayedMessageAction:
-                    BackgroundJob.Schedule(expression, delayedMessageAction.DelayTimeSpan);
+                    string delayedMessage = delayedMessageAction.Message;
+                    BackgroundJob.Schedule(() => _chatClients.Single().SendMessage(delayedMessage), delayedMessageAction.DelayTimeSpan);
                     break;
 
                 case OneTimeCallBackAction oneTimeCallBackAction:
@@ -46,7 +51,8 @@ namespace DevChatter.Bot.Web
                     break;
 
                 case AutomatedMessage automatedMessage:
-                    RecurringJob.AddOrUpdate(expression, Cron.MinuteInterval(automatedMessage.IntervalInMinutes));
+                    string message = automatedMessage.Message;
+                    RecurringJob.AddOrUpdate(() => _chatClients.Single().SendMessage(message), Cron.MinuteInterval(automatedMessage.IntervalInMinutes));
                     break;
             }
         }
