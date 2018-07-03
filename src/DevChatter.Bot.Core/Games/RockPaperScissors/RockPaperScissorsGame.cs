@@ -70,8 +70,6 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         {
             _competitors.Clear();
             IsRunning = false;
-            _automatedActionSystem.RemoveAction(_rockPaperScissorsEndGame);
-            _automatedActionSystem.RemoveAction(_joinGameWarningMessage);
         }
 
         public void AdjustTokens(RockPaperScissors botChoice)
