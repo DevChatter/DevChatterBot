@@ -1,24 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Commands;
-using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.Games.Hangman;
-using DevChatter.Bot.Core.Games.Heist;
-using DevChatter.Bot.Core.Games.Quiz;
-using DevChatter.Bot.Core.Games.RockPaperScissors;
-using DevChatter.Bot.Core.Games.Roulette;
-using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Core.Util;
 using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.Twitch;
-using DevChatter.Bot.Infra.Twitch.Events;
 using DevChatter.Bot.Web.Extensions;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
@@ -29,8 +16,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using TwitchLib.Api;
-using TwitchLib.Api.Interfaces;
+using System;
+using System.Collections.Generic;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web
@@ -56,11 +43,13 @@ namespace DevChatter.Bot.Web
 
             services.Configure<CommandHandlerSettings>(Configuration.GetSection("CommandHandlerSettings"));
             services.Configure<TwitchClientSettings>(Configuration.GetSection("TwitchClientSettings"));
+            services.Configure<GoogleCloudSettings>(Configuration.GetSection("GoogleCloudSettings"));
 
             var fullConfig = Configuration.Get<BotConfiguration>();
 
             services.AddSingleton(fullConfig.TwitchClientSettings);
             services.AddSingleton(fullConfig.CommandHandlerSettings);
+            services.AddSingleton(fullConfig.GoogleCloudSettings);
 
             services.Configure<BotConfiguration>(Configuration);
 
