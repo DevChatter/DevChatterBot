@@ -24,7 +24,8 @@ namespace DevChatter.Bot.Core.Automation
             {
                 case DealNoDealGameState.ChosingStartingBoxes:
                 {
-                    return new ChoseStartingBoxesAction(_dealNoDealGame, _chatClient);
+                    _chatClient.SendMessage($"everyone has {DealNoDealGame.SECONDS_TO_CHOOSE_BOXES} seconds to choose a box!");
+                    return new OneTimeCallBackAction(DealNoDealGame.SECONDS_TO_CHOOSE_BOXES, () => _dealNoDealGame.FinishPickingStartingBoxes(), "FinishPickingStartingBoxes");
                 }
                 case DealNoDealGameState.PickingBoxes:
                 {

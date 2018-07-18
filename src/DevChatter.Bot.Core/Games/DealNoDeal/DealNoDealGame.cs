@@ -338,5 +338,14 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
 
             return result;
         }
+
+        public void FinishPickingStartingBoxes()
+        {
+            _chatClient.SendMessage("Finished picking starting boxes");
+            EnsureMinPlayableBoxes();
+            _chatClient.SendMessage("Game Started!");
+            GameState = DealNoDealGameState.PickingBoxes;
+            SetActionForGameState(DealNoDealGameState.PickingBoxes);
+        }
     }
 }
