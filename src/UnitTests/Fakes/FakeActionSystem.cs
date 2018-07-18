@@ -10,15 +10,5 @@ namespace UnitTests.Fakes
         {
             IntervalAction = actionToAdd;
         }
-
-        public void RemoveAction(IIntervalAction actionToRemove)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void RunNecessaryActions()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

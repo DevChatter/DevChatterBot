@@ -87,11 +87,11 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
         {
             if (gameState == DealNoDealGameState.GameNotRunning)
             {
-                _automatedActionSystem.RemoveAction(_actionBeingPerformed);
+                //_automatedActionSystem.RemoveAction(_actionBeingPerformed);
                 return;
             }
             //Remove all Game-actions and start a new one
-            _automatedActionSystem.RemoveAction(_actionBeingPerformed);
+            //_automatedActionSystem.RemoveAction(_actionBeingPerformed);
             _actionBeingPerformed = _automatedActionFactory.GetIntervalAction(gameState);
             _automatedActionSystem.AddAction(_actionBeingPerformed);
         }

@@ -4,6 +4,7 @@ using DevChatter.Bot.Core.Data.Specifications;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Events;
 
@@ -28,9 +29,10 @@ namespace DevChatter.Bot.Web.Extensions
         /// <summary>
         /// Registering the commands for adding, removing, checking, and managing tokens.
         /// </summary>
-        public static IServiceCollection AddCurrencyCommands(this IServiceCollection services)
+        public static IServiceCollection AddCurrencySystem(this IServiceCollection services)
         {
             services.AddSingleton<ICurrencyGenerator, CurrencyGenerator>();
+            services.AddSingleton<CurrencyUpdate>();
             services.AddSingleton<IBotCommand, TaxCommand>();
             services.AddSingleton<IBotCommand, GiveCommand>();
             services.AddSingleton<IBotCommand, CoinsCommand>();

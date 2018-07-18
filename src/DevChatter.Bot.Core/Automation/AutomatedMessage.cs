@@ -6,12 +6,15 @@ using System.Collections.Generic;
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public class AutomatedMessage : IIntervalAction
+    public class AutomatedMessage
+        : IIntervalAction, IAutomatedItem, IAutomatedMessage, IInterval
     {
         private readonly string _message;
-        public readonly int IntervalInMinutes;
         private readonly IClock _clock;
         private readonly IList<IChatClient> _chatClients;
+        public int IntervalInMinutes => IntervalTimeSpan.Minutes;
+        public string Message { get; }
+        public TimeSpan IntervalTimeSpan { get; }
 
         public AutomatedMessage(string message, int intervalInMinutes,
             IList<IChatClient> chatClients, string name)
@@ -23,7 +26,7 @@ namespace DevChatter.Bot.Core.Messaging
             IList<IChatClient> chatClients, IClock clock, string name)
         {
             _message = message;
-            IntervalInMinutes = intervalInMinutes;
+            IntervalTimeSpan = TimeSpan.FromMinutes(intervalInMinutes);
             _clock = clock;
             Name = name;
             _chatClients = chatClients;
@@ -47,5 +50,6 @@ namespace DevChatter.Bot.Core.Messaging
                 chatClient.SendMessage(_message);
             }
         }
+
     }
 }

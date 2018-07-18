@@ -3,13 +3,17 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Automation
 {
-    public class DelayedMessageAction : IIntervalAction
+    public class DelayedMessageAction
+        : IIntervalAction, IAutomatedItem, IDelayed, IAutomatedMessage
     {
         private readonly IChatClient _chatClient;
         private DateTime _nextRunTime;
-        public TimeSpan DelayTimeSpan;
+        public string Name { get; }
+        public TimeSpan DelayTimeSpan { get; }
+        public string Message { get; }
 
-        public DelayedMessageAction(int delayInSeconds, string message, IChatClient chatClient, string name)
+        public DelayedMessageAction(int delayInSeconds, string message,
+            IChatClient chatClient, string name)
         {
             DelayTimeSpan = TimeSpan.FromSeconds(delayInSeconds);
             Message = message;
@@ -18,9 +22,6 @@ namespace DevChatter.Bot.Core.Automation
             _nextRunTime = DateTime.Now.AddSeconds(delayInSeconds);
         }
 
-        public string Name { get; }
-        public string Message { get; set; }
-
         public bool IsTimeToRun() => DateTime.Now > _nextRunTime;
 
         public void Invoke()
@@ -28,5 +29,6 @@ namespace DevChatter.Bot.Core.Automation
             _chatClient.SendMessage(Message);
             _nextRunTime = DateTime.MaxValue;
         }
+
     }
 }
