@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data.Specifications;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using DevChatter.Bot.Core.GoogleApi;
 
@@ -22,7 +23,7 @@ namespace DevChatter.Bot.Core.Commands
             _settings = settings;
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override async void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             var lookup = eventArgs?.Arguments?.ElementAtOrDefault(0);
             int offset;
@@ -49,11 +50,11 @@ namespace DevChatter.Bot.Core.Commands
                 {
                     var client = new HttpClient();
 
-                    var (latitude, longitude, success) = GetLatitudeAndLongitude(client, lookup);
+                    var (latitude, longitude, success) = await GetLatitudeAndLongitude(client, lookup);
                     if (success)
                     {
                         string timezoneName;
-                        (offset, timezoneName) = GetTimezoneInfo(client, latitude, longitude);
+                        (offset, timezoneName) = await GetTimezoneInfo(client, latitude, longitude);
                         timezoneDisplay = $"in {timezoneName}";
                     }
                     else
@@ -73,19 +74,22 @@ namespace DevChatter.Bot.Core.Commands
             chatClient.SendMessage(message);
         }
 
-        private (int, string) GetTimezoneInfo(HttpClient client, float latitude, float longitude)
+        private async Task<(int, string)> GetTimezoneInfo(HttpClient client, float latitude, float longitude)
         {
-            var timezoneLookupUrl = $"https://maps.googleapis.com/maps/api/timezone/json?location={latitude},{longitude}&timestamp={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}&key={_settings.ApiKey}";
-            var timezoneResponse = JsonConvert.DeserializeObject<TimezoneResponse>(client.GetAsync(timezoneLookupUrl).Result.Content.ReadAsStringAsync().Result); // 😞 This code makes me cry...
+            long unixTimeSeconds = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var timezoneLookupUrl = $"https://maps.googleapis.com/maps/api/timezone/json?location={latitude},{longitude}&timestamp={unixTimeSeconds}&key={_settings.ApiKey}";
+            string result = await client.GetAsync(timezoneLookupUrl).Result.Content.ReadAsStringAsync();
+            var timezoneResponse = JsonConvert.DeserializeObject<TimezoneResponse>(result);
             var offsetTimespan = TimeSpan.FromSeconds(timezoneResponse.rawOffset + timezoneResponse.dstOffset);
             return (offsetTimespan.Hours, timezoneResponse.timeZoneName);
         }
 
-        private (float latitude, float longitude, bool success)
+        private async Task<(float latitude, float longitude, bool success)>
             GetLatitudeAndLongitude(HttpClient client, string lookup)
         {
             var placeLookupUrl = $"https://maps.googleapis.com/maps/api/place/textsearch/json?query={lookup}&key={_settings.ApiKey}";
-            var latitudeLongitudeResponse = JsonConvert.DeserializeObject<PlaceResponse>(client.GetAsync(placeLookupUrl).Result.Content.ReadAsStringAsync().Result);
+            string result = await client.GetAsync(placeLookupUrl).Result.Content.ReadAsStringAsync();
+            var latitudeLongitudeResponse = JsonConvert.DeserializeObject<PlaceResponse>(result);
             var latitude = latitudeLongitudeResponse.results.FirstOrDefault()?.geometry.location.lat;
             var longitude = latitudeLongitudeResponse.results.FirstOrDefault()?.geometry.location.lng;
 
