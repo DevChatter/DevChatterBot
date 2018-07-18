@@ -78,7 +78,7 @@ namespace DevChatter.Bot.Core.Games.DealNoDeal
             }
             else
             {
-                _chatClient.SendMessage($"Not enough tokens to start a game, {chatUser}");
+                _chatClient.SendMessage($"Not enough tokens to start a game, {chatUser.DisplayName}");
             }
 
         }
