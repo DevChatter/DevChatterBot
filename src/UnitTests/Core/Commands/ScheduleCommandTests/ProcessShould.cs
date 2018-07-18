@@ -5,6 +5,7 @@ using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using Moq;
 using System.Collections.Generic;
+using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using Xunit;
@@ -26,14 +27,13 @@ namespace UnitTests.Core.Commands.ScheduleCommandTests
                 new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 6, 21, 16, 0, 0, 0, TimeSpan.Zero)},
             };
             _repositoryMock.Setup(x => x.List(It.IsAny<DataItemPolicy<ScheduleEntity>>())).Returns(entities);
-            _scheduleCommand = new ScheduleCommand(_repositoryMock.Object);
+            _scheduleCommand = new ScheduleCommand(_repositoryMock.Object, new GoogleCloudSettings());
         }
 
         [Theory]
         [InlineData("-19")]
         [InlineData("+999")]
         [InlineData("19")]
-        [InlineData("stoptryingtobreakstuff")]
         public void SendErrorMessage_GivenInvalidArguments(string argument)
         {
             List<string> arguments = new List<string>

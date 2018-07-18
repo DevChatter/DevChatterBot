@@ -30,6 +30,7 @@ namespace DevChatter.Bot.Core.Commands
             if (eventArgs.Arguments.Count == 0)
             {
                 offset = 0;
+                timezoneDisplay = $"at UTC {offset:+#;-#;+0}";
             }
             else
             {
