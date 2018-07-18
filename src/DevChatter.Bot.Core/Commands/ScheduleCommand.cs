@@ -52,11 +52,9 @@ namespace DevChatter.Bot.Core.Commands
                     var (latitude, longitude, success) = GetLatitudeAndLongitude(client, lookup);
                     if (success)
                     {
-                        var timezoneLookupUrl = $"https://maps.googleapis.com/maps/api/timezone/json?location={latitude},{longitude}&timestamp={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}&key={_settings.ApiKey}";
-                        var timezoneResponse = JsonConvert.DeserializeObject<TimezoneResponse>(client.GetAsync(timezoneLookupUrl).Result.Content.ReadAsStringAsync().Result); // 😞 This code makes me cry...
-                        var offsetTimespan = TimeSpan.FromSeconds(timezoneResponse.rawOffset + timezoneResponse.dstOffset);
-                        offset = offsetTimespan.Hours;
-                        timezoneDisplay = $"in {timezoneResponse.timeZoneName}";
+                        string timezoneName;
+                        (offset, timezoneName) = GetTimezoneInfo(client, latitude, longitude);
+                        timezoneDisplay = $"in {timezoneName}";
                     }
                     else
                     {
@@ -73,6 +71,14 @@ namespace DevChatter.Bot.Core.Commands
             string message = $"Our usual schedule ({timezoneDisplay}) is: " + string.Join(", ", streamTimes.Select(x => GetTimeDisplay(x, timeZone)));
 
             chatClient.SendMessage(message);
+        }
+
+        private (int, string) GetTimezoneInfo(HttpClient client, float latitude, float longitude)
+        {
+            var timezoneLookupUrl = $"https://maps.googleapis.com/maps/api/timezone/json?location={latitude},{longitude}&timestamp={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}&key={_settings.ApiKey}";
+            var timezoneResponse = JsonConvert.DeserializeObject<TimezoneResponse>(client.GetAsync(timezoneLookupUrl).Result.Content.ReadAsStringAsync().Result); // 😞 This code makes me cry...
+            var offsetTimespan = TimeSpan.FromSeconds(timezoneResponse.rawOffset + timezoneResponse.dstOffset);
+            return (offsetTimespan.Hours, timezoneResponse.timeZoneName);
         }
 
         private (float latitude, float longitude, bool success)
