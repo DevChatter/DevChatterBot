@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
+using DevChatter.Bot.Core.GoogleApi;
 using Xunit;
 
 namespace UnitTests.Core.Commands.ScheduleCommandTests
@@ -26,8 +27,10 @@ namespace UnitTests.Core.Commands.ScheduleCommandTests
                 new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 6, 19, 18, 0, 0, 0, TimeSpan.Zero)},
                 new ScheduleEntity { ExampleDateTime = new DateTimeOffset(2018, 6, 21, 16, 0, 0, 0, TimeSpan.Zero)},
             };
-            _repositoryMock.Setup(x => x.List(It.IsAny<DataItemPolicy<ScheduleEntity>>())).Returns(entities);
-            _scheduleCommand = new ScheduleCommand(_repositoryMock.Object, new GoogleCloudSettings());
+            _repositoryMock.Setup(x => x.List(It.IsAny<DataItemPolicy<ScheduleEntity>>()))
+                .Returns(entities);
+            _scheduleCommand = new ScheduleCommand(_repositoryMock.Object,
+                new Mock<ITimezoneLookup>().Object);
         }
 
         [Theory]

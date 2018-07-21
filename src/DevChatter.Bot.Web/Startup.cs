@@ -18,6 +18,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using DevChatter.Bot.Core.GoogleApi;
+using DevChatter.Bot.Infra.GoogleApi;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web
@@ -59,6 +61,7 @@ namespace DevChatter.Bot.Web
 
             services.AddSingleton(repository);
 
+            services.AddSingleton<ITimezoneLookup, GoogleApiTimezoneLookup>();
             services.AddSingleton<IStreamingPlatform, StreamingPlatform>();
             services.AddSingleton<IClock, SystemClock>();
 
