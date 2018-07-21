@@ -49,7 +49,7 @@ namespace DevChatter.Bot.Core.Commands
                     var client = new HttpClient();
 
                     TimezoneLookupResult lookupResult =
-                        await _timezoneLookup.GetTimezoneInfo(client, lookup);
+                        await _timezoneLookup.GetTimezoneInfoAsync(client, lookup);
 
                     if (!lookupResult.Success)
                     {

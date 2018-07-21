@@ -46,7 +46,7 @@ namespace DevChatter.Bot.Infra.GoogleApi
         }
 
 
-        public async Task<TimezoneLookupResult> GetTimezoneInfo(HttpClient client, string lookup)
+        public async Task<TimezoneLookupResult> GetTimezoneInfoAsync(HttpClient client, string lookup)
         {
             var result = new TimezoneLookupResult();
             var (latitude, longitude, success) =

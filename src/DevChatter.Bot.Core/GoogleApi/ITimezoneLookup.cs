@@ -5,6 +5,6 @@ namespace DevChatter.Bot.Core.GoogleApi
 {
     public interface ITimezoneLookup
     {
-        Task<TimezoneLookupResult> GetTimezoneInfo(HttpClient client, string lookup);
+        Task<TimezoneLookupResult> GetTimezoneInfoAsync(HttpClient client, string lookup);
     }
 }
