@@ -5,9 +5,6 @@ namespace DevChatter.Bot.Core.GoogleApi
 {
     public interface ITimezoneLookup
     {
-        Task<(float latitude, float longitude, bool success)>
-            GetLatitudeAndLongitude(HttpClient client, string lookup);
-
-        Task<(int, string)> GetTimezoneInfo(HttpClient client, float latitude, float longitude);
+        Task<TimezoneLookupResult> GetTimezoneInfo(HttpClient client, string lookup);
     }
 }

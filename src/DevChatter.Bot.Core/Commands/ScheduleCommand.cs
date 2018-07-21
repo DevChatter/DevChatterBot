@@ -48,18 +48,17 @@ namespace DevChatter.Bot.Core.Commands
                 {
                     var client = new HttpClient();
 
-                    var (latitude, longitude, success) = await _timezoneLookup.GetLatitudeAndLongitude(client, lookup);
-                    if (success)
+                    TimezoneLookupResult lookupResult =
+                        await _timezoneLookup.GetTimezoneInfo(client, lookup);
+
+                    if (!lookupResult.Success)
                     {
-                        string timezoneName;
-                        (offset, timezoneName) = await _timezoneLookup.GetTimezoneInfo(client, latitude, longitude);
-                        timezoneDisplay = $"in {timezoneName}";
-                    }
-                    else
-                    {
-                        chatClient.SendMessage(Messages.UNKNOWN_CITY);
+                        chatClient.SendMessage(lookupResult.Message);
                         return;
                     }
+
+                    offset = lookupResult.Offset;
+                    timezoneDisplay = $"in {lookupResult.TimezoneName}";
                 }
             }
 
@@ -81,7 +80,6 @@ namespace DevChatter.Bot.Core.Commands
         public static class Messages
         {
             public const string OUT_OF_RANGE = "UTC offset must be a whole number between -18 and +18";
-            public const string UNKNOWN_CITY = "The given location is unknown to Google, well done!";
         }
     }
 }

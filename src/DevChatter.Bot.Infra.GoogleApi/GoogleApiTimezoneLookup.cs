@@ -10,6 +10,7 @@ namespace DevChatter.Bot.Infra.GoogleApi
 {
     public class GoogleApiTimezoneLookup : ITimezoneLookup
     {
+        private const string UNKNOWN_LOCATION = "The given location is unknown to Google, well done!";
         private readonly GoogleCloudSettings _settings;
 
         public GoogleApiTimezoneLookup(GoogleCloudSettings settings)
@@ -45,5 +46,25 @@ namespace DevChatter.Bot.Infra.GoogleApi
         }
 
 
+        public async Task<TimezoneLookupResult> GetTimezoneInfo(HttpClient client, string lookup)
+        {
+            var result = new TimezoneLookupResult();
+            var (latitude, longitude, success) =
+                await GetLatitudeAndLongitude(client, lookup);
+
+            if (success)
+            {
+                (result.Offset, result.TimezoneName) =
+                    await GetTimezoneInfo(client, latitude, longitude);
+                result.Success = true;
+            }
+            else
+            {
+                result.Success = false;
+                result.Message = UNKNOWN_LOCATION;
+            }
+
+            return result;
+        }
     }
 }
