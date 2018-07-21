@@ -1,6 +1,11 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Caching;
+using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Extensions;
+using DevChatter.Bot.Core.GoogleApi;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevChatter.Bot.Infra.Ef
 {
@@ -13,17 +18,25 @@ namespace DevChatter.Bot.Infra.Ef
             _db = db;
         }
 
-        public Task<T> GetOrInsert<T>(string cacheKey, Func<T> fallback)
+        public async Task<TimezoneLookupResult> GetOrInsertTimezone(
+            string lookup, Func<TimezoneLookupResult> fallback)
         {
-            // Check to see if the value is in the cache
+            var timezone = await _db.Timezones.SingleOrDefaultAsync(
+                x => x.LookupString.EqualsIns(lookup));
 
-            // if not, use the fallback method to get the value
+            if (timezone == null)
+            {
+                TimezoneLookupResult timezoneLookupResult = fallback.Invoke();
+                timezone = new TimezoneEntity
+                {
+                    Offset = timezoneLookupResult.Offset,
+                    TimezoneName = timezoneLookupResult.TimezoneName,
+                };
+                await _db.Timezones.AddAsync(timezone);
+                await _db.SaveChangesAsync();
+            }
 
-            // insert the fallback value into the cache
-
-            // return the value from the cache
-
-            throw new NotImplementedException();
+            return timezone.ToTimezoneLookupResult();
         }
     }
 }

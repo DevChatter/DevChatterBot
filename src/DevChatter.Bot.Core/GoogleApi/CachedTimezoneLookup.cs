@@ -18,9 +18,7 @@ namespace DevChatter.Bot.Core.GoogleApi
         public async Task<TimezoneLookupResult> GetTimezoneInfoAsync(
             HttpClient client, string lookup)
         {
-            string cacheKey = $"{nameof(GetTimezoneInfoAsync)}-{lookup}";
-
-            return await _cacheLayer.GetOrInsert(cacheKey, Fallback);
+            return await _cacheLayer.GetOrInsertTimezone(lookup, Fallback);
 
             TimezoneLookupResult Fallback() => _internalLookup.GetTimezoneInfoAsync(client, lookup).Result;
         }

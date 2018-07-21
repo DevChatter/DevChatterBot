@@ -19,6 +19,8 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<CommandUsageEntity> CommandUsages { get; set; }
         public DbSet<QuizQuestion> QuizQuestions { get; set; }
         public DbSet<CommandSettingsEntity> CommandSettings { get; set; }
+        public DbSet<TimezoneEntity> Timezones { get; set; }
+
 
         public AppDataContext()
         {
