@@ -18,6 +18,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using DevChatter.Bot.Core.Caching;
+using DevChatter.Bot.Core.GoogleApi;
+using DevChatter.Bot.Infra.GoogleApi;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web
@@ -59,6 +62,8 @@ namespace DevChatter.Bot.Web
 
             services.AddSingleton(repository);
 
+            RegisterTimezoneLookupClasses(services);
+
             services.AddSingleton<IStreamingPlatform, StreamingPlatform>();
             services.AddSingleton<IClock, SystemClock>();
 
@@ -94,6 +99,14 @@ namespace DevChatter.Bot.Web
             services.AddHangfire(cfg => cfg.UseSqlServerStorage(fullConfig.DatabaseConnectionString));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        }
+
+        private static void RegisterTimezoneLookupClasses(IServiceCollection services)
+        {
+            services.AddSingleton<GoogleApiTimezoneLookup>();
+            services.AddSingleton<ICacheLayer, EfCacheLayer>();
+            services.AddSingleton<ITimezoneLookup>(provider =>
+                new CachedTimezoneLookup(provider.GetService<GoogleApiTimezoneLookup>(), provider.GetService<ICacheLayer>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
