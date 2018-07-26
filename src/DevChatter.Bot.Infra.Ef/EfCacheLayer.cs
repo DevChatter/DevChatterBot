@@ -1,39 +1,36 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using DevChatter.Bot.Core.Caching;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Extensions;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.GoogleApi;
-using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DevChatter.Bot.Infra.Ef
 {
     public class EfCacheLayer : ICacheLayer
     {
-        private readonly AppDataContext _db;
+        private readonly IRepository _repo;
 
-        public EfCacheLayer(AppDataContext db)
+        public EfCacheLayer(IRepository repo)
         {
-            _db = db;
+            _repo = repo;
         }
 
-        public async Task<TimezoneLookupResult> GetOrInsertTimezone(
+        public TimezoneLookupResult GetOrInsertTimezone(
             string lookup, Func<TimezoneLookupResult> fallback)
         {
-            var timezone = await _db.Timezones.SingleOrDefaultAsync(
-                x => x.LookupString.EqualsIns(lookup));
+            var timezone = _repo.Single(TimezonePolicy.ByLookup(lookup));
 
             if (timezone == null)
             {
                 TimezoneLookupResult timezoneLookupResult = fallback.Invoke();
                 timezone = new TimezoneEntity
                 {
+                    LookupString = lookup,
                     Offset = timezoneLookupResult.Offset,
                     TimezoneName = timezoneLookupResult.TimezoneName,
                 };
-                await _db.Timezones.AddAsync(timezone);
-                await _db.SaveChangesAsync();
+                _repo.Create(timezone);
             }
 
             return timezone.ToTimezoneLookupResult();

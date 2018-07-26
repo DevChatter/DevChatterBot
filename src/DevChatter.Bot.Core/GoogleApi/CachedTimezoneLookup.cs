@@ -15,12 +15,15 @@ namespace DevChatter.Bot.Core.GoogleApi
             _cacheLayer = cacheLayer;
         }
 
-        public async Task<TimezoneLookupResult> GetTimezoneInfoAsync(
+        public Task<TimezoneLookupResult> GetTimezoneInfoAsync(
             HttpClient client, string lookup)
         {
-            return await _cacheLayer.GetOrInsertTimezone(lookup, Fallback);
+            return Task.FromResult(_cacheLayer.GetOrInsertTimezone(lookup, Fallback));
 
-            TimezoneLookupResult Fallback() => _internalLookup.GetTimezoneInfoAsync(client, lookup).Result;
+            TimezoneLookupResult Fallback()
+            {
+                return _internalLookup.GetTimezoneInfoAsync(client, lookup).Result;
+            }
         }
     }
 }
