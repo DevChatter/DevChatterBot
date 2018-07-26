@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using DevChatter.Bot.Core.Caching;
 using DevChatter.Bot.Core.GoogleApi;
 using DevChatter.Bot.Infra.GoogleApi;
+using DevChatter.Bot.Web.Hubs;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web
@@ -99,6 +100,9 @@ namespace DevChatter.Bot.Web
             services.AddHangfire(cfg => cfg.UseSqlServerStorage(fullConfig.DatabaseConnectionString));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSignalR();
+
         }
 
         private static void RegisterTimezoneLookupClasses(IServiceCollection services)
@@ -128,6 +132,11 @@ namespace DevChatter.Bot.Web
 
             app.UseHangfireDashboard();
             app.UseHangfireServer();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<BotHub>("/BotHub");
+            });
 
             app.UseMvc();
         }

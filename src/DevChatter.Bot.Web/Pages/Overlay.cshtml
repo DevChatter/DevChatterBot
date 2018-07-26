@@ -10,7 +10,29 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>DevChatterBot Overlay</title>
+    <script src="~/lib/signalr/signalr.js"></script>
+
+    <script language="javascript">
+        var myFunc = function () {
+            connection.invoke("Ping").catch(err => console.error(err.toString()));
+        }
+
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("/BotHub")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+        connection.start().catch(err => console.error(err.toString()));
+
+        connection.on("PingResponse", (message) => {
+            var li = document.createElement("li");
+            li.textContent = message;
+            document.getElementById("messagesList").appendChild(li);
+        });
+    </script>
 </head>
 <body>
+<ul id="messagesList"></ul>
+
+<button onclick="myFunc()">Ping It!</button>
 </body>
 </html>
