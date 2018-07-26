@@ -52,6 +52,7 @@ namespace DevChatter.Bot.Web.Extensions
             services.AddSingleton<IBotCommand, ScheduleCommand>();
             services.AddSingleton<IBotCommand, ShoutOutCommand>();
             services.AddSingleton<IBotCommand, QuoteCommand>();
+            services.AddSingleton<IBotCommand, ViewersCommand>();
 
             return services;
         }
