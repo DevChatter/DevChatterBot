@@ -1,3 +1,4 @@
+using System;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
@@ -18,9 +19,16 @@ namespace DevChatter.Bot.Core.Commands
 
         protected override async void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            int viewerCount = await _streamingPlatform.GetViewerCountAsync();
+            try
+            {
+                int viewerCount = await _streamingPlatform.GetViewerCountAsync();
 
-            chatClient.SendMessage($"We currently have {viewerCount} viewers!");
+                chatClient.SendMessage($"We currently have {viewerCount} viewers!");
+            }
+            catch (Exception)
+            {
+                chatClient.SendMessage("Something went wrong! We couldn't get the viewer count.");
+            }
         }
     }
 }
