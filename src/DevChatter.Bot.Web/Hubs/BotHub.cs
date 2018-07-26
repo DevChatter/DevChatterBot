@@ -1,13 +1,17 @@
-using System.Threading.Tasks;
+using DevChatter.Bot.Core;
 using Microsoft.AspNetCore.SignalR;
 
 namespace DevChatter.Bot.Web.Hubs
 {
-    public class BotHub : Hub
+    public class BotHub : Hub<IOverlayDisplay>
     {
-        public async Task Ping()
+        public void Ping()
         {
-            await Clients.All.SendAsync("PingResponse", "Pong");
+            Clients.All.DisplayMessage("Pong");
+        }
+        public void Send(string message)
+        {
+            Clients.All.DisplayMessage(message);
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Web.Hubs;
 
 namespace DevChatter.Bot.Web.Extensions
 {
@@ -46,6 +47,7 @@ namespace DevChatter.Bot.Web.Extensions
         /// </summary>
         public static IServiceCollection AddStreamMetaCommands(this IServiceCollection services)
         {
+            services.AddSingleton<IBotCommand, HypeCommand>();
             services.AddSingleton<IBotCommand, TopCommand>();
             services.AddSingleton<IBotCommand, UptimeCommand>();
             services.AddSingleton<IBotCommand, StreamsCommand>();

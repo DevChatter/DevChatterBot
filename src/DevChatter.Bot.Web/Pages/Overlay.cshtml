@@ -23,7 +23,7 @@
             .build();
         connection.start().catch(err => console.error(err.toString()));
 
-        connection.on("PingResponse", (message) => {
+        connection.on("DisplayMessage", (message) => {
             var li = document.createElement("li");
             li.textContent = message;
             document.getElementById("messagesList").appendChild(li);
@@ -31,8 +31,7 @@
     </script>
 </head>
 <body>
-<ul id="messagesList"></ul>
-
 <button onclick="myFunc()">Ping It!</button>
+<ul id="messagesList"></ul>
 </body>
 </html>

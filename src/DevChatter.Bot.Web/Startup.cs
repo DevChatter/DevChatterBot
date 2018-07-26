@@ -22,6 +22,7 @@ using DevChatter.Bot.Core.Caching;
 using DevChatter.Bot.Core.GoogleApi;
 using DevChatter.Bot.Infra.GoogleApi;
 using DevChatter.Bot.Web.Hubs;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web
