@@ -22,6 +22,7 @@ namespace DevChatter.Bot.Web.Hubs
         {
             chatClient.SendMessage("Hype hype!");
             _chatHubContext.Clients.All.DisplayMessage("Hype hype!");
+            _chatHubContext.Clients.All.Hype();
         }
     }
 }

@@ -13,5 +13,9 @@ namespace DevChatter.Bot.Web.Hubs
         {
             Clients.All.DisplayMessage(message);
         }
+        public void Hype()
+        {
+            Clients.All.Hype();
+        }
     }
 }
