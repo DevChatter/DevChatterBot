@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
@@ -8,6 +9,7 @@ using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Games.Roulette;
 using DevChatter.Bot.Core.Settings;
 using DevChatter.Bot.Infra.Ef;
+using DevChatter.Bot.Infra.Web;
 using Microsoft.EntityFrameworkCore;
 using QuizQuestion = DevChatter.Bot.Core.Data.Model.QuizQuestion;
 
@@ -200,13 +202,21 @@ namespace DevChatter.Bot.Web
 
         private static List<CommandWordEntity> GetMissingCommandWords(IRepository repository)
         {
-            var botCommandTypeAssembly = typeof(IBotCommand).Assembly;
-            var conventionSuffix = "Command";
+            const string conventionSuffix = "Command";
 
-            var concreteCommands = botCommandTypeAssembly.DefinedTypes
+            // Access the assembly to make sure it's loaded
+            Assembly assembly = typeof(HypeCommand).Assembly;
+
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            IEnumerable<TypeInfo> allTypes = assemblies.SelectMany(x => x.DefinedTypes);
+
+            var concreteCommands = allTypes
+                .Where(x => typeof(IBotCommand).IsAssignableFrom(x))
                 .Where(x => !x.IsAbstract)
                 .Where(x => !x.IsSubclassOf(typeof(DataEntity)))
-                .Where(x => x.FullName.EndsWith(conventionSuffix));
+                .Where(x => x.FullName.EndsWith(conventionSuffix))
+                .ToList();
 
             var storedCommandWords = repository.List(CommandWordPolicy.OnlyPrimaries()).Select(x => x.CommandWord);
 
