@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Systems.Chat;
 
@@ -21,6 +21,11 @@ namespace DevChatter.Bot.Core.Systems.Streaming
         public Task<TimeSpan?> GetUptimeAsync()
         {
             return _streamingInfoService.GetUptimeAsync();
+        }
+
+        public Task<int> GetViewerCountAsync()
+        {
+            return _streamingInfoService.GetViewerCountAsync();
         }
     }
 }

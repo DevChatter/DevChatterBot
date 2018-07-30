@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 namespace DevChatter.Bot.Core.Systems.Streaming
@@ -6,5 +6,6 @@ namespace DevChatter.Bot.Core.Systems.Streaming
     public interface IStreamingPlatform
     {
         Task<TimeSpan?> GetUptimeAsync();
+        Task<int> GetViewerCountAsync();
     }
 }
