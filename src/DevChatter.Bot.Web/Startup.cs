@@ -1,11 +1,15 @@
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Automation;
+using DevChatter.Bot.Core.Caching;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.GoogleApi;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Core.Util;
 using DevChatter.Bot.Infra.Ef;
+using DevChatter.Bot.Infra.GoogleApi;
 using DevChatter.Bot.Infra.Twitch;
+using DevChatter.Bot.Infra.Web.Hubs;
 using DevChatter.Bot.Web.Extensions;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
@@ -18,11 +22,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using DevChatter.Bot.Core.Caching;
-using DevChatter.Bot.Core.GoogleApi;
-using DevChatter.Bot.Infra.GoogleApi;
-using DevChatter.Bot.Web.Hubs;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web

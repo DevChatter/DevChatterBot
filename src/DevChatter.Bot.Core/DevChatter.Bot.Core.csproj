@@ -11,4 +11,8 @@
     <PackageReference Include="NodaTime" Version="2.2.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Overlays\" />
+  </ItemGroup>
+
 </Project>

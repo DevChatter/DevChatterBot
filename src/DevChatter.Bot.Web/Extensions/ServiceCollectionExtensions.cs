@@ -1,13 +1,13 @@
+using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Specifications;
+using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Infra.Web;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Commands.Trackers;
-using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Web.Hubs;
 
 namespace DevChatter.Bot.Web.Extensions
 {

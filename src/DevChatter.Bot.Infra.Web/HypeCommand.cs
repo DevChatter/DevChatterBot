@@ -4,9 +4,10 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Infra.Web.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
-namespace DevChatter.Bot.Web.Hubs
+namespace DevChatter.Bot.Infra.Web
 {
     public class HypeCommand : BaseCommand
     {
