@@ -88,7 +88,7 @@ namespace DevChatter.Bot.Web
 
             services.AddTwitchLibConnection(fullConfig.TwitchClientSettings);
 
-            services.AddSingleton<IAutomatedActionSystem, BackgroundAutomationSystem>();
+            services.AddSingleton<IAutomatedActionSystem, AutomationSystem>();
 
             services.AddSingleton<BotMain>();
 
