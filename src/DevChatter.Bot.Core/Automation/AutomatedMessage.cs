@@ -1,10 +1,9 @@
-using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Systems.Chat;
-using DevChatter.Bot.Core.Util;
 using System;
 using System.Collections.Generic;
+using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Util;
 
-namespace DevChatter.Bot.Core.Messaging
+namespace DevChatter.Bot.Core.Automation
 {
     public class AutomatedMessage
         : IIntervalAction, IAutomatedItem, IAutomatedMessage, IInterval
@@ -51,5 +50,9 @@ namespace DevChatter.Bot.Core.Messaging
             }
         }
 
+        public bool WillNeverRunAgain()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -27,5 +27,9 @@ namespace DevChatter.Bot.Core.Automation
             Action.Compile().Invoke();
         }
 
+        public bool WillNeverRunAgain()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace DevChatter.Bot.Core.Automation
         string Name { get; }
         bool IsTimeToRun();
         void Invoke();
+        bool WillNeverRunAgain();
     }
 
     public interface IAutomatedItem

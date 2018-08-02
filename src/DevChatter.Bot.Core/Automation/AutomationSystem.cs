@@ -22,16 +22,6 @@ namespace DevChatter.Bot.Core.Automation
             _logger.LogInformation($"Attempting to add, {actionToAdd.Name}.");
 
             _actions.Add(actionToAdd);
-
-            //throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// This is a method used for testing, debugging, and special scenarios only. Not for normal usage.
-        /// </summary>
-        public void ForceRunAllReadyActions()
-        {
-            RunAllReadyActions();
         }
 
         private void RunAllReadyActions()
@@ -44,8 +34,30 @@ namespace DevChatter.Bot.Core.Automation
             }
         }
 
-        // TODO: Make a look that checks for two booleans
-            // IsItTimeToRun()
-            // IsItReadyToRemove()
+        private void RemoveActionsThatWillNeverRunAgain()
+        {
+            var actionsToRemove = _actions.Where(x => x.WillNeverRunAgain()).ToList();
+
+            foreach (var action in actionsToRemove)
+            {
+                _actions.Remove(action);
+            }
+        }
+
+        /// <summary>
+        /// This is a method used for testing, debugging, and special scenarios only. Not for normal usage.
+        /// </summary>
+        public void ForceRunAllReadyActions()
+        {
+            RunAllReadyActions();
+        }
+
+        /// <summary>
+        /// This is a method used for testing, debugging, and special scenarios only. Not for normal usage.
+        /// </summary>
+        public void ForceRemoveActionsThatWillNeverRunAgain()
+        {
+            RemoveActionsThatWillNeverRunAgain();
+        }
     }
 }

@@ -30,5 +30,9 @@ namespace DevChatter.Bot.Core.Automation
             _nextRunTime = DateTime.MaxValue;
         }
 
+        public bool WillNeverRunAgain()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

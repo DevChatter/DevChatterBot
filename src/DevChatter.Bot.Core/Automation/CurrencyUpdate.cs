@@ -38,6 +38,11 @@ namespace DevChatter.Bot.Core.Automation
             SetNextRunTime();
         }
 
+        public bool WillNeverRunAgain()
+        {
+            throw new NotImplementedException();
+        }
+
         private void SetNextRunTime()
         {
             _nextRunTime = _clock.Now.AddMinutes(_currencySettings.IntervalInMinutes);

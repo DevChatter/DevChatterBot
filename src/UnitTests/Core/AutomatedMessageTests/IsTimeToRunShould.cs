@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Systems.Chat;
