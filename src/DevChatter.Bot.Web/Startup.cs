@@ -11,7 +11,6 @@ using DevChatter.Bot.Infra.GoogleApi;
 using DevChatter.Bot.Infra.Twitch;
 using DevChatter.Bot.Infra.Web.Hubs;
 using DevChatter.Bot.Web.Extensions;
-using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -89,15 +88,13 @@ namespace DevChatter.Bot.Web
 
             services.AddTwitchLibConnection(fullConfig.TwitchClientSettings);
 
-            services.AddSingleton<IAutomatedActionSystem, HangfireAutomationSystem>();
+            services.AddSingleton<IAutomatedActionSystem, BackgroundAutomationSystem>();
 
             services.AddSingleton<BotMain>();
 
             services.AddSingleton<IHostedService, DevChatterBotBackgroundWorker>();
 
             services.AddDbContext<AppDataContext>(ServiceLifetime.Transient);
-
-            services.AddHangfire(cfg => cfg.UseSqlServerStorage(fullConfig.DatabaseConnectionString));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -129,9 +126,6 @@ namespace DevChatter.Bot.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
-            app.UseHangfireDashboard();
-            app.UseHangfireServer();
 
             app.UseSignalR(routes =>
             {
