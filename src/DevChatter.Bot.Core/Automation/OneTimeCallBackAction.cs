@@ -10,7 +10,6 @@ namespace DevChatter.Bot.Core.Automation
         public Expression<Action> Action { get; }
         public TimeSpan DelayTimeSpan { get; }
         public string Name { get; }
-        private bool _isDone = false;
 
         public OneTimeCallBackAction(int delayInSeconds, Expression<Action> actionToCall, string name)
         {
@@ -25,10 +24,9 @@ namespace DevChatter.Bot.Core.Automation
         public void Invoke()
         {
             _timeOfNextRun = DateTime.MaxValue;
-            _isDone = true;
             Action.Compile().Invoke();
         }
 
-        public bool WillNeverRunAgain => _isDone;
+        public bool WillNeverRunAgain => DateTime.MaxValue == _timeOfNextRun;
     }
 }
