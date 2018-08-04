@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Automation;
@@ -41,12 +42,11 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             {
                 if (_currencyGenerator.RemoveCurrencyFrom(userChoice.username, TOKENS_REQUIRED_TO_PLAY))
                 {
-                    chatClient.SendMessage(
-                        $"{userChoice.username} joined in the Rock-Paper-Scissors game with {userChoice.choice}!");
+                    chatClient.SendMessage(Messages.GetJoinedMessage(userChoice.username, userChoice.choice));
                 }
                 else
                 {
-                    chatClient.SendMessage($"You need more coins to play rock-paper-scissors, {userChoice.username}");
+                    chatClient.SendMessage(Messages.GetShortCoinsMessage(userChoice.username));
                     return;
                 }
             }
@@ -154,6 +154,11 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 
         public static string GetWinnersMessage(string winners, int prize) => $"The winners are {winners}! They all win {prize} coins!";
         public static string GetSingleWinnerMessage(string winner, int prize) => $"The winner is {winner}! {winner} wins {prize} coins!";
+        public static string GetChangedMessage(string username, RockPaperScissors choice)
+            => throw new NotImplementedException();
+        public static string GetJoinedMessage(string username, RockPaperScissors choice)
+            => $"{username} joined in the Rock-Paper-Scissors game with {choice}!";
+        public static string GetShortCoinsMessage(string username) => $"You need more coins to play rock-paper-scissors, {username}";
 
     }
 }
