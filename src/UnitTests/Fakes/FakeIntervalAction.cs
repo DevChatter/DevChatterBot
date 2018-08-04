@@ -13,7 +13,6 @@ namespace UnitTests.Fakes
             ShouldRun = isTimeToRun;
             ShouldNeverRunAgain = willNeverRunAgain;
         }
-        public string Name { get; } = "Fake";
         public bool IsTimeToRun()
         {
             return ShouldRun;

@@ -20,8 +20,6 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             new Dictionary<string, RockPaperScissors>();
 
         private readonly object _gameStartLock = new object();
-        private OneTimeCallBackAction _rockPaperScissorsEndGame;
-        private IIntervalAction _joinGameWarningMessage;
 
         public bool IsRunning { get; private set; }
 
@@ -133,11 +131,17 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             chatClient.SendMessage(
                 $"{username} wants to play Rock-Paper-Scissors! You have {SECONDS_TO_JOIN_GAME} seconds to join! To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.");
 
-            _rockPaperScissorsEndGame = new OneTimeCallBackAction(SECONDS_TO_JOIN_GAME, () => PlayMatch(chatClient), "RockPaperScissorsEndGame");
-            _automatedActionSystem.AddAction(_rockPaperScissorsEndGame);
-            _joinGameWarningMessage = new DelayedMessageAction(SECONDS_TO_JOIN_GAME - 30,
-                "Only 30 seconds left to join! Type \"!rps rock\", \"!rps paper\", or \"!rps scissors\"", chatClient, "RockPaperScissorsWarning");
-            _automatedActionSystem.AddAction(_joinGameWarningMessage);
+            var triggerEngGame = new OneTimeCallBackAction(SECONDS_TO_JOIN_GAME, () => PlayMatch(chatClient));
+            _automatedActionSystem.AddAction(triggerEngGame);
+            var lastWarningMessage = new DelayedMessageAction(SECONDS_TO_JOIN_GAME - 30,
+                Messages.LAST_CHANCE_TO_JOIN, chatClient);
+            _automatedActionSystem.AddAction(lastWarningMessage);
         }
+    }
+
+    class Messages
+    {
+        public const string LAST_CHANCE_TO_JOIN =
+            "Only 30 seconds left to join! Type \"!rps rock\", \"!rps paper\", or \"!rps scissors\"";
     }
 }

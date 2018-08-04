@@ -9,13 +9,11 @@ namespace DevChatter.Bot.Core.Automation
         private DateTime _timeOfNextRun;
         public Expression<Action> Action { get; }
         public TimeSpan DelayTimeSpan { get; }
-        public string Name { get; }
 
-        public OneTimeCallBackAction(int delayInSeconds, Expression<Action> actionToCall, string name)
+        public OneTimeCallBackAction(int delayInSeconds, Expression<Action> actionToCall)
         {
             DelayTimeSpan = TimeSpan.FromSeconds(delayInSeconds);
             Action = actionToCall;
-            Name = name;
             _timeOfNextRun = DateTime.UtcNow.AddSeconds(delayInSeconds);
         }
 

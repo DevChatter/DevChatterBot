@@ -32,8 +32,6 @@ namespace DevChatter.Bot.Core.Automation
 
         public void AddAction(IIntervalAction actionToAdd)
         {
-            _logger.LogInformation($"Attempting to add, {actionToAdd.Name}.");
-
             _actions.Add(actionToAdd);
         }
 
