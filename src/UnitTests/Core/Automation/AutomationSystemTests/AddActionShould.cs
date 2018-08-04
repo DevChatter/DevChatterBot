@@ -1,6 +1,4 @@
 using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Systems.Chat;
-using System.Collections.Generic;
 using DevChatter.Bot.Core.Util;
 using Moq;
 using Xunit;
@@ -46,9 +44,8 @@ namespace UnitTests.Core.Automation.AutomationSystemTests
 
         private static AutomationSystem GetTestAutomationSystem()
         {
-            var chatClients = new List<IChatClient>();
             var loggerAdapter = new Mock<ILoggerAdapter<AutomationSystem>>().Object;
-            return new AutomationSystem(loggerAdapter, chatClients);
+            return new AutomationSystem(loggerAdapter);
         }
     }
 }

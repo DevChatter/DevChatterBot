@@ -1,20 +1,17 @@
+using DevChatter.Bot.Core.Util;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.Systems.Chat;
-using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Automation
 {
     public class AutomationSystem : IAutomatedActionSystem
     {
         private readonly ILoggerAdapter<AutomationSystem> _logger;
-        private readonly IList<IChatClient> _chatClients;
         private readonly List<IIntervalAction> _actions = new List<IIntervalAction>();
 
-        public AutomationSystem(ILoggerAdapter<AutomationSystem> logger, IList<IChatClient> chatClients)
+        public AutomationSystem(ILoggerAdapter<AutomationSystem> logger)
         {
             _logger = logger;
-            _chatClients = chatClients;
         }
 
         public void AddAction(IIntervalAction actionToAdd)
