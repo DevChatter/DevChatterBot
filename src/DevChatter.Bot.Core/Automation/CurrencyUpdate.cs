@@ -38,10 +38,7 @@ namespace DevChatter.Bot.Core.Automation
             SetNextRunTime();
         }
 
-        public bool WillNeverRunAgain()
-        {
-            return false;
-        }
+        public bool WillNeverRunAgain => false;
 
         private void SetNextRunTime()
         {

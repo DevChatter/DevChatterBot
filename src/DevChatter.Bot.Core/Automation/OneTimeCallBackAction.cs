@@ -29,9 +29,6 @@ namespace DevChatter.Bot.Core.Automation
             Action.Compile().Invoke();
         }
 
-        public bool WillNeverRunAgain()
-        {
-            return _isDone;
-        }
+        public bool WillNeverRunAgain => _isDone;
     }
 }
