@@ -50,6 +50,9 @@ namespace DevChatter.Bot.Core
             ConnectChatClients();
 
             _followableSystem.HandleFollowerNotifications();
+
+            await _automatedActionSystem.Start();
+
             await Task.CompletedTask;
         }
 

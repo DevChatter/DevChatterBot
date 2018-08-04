@@ -10,15 +10,12 @@ namespace DevChatter.Bot.Web
     public class DevChatterBotBackgroundWorker : IHostedService
     {
         private readonly ILoggerAdapter<DevChatterBotBackgroundWorker> _logger;
-        private readonly IAutomatedActionSystem _automatedActionSystem;
         private readonly BotMain _botMain;
 
         public DevChatterBotBackgroundWorker(BotMain botMain,
-            IAutomatedActionSystem automatedActionSystem,
             ILoggerAdapter<DevChatterBotBackgroundWorker> logger)
         {
             _logger = logger;
-            _automatedActionSystem = automatedActionSystem;
             _botMain = botMain;
         }
 

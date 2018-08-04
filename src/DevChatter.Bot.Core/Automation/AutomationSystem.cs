@@ -1,6 +1,8 @@
+using System;
 using DevChatter.Bot.Core.Util;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DevChatter.Bot.Core.Automation
 {
@@ -12,6 +14,19 @@ namespace DevChatter.Bot.Core.Automation
         public AutomationSystem(ILoggerAdapter<AutomationSystem> logger)
         {
             _logger = logger;
+        }
+
+        public async Task Start()
+        {
+            var loop1Task = Task.Run(async () => {
+                while (true)
+                {
+                    RunAllReadyActions();
+                    await Task.Delay(TimeSpan.FromSeconds(2));
+                }
+            });
+
+            await loop1Task;
         }
 
         public void AddAction(IIntervalAction actionToAdd)
