@@ -52,7 +52,7 @@ namespace DevChatter.Bot.Core.Automation
 
         public bool WillNeverRunAgain()
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

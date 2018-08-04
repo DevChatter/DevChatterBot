@@ -11,6 +11,7 @@ namespace DevChatter.Bot.Core.Automation
         public string Name { get; }
         public TimeSpan DelayTimeSpan { get; }
         public string Message { get; }
+        private bool _isDone = false;
 
         public DelayedMessageAction(int delayInSeconds, string message,
             IChatClient chatClient, string name)
@@ -28,11 +29,12 @@ namespace DevChatter.Bot.Core.Automation
         {
             _chatClient.SendMessage(Message);
             _nextRunTime = DateTime.MaxValue;
+            _isDone = true;
         }
 
         public bool WillNeverRunAgain()
         {
-            throw new NotImplementedException();
+            return _isDone;
         }
     }
 }
