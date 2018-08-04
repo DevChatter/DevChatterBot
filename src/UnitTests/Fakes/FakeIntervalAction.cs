@@ -24,6 +24,6 @@ namespace UnitTests.Fakes
             InvokeWasRun = true;
         }
 
-        public bool WillNeverRunAgain => ShouldNeverRunAgain;
+        public bool IsDone => ShouldNeverRunAgain;
     }
 }

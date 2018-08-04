@@ -27,6 +27,6 @@ namespace DevChatter.Bot.Core.Automation
             Action.Compile().Invoke();
         }
 
-        public bool WillNeverRunAgain => DateTime.MaxValue == _timeOfNextRun;
+        public bool IsDone => DateTime.MaxValue == _timeOfNextRun;
     }
 }

@@ -30,6 +30,6 @@ namespace DevChatter.Bot.Core.Automation
             _nextRunTime = DateTime.MaxValue;
         }
 
-        public bool WillNeverRunAgain => DateTime.MaxValue == _nextRunTime;
+        public bool IsDone => DateTime.MaxValue == _nextRunTime;
     }
 }

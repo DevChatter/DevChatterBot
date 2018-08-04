@@ -50,6 +50,6 @@ namespace DevChatter.Bot.Core.Automation
             }
         }
 
-        public bool WillNeverRunAgain => false;
+        public bool IsDone => false;
     }
 }

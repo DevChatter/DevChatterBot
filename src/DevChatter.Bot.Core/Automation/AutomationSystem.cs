@@ -49,7 +49,7 @@ namespace DevChatter.Bot.Core.Automation
 
         private void RemoveActionsThatWillNeverRunAgain()
         {
-            var actionsToRemove = _actions.Where(x => x.WillNeverRunAgain).ToList();
+            var actionsToRemove = _actions.Where(x => x.IsDone).ToList();
 
             foreach (var action in actionsToRemove)
             {
