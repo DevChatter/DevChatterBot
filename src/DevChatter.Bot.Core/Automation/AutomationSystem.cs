@@ -22,6 +22,7 @@ namespace DevChatter.Bot.Core.Automation
                 while (true)
                 {
                     RunAllReadyActions();
+                    RemoveActionsThatWillNeverRunAgain();
                     await Task.Delay(TimeSpan.FromSeconds(2));
                 }
             });
