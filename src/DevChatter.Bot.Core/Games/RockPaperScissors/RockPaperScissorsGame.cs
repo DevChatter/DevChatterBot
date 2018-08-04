@@ -128,8 +128,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         private void StartNewGame(IChatClient chatClient, string username)
         {
             _logger.LogInformation($"{nameof(StartNewGame)}({chatClient.GetType().Name}, {username}) - Starting Game");
-            chatClient.SendMessage(
-                $"{username} wants to play Rock-Paper-Scissors! You have {SECONDS_TO_JOIN_GAME} seconds to join! To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.");
+            chatClient.SendMessage(Messages.GetGameStartMessage(username,SECONDS_TO_JOIN_GAME));
 
             var triggerEngGame = new OneTimeCallBackAction(SECONDS_TO_JOIN_GAME, () => PlayMatch(chatClient));
             _automatedActionSystem.AddAction(triggerEngGame);
@@ -143,5 +142,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
     {
         public const string LAST_CHANCE_TO_JOIN =
             "Only 30 seconds left to join! Type \"!rps rock\", \"!rps paper\", or \"!rps scissors\"";
+
+        public static string GetGameStartMessage(string username, int secondsToJoin) => $"{username} wants to play Rock-Paper-Scissors! You have {secondsToJoin} seconds to join! To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.";
     }
 }
