@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -56,7 +57,7 @@ namespace UnitTests.Core.AutomatedMessageTests
         {
             var fakeClock = new FakeClock();
             var intervalMessage = new AutomatedMessage("Hello there!", _delayInMinutes,
-                new List<IChatClient>(), fakeClock, "fakeMessage");
+                new List<IChatClient>(), fakeClock);
             return (intervalMessage, fakeClock);
         }
     }

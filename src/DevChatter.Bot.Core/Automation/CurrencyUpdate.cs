@@ -28,8 +28,6 @@ namespace DevChatter.Bot.Core.Automation
             SetNextRunTime();
         }
 
-        public string Name { get; } = nameof(CurrencyUpdate);
-
         public bool IsTimeToRun() => _clock.Now >= _nextRunTime;
 
         public void Invoke()
@@ -37,6 +35,8 @@ namespace DevChatter.Bot.Core.Automation
             _currencyGenerator.UpdateCurrency();
             SetNextRunTime();
         }
+
+        public bool IsDone => false;
 
         private void SetNextRunTime()
         {

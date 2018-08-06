@@ -5,14 +5,13 @@ namespace DevChatter.Bot.Core.Automation
 {
     public interface IIntervalAction
     {
-        string Name { get; }
         bool IsTimeToRun();
         void Invoke();
+        bool IsDone { get; }
     }
 
     public interface IAutomatedItem
     {
-        string Name { get; }
     }
 
     public interface IAutomatedAction

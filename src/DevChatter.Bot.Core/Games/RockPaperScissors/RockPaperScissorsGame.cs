@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Automation;
@@ -20,8 +21,6 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             new Dictionary<string, RockPaperScissors>();
 
         private readonly object _gameStartLock = new object();
-        private OneTimeCallBackAction _rockPaperScissorsEndGame;
-        private IIntervalAction _joinGameWarningMessage;
 
         public bool IsRunning { get; private set; }
 
@@ -43,12 +42,11 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             {
                 if (_currencyGenerator.RemoveCurrencyFrom(userChoice.username, TOKENS_REQUIRED_TO_PLAY))
                 {
-                    chatClient.SendMessage(
-                        $"{userChoice.username} joined in the Rock-Paper-Scissors game with {userChoice.choice}!");
+                    chatClient.SendMessage(Messages.GetJoinedMessage(userChoice.username, userChoice.choice));
                 }
                 else
                 {
-                    chatClient.SendMessage($"You need more coins to play rock-paper-scissors, {userChoice.username}");
+                    chatClient.SendMessage(Messages.GetShortCoinsMessage(userChoice.username));
                     return;
                 }
             }
@@ -82,18 +80,24 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         public void AnnounceWinners(IChatClient chatClient, RockPaperScissors botChoice)
         {
             List<string> winnersList = GetWinnerList(botChoice);
-            if (winnersList.Any())
+            string message = GetWinAnnouncementMessage(winnersList);
+            chatClient.SendMessage(message);
+        }
+
+        private string GetWinAnnouncementMessage(List<string> winnersList)
+        {
+            if (!winnersList.Any())
             {
-                string winners = string.Join(",", winnersList);
-                if (winnersList.Count() > 1)
-                    chatClient.SendMessage($"The winners are {winners}! They all win {TOKENS_FOR_WINNING} coins!");
-                else
-                    chatClient.SendMessage($"The winner is {winners}! {winners} wins {TOKENS_FOR_WINNING} coins!");
+                return "Nobody won this time!";
             }
-            else
+
+            if (winnersList.Count > 1)
             {
-                chatClient.SendMessage("Nobody won this time!");
+                string winners = string.Join(", ", winnersList);
+                return Messages.GetWinnersMessage(winners, TOKENS_FOR_WINNING);
             }
+
+            return Messages.GetSingleWinnerMessage(winnersList.Single(), TOKENS_FOR_WINNING);
         }
 
         public List<string> GetWinnerList(RockPaperScissors botChoice)
@@ -130,14 +134,31 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         private void StartNewGame(IChatClient chatClient, string username)
         {
             _logger.LogInformation($"{nameof(StartNewGame)}({chatClient.GetType().Name}, {username}) - Starting Game");
-            chatClient.SendMessage(
-                $"{username} wants to play Rock-Paper-Scissors! You have {SECONDS_TO_JOIN_GAME} seconds to join! To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.");
+            chatClient.SendMessage(Messages.GetGameStartMessage(username,SECONDS_TO_JOIN_GAME));
 
-            _rockPaperScissorsEndGame = new OneTimeCallBackAction(SECONDS_TO_JOIN_GAME, () => PlayMatch(chatClient), "RockPaperScissorsEndGame");
-            _automatedActionSystem.AddAction(_rockPaperScissorsEndGame);
-            _joinGameWarningMessage = new DelayedMessageAction(SECONDS_TO_JOIN_GAME - 30,
-                "Only 30 seconds left to join! Type \"!rps rock\", \"!rps paper\", or \"!rps scissors\"", chatClient, "RockPaperScissorsWarning");
-            _automatedActionSystem.AddAction(_joinGameWarningMessage);
+            var triggerEngGame = new OneTimeCallBackAction(SECONDS_TO_JOIN_GAME, () => PlayMatch(chatClient));
+            _automatedActionSystem.AddAction(triggerEngGame);
+
+            var lastWarningMessage = new DelayedMessageAction(SECONDS_TO_JOIN_GAME - 30,
+                Messages.LAST_CHANCE_TO_JOIN, chatClient);
+            _automatedActionSystem.AddAction(lastWarningMessage);
         }
+    }
+
+    static class Messages
+    {
+        public const string LAST_CHANCE_TO_JOIN =
+            "Only 30 seconds left to join! Type \"!rps rock\", \"!rps paper\", or \"!rps scissors\"";
+
+        public static string GetGameStartMessage(string username, int secondsToJoin) => $"{username} wants to play Rock-Paper-Scissors! You have {secondsToJoin} seconds to join! To join, simply type \"!rps rock\", \"!rps paper\", or \"!rps scissors\" in chat.";
+
+        public static string GetWinnersMessage(string winners, int prize) => $"The winners are {winners}! They all win {prize} coins!";
+        public static string GetSingleWinnerMessage(string winner, int prize) => $"The winner is {winner}! {winner} wins {prize} coins!";
+        public static string GetChangedMessage(string username, RockPaperScissors choice)
+            => throw new NotImplementedException();
+        public static string GetJoinedMessage(string username, RockPaperScissors choice)
+            => $"{username} joined in the Rock-Paper-Scissors game with {choice}!";
+        public static string GetShortCoinsMessage(string username) => $"You need more coins to play rock-paper-scissors, {username}";
+
     }
 }

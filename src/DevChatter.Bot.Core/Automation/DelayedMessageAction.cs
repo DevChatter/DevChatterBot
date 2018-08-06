@@ -8,21 +8,19 @@ namespace DevChatter.Bot.Core.Automation
     {
         private readonly IChatClient _chatClient;
         private DateTime _nextRunTime;
-        public string Name { get; }
         public TimeSpan DelayTimeSpan { get; }
         public string Message { get; }
 
         public DelayedMessageAction(int delayInSeconds, string message,
-            IChatClient chatClient, string name)
+            IChatClient chatClient)
         {
             DelayTimeSpan = TimeSpan.FromSeconds(delayInSeconds);
             Message = message;
             _chatClient = chatClient;
-            Name = name;
-            _nextRunTime = DateTime.Now.AddSeconds(delayInSeconds);
+            _nextRunTime = DateTime.UtcNow.AddSeconds(delayInSeconds);
         }
 
-        public bool IsTimeToRun() => DateTime.Now > _nextRunTime;
+        public bool IsTimeToRun() => DateTime.UtcNow > _nextRunTime;
 
         public void Invoke()
         {
@@ -30,5 +28,6 @@ namespace DevChatter.Bot.Core.Automation
             _nextRunTime = DateTime.MaxValue;
         }
 
+        public bool IsDone => DateTime.MaxValue == _nextRunTime;
     }
 }

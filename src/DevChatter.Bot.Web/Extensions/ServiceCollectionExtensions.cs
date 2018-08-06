@@ -1,12 +1,13 @@
+using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Specifications;
+using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Infra.Web;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Commands.Trackers;
-using DevChatter.Bot.Core.Events;
 
 namespace DevChatter.Bot.Web.Extensions
 {
@@ -46,6 +47,7 @@ namespace DevChatter.Bot.Web.Extensions
         /// </summary>
         public static IServiceCollection AddStreamMetaCommands(this IServiceCollection services)
         {
+            services.AddSingleton<IBotCommand, HypeCommand>();
             services.AddSingleton<IBotCommand, TopCommand>();
             services.AddSingleton<IBotCommand, UptimeCommand>();
             services.AddSingleton<IBotCommand, StreamsCommand>();

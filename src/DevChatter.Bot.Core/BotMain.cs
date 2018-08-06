@@ -50,6 +50,9 @@ namespace DevChatter.Bot.Core
             ConnectChatClients();
 
             _followableSystem.HandleFollowerNotifications();
+
+            await _automatedActionSystem.Start();
+
             await Task.CompletedTask;
         }
 
@@ -70,7 +73,7 @@ namespace DevChatter.Bot.Core
             var messages = _repository.List<IntervalMessage>();
             foreach (IntervalMessage message in messages)
             {
-                var action = new AutomatedMessage(message.MessageText, message.DelayInMinutes, _chatClients, $"AutomatedMessage-{message.Id}");
+                var action = new AutomatedMessage(message.MessageText, message.DelayInMinutes, _chatClients);
                 _automatedActionSystem.AddAction(action);
             }
         }
