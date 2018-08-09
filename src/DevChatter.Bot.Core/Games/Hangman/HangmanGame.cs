@@ -39,16 +39,13 @@ namespace DevChatter.Bot.Core.Games.Hangman
         }
 
         private readonly ICurrencyGenerator _currencyGenerator;
-        private readonly IAutomatedActionSystem _automatedActionSystem;
         private readonly IRepository _repository;
 
         public bool IsRunning { get; private set; }
 
-        public HangmanGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem,
-            IRepository repository)
+        public HangmanGame(ICurrencyGenerator currencyGenerator, IRepository repository)
         {
             _currencyGenerator = currencyGenerator;
-            _automatedActionSystem = automatedActionSystem;
             _repository = repository;
         }
 
