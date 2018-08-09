@@ -47,8 +47,6 @@ namespace DevChatter.Bot.Core.Events
             }
 
             var cooldown = _usageTracker.GetActiveCooldown(e.ChatUser, botCommand);
-            chatClient.SendMessage(cooldown.Message);
-            // TODO: prevent running the command if there was a cooldown
 
             switch (cooldown)
             {
