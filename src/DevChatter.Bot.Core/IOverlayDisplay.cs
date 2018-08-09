@@ -6,7 +6,8 @@ namespace DevChatter.Bot.Core
     {
         Task Hype();
         Task HangmanStart();
-        Task HangmanEnd();
+        Task HangmanWin();
+        Task HangmanLose();
         Task HangmanWrongAnswer();
     }
 }

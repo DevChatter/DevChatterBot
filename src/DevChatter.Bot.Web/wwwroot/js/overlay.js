@@ -40,7 +40,14 @@ var overlay = (function () {
     connection.on("HangmanWrongAnswer", () => {
       hangman.wrongAnswer(hangmanContext);
     });
-    connection.on("HangmanEnd", () => {
+    connection.on("HangmanLose", async function () {
+      hangman.displayGameOver(hangmanContext);
+      await sleep(4000);
+      hangman.endGame(hangmanContext);
+    });
+    connection.on("HangmanWin", async function () {
+      hangman.displayVictory(hangmanContext);
+      await sleep(4000);
       hangman.endGame(hangmanContext);
     });
 

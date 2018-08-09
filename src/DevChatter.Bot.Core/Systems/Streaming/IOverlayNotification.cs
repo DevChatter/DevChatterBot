@@ -5,7 +5,8 @@ namespace DevChatter.Bot.Core.Systems.Streaming
     public interface IOverlayNotification
     {
         Task Hype();
-        Task HangmanEnd();
+        Task HangmanWin();
+        Task HangmanLose();
         Task HangmanStart();
         Task HangmanWrongAnswer();
     }

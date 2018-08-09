@@ -76,6 +76,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 $"Congratulations, {chatUser.DisplayName} ! You won the game and will get {TOKENS_TO_WINNER} tokens!");
             _currencyGenerator.AddCurrencyTo(new List<string> {chatUser.DisplayName}, TOKENS_TO_WINNER);
             GivePerLetterTokens(chatClient);
+            _overlayNotification.HangmanWin();
             ResetGame();
         }
 
@@ -99,7 +100,6 @@ namespace DevChatter.Bot.Core.Games.Hangman
             IsRunning = false;
             _guessedLetters.Clear();
             _password = null;
-            _overlayNotification.HangmanEnd();
         }
 
         public void AskAboutLetter(IChatClient chatClient, string letterToAsk, ChatUser chatUser)
@@ -142,6 +142,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 chatClient.SendMessage(
                     $"That's too many failed guesses. You all lost. devchaFail. The word was: {Password}");
                 ResetGame();
+                _overlayNotification.HangmanLose();
             }
         }
 

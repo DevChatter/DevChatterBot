@@ -74,11 +74,25 @@ var hangman = (function () {
     drawLine(ctx, 120, 5, 120, 30); // Noose
   };
 
+  var displayGameOver = function (ctx) {
+    ctx.clearRect(0, 0, 1920, 1080);
+    ctx.font = "300px Arial";
+    ctx.fillText("Game Over", 10, 300);
+  };
+
+  var displayVictory = function (ctx) {
+    ctx.clearRect(0, 0, 1920, 1080);
+    ctx.font = "300px Arial";
+    ctx.fillText("You win!", 10, 300);
+  };
+
   return {
     startGame: startGame,
     endGame: endGame,
     wrongAnswer: wrongAnswer,
-    drawGallows: drawGallows
+    drawGallows: drawGallows,
+    displayGameOver: displayGameOver,
+    displayVictory: displayVictory
   };
 
 }());

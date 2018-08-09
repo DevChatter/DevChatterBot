@@ -15,9 +15,14 @@ namespace DevChatter.Bot.Infra.Web.Hubs
             Clients.All.HangmanStart();
         }
 
-        public void HangmanEnd()
+        public void HangmanWin()
         {
-            Clients.All.HangmanEnd();
+            Clients.All.HangmanWin();
+        }
+
+        public void HangmanLose()
+        {
+            Clients.All.HangmanLose();
         }
 
         public void HangmanWrongAnswer()

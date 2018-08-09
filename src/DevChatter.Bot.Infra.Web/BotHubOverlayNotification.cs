@@ -20,9 +20,14 @@ namespace DevChatter.Bot.Infra.Web
             await _internalContext.Clients.All.Hype();
         }
 
-        public async Task HangmanEnd()
+        public async Task HangmanWin()
         {
-            await _internalContext.Clients.All.HangmanEnd();
+            await _internalContext.Clients.All.HangmanWin();
+        }
+
+        public async Task HangmanLose()
+        {
+            await _internalContext.Clients.All.HangmanLose();
         }
 
         public async Task HangmanStart()
