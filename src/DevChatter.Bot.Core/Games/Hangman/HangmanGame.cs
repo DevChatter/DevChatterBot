@@ -6,6 +6,7 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Systems.Streaming;
 
 namespace DevChatter.Bot.Core.Games.Hangman
 {
@@ -40,13 +41,15 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IRepository _repository;
+        private readonly IOverlayNotification _overlayNotification;
 
         public bool IsRunning { get; private set; }
 
-        public HangmanGame(ICurrencyGenerator currencyGenerator, IRepository repository)
+        public HangmanGame(ICurrencyGenerator currencyGenerator, IRepository repository, IOverlayNotification overlayNotification)
         {
             _currencyGenerator = currencyGenerator;
             _repository = repository;
+            _overlayNotification = overlayNotification;
         }
 
         public void GuessWord(IChatClient chatClient, string guess, ChatUser chatUser)
@@ -96,6 +99,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             IsRunning = false;
             _guessedLetters.Clear();
             _password = null;
+            _overlayNotification.HangmanEnd();
         }
 
         public void AskAboutLetter(IChatClient chatClient, string letterToAsk, ChatUser chatUser)
@@ -126,6 +130,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             else
             {
                 chatClient.SendMessage($"No, {letterToAsk} is not in the word.");
+                _overlayNotification.HangmanWrongAnswer();
                 CheckForGameLost(chatClient);
             }
         }
@@ -157,6 +162,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
             IsRunning = true;
 
+            _overlayNotification.HangmanStart();
             chatClient.SendMessage($"Totally starting this game. You word to guess is {MaskedPassword}");
         }
 

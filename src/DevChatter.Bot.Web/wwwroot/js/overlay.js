@@ -17,6 +17,9 @@ var overlay = (function () {
 
   window.onload = function() {
 
+    var canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+
     var connection = new signalR.HubConnectionBuilder()
       .withUrl("/BotHub")
       .configureLogging(signalR.LogLevel.Information)
@@ -27,9 +30,17 @@ var overlay = (function () {
     connection.on("Hype", () => {
       doHype();
     });
+    connection.on("HangmanStart", () => {
+      hangman.startGame();
+      hangman.drawGallows(ctx);
+    });
+    connection.on("HangmanWrongAnswer", () => {
+      hangman.wrongAnswer(ctx);
+    });
+    connection.on("HangmanEnd", () => {
+      hangman.endGame(ctx);
+    });
 
-    var canvas = document.getElementById('myCanvas');
-    var ctx = canvas.getContext('2d');
 
     function render() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -42,9 +53,10 @@ var overlay = (function () {
       });
       window.requestAnimationFrame(render);
     }
+    
+    
 
-    window.requestAnimationFrame(render);
-
+    //window.requestAnimationFrame(render);
   }
   return {
     doHype: doHype
