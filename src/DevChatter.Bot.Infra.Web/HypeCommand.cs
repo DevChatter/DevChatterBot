@@ -1,3 +1,4 @@
+using System;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
@@ -17,12 +18,12 @@ namespace DevChatter.Bot.Infra.Web
             : base(repository, UserRole.Everyone)
         {
             _chatHubContext = chatHubContext;
+            Cooldown = TimeSpan.FromMinutes(2);
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             chatClient.SendMessage("Hype hype!");
-            _chatHubContext.Clients.All.DisplayMessage("Hype hype!");
             _chatHubContext.Clients.All.Hype();
         }
     }
