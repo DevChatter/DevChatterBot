@@ -29,6 +29,7 @@ var overlay = (function () {
 
     connection.on("Hype", () => {
       doHype();
+      window.requestAnimationFrame(render);
     });
     connection.on("HangmanStart", () => {
       hangman.startGame();
@@ -41,7 +42,6 @@ var overlay = (function () {
       hangman.endGame(ctx);
     });
 
-
     function render() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       sprites.forEach(function (sprite, i) {
@@ -51,12 +51,12 @@ var overlay = (function () {
           sprites.splice(i, 1);
         }
       });
-      window.requestAnimationFrame(render);
+      if (sprites.length > 0) {
+        window.requestAnimationFrame(render);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
     }
-    
-    
-
-    //window.requestAnimationFrame(render);
   }
   return {
     doHype: doHype
