@@ -53,6 +53,7 @@ namespace DevChatter.Bot.Core.Events
             switch (cooldown)
             {
                 case NoCooldown none:
+                    ProcessTheCommand(e, chatClient, botCommand);
                     break;
                 case UserCooldown userCooldown:
                     chatClient.SendDirectMessage(e.ChatUser.DisplayName, userCooldown.Message);
@@ -63,14 +64,10 @@ namespace DevChatter.Bot.Core.Events
                 case CommandCooldown commandCooldown:
                     chatClient.SendMessage(commandCooldown.Message);
                     break;
-                default:
-                    break;
             }
-
-            DoTheThing(e, chatClient, botCommand);
         }
 
-        private void DoTheThing(CommandReceivedEventArgs e, IChatClient chatClient, IBotCommand botCommand)
+        private void ProcessTheCommand(CommandReceivedEventArgs e, IChatClient chatClient, IBotCommand botCommand)
         {
             CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient);
             var commandUsageEntity = new CommandUsageEntity(e.CommandWord, botCommand.GetType().FullName,
@@ -79,8 +76,8 @@ namespace DevChatter.Bot.Core.Events
             _usageTracker.RecordUsage(commandUsage);
         }
 
-        private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand,
-            IChatClient chatClient1)
+        private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e,
+            IBotCommand botCommand, IChatClient chatClient1)
         {
             try
             {
