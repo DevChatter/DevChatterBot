@@ -63,6 +63,9 @@ var hangman = (function () {
 
     ctx.clearRect(0, 0, 1920, 1080);
 
+    ctx.fillStyle = "#cccccc";
+    ctx.fillRect(0, 0, 300, 300);
+
     // Draw this set when the game is running
     ctx.strokeStyle = "#966F33";
     drawLine(ctx, 0, 300, 300, 300, 25); // Platform
