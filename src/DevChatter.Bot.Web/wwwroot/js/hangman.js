@@ -27,16 +27,19 @@ var hangman = (function () {
 
   var hangmanPieces = [drawHead, drawTorso, drawRightArm, drawLeftArm, drawRightLeg, drawLeftLeg];
 
-  var endGame = function () {
+  var endGame = function (ctx) {
+    ctx.clearRect(0, 0, 1920, 1080);
     isRunning = false;
     wrongAnswerCount = 0;
   };
 
-  var wrongAnswer = function () {
+  var wrongAnswer = function (ctx) {
     wrongAnswerCount++;
     if (wrongAnswerCount > hangmanPieces.length) {
-      console.log('Hi there!');
-      endGame();
+      endGame(ctx);
+    } else {
+      ctx.strokeStyle = "#000000";
+      hangmanPieces[wrongAnswerCount- 1](ctx);
     }
   };
 
@@ -45,35 +48,33 @@ var hangman = (function () {
   };
 
 
-  function drawLine(ctx, x1, y1, x2, y2, color, width) {
+  function drawLine(ctx, x1, y1, x2, y2, width) {
     ctx.lineWidth = width || 1;
-    ctx.strokeStyle = color || "#000000";
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.stroke();
   }
 
 
-  var drawHangman = function (ctx) {
+  var drawGallows = function (ctx) {
 
     if (!isRunning) return;
 
-    // Draw this set when the game is running
-    drawLine(ctx, 0, 300, 300, 300, '#966F33', 25); // Platform
-    drawLine(ctx, 10, 0, 10, 300, '#966F33', 10); // Pole
-    drawLine(ctx, 0, 5, 140, 5, '#966F33', 5); // Branch
-    drawLine(ctx, 120, 5, 120, 30, '#966F33'); // Noose
+    ctx.clearRect(0, 0, 1920, 1080);
 
-    for (var i = 0; i < wrongAnswerCount; i++) {
-      hangmanPieces[i](ctx);
-    }
+    // Draw this set when the game is running
+    ctx.strokeStyle = "#966F33";
+    drawLine(ctx, 0, 300, 300, 300, 25); // Platform
+    drawLine(ctx, 10, 0, 10, 300, 10); // Pole
+    drawLine(ctx, 0, 5, 140, 5, 5); // Branch
+    drawLine(ctx, 120, 5, 120, 30); // Noose
   };
 
   return {
     startGame: startGame,
     endGame: endGame,
     wrongAnswer: wrongAnswer,
-    drawHangman: drawHangman
+    drawGallows: drawGallows
   };
 
 }());
