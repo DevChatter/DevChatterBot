@@ -3,7 +3,7 @@ function Sprite(imageSrc, x, y, direction) {
   this.image.src = imageSrc;
   this.x = x || Math.floor((Math.random() * 200) + (1920 / 2 - 100));
   this.y = y || Math.floor((Math.random() * 200) + (1080 / 2 - 100));
-  this.direction = this.getRandomDirection();
+  this.direction = direction || this.getRandomDirection();
   this.timesRendered = 0;
 };
 
