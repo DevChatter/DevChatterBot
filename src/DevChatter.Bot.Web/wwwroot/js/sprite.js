@@ -12,8 +12,6 @@ function Sprite(imageSrc, x, y, direction, mod) {
 };
 
 Sprite.prototype.getRandomDirection = function () {
-  //var myArray = ['U', 'UR', 'R', 'DR', 'D', 'DL', 'L', 'UL'];
-  // var rand = myArray[Math.floor(Math.random() * myArray.length)];
   var rand = Math.random() * 2 * Math.PI; //get random val between 0 and 2 Pi ~ 0 and 360 degrees
   
   return rand;
@@ -57,37 +55,6 @@ Sprite.prototype.update = function () {
   
 
   //debug("Testing!!!!!");
-  /*
-  switch (this.direction) {
-    case 'U':
-      this.y -= 2;
-      break;
-    case 'UR':
-      this.x += 2;
-      this.y -= 2;
-      break;
-    case 'R':
-      this.x += 2;
-      break;
-    case 'DR':
-      this.x += 2;
-      this.y += 2;
-      break;
-    case 'D':
-      this.y += 2;
-      break;
-    case 'DL':
-      this.x -= 2;
-      this.y += 2;
-      break;
-    case 'L':
-      this.x -= 2;
-      break;
-    case 'UL':
-      this.x -= 2;
-      this.y -= 2;
-      break;
-  }*/
 };
 
 Sprite.prototype.getBounceAngle = function (angle, vertical_wall = true) { //takes angle of colision and a bool to tell which kind of wall it's bouncing off of
