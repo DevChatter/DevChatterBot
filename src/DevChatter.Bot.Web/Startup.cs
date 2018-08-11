@@ -21,6 +21,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using DevChatter.Bot.Infra.Web;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web
@@ -76,6 +77,8 @@ namespace DevChatter.Bot.Web
             services.AddSingleton(typeof(IList<>), typeof(List<>));
             services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
 
+            services.AddSingleton<IOverlayNotification, BotHubOverlayNotification>();
+            
             services.AddAllGames();
 
             services.AddStreamMetaCommands();

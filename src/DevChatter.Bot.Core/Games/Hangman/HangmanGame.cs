@@ -6,6 +6,7 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Systems.Streaming;
 
 namespace DevChatter.Bot.Core.Games.Hangman
 {
@@ -39,17 +40,16 @@ namespace DevChatter.Bot.Core.Games.Hangman
         }
 
         private readonly ICurrencyGenerator _currencyGenerator;
-        private readonly IAutomatedActionSystem _automatedActionSystem;
         private readonly IRepository _repository;
+        private readonly IOverlayNotification _overlayNotification;
 
         public bool IsRunning { get; private set; }
 
-        public HangmanGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem,
-            IRepository repository)
+        public HangmanGame(ICurrencyGenerator currencyGenerator, IRepository repository, IOverlayNotification overlayNotification)
         {
             _currencyGenerator = currencyGenerator;
-            _automatedActionSystem = automatedActionSystem;
             _repository = repository;
+            _overlayNotification = overlayNotification;
         }
 
         public void GuessWord(IChatClient chatClient, string guess, ChatUser chatUser)
@@ -76,6 +76,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 $"Congratulations, {chatUser.DisplayName} ! You won the game and will get {TOKENS_TO_WINNER} tokens!");
             _currencyGenerator.AddCurrencyTo(new List<string> {chatUser.DisplayName}, TOKENS_TO_WINNER);
             GivePerLetterTokens(chatClient);
+            _overlayNotification.HangmanWin();
             ResetGame();
         }
 
@@ -129,6 +130,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             else
             {
                 chatClient.SendMessage($"No, {letterToAsk} is not in the word.");
+                _overlayNotification.HangmanWrongAnswer();
                 CheckForGameLost(chatClient);
             }
         }
@@ -140,6 +142,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 chatClient.SendMessage(
                     $"That's too many failed guesses. You all lost. devchaFail. The word was: {Password}");
                 ResetGame();
+                _overlayNotification.HangmanLose();
             }
         }
 
@@ -160,6 +163,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
             IsRunning = true;
 
+            _overlayNotification.HangmanStart();
             chatClient.SendMessage($"Totally starting this game. You word to guess is {MaskedPassword}");
         }
 

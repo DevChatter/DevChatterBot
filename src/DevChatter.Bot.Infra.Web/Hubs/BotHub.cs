@@ -9,5 +9,25 @@ namespace DevChatter.Bot.Infra.Web.Hubs
         {
             Clients.All.Hype();
         }
+
+        public void HangmanStart()
+        {
+            Clients.All.HangmanStart();
+        }
+
+        public void HangmanWin()
+        {
+            Clients.All.HangmanWin();
+        }
+
+        public void HangmanLose()
+        {
+            Clients.All.HangmanLose();
+        }
+
+        public void HangmanWrongAnswer()
+        {
+            Clients.All.HangmanWrongAnswer();
+        }
     }
 }

@@ -17,6 +17,11 @@ var overlay = (function () {
   }
 
   window.onload = function() {
+    var mainCanvas = document.getElementById('mainCanvas');
+    var mainContext = mainCanvas.getContext('2d');
+
+    var hangmanCanvas = document.getElementById('hangmanCanvas');
+    var hangmanContext = hangmanCanvas.getContext('2d');
 
     var connection = new signalR.HubConnectionBuilder()
       .withUrl("/BotHub")
@@ -27,25 +32,41 @@ var overlay = (function () {
 
     connection.on("Hype", () => {
       doHype();
+      window.requestAnimationFrame(render);
+    });
+    connection.on("HangmanStart", () => {
+      hangman.startGame();
+      hangman.drawGallows(hangmanContext);
+    });
+    connection.on("HangmanWrongAnswer", () => {
+      hangman.wrongAnswer(hangmanContext);
+    });
+    connection.on("HangmanLose", async function () {
+      hangman.displayGameOver(hangmanContext);
+      await sleep(4000);
+      hangman.endGame(hangmanContext);
+    });
+    connection.on("HangmanWin", async function () {
+      hangman.displayVictory(hangmanContext);
+      await sleep(4000);
+      hangman.endGame(hangmanContext);
     });
 
-    var canvas = document.getElementById('myCanvas');
-    var ctx = canvas.getContext('2d');
-
     function render() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      mainContext.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
       sprites.forEach(function (sprite, i) {
         sprite.update();
-        sprite.render(ctx);
+        sprite.render(mainContext);
         if (sprite.timesRendered > 300) {
           sprites.splice(i, 1);
         }
       });
-      window.requestAnimationFrame(render);
+      if (sprites.length > 0) {
+        window.requestAnimationFrame(render);
+      } else {
+        mainContext.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+      }
     }
-
-    window.requestAnimationFrame(render);
-
   }
   return {
     doHype: doHype
