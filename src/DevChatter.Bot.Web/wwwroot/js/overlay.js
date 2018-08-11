@@ -8,6 +8,7 @@ var overlay = (function () {
   var doHype = async function() {
     for (var blastIndex = 0; blastIndex < 20; blastIndex++) {
       for (var i = 0; i < 25; i++) {
+        var canvas = document.getElementById('myCanvas'); //defining local var canvas, is this necessary? can a wider scoped canvas be used in it's place 
         var hypeSprite = new Sprite('/images/DevchaHypeEmote.png', canvas.width, canvas.height);
         sprites.push(hypeSprite);
       }
