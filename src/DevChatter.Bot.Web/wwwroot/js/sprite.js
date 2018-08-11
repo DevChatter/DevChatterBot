@@ -1,5 +1,3 @@
-//import { debug } from "util";
-
 function Sprite(imageSrc, width, height, x, y, direction, mod) {
   this.image = new Image();
   this.image.src = imageSrc;
