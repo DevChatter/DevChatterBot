@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Core
+namespace DevChatter.Bot.Core.Systems.Streaming
 {
-    public interface IOverlayDisplay
+    public interface IOverlayNotification
     {
         Task Hype();
-        Task HangmanStart();
         Task HangmanWin();
         Task HangmanLose();
+        Task HangmanStart();
         Task HangmanWrongAnswer();
     }
 }

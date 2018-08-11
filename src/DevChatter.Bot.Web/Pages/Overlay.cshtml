@@ -12,10 +12,16 @@
     <title>DevChatterBot Overlay</title>
     <script src="~/lib/signalr/signalr.js"></script>
     <script src="~/js/sprite.js"></script>
+    <script src="~/js/hangman.js"></script>
     <script src="~/js/overlay.js"></script>
 </head>
 <body>
-    <canvas id="myCanvas" width="1920" height="1080"></canvas>
+    <div id="wrapper" style="position:relative;">
+        <canvas style="position:absolute; top:0px; left:0px;"
+                id="hangmanCanvas" width="1920" height="1080"></canvas>
+        <canvas style="position:absolute; top:0px; left:0px;"
+                id="mainCanvas" width="1920" height="1080"></canvas>
+    </div>
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
