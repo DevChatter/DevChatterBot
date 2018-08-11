@@ -91,30 +91,51 @@ Sprite.prototype.update = function () {
 };
 
 Sprite.prototype.getBounceAngle = function (angle, vertical_wall = true) { //takes angle of colision and a bool to tell which kind of wall it's bouncing off of
-  var QUART_CIRCLE = Math.PI/2;
+  var QUART_CIRCLE = Math.PI / 2;
+  var HALF_CIRCLE = Math.PI;
   var FULL_CIRCLE = 2 * Math.PI;
-  var wall_mod = vertical_wall ? 1 : -1;
   var bounce_angle = 0;
 
-  if (angle < Math.PI * 0.5)
-  {
-    bounce_angle = angle + QUART_CIRCLE * wall_mod;
-  }
-  else
-  {
-    if (angle < Math.PI)
+
+  if (vertical_wall) { //handling bounces off of vertical walls
+    if (angle < Math.PI * 0.5) //90 degrees
     {
-      bounce_angle = angle - QUART_CIRCLE * wall_mod;
+      bounce_angle = (QUART_CIRCLE - angle) * 2 + angle;
     }
-    else
-    {
-      if (angle < Math.PI * 1.5)
+    else {
+      if (angle < Math.PI) //180 degrees
       {
-        bounce_angle = angle + QUART_CIRCLE * wall_mod;
+        bounce_angle = (angle - QUART_CIRCLE) * 2 - angle;
       }
-      else
+      else {
+        if (angle < Math.PI * 1.5) // 270 degrees
+        {
+          bounce_angle = (3 * QUART_CIRCLE - angle) * 2 + angle;
+        }
+        else {
+          bounce_angle = (angle - 3 * QUART_CIRCLE) * 2 - angle; //default 360/0 degrees
+        }
+      }
+    }
+  }
+  else {//handling bounces off of horizontal walls
+    if (angle < Math.PI * 0.5) //90 degrees
+    {
+      bounce_angle = angle - 2 * angle;
+    }
+    else {
+      if (angle < Math.PI) //180 degrees
       {
-        bounce_angle = angle - QUART_CIRCLE * wall_mod; //default
+        bounce_angle = angle + (HALF_CIRCLE - angle) * 2;
+      }
+      else {
+        if (angle < Math.PI * 1.5) // 270 degrees
+        {
+          bounce_angle = angle - (angle - HALF_CIRCLE)* 2;
+        }
+        else {
+          bounce_angle = angle + (FULL_CIRCLE - angle) * 2; //default 360/0 degrees
+        }
       }
     }
   }
