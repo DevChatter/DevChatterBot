@@ -1,14 +1,19 @@
 //import { debug } from "util";
 
-function Sprite(imageSrc, x, y, direction, mod) {
+function Sprite(imageSrc, width, height, x, y, direction, mod) {
   this.image = new Image();
   this.image.src = imageSrc;
   this.x = x || Math.floor((Math.random() * 200) + (1920 / 2 - 100));
   this.y = y || Math.floor((Math.random() * 200) + (1080 / 2 - 100));
   this.direction = direction || this.getRandomDirection();
-  this.mod = mod || this.getRandomModifier();
+  this.mod = mod || this.getRandomModifier(); //sets rate of displacement (how fast the sprite is moving)
   this.timesRendered = 0;
   this.bounced = false;
+  this.x_right_border = width - this.image.width; //width of canvas - width of image, insures the right border of the image bounces off the right border of the canvas
+  this.y_bottom_border = height - this.image.height; //same as above but for bottom of image and canvas
+  this.x_left_border = 0;
+  this.y_top_border = 0;
+  // console.log("width: " + this.x_right_border + " height: " + this.y_bottom_border);
 };
 
 Sprite.prototype.getRandomDirection = function () {
@@ -31,39 +36,40 @@ Sprite.prototype.update = function () {
 
   // screen coords are defined as 0,0 in the top left and max width, height in the bottom right
   // sprites bounce within a box 400 units past the spawn box NOTE! should base off var in init
-  var x_right_border = 1460
-  var x_left_border = 460
 
-  var y_top_border = 40
-  var y_bottom_border = 1040
 
-  if ((this.x < x_left_border || this.x > x_right_border) && !this.bounced) {
+  //check if x position has moved beyond the left or right border
+  if ((this.x < this.x_left_border || this.x > this.x_right_border) && !this.bounced) {
     // this.direction += Math.PI / 2;
     this.direction = this.getBounceAngle(this.direction, true);
     this.bounced = true;
   }
 
-  if ((this.y < y_top_border || this.y > y_bottom_border) && !this.bounced) {
+  //check if y position has moved beyond the upper or lower border
+  if ((this.y < this.y_top_border || this.y > this.y_bottom_border) && !this.bounced) {
     // this.direction += Math.PI / 2;
     this.direction = this.getBounceAngle(this.direction, false);
     this.bounced = true;
   }
-  if ((this.y < y_bottom_border && this.y > y_top_border) && (this.x > x_left_border && this.x < x_right_border)) {
+
+  //not sure if this could be removed and replaced with a canvas.intersects(this.x, this.y) or something simmilar. Could also be moved to a intersects() function
+  if ((this.y < this.y_bottom_border && this.y > this.y_top_border) && (this.x > this.x_left_border && this.x < this.x_right_border)) {
     this.bounced = false; //if sprite is within the box reset bounce flag
   }
-  
-  
 
-  //debug("Testing!!!!!");
 };
 
-Sprite.prototype.getBounceAngle = function (angle, vertical_wall = true) { //takes angle of colision and a bool to tell which kind of wall it's bouncing off of
+// takes angle of colision and a bool to tell which kind of wall it's bouncing off of
+// outputs the incident angle that the sprite will be going in
+Sprite.prototype.getBounceAngle = function (angle, vertical_wall = true) { 
   var QUART_CIRCLE = Math.PI / 2;
   var HALF_CIRCLE = Math.PI;
   var FULL_CIRCLE = 2 * Math.PI;
   var bounce_angle = 0;
 
 
+  //half baked math incoming
+  //this seems to work for calculating incident angle, may need to be revised or simplified
   if (vertical_wall) { //handling bounces off of vertical walls
     if (angle < Math.PI * 0.5) //90 degrees
     {
@@ -106,7 +112,8 @@ Sprite.prototype.getBounceAngle = function (angle, vertical_wall = true) { //tak
       }
     }
   }
-  bounce_angle = bounce_angle > FULL_CIRCLE ? bounce_angle - FULL_CIRCLE: bounce_angle;
+  //if angle has gone passed 360 or below 0, correct this. The trig functions shouldn't care though the logic above is broken if the angle isn't within 0 and 360 (0 and 2pi)
+  bounce_angle = bounce_angle > FULL_CIRCLE ? bounce_angle - FULL_CIRCLE: bounce_angle; 
   bounce_angle = bounce_angle < 0 ? bounce_angle + FULL_CIRCLE: bounce_angle;
   return bounce_angle;
 };

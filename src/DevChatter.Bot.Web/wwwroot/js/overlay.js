@@ -8,7 +8,7 @@ var overlay = (function () {
   var doHype = async function() {
     for (var blastIndex = 0; blastIndex < 20; blastIndex++) {
       for (var i = 0; i < 25; i++) {
-        var hypeSprite = new Sprite('/images/DevchaHypeEmote.png');
+        var hypeSprite = new Sprite('/images/DevchaHypeEmote.png', canvas.width, canvas.height);
         sprites.push(hypeSprite);
       }
       await sleep(250);
