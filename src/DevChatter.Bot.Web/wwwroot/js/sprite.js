@@ -60,56 +60,17 @@ Sprite.prototype.update = function (canvas) {
 // takes angle of colision and a bool to tell which kind of wall it's bouncing off of
 // outputs the incident angle that the sprite will be going in
 Sprite.prototype.getBounceAngle = function (angle, vertical_wall = true) { 
-  var QUART_CIRCLE = Math.PI / 2;
-  var HALF_CIRCLE = Math.PI;
   var FULL_CIRCLE = 2 * Math.PI;
   var bounce_angle = 0;
 
+  
+  //simplified angle calc code by benrick
+  if (vertical_wall) {
+    bounce_angle = Math.PI - angle;
+  } else {
+    bounce_angle = Math.PI * 2 - angle;
+  }
 
-  //half baked math incoming
-  //this seems to work for calculating incident angle, may need to be revised or simplified
-  if (vertical_wall) { //handling bounces off of vertical walls
-    if (angle < Math.PI * 0.5) //90 degrees
-    {
-      bounce_angle = angle + (QUART_CIRCLE - angle) * 2;
-    }
-    else {
-      if (angle < Math.PI) //180 degrees
-      {
-        bounce_angle = angle - (angle - QUART_CIRCLE) * 2;
-      }
-      else {
-        if (angle < Math.PI * 1.5) // 270 degrees
-        {
-          bounce_angle = angle + (3 * QUART_CIRCLE - angle) * 2;
-        }
-        else {
-          bounce_angle = angle -  (angle - 3 * QUART_CIRCLE) * 2; //default 360/0 degrees
-        }
-      }
-    }
-  }
-  else {//handling bounces off of horizontal walls
-    if (angle < Math.PI * 0.5) //90 degrees
-    {
-      bounce_angle = angle - 2 * angle;
-    }
-    else {
-      if (angle < Math.PI) //180 degrees
-      {
-        bounce_angle = angle + (HALF_CIRCLE - angle) * 2;
-      }
-      else {
-        if (angle < Math.PI * 1.5) // 270 degrees
-        {
-          bounce_angle = angle - (angle - HALF_CIRCLE)* 2;
-        }
-        else {
-          bounce_angle = angle + (FULL_CIRCLE - angle) * 2; //default 360/0 degrees
-        }
-      }
-    }
-  }
   //if angle has gone passed 360 or below 0, correct this. The trig functions shouldn't care though the logic above is broken if the angle isn't within 0 and 360 (0 and 2pi)
   bounce_angle = bounce_angle > FULL_CIRCLE ? bounce_angle - FULL_CIRCLE: bounce_angle; 
   bounce_angle = bounce_angle < 0 ? bounce_angle + FULL_CIRCLE: bounce_angle;
