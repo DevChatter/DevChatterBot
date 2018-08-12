@@ -7,7 +7,7 @@ function Sprite(imageSrc, x, y, direction, mod) {
   this.mod = mod || this.getRandomModifier(); //sets rate of displacement (how fast the sprite is moving)
   this.timesRendered = 0;
   this.bounced = false;
-  // console.log("width: " + this.x_right_border + " height: " + this.y_bottom_border);
+  
 };
 
 Sprite.prototype.getRandomDirection = function () {
@@ -71,20 +71,20 @@ Sprite.prototype.getBounceAngle = function (angle, vertical_wall = true) {
   if (vertical_wall) { //handling bounces off of vertical walls
     if (angle < Math.PI * 0.5) //90 degrees
     {
-      bounce_angle = (QUART_CIRCLE - angle) * 2 + angle;
+      bounce_angle = angle + (QUART_CIRCLE - angle) * 2;
     }
     else {
       if (angle < Math.PI) //180 degrees
       {
-        bounce_angle = (angle - QUART_CIRCLE) * 2 - angle;
+        bounce_angle = angle - (angle - QUART_CIRCLE) * 2;
       }
       else {
         if (angle < Math.PI * 1.5) // 270 degrees
         {
-          bounce_angle = (3 * QUART_CIRCLE - angle) * 2 + angle;
+          bounce_angle = angle + (3 * QUART_CIRCLE - angle) * 2;
         }
         else {
-          bounce_angle = (angle - 3 * QUART_CIRCLE) * 2 - angle; //default 360/0 degrees
+          bounce_angle = angle -  (angle - 3 * QUART_CIRCLE) * 2; //default 360/0 degrees
         }
       }
     }
