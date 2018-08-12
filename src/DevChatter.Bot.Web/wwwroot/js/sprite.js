@@ -7,10 +7,6 @@ function Sprite(imageSrc, width, height, x, y, direction, mod) {
   this.mod = mod || this.getRandomModifier(); //sets rate of displacement (how fast the sprite is moving)
   this.timesRendered = 0;
   this.bounced = false;
-  this.x_right_border = width - this.image.width; //width of canvas - width of image, insures the right border of the image bounces off the right border of the canvas
-  this.y_bottom_border = height - this.image.height; //same as above but for bottom of image and canvas
-  this.x_left_border = 0;
-  this.y_top_border = 0;
   // console.log("width: " + this.x_right_border + " height: " + this.y_bottom_border);
 };
 
@@ -25,33 +21,37 @@ Sprite.prototype.getRandomModifier = function () {
   return rand;
 };
 
-Sprite.prototype.update = function () {
+Sprite.prototype.update = function (canvas) {
   //assuming right is 0 and left is pi rad, though doesn't really matter
   //mod ~ modifier affects magnitude of displacement
+
+  x_right_border = canvas.width - this.image.width; //width of canvas - width of image, insures the right border of the image bounces off the right border of the canvas
+  y_bottom_border = canvas.height - this.image.height; //same as above but for bottom of image and canvas
+  x_left_border = 0;
+  y_top_border = 0;
 
   this.x += this.mod * Math.cos(this.direction); //apply degree to trig function for x displacement
   this.y += this.mod * Math.sin(this.direction); //apply degree to trig function for y displacement
 
   // screen coords are defined as 0,0 in the top left and max width, height in the bottom right
-  // sprites bounce within a box 400 units past the spawn box NOTE! should base off var in init
 
 
   //check if x position has moved beyond the left or right border
-  if ((this.x < this.x_left_border || this.x > this.x_right_border) && !this.bounced) {
+  if ((this.x < x_left_border || this.x > x_right_border) && !this.bounced) {
     // this.direction += Math.PI / 2;
     this.direction = this.getBounceAngle(this.direction, true);
     this.bounced = true;
   }
 
   //check if y position has moved beyond the upper or lower border
-  if ((this.y < this.y_top_border || this.y > this.y_bottom_border) && !this.bounced) {
+  if ((this.y < y_top_border || this.y > y_bottom_border) && !this.bounced) {
     // this.direction += Math.PI / 2;
     this.direction = this.getBounceAngle(this.direction, false);
     this.bounced = true;
   }
 
   //not sure if this could be removed and replaced with a canvas.intersects(this.x, this.y) or something simmilar. Could also be moved to a intersects() function
-  if ((this.y < this.y_bottom_border && this.y > this.y_top_border) && (this.x > this.x_left_border && this.x < this.x_right_border)) {
+  if ((this.y < y_bottom_border && this.y > y_top_border) && (this.x > x_left_border && this.x < x_right_border)) {
     this.bounced = false; //if sprite is within the box reset bounce flag
   }
 
