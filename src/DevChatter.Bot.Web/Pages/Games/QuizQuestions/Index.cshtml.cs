@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Web.Pages.QuizQuestions
+namespace DevChatter.Bot.Web.Pages.Games.QuizQuestions
 {
     public class IndexModel : PageModel
     {
