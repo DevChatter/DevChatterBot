@@ -31,7 +31,7 @@ namespace DevChatter.Bot.Core.Commands
         public UserRole RoleRequired { get; protected set; }
         public string PrimaryCommandText => CommandText;
         public string CommandText { get; protected set; }
-        public string HelpText { get; protected set; } = $"No help text for this command yet.";
+        public string HelpText { get; protected set; } = "No help text for this command yet.";
         public string FullHelpText => HelpText;
 
         public bool ShouldExecute(string commandText) => CommandText.EqualsIns(commandText);
