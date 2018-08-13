@@ -1,9 +1,7 @@
-﻿using DevChatter.Bot.Core.Commands;
-using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using Moq;
-using UnitTests.Fakes;
 using Xunit;
 
 namespace UnitTests.Core.Commands.SimpleCommandTests

@@ -1,14 +1,13 @@
-using System;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Core.Events.Args;
-using DevChatter.Bot.Core.Systems.Chat;
-using Moq;
-using System.Collections.Generic;
-using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
+using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.GoogleApi;
+using DevChatter.Bot.Core.Systems.Chat;
+using Moq;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace UnitTests.Core.Commands.ScheduleCommandTests
