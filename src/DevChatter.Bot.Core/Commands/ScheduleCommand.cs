@@ -26,7 +26,7 @@ namespace DevChatter.Bot.Core.Commands
             var lookup = eventArgs?.Arguments?.ElementAtOrDefault(0);
             int offset;
             string timezoneDisplay;
-            if (eventArgs.Arguments.Count == 0)
+            if (eventArgs?.Arguments?.Count == 0)
             {
                 offset = 0;
                 timezoneDisplay = $"at UTC {offset:+#;-#;+0}";
