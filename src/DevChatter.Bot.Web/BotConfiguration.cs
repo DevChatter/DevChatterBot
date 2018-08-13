@@ -2,7 +2,7 @@ using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Infra.Twitch;
 
-namespace DevChatter.Bot
+namespace DevChatter.Bot.Web
 {
     public class BotConfiguration
     {
