@@ -6,8 +6,6 @@ function Sprite(imageSrc, x, y, direction, mod) {
   this.direction = direction || this.getRandomDirection();
   this.mod = mod || this.getRandomModifier(); //sets rate of displacement (how fast the sprite is moving)
   this.timesRendered = 0;
-  this.bounced = false;
-  
 };
 
 Sprite.prototype.getRandomDirection = function () {
@@ -25,10 +23,10 @@ Sprite.prototype.update = function (canvas) {
   //assuming right is 0 and left is pi rad, though doesn't really matter
   //mod ~ modifier affects magnitude of displacement
 
-  x_right_border = canvas.width - this.image.width; //width of canvas - width of image, insures the right border of the image bounces off the right border of the canvas
-  y_bottom_border = canvas.height - this.image.height; //same as above but for bottom of image and canvas
-  x_left_border = 0;
-  y_top_border = 0;
+  var xRightBorder = canvas.width - this.image.width; //width of canvas - width of image, insures the right border of the image bounces off the right border of the canvas
+  var yBottomBorder = canvas.height - this.image.height; //same as above but for bottom of image and canvas
+  var xLeftBorder = 0;
+  var yTopBorder = 0;
 
   this.x += this.mod * Math.cos(this.direction); //apply degree to trig function for x displacement
   this.y += this.mod * Math.sin(this.direction); //apply degree to trig function for y displacement
@@ -37,44 +35,36 @@ Sprite.prototype.update = function (canvas) {
 
 
   //check if x position has moved beyond the left or right border
-  if ((this.x < x_left_border || this.x > x_right_border) && !this.bounced) {
+  if ((this.x < xLeftBorder || this.x > xRightBorder)) {
     // this.direction += Math.PI / 2;
     this.direction = this.getBounceAngle(this.direction, true);
-    this.bounced = true;
   }
 
   //check if y position has moved beyond the upper or lower border
-  if ((this.y < y_top_border || this.y > y_bottom_border) && !this.bounced) {
+  if ((this.y < yTopBorder || this.y > yBottomBorder)) {
     // this.direction += Math.PI / 2;
     this.direction = this.getBounceAngle(this.direction, false);
-    this.bounced = true;
   }
-
-  //not sure if this could be removed and replaced with a canvas.intersects(this.x, this.y) or something simmilar. Could also be moved to a intersects() function
-  if ((this.y < y_bottom_border && this.y > y_top_border) && (this.x > x_left_border && this.x < x_right_border)) {
-    this.bounced = false; //if sprite is within the box reset bounce flag
-  }
-
 };
 
 // takes angle of colision and a bool to tell which kind of wall it's bouncing off of
 // outputs the incident angle that the sprite will be going in
-Sprite.prototype.getBounceAngle = function (angle, vertical_wall = true) { 
+Sprite.prototype.getBounceAngle = function (angle, hitVerticalWall = true) { 
   var FULL_CIRCLE = 2 * Math.PI;
-  var bounce_angle = 0;
+  var bounceAngle = 0;
 
   
   //simplified angle calc code by benrick
-  if (vertical_wall) {
-    bounce_angle = Math.PI - angle;
+  if (hitVerticalWall) {
+    bounceAngle = Math.PI - angle;
   } else {
-    bounce_angle = Math.PI * 2 - angle;
+    bounceAngle = Math.PI * 2 - angle;
   }
 
   //if angle has gone passed 360 or below 0, correct this. The trig functions shouldn't care though the logic above is broken if the angle isn't within 0 and 360 (0 and 2pi)
-  bounce_angle = bounce_angle > FULL_CIRCLE ? bounce_angle - FULL_CIRCLE: bounce_angle; 
-  bounce_angle = bounce_angle < 0 ? bounce_angle + FULL_CIRCLE: bounce_angle;
-  return bounce_angle;
+  bounceAngle = bounceAngle > FULL_CIRCLE ? bounceAngle - FULL_CIRCLE: bounceAngle; 
+  bounceAngle = bounceAngle < 0 ? bounceAngle + FULL_CIRCLE: bounceAngle;
+  return bounceAngle;
 };
 
 Sprite.prototype.render = function (ctx) {
