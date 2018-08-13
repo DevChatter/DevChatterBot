@@ -5,10 +5,12 @@ var overlay = (function () {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  var doHype = async function() {
+  var doHype = async function () {
+    var image = new Image();
+    image.src = '/images/DevchaHypeEmote.png';
     for (var blastIndex = 0; blastIndex < 20; blastIndex++) {
       for (var i = 0; i < 25; i++) {
-        var hypeSprite = new Sprite('/images/DevchaHypeEmote.png');
+        var hypeSprite = new Sprite(image);
         sprites.push(hypeSprite);
       }
       await sleep(250);

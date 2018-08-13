@@ -1,6 +1,5 @@
-function Sprite(imageSrc, x, y, direction, mod) {
-  this.image = new Image();
-  this.image.src = imageSrc;
+function Sprite(image, x, y, direction, mod) {
+  this.image = image;
   this.x = x || Math.floor((Math.random() * 200) + (1920 / 2 - 100));
   this.y = y || Math.floor((Math.random() * 200) + (1080 / 2 - 100));
   this.direction = direction || this.getRandomDirection();
