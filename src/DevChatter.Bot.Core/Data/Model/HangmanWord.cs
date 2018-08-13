@@ -1,5 +1,3 @@
-using System;
-
 namespace DevChatter.Bot.Core.Data.Model
 {
     public class HangmanWord : DataEntity

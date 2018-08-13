@@ -1,9 +1,8 @@
-using System;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
-using DevChatter.Bot.Core.Games.Roulette;
+using System;
 using System.Linq;
 using System.Reflection;
-using DevChatter.Bot.Core.Data.Model;
 
 namespace DevChatter.Bot.Core.Data
 {
