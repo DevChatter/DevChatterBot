@@ -39,7 +39,7 @@ namespace DevChatter.Bot.Core.Commands
             if (argOne == "?")
             {
                 chatClient.SendMessage(
-                    $"Use !help to see available commands. To request help for a specific command just type !help [commandname] example: !help hangman");
+                    "Use !help to see available commands. To request help for a specific command just type !help [commandname] example: !help hangman");
                 return;
             }
 

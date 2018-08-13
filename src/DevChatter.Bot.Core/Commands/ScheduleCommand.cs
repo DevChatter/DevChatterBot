@@ -25,7 +25,7 @@ namespace DevChatter.Bot.Core.Commands
         {
             var lookup = eventArgs?.Arguments?.ElementAtOrDefault(0);
             int offset;
-            string timezoneDisplay = "";
+            string timezoneDisplay;
             if (eventArgs.Arguments.Count == 0)
             {
                 offset = 0;
