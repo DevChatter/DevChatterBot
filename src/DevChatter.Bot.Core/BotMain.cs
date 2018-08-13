@@ -21,7 +21,6 @@ namespace DevChatter.Bot.Core
         private readonly SubscriberHandler _subscriberHandler;
         private readonly IFollowableSystem _followableSystem; // This will eventually be a list of these
         private readonly IAutomatedActionSystem _automatedActionSystem;
-        private bool _areSimpleCommandsSetUp = false;
         private readonly CurrencyUpdate _currencyUpdate;
 
         public BotMain(IList<IChatClient> chatClients,
