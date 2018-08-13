@@ -54,7 +54,7 @@ var overlay = (function () {
     function render() {
       mainContext.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
       sprites.forEach(function (sprite, i) {
-        sprite.update();
+        sprite.update(mainCanvas);
         sprite.render(mainContext);
         if (sprite.timesRendered > 300) {
           sprites.splice(i, 1);
