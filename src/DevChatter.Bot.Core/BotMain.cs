@@ -5,6 +5,7 @@ using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevChatter.Bot.Core
@@ -66,9 +67,12 @@ namespace DevChatter.Bot.Core
         private void ScheduleAutomatedMessages()
         {
             var messages = _repository.List<IntervalMessage>();
+            // HACK: These need to get wrapped elsewhere...
+            var bufferedSenders = _chatClients.Select(c => new BufferedMessageSender(c))
+                .ToList();
             foreach (IntervalMessage message in messages)
             {
-                var action = new AutomatedMessage(message.MessageText, message.DelayInMinutes, _chatClients);
+                var action = new AutomatedMessage(message, bufferedSenders, _repository);
                 _automatedActionSystem.AddAction(action);
             }
         }

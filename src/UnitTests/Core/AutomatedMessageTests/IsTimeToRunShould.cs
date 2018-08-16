@@ -1,6 +1,9 @@
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Systems.Chat;
 using System.Collections.Generic;
+using DevChatter.Bot.Core.Data;
+using DevChatter.Bot.Core.Data.Model;
+using Moq;
 using UnitTests.Fakes;
 using Xunit;
 
@@ -53,8 +56,7 @@ namespace UnitTests.Core.AutomatedMessageTests
         private static (AutomatedMessage, FakeClock) GetTestMessage()
         {
             var fakeClock = new FakeClock();
-            var intervalMessage = new AutomatedMessage("Hello there!", _delayInMinutes,
-                new List<IChatClient>(), fakeClock);
+            var intervalMessage = new AutomatedMessage(new IntervalMessage(_delayInMinutes, "Hello there!"), new List<BufferedMessageSender>(), new Mock<IRepository>().Object, fakeClock);
             return (intervalMessage, fakeClock);
         }
     }

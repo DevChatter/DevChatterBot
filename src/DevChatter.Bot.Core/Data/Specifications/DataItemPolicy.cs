@@ -22,6 +22,5 @@ namespace DevChatter.Bot.Core.Data.Specifications
         }
 
         public Expression<Func<T, bool>> Criteria { get; }
-        public string CacheKey => $"{typeof(T).Name}-{Criteria}";
     }
 }

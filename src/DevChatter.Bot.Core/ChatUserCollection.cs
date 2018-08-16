@@ -86,7 +86,8 @@ namespace DevChatter.Bot.Core
         {
             lock (_userCreationLock)
             {
-                ChatUser userFromDb = _repository.Single(ChatUserPolicy.ByDisplayName(displayName));
+                ChatUserPolicy criteria = ChatUserPolicy.ByDisplayName(displayName);
+                ChatUser userFromDb = _repository.Single(criteria);
                 userFromDb = userFromDb ?? _repository.Create(chatUser);
                 return userFromDb;
             }
