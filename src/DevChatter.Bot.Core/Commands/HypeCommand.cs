@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Core.Commands
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            chatClient.SendMessage("Hype hype!");
+            chatClient.SendMessage("Hype hype devchaHype !");
             _overlayNotification.Hype();
         }
     }
