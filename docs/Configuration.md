@@ -6,7 +6,7 @@ The configuration of DevChatterBot is in the appsettings.json file, however, if 
 dotnet user-secrets set TwitchClientSettings:TwitchUsername DevChatterBot
 ```
 
-This is the current contents of the appsettings.json file.
+This is the current contents of the `DevChatter.Bot.Web\appsettings.json` file.
 
 ```
 {
@@ -14,15 +14,32 @@ This is the current contents of the appsettings.json file.
 
   "TwitchClientSettings": {
     "TwitchUsername": "secret",
-    "TwitchUserID": "secret",
-    "TwitchOAuth": "secret",
+    "TwitchChannelID": "secret",
+    "TwitchBotUserID": "secret",
+    "TwitchBotOAuth": "secret",
+    "TwitchChannelOAuth": "secret",
     "TwitchChannel": "secret",
     "TwitchClientId": "secret"
   },
 
+  "TimezoneDbSettings": {
+    "TimezoneDbApiKey": "secret"
+  },
+
+  "GoogleCloudSettings": {
+    "ApiKey": "secret" 
+  },
+
   "CommandHandlerSettings": {
-    "GlobalCommandCooldown": "2.5"
-  }
+    "GlobalCommandCooldown": "0.5"
+  },
+
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
 }
 ```
 If you're not worried about your twitch credentials, skip using the secret manager and just replace the word "secret" with each credential that is required. Keep the quotation marks, of course. 
@@ -41,16 +58,18 @@ Your Twitch Client ID. This is the first thing you need to get. If you've never 
 
 **TwitchClientId example: 0123456789abcdefghijABCDEFGHIJ**
 
-## TwitchUserID
-The v5 Twitch API primarily uses this userId instead of using the Username. You can use a tool like Postman to call the Twitch API to find your userid on their [Users Reference](https://dev.twitch.tv/docs/v5/reference/users). 
+## TwitchChannelID and TwitchBotUserID
+The v5 Twitch API primarily uses UserID/ChannelID instead of using the Username (each user on Twitch has their own streaming channel, so these terms are interchangeable). For our purposes, the ChannelID is the channel you want the BotUserID to talk in. You can use a tool like Postman to call the Twitch API to find your userID/channelID on their [Users Reference](https://dev.twitch.tv/docs/v5/reference/users). 
 
 If you're completely new to all of this, just do this: Open a new tab in your browser. Paste this in https://api.twitch.tv/kraken/users/YOURTWITCHUSERNAME?client_id=YOURTWITCHCLIENTID . Replace YOURTWITCHUSERNAME with, you guessed it, your TwitchUsername (see above) and replace YOURTWITCHCLIENTID with your TwitchClientID that you just got on the twitch dev website. Now hit enter. You should get a response back and the second thing in it will be your TwitchUserId. You're almost done!
 
 **TwitchUserID example: 44322889**
 
-## TwitchOAuth
+## TwitchBotOAuth and TwitchChannelOAuth
 You set this up on the Twitch developer site: https://twitchapps.com/tmi/
 **Be very careful with this, since it's essentially a password for the account.**
+
+As with the ChannelID/UserID, the `TwitchBotOAuth` should be an OAuth token for the bot's Twitch account, and the `TwitchChannelOAuth` should be for the channel of the streamer.
 
 **TwitchOAuth example: oauth:hi3curghksvcjefirskm1b81jbf452**
 
