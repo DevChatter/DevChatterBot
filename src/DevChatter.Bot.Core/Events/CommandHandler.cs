@@ -46,6 +46,13 @@ namespace DevChatter.Bot.Core.Events
                 return;
             }
 
+            // TODO:Remove this soon and replace with smarter code
+            if (botCommand is RefreshCommandListCommand refreshCommand
+                && refreshCommand.NeedsInitializing)
+            {
+                refreshCommand.Initialize(_commandList);
+            }
+
             var cooldown = _usageTracker.GetActiveCooldown(e.ChatUser, botCommand);
 
             switch (cooldown)
