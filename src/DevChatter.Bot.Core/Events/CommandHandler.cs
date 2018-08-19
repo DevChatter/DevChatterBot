@@ -15,16 +15,16 @@ namespace DevChatter.Bot.Core.Events
     {
         private readonly IRepository _repository;
         private readonly ICommandUsageTracker _usageTracker;
-        private readonly CommandList _commandMessages;
+        private readonly CommandList _commandList;
         private readonly ILoggerAdapter<CommandHandler> _logger;
 
         public CommandHandler(IRepository repository, ICommandUsageTracker usageTracker,
-            IEnumerable<IChatClient> chatClients, CommandList commandMessages,
+            IEnumerable<IChatClient> chatClients, CommandList commandList,
             ILoggerAdapter<CommandHandler> logger)
         {
             _repository = repository;
             _usageTracker = usageTracker;
-            _commandMessages = commandMessages;
+            _commandList = commandList;
             _logger = logger;
 
             foreach (var chatClient in chatClients)
@@ -40,10 +40,17 @@ namespace DevChatter.Bot.Core.Events
                 return;
             }
 
-            IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
+            IBotCommand botCommand = _commandList.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
             if (botCommand == null)
             {
                 return;
+            }
+
+            // TODO:Remove this soon and replace with smarter code
+            if (botCommand is RefreshCommandListCommand refreshCommand
+                && refreshCommand.NeedsInitializing)
+            {
+                refreshCommand.Initialize(_commandList);
             }
 
             var cooldown = _usageTracker.GetActiveCooldown(e.ChatUser, botCommand);

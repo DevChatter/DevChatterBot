@@ -47,6 +47,7 @@ namespace DevChatter.Bot.Web.Extensions
         public static IServiceCollection AddStreamMetaCommands(this IServiceCollection services)
         {
             services.AddSingleton<IBotCommand, HypeCommand>();
+            services.AddSingleton<IBotCommand, RefreshCommandListCommand>();
             services.AddSingleton<IBotCommand, TopCommand>();
             services.AddSingleton<IBotCommand, UptimeCommand>();
             services.AddSingleton<IBotCommand, StreamsCommand>();
@@ -64,7 +65,7 @@ namespace DevChatter.Bot.Web.Extensions
             services.AddSingleton<IBotCommand, HelpCommand>();
             services.AddSingleton<IBotCommand, CommandsCommand>();
 
-            services.AddSingleton(p => new CommandList(p.GetServices<IBotCommand>().ToList()));
+            services.AddSingleton(p => new CommandList(p.GetServices<IBotCommand>().ToList(), p));
 
             services.AddSingleton<ICommandUsageTracker, CommandCooldownTracker>();
             services.AddSingleton<ICommandHandler, CommandHandler>();

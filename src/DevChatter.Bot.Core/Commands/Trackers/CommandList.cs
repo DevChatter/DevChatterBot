@@ -1,16 +1,31 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DevChatter.Bot.Core.Commands.Trackers
 {
-    public class CommandList : IList<IBotCommand>
+    public class CommandList : IEnumerable<IBotCommand>
     {
+        private readonly IServiceProvider _serviceProvider;
+
+        public void Refresh()
+        {
+            List<IBotCommand> botCommands = _serviceProvider.GetServices<IBotCommand>().ToList();
+            _list.Clear();
+            foreach (IBotCommand botCommand in botCommands)
+            {
+                _list.Add(botCommand);
+            }
+        }
+
         private readonly IList<IBotCommand> _list;
 
-        public CommandList(IList<IBotCommand> list)
+        public CommandList(IList<IBotCommand> list, IServiceProvider serviceProvider)
         {
             _list = list ?? throw new ArgumentNullException(nameof(list));
+            _serviceProvider = serviceProvider;
         }
 
         public IEnumerator<IBotCommand> GetEnumerator()
@@ -21,56 +36,6 @@ namespace DevChatter.Bot.Core.Commands.Trackers
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable) _list).GetEnumerator();
-        }
-
-        public void Add(IBotCommand item)
-        {
-            _list.Add(item);
-        }
-
-        public void Clear()
-        {
-            _list.Clear();
-        }
-
-        public bool Contains(IBotCommand item)
-        {
-            return _list.Contains(item);
-        }
-
-        public void CopyTo(IBotCommand[] array, int arrayIndex)
-        {
-            _list.CopyTo(array, arrayIndex);
-        }
-
-        public bool Remove(IBotCommand item)
-        {
-            return _list.Remove(item);
-        }
-
-        public int Count => _list.Count;
-
-        public bool IsReadOnly => _list.IsReadOnly;
-
-        public int IndexOf(IBotCommand item)
-        {
-            return _list.IndexOf(item);
-        }
-
-        public void Insert(int index, IBotCommand item)
-        {
-            _list.Insert(index, item);
-        }
-
-        public void RemoveAt(int index)
-        {
-            _list.RemoveAt(index);
-        }
-
-        public IBotCommand this[int index]
-        {
-            get => _list[index];
-            set => _list[index] = value;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
             _repository = repository;
         }
 
-        public override List<string> OperandWords { get; } = new List<string> { "add" };
+        public override List<string> OperandWords { get; } = new List<string> { "add", "new", "create" };
         public override string HelpText { get; } = "Use \"!alias add oldCommand newAlias\" to add an alias to a command.";
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
