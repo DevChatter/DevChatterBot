@@ -26,7 +26,7 @@ namespace UnitTests.Core.AutomatedMessageTests
         {
             (AutomatedMessage message, FakeClock clock) = GetTestMessage();
 
-            clock.UtcNow = clock.UtcNow.AddMinutes(_delayInMinutes); // wait a minute
+            clock.UtcNow = clock.UtcNow.AddMinutes(_delayInMinutes).AddSeconds(1); // wait a minute
 
             Assert.True(message.IsTimeToRun());
         }
