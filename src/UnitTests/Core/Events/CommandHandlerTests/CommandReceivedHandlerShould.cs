@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
@@ -60,11 +61,11 @@ namespace UnitTests.Core.Events.CommandHandlerTests
 
         private static CommandHandler GetTestCommandHandler(FakeCommand fakeCommand)
         {
-            var commandUsageTracker = new CommandCooldownTracker(new CommandHandlerSettings());
+            var commandUsageTracker = new CommandCooldownTracker(new CommandHandlerSettings(), new LoggerAdapter<CommandCooldownTracker>(new NullLogger<CommandCooldownTracker>()));
             var chatClients = new List<IChatClient> {new Mock<IChatClient>().Object};
             var commandMessages = new List<IBotCommand> {fakeCommand};
             var commandHandler = new CommandHandler(new Mock<IRepository>().Object, commandUsageTracker, chatClients,
-                new CommandList(commandMessages), new LoggerAdapter<CommandHandler>(new NullLogger<CommandHandler>()));
+                new CommandList(commandMessages, new Mock<IServiceProvider>().Object), new LoggerAdapter<CommandHandler>(new NullLogger<CommandHandler>()));
             return commandHandler;
         }
     }

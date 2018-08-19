@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevChatter.Bot.Core.Commands.Operations
 {
@@ -19,7 +18,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
         public const string NO_DATA_MESSAGE = "There's no analytics data yet";
 
         public override List<string> OperandWords { get; } = new List<string> {"top"};
-        public override string HelpText { get; } = $"Call \"!command top\" to see the most used commands.";
+        public override string HelpText { get; } = "Call \"!command top\" to see the most used commands.";
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {

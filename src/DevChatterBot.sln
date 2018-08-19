@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot", "DevChatter.Bot\DevChatter.Bot.csproj", "{18745F02-D58F-445A-B3C5-5F1102F2DF6C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{39E5EB68-E595-4A62-81CC-A88FE9B418E2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Core", "DevChatter.Bot.Core\DevChatter.Bot.Core.csproj", "{7C6DCD7F-17E9-4400-BBA1-80D5BE71951F}"
@@ -18,9 +16,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevChatter.Bot.Core.Games.Mud", "DevChatter.Bot.Core.Games.Mud\DevChatter.Bot.Core.Games.Mud.csproj", "{9E0E0FAC-E2A9-4E7F-B017-71A6B8236CE7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevChatter.Bot.Web", "DevChatter.Bot.Web\DevChatter.Bot.Web.csproj", "{34754D38-A87B-47B6-8ED5-9D788A9B59D7}"
+=======
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Web", "DevChatter.Bot.Web\DevChatter.Bot.Web.csproj", "{34754D38-A87B-47B6-8ED5-9D788A9B59D7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Infra.GoogleApi", "DevChatter.Bot.Infra.GoogleApi\DevChatter.Bot.Infra.GoogleApi.csproj", "{29A822EF-C182-46F7-9947-B44AEC48A706}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevChatter.Bot.Infra.Web", "DevChatter.Bot.Infra.Web\DevChatter.Bot.Infra.Web.csproj", "{A8832815-5344-4963-9B11-8EA61BD12465}"
+>>>>>>> master
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +34,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{18745F02-D58F-445A-B3C5-5F1102F2DF6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18745F02-D58F-445A-B3C5-5F1102F2DF6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18745F02-D58F-445A-B3C5-5F1102F2DF6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18745F02-D58F-445A-B3C5-5F1102F2DF6C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{39E5EB68-E595-4A62-81CC-A88FE9B418E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39E5EB68-E595-4A62-81CC-A88FE9B418E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39E5EB68-E595-4A62-81CC-A88FE9B418E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,6 +58,14 @@ Global
 		{34754D38-A87B-47B6-8ED5-9D788A9B59D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34754D38-A87B-47B6-8ED5-9D788A9B59D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34754D38-A87B-47B6-8ED5-9D788A9B59D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29A822EF-C182-46F7-9947-B44AEC48A706}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29A822EF-C182-46F7-9947-B44AEC48A706}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29A822EF-C182-46F7-9947-B44AEC48A706}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29A822EF-C182-46F7-9947-B44AEC48A706}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8832815-5344-4963-9B11-8EA61BD12465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8832815-5344-4963-9B11-8EA61BD12465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8832815-5344-4963-9B11-8EA61BD12465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8832815-5344-4963-9B11-8EA61BD12465}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

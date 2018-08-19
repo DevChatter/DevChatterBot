@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.Data.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Infra.Ef;
 
-namespace DevChatter.Bot.Web.Pages.QuizQuestions
+namespace DevChatter.Bot.Web.Pages.Games.QuizQuestions
 {
     public class CreateModel : PageModel
     {

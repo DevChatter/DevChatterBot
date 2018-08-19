@@ -16,7 +16,11 @@ namespace DevChatter.Bot.Core.Data.Specifications
             return new DataItemPolicy<T>(x => true);
         }
 
+        public static DataItemPolicy<T> ById(Guid id)
+        {
+            return new DataItemPolicy<T>(x => x.Id == id);
+        }
+
         public Expression<Func<T, bool>> Criteria { get; }
-        public string CacheKey => $"{typeof(T).Name}-{Criteria}";
     }
 }

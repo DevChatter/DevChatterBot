@@ -82,8 +82,6 @@ namespace DevChatter.Bot.Core.Games.Heist
             _heistMembers.Clear();
             IsGameRunning = false;
             _selectedHeist = null;
-            _automatedActionSystem.RemoveAction(_lastCallToJoin);
-            _automatedActionSystem.RemoveAction(_startHeistAction);
         }
 
         public JoinGameResult AttemptToJoinHeist(string displayName, HeistRoles role)
@@ -125,7 +123,6 @@ namespace DevChatter.Bot.Core.Games.Heist
         {
             if (!GetAvailableRoles().Any() && IsGameRunning)
             {
-                _automatedActionSystem.RemoveAction(_startHeistAction);
                 StartHeist(chatClient);
                 return true;
             }

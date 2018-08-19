@@ -18,7 +18,7 @@ namespace UnitTests.Core.Events.CurrencyGeneratorTests
         public void AllowGoingToMaxInt_GivenZeroStartAndMaxIntAdded()
         {
             var mockRepo = new Mock<IRepository>();
-            var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(mockRepo.Object));
+            var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(mockRepo.Object), new Mock<ISettingsFactory>().Object);
 
             var chatUser = new ChatUser {Tokens = 0};
             mockRepo.Setup(x => x.List(It.IsAny<ChatUserPolicy>())).Returns(new List<ChatUser> { chatUser });
@@ -32,7 +32,7 @@ namespace UnitTests.Core.Events.CurrencyGeneratorTests
         public void CapAtMaxInt_GivenOverflowPossibility()
         {
             var mockRepo = new Mock<IRepository>();
-            var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(mockRepo.Object));
+            var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(mockRepo.Object), new Mock<ISettingsFactory>().Object);
 
             var chatUser = new ChatUser {Tokens = 100};
             mockRepo.Setup(x => x.List(It.IsAny<ChatUserPolicy>())).Returns(new List<ChatUser> { chatUser });

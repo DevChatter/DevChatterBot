@@ -12,8 +12,8 @@ namespace DevChatter.Bot.Core
     {
         private readonly IRepository _repository;
         private readonly object _userCreationLock = new object();
-
         private readonly object _activeChatUsersLock = new object();
+        private readonly object _currencyLock = new object();
         private readonly List<string> _activeChatUsers = new List<string>();
 
         public ChatUserCollection(IRepository repository)
@@ -25,7 +25,7 @@ namespace DevChatter.Bot.Core
         {
             // Don't lock in here
             // ReSharper disable once InconsistentlySynchronizedField
-            return _activeChatUsers.All(activeDisplayName => activeDisplayName != displayName);
+            return _activeChatUsers.All(name => name != displayName);
         }
 
 
@@ -65,9 +65,12 @@ namespace DevChatter.Bot.Core
 
         public void StopWatching(string displayName)
         {
-            lock (_activeChatUsersLock)
+            if (_activeChatUsers.Contains(displayName))
             {
-                _activeChatUsers.RemoveAll(x => x == displayName);
+                lock (_activeChatUsersLock)
+                {
+                    _activeChatUsers.RemoveAll(x => x == displayName);
+                }
             }
         }
 
@@ -83,18 +86,22 @@ namespace DevChatter.Bot.Core
         {
             lock (_userCreationLock)
             {
-                ChatUser userFromDb = _repository.Single(ChatUserPolicy.ByDisplayName(displayName));
+                ChatUserPolicy criteria = ChatUserPolicy.ByDisplayName(displayName);
+                ChatUser userFromDb = _repository.Single(criteria);
                 userFromDb = userFromDb ?? _repository.Create(chatUser);
                 return userFromDb;
             }
         }
 
-        public bool UserExists(string username) => _activeChatUsers.Any(x => x.EqualsIns(username))
-                || _repository.Single(ChatUserPolicy.ByDisplayName(username)) != null;
+        public bool UserExists(string username)
+        {
+            return _activeChatUsers.Any(x => x.EqualsIns(username))
+                   || _repository.Single(ChatUserPolicy.ByDisplayName(username)) != null;
+        }
 
         public bool TryGiveCoins(string coinGiver, string coinReceiver, int coinsToGive)
         {
-            lock (_activeChatUsersLock)
+            lock (_currencyLock)
             {
                 if (!UserHasAtLeast(coinGiver, coinsToGive))
                 {
@@ -115,5 +122,28 @@ namespace DevChatter.Bot.Core
                 return true;
             }
         }
+
+        public bool ReduceCoins(string username, int coinsToTake)
+        {
+            lock (_activeChatUsersLock)
+            {
+                if (!UserExists(username))
+                {
+                    return false;
+                }
+
+                ChatUser user = GetOrCreateChatUser(username);
+
+                user.Tokens -= coinsToTake;
+
+                if (user.Tokens < 0)
+                {
+                    user.Tokens = 0;
+                }
+
+                return true;
+            }
+        }
+
     }
 }

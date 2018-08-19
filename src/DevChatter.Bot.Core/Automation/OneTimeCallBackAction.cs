@@ -1,15 +1,19 @@
-﻿using System;
+using System;
+using System.Linq.Expressions;
 
 namespace DevChatter.Bot.Core.Automation
 {
-    public class OneTimeCallBackAction : IIntervalAction
+    public class OneTimeCallBackAction
+        : IIntervalAction, IAutomatedItem, IAutomatedAction, IDelayed
     {
-        private readonly Action _actionToCall;
         private DateTime _timeOfNextRun;
+        public Expression<Action> Action { get; }
+        public TimeSpan DelayTimeSpan { get; }
 
-        public OneTimeCallBackAction(int delayInSeconds, Action actionToCall)
+        public OneTimeCallBackAction(int delayInSeconds, Expression<Action> actionToCall)
         {
-            _actionToCall = actionToCall;
+            DelayTimeSpan = TimeSpan.FromSeconds(delayInSeconds);
+            Action = actionToCall;
             _timeOfNextRun = DateTime.UtcNow.AddSeconds(delayInSeconds);
         }
 
@@ -18,7 +22,9 @@ namespace DevChatter.Bot.Core.Automation
         public void Invoke()
         {
             _timeOfNextRun = DateTime.MaxValue;
-            _actionToCall();
+            Action.Compile().Invoke();
         }
+
+        public bool IsDone => DateTime.MaxValue == _timeOfNextRun;
     }
 }

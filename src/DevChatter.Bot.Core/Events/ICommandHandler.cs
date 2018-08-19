@@ -1,4 +1,4 @@
-﻿using DevChatter.Bot.Core.Events.Args;
+using DevChatter.Bot.Core.Events.Args;
 
 namespace DevChatter.Bot.Core.Events
 {

@@ -1,3 +1,5 @@
+using System;
+
 namespace DevChatter.Bot.Core.Data.Model
 {
     public class IntervalMessage : DataEntity
@@ -14,5 +16,7 @@ namespace DevChatter.Bot.Core.Data.Model
 
         public int DelayInMinutes { get; protected set; }
         public string MessageText { get; protected set; }
+
+        public DateTime LastSent { get; set; } = DateTime.UtcNow;
     }
 }

@@ -15,15 +15,16 @@ namespace DevChatter.Bot.Core.Events
     {
         private readonly IRepository _repository;
         private readonly ICommandUsageTracker _usageTracker;
-        private readonly IList<IBotCommand> _commandMessages;
+        private readonly CommandList _commandList;
         private readonly ILoggerAdapter<CommandHandler> _logger;
 
         public CommandHandler(IRepository repository, ICommandUsageTracker usageTracker,
-            IEnumerable<IChatClient> chatClients, CommandList commandMessages, ILoggerAdapter<CommandHandler> logger)
+            IEnumerable<IChatClient> chatClients, CommandList commandList,
+            ILoggerAdapter<CommandHandler> logger)
         {
             _repository = repository;
             _usageTracker = usageTracker;
-            _commandMessages = commandMessages;
+            _commandList = commandList;
             _logger = logger;
 
             foreach (var chatClient in chatClients)
@@ -39,19 +40,25 @@ namespace DevChatter.Bot.Core.Events
                 return;
             }
 
-            IBotCommand botCommand = _commandMessages.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
+            IBotCommand botCommand = _commandList.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
             if (botCommand == null)
             {
                 return;
             }
 
+            // TODO:Remove this soon and replace with smarter code
+            if (botCommand is RefreshCommandListCommand refreshCommand
+                && refreshCommand.NeedsInitializing)
+            {
+                refreshCommand.Initialize(_commandList);
+            }
+
             var cooldown = _usageTracker.GetActiveCooldown(e.ChatUser, botCommand);
-            chatClient.SendMessage(cooldown.Message);
-            // TODO: prevent running the command if there was a cooldown
 
             switch (cooldown)
             {
                 case NoCooldown none:
+                    ProcessTheCommand(e, chatClient, botCommand);
                     break;
                 case UserCooldown userCooldown:
                     chatClient.SendDirectMessage(e.ChatUser.DisplayName, userCooldown.Message);
@@ -62,14 +69,10 @@ namespace DevChatter.Bot.Core.Events
                 case CommandCooldown commandCooldown:
                     chatClient.SendMessage(commandCooldown.Message);
                     break;
-                default:
-                    break;
             }
-
-            DoTheThing(e, chatClient, botCommand);
         }
 
-        private void DoTheThing(CommandReceivedEventArgs e, IChatClient chatClient, IBotCommand botCommand)
+        private void ProcessTheCommand(CommandReceivedEventArgs e, IChatClient chatClient, IBotCommand botCommand)
         {
             CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient);
             var commandUsageEntity = new CommandUsageEntity(e.CommandWord, botCommand.GetType().FullName,
@@ -78,8 +81,8 @@ namespace DevChatter.Bot.Core.Events
             _usageTracker.RecordUsage(commandUsage);
         }
 
-        private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e, IBotCommand botCommand,
-            IChatClient chatClient1)
+        private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e,
+            IBotCommand botCommand, IChatClient chatClient1)
         {
             try
             {
@@ -98,7 +101,7 @@ namespace DevChatter.Bot.Core.Events
                 _logger.LogError(exception, "Failed to run a command.");
             }
 
-            return null;
+            return new CommandUsage(e.ChatUser.DisplayName, DateTimeOffset.UtcNow, botCommand);
         }
     }
 }

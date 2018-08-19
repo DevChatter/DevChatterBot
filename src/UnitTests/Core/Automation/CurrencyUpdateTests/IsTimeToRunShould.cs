@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data;
@@ -8,6 +6,8 @@ using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
 using Moq;
+using System.Collections.Generic;
+using DevChatter.Bot.Core.Settings;
 using UnitTests.Fakes;
 using Xunit;
 
@@ -18,7 +18,9 @@ namespace UnitTests.Core.Automation.CurrencyUpdateTests
         [Fact]
         public void ReturnFalse_UponInitialCreation()
         {
-            var currencyUpdate = new CurrencyUpdate(1, null, new FakeClock());
+            var settingsFactory = new Mock<ISettingsFactory>();
+            settingsFactory.Setup(x => x.GetSettings<CurrencySettings>()).Returns(new CurrencySettings());
+            var currencyUpdate = new CurrencyUpdate(null, settingsFactory.Object, new FakeClock());
 
             bool result = currencyUpdate.IsTimeToRun();
 
@@ -30,7 +32,9 @@ namespace UnitTests.Core.Automation.CurrencyUpdateTests
         {
             const int intervalInMinutes = 1;
             var fakeClock = new FakeClock();
-            var currencyUpdate = new CurrencyUpdate(intervalInMinutes, null, fakeClock);
+            var settingsFactory = new Mock<ISettingsFactory>();
+            settingsFactory.Setup(x => x.GetSettings<CurrencySettings>()).Returns(new CurrencySettings());
+            var currencyUpdate = new CurrencyUpdate(null, settingsFactory.Object, fakeClock);
             fakeClock.Now = fakeClock.Now.AddMinutes(intervalInMinutes);
 
             Assert.True(currencyUpdate.IsTimeToRun());
@@ -42,9 +46,11 @@ namespace UnitTests.Core.Automation.CurrencyUpdateTests
             const int intervalInMinutes = 1;
             var repository = new Mock<IRepository>();
             repository.Setup(x => x.List(It.IsAny<ISpecification<ChatUser>>())).Returns(new List<ChatUser>());
-            var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(repository.Object));
+            var settingsFactory = new Mock<ISettingsFactory>();
+            settingsFactory.Setup(x => x.GetSettings<CurrencySettings>()).Returns(new CurrencySettings());
+            var currencyGenerator = new CurrencyGenerator(new List<IChatClient>(), new ChatUserCollection(repository.Object), settingsFactory.Object);
             var fakeClock = new FakeClock();
-            var currencyUpdate = new CurrencyUpdate(intervalInMinutes, currencyGenerator, fakeClock);
+            var currencyUpdate = new CurrencyUpdate(currencyGenerator, settingsFactory.Object, fakeClock);
 
             fakeClock.Now = fakeClock.Now.AddMinutes(intervalInMinutes);
             Assert.True(currencyUpdate.IsTimeToRun());

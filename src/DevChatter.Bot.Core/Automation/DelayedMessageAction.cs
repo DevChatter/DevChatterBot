@@ -1,27 +1,33 @@
-﻿using System;
+using System;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Automation
 {
-    public class DelayedMessageAction : IIntervalAction
+    public class DelayedMessageAction
+        : IIntervalAction, IAutomatedItem, IDelayed, IAutomatedMessage
     {
-        private readonly string _message;
         private readonly IChatClient _chatClient;
         private DateTime _nextRunTime;
+        public TimeSpan DelayTimeSpan { get; }
+        public string Message { get; }
 
-        public DelayedMessageAction(int delayInSeconds, string message, IChatClient chatClient)
+        public DelayedMessageAction(int delayInSeconds, string message,
+            IChatClient chatClient)
         {
-            _message = message;
+            DelayTimeSpan = TimeSpan.FromSeconds(delayInSeconds);
+            Message = message;
             _chatClient = chatClient;
-            _nextRunTime = DateTime.Now.AddSeconds(delayInSeconds);
+            _nextRunTime = DateTime.UtcNow.AddSeconds(delayInSeconds);
         }
 
-        public bool IsTimeToRun() => DateTime.Now > _nextRunTime;
+        public bool IsTimeToRun() => DateTime.UtcNow > _nextRunTime;
 
         public void Invoke()
         {
-            _chatClient.SendMessage(_message);
+            _chatClient.SendMessage(Message);
             _nextRunTime = DateTime.MaxValue;
         }
+
+        public bool IsDone => DateTime.MaxValue == _nextRunTime;
     }
 }

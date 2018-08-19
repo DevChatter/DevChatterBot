@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DevChatter.Bot.Core.Automation;
 
 namespace UnitTests.Fakes
@@ -6,19 +7,14 @@ namespace UnitTests.Fakes
     {
         public IIntervalAction IntervalAction { get; set; }
 
+        public Task Start()
+        {
+            return Task.CompletedTask;
+        }
+
         public void AddAction(IIntervalAction actionToAdd)
         {
             IntervalAction = actionToAdd;
-        }
-
-        public void RemoveAction(IIntervalAction actionToRemove)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void RunNecessaryActions()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
