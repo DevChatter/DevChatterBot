@@ -1,6 +1,6 @@
 using System;
 
-namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
+namespace DevChatter.Bot.Games.Mud.FSM.MenuStates
 {
     public class Menu
     {

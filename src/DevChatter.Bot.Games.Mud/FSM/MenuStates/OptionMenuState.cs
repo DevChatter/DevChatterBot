@@ -1,7 +1,7 @@
-using System;
 using DevChatter.Bot.Core.Systems.Chat;
+using System;
 
-namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
+namespace DevChatter.Bot.Games.Mud.FSM.MenuStates
 {
     public class OptionsState : State
     {

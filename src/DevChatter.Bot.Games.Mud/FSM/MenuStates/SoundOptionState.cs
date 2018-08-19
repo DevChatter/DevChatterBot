@@ -1,19 +1,20 @@
-using System;
 using DevChatter.Bot.Core.Systems.Chat;
+using System;
 
-namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
+namespace DevChatter.Bot.Games.Mud.FSM.MenuStates
 {
-    internal class ControlOptionState : State
+    public class SoundOptionState : State
     {
-        public ControlOptionState(string name, IChatClient chatClient) : base(name, chatClient)
+        public SoundOptionState(string name, IChatClient chatClient) : base(name, chatClient)
         {
         }
 
         public override void Enter()
         {
             Console.Clear();
-            Console.WriteLine("Control options:");
-            Console.WriteLine("You type...");
+            Console.WriteLine("Sound options:");
+            Console.WriteLine("Do you want beeps?");
+            CharacterInfo.SoundEnabled = Menu.YesNo();
         }
 
         public override void Exit()

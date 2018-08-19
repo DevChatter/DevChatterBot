@@ -1,7 +1,7 @@
-using DevChatter.Bot.Core.Games.Mud.FSM;
+using DevChatter.Bot.Games.Mud.FSM;
 using System.Collections.Generic;
 
-namespace DevChatter.Bot.Core.Games.Mud
+namespace DevChatter.Bot.Games.Mud
 {
     public class CharacterInfo
     {

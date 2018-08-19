@@ -1,4 +1,4 @@
-namespace DevChatter.Bot.Core.Games.Mud
+namespace DevChatter.Bot.Games.Mud
 {
     public enum Moves
     {
