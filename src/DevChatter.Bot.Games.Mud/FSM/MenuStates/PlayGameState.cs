@@ -1,7 +1,7 @@
-using DevChatter.Bot.Core.Games.Mud.FSM.PlayStates;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Games.Mud.FSM.PlayStates;
 
-namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
+namespace DevChatter.Bot.Games.Mud.FSM.MenuStates
 {
     public class PlayGameState : State
     {

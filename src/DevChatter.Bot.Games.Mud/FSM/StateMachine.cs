@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DevChatter.Bot.Core.Games.Mud.FSM
+namespace DevChatter.Bot.Games.Mud.FSM
 {
     public class StateMachine
     {

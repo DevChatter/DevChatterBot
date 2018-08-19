@@ -1,7 +1,7 @@
 using System;
 using DevChatter.Bot.Core.Systems.Chat;
 
-namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
+namespace DevChatter.Bot.Games.Mud.FSM.MenuStates
 {
     internal class ControlOptionState : State
     {

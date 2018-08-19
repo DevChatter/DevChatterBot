@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using DevChatter.Bot.Core.Systems.Chat;
+using System.Collections.Generic;
 
-namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
+namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
 {
     internal abstract class RoomState : State
     {

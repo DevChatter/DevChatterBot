@@ -1,6 +1,6 @@
 using DevChatter.Bot.Core.Systems.Chat;
 
-namespace DevChatter.Bot.Core.Games.Mud.FSM
+namespace DevChatter.Bot.Games.Mud.FSM
 {
     public abstract class State
     {
