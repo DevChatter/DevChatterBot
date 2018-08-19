@@ -1,14 +1,17 @@
 using System.Collections.Generic;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
 {
-    abstract class RoomState : State
+    internal abstract class RoomState : State
     {
         protected List<string> ThingsInRoom;
-        protected List<CharacterInfo.Moves> AvailableMoves;
-        protected List<CharacterInfo.Actions> AvailableActions;
+        protected List<Moves> AvailableMoves;
+        protected List<Actions> AvailableActions;
 
-        protected RoomState(string name, List<CharacterInfo.Actions> actionList, List<CharacterInfo.Moves> moveList, List<string> things) : base(name)
+        protected RoomState(string name, List<Actions> actionList, List<Moves> moveList, List<string> things,
+            IChatClient chatClient) :
+            base(name, chatClient)
         {
             ThingsInRoom = things;
             AvailableActions = actionList;

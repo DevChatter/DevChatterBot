@@ -1,10 +1,11 @@
 using System;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
 {
     internal class ControlOptionState : State
     {
-        public ControlOptionState(string name) : base(name)
+        public ControlOptionState(string name, IChatClient chatClient) : base(name, chatClient)
         {
         }
 
@@ -23,7 +24,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
         {
             bool run = true;
 
-            Menu m = new Menu(new string[] { "Back" });
+            Menu m = new Menu(new string[] {"Back"});
             var k = m.PrintMenuInt();
             switch (k)
             {
@@ -34,6 +35,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
                 default:
                     break;
             }
+
             return run;
         }
     }

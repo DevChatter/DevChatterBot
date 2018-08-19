@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
 {
     class Level1 : RoomState
     {
-        public Level1(string name, List<CharacterInfo.Actions> actionList, List<CharacterInfo.Moves> moveList, List<string> things) :
-            base(name, actionList, moveList, things)
+        public Level1(string name, List<Actions> actionList, List<Moves> moveList, List<string> things,
+            IChatClient chatClient) :
+            base(name, actionList, moveList, things, chatClient)
         {
         }
 
@@ -17,22 +18,20 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
             Console.Write("Available actions are");
             foreach (var act in AvailableActions)
             {
-                Console.Write(", " + act.ToString());
+                Console.Write(", " + act);
             }
-            Console.WriteLine();
 
+            Console.WriteLine();
         }
 
         public override void Exit()
         {
             Console.Clear();
             Console.WriteLine("You go up to the window and climb out");
-
         }
 
         public override bool Run()
         {
-
             bool run = true;
             string read = Console.ReadLine().ToLower();
 
@@ -41,13 +40,15 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
             {
                 case "south":
                     CharacterInfo.StatesSeen.Add(this);
-                    StateMachine.PlayInstance.AddState(CharacterInfo.StatesSeen[CharacterInfo.StatesSeen.Count - 2]); // go to previous room again
+                    StateMachine.PlayInstance.AddState(
+                        CharacterInfo.StatesSeen[CharacterInfo.StatesSeen.Count - 2]); // go to previous room again
                     break;
                 case "west":
                     State state = new Level2("second room",
-                                                        new List<CharacterInfo.Actions>() { CharacterInfo.Actions.Take, CharacterInfo.Actions.Look, CharacterInfo.Actions.Hide },
-                                                        new List<CharacterInfo.Moves>() { CharacterInfo.Moves.North, CharacterInfo.Moves.South, CharacterInfo.Moves.East, CharacterInfo.Moves.West },
-                                                        new List<string>() { "Fork", "Shovel", "Map" });
+                        new List<Actions>() {Actions.Take, Actions.Look, Actions.Hide},
+                        new List<Moves>() {Moves.North, Moves.South, Moves.East, Moves.West},
+                        new List<string>() {"Fork", "Shovel", "Map"},
+                        _chatClient);
                     StateMachine.PlayInstance.AddState(state);
                     //StateMachine.MenuInstance.AddState(new ControlOptionState("Controls"));
                     break;
@@ -59,6 +60,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.PlayStates
                 default:
                     break;
             }
+
             return run;
         }
     }

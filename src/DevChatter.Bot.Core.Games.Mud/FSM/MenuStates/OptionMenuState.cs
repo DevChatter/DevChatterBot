@@ -1,10 +1,11 @@
 using System;
+using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
 {
     public class OptionsState : State
     {
-        public OptionsState(string name) : base(name)
+        public OptionsState(string name, IChatClient chatClient) : base(name, chatClient)
         {
         }
 
@@ -12,16 +13,16 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
         {
             bool run = true;
 
-            Menu m = new Menu(new[] { "Sound", "Controls", "Back" });
+            Menu m = new Menu(new[] {"Sound", "Controls", "Back"});
             var k = m.PrintMenuInt();
             switch (k)
             {
                 case 0:
-                    StateMachine.MenuInstance.AddState(new SoundOptionState("Sound")); // play sounds in stream?
+                    StateMachine.MenuInstance.AddState(new SoundOptionState("Sound", _chatClient)); // play sounds in stream?
                     break;
 
                 case 1:
-                    StateMachine.MenuInstance.AddState(new ControlOptionState("Controls"));
+                    StateMachine.MenuInstance.AddState(new ControlOptionState("Controls", _chatClient));
                     break;
 
                 case 2:
@@ -32,6 +33,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
                 default:
                     break;
             }
+
             return run;
         }
 

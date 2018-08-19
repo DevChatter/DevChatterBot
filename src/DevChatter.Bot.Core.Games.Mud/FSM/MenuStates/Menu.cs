@@ -63,7 +63,8 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
                 var kb = Console.ReadKey(true);
 
                 switch (kb.Key)
-                { //react to input
+                {
+                    //react to input
                     case ConsoleKey.UpArrow:
                         if (selectedItem > 0)
                         {
@@ -73,6 +74,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
                         {
                             selectedItem = (inArray.Length - 1);
                         }
+
                         break;
 
                     case ConsoleKey.DownArrow:
@@ -84,15 +86,18 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
                         {
                             selectedItem = 0;
                         }
+
                         break;
 
                     case ConsoleKey.Enter:
                         loopComplete = true;
                         break;
                 }
+
                 //Reset the cursor to the top of the screen
                 Console.SetCursorPosition(0, topOffset);
             }
+
             //set the cursor just after the menu so that the program can continue after the menu
             Console.SetCursorPosition(0, bottomOffset);
 
@@ -124,7 +129,7 @@ namespace DevChatter.Bot.Core.Games.Mud.FSM.MenuStates
 
         public static bool YesNo()
         {
-            var yesNo = new Menu(new[] { "Yes", "No" }, true);
+            var yesNo = new Menu(new[] {"Yes", "No"}, true);
             return yesNo.PrintMenuInt() == 0;
         }
 

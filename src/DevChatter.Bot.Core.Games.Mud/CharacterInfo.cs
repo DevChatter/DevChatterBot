@@ -5,23 +5,6 @@ namespace DevChatter.Bot.Core.Games.Mud
 {
     public class CharacterInfo
     {
-        public enum Moves
-        {
-            North,
-            South,
-            East,
-            West
-        }
-
-        public enum Actions
-        {
-            Look,
-            Take,
-            Drop,
-            Attack,
-            Hide
-        }
-
         public Dictionary<Moves, string> MoveDict = new Dictionary<Moves, string>();
         public Dictionary<Actions, string> ActionDict = new Dictionary<Actions, string>();
 
