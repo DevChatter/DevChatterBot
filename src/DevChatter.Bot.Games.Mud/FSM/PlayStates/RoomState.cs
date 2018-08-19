@@ -5,11 +5,12 @@ namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
 {
     internal abstract class RoomState : State
     {
-        protected List<string> ThingsInRoom;
-        protected List<Moves> AvailableMoves;
-        protected List<Actions> AvailableActions;
+        protected IList<string> ThingsInRoom;
+        protected IList<Moves> AvailableMoves;
+        protected IList<Actions> AvailableActions;
 
-        protected RoomState(string name, List<Actions> actionList, List<Moves> moveList, List<string> things,
+        protected RoomState(string name,
+            IList<Actions> actionList, IList<Moves> moveList, IList<string> things,
             IChatClient chatClient) :
             base(name, chatClient)
         {
