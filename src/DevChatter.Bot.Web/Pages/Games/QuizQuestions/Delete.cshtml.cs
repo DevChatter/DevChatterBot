@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Web.Pages.QuizQuestions
+namespace DevChatter.Bot.Web.Pages.Games.QuizQuestions
 {
     public class DeleteModel : PageModel
     {

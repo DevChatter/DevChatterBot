@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Infra.Ef;
 
-namespace DevChatter.Bot.Web.Pages.QuizQuestions
+namespace DevChatter.Bot.Web.Pages.Games.QuizQuestions
 {
     public class EditModel : PageModel
     {

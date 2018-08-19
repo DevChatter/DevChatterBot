@@ -1,11 +1,10 @@
-using DevChatter.Bot.Core;
-using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Util;
-using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Util;
+using Microsoft.Extensions.Hosting;
 
-namespace DevChatter.Bot.Web
+namespace DevChatter.Bot.Infra.Web
 {
     public class DevChatterBotBackgroundWorker : IHostedService
     {

@@ -1,5 +1,4 @@
-﻿using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Messaging.Tokens;
 using Xunit;

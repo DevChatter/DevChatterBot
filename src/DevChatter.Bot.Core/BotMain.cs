@@ -1,15 +1,12 @@
 using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core
 {
@@ -21,7 +18,6 @@ namespace DevChatter.Bot.Core
         private readonly SubscriberHandler _subscriberHandler;
         private readonly IFollowableSystem _followableSystem; // This will eventually be a list of these
         private readonly IAutomatedActionSystem _automatedActionSystem;
-        private bool _areSimpleCommandsSetUp = false;
         private readonly CurrencyUpdate _currencyUpdate;
 
         public BotMain(IList<IChatClient> chatClients,
@@ -71,9 +67,12 @@ namespace DevChatter.Bot.Core
         private void ScheduleAutomatedMessages()
         {
             var messages = _repository.List<IntervalMessage>();
+            // HACK: These need to get wrapped elsewhere...
+            var bufferedSenders = _chatClients.Select(c => new BufferedMessageSender(c))
+                .ToList();
             foreach (IntervalMessage message in messages)
             {
-                var action = new AutomatedMessage(message.MessageText, message.DelayInMinutes, _chatClients);
+                var action = new AutomatedMessage(message, bufferedSenders, _repository);
                 _automatedActionSystem.AddAction(action);
             }
         }

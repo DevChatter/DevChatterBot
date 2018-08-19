@@ -1,8 +1,7 @@
+using DevChatter.Bot.Core.Commands.Operations;
+using DevChatter.Bot.Core.Events.Args;
 using System;
 using System.Collections.Generic;
-using DevChatter.Bot.Core.Commands.Operations;
-using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Core.Events.Args;
 
 namespace DevChatter.Bot.Core.Games.Quiz
 {

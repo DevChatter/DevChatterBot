@@ -6,14 +6,16 @@ var overlay = (function () {
   }
 
   var doHype = async function() {
+    var image = new Image();
+    image.src = '/images/DevchaHypeEmote.png';
     for (var blastIndex = 0; blastIndex < 20; blastIndex++) {
-      for (var i = 0; i < 25; i++) {
-        var hypeSprite = new Sprite('/images/DevchaHypeEmote.png');
+      for (var i = 0; i < 10; i++) {
+        var hypeSprite = new Sprite(image);
         sprites.push(hypeSprite);
       }
       await sleep(250);
     }
-  }
+  };
 
   window.onload = function() {
     var mainCanvas = document.getElementById('mainCanvas');
