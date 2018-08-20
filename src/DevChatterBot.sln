@@ -24,6 +24,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Infra.Google
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Infra.Web", "DevChatter.Bot.Infra.Web\DevChatter.Bot.Infra.Web.csproj", "{A8832815-5344-4963-9B11-8EA61BD12465}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MUD", "MUD", "{0BEAA6CB-655F-4FB7-8E01-C42684BE3779}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevChatter.Bot.Games.Mud.UnitTests", "DevChatter.Bot.Games.Mud.UnitTests\DevChatter.Bot.Games.Mud.UnitTests.csproj", "{D56A1939-B1FD-463E-98C6-08420346AB92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,9 +66,17 @@ Global
 		{A8832815-5344-4963-9B11-8EA61BD12465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8832815-5344-4963-9B11-8EA61BD12465}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8832815-5344-4963-9B11-8EA61BD12465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D56A1939-B1FD-463E-98C6-08420346AB92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D56A1939-B1FD-463E-98C6-08420346AB92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D56A1939-B1FD-463E-98C6-08420346AB92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D56A1939-B1FD-463E-98C6-08420346AB92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9E0E0FAC-E2A9-4E7F-B017-71A6B8236CE7} = {0BEAA6CB-655F-4FB7-8E01-C42684BE3779}
+		{D56A1939-B1FD-463E-98C6-08420346AB92} = {0BEAA6CB-655F-4FB7-8E01-C42684BE3779}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA4E7D3F-481E-4FA9-983A-525CF9F4E0BD}
