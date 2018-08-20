@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Games.Mud.FSM.MenuStates
 
         public override void Enter()
         {
-            StateMachine.PlayInstance.AddState(new GameStartState("New Game", _chatClient));
+            //StateMachine.PlayInstance.AddState(new GameStartState("New Game", _chatClient));
         }
 
         public override void Exit()

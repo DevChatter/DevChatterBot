@@ -9,7 +9,8 @@ namespace DevChatter.Bot.Games.Mud
         public static Actions Take = new Actions(2, nameof(Take), "get", "pick up", "grab");
         public static Actions Drop = new Actions(3, nameof(Drop), "discard", "trash", "leave");
         public static Actions Attack = new Actions(4, nameof(Attack), "fight");
-        public static Actions Hide = new Actions(5, nameof(Hide));
+        public static Actions Use = new Actions(5, nameof(Use));
+        public static Actions Hide = new Actions(6, nameof(Hide));
 
         private Actions(int id, params string[] aliases)
         {

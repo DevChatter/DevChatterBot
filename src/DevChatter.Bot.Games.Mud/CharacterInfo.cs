@@ -1,5 +1,6 @@
 using DevChatter.Bot.Games.Mud.FSM;
 using System.Collections.Generic;
+using DevChatter.Bot.Games.Mud.Things;
 
 namespace DevChatter.Bot.Games.Mud
 {
@@ -9,10 +10,8 @@ namespace DevChatter.Bot.Games.Mud
         public Dictionary<Actions, string> ActionDict = new Dictionary<Actions, string>();
 
         public List<string> RoomsVisited = new List<string>();
-        public static List<string> Inventory = new List<string>();
-        public static List<string> Equipped = new List<string>();
-
-        public static bool SoundEnabled = true;
+        public static List<IHoldable> Inventory = new List<IHoldable>();
+        public static List<IEquippable> Equipped = new List<IEquippable>();
 
         public static List<State> StatesSeen = new List<State>();
     }

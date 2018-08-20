@@ -1,4 +1,5 @@
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Games.Mud.Things;
 using System;
 using System.Collections.Generic;
 
@@ -7,9 +8,9 @@ namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
     class Level1 : RoomState
     {
         public Level1(string name,
-            IList<Actions> actionList, IList<Moves> moveList, IList<Item> items,
+            IList<Actions> actionList, IList<Moves> moveList, IList<IThing> things,
             IChatClient chatClient) :
-            base(name, actionList, moveList, items, chatClient)
+            base(name, actionList, moveList, things, chatClient)
         {
         }
 
@@ -46,9 +47,9 @@ namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
                     break;
                 case "west":
                     State state = new Level2("second room",
-                        new List<Actions>() { Actions.Take, Actions.Look, Actions.Hide },
-                        new List<Moves>() { Moves.North, Moves.South, Moves.East, Moves.West },
-                        new List<Item>() { new Item("Fork"), new Item("Shovel"), new Item("Map") },
+                        new List<Actions> { Actions.Take, Actions.Look, Actions.Hide },
+                        new List<Moves> { Moves.North, Moves.South, Moves.East, Moves.West },
+                        new List<IThing> { new Tool("Fork"), new Tool("Shovel"), new Tool("Map") },
                         _chatClient);
                     StateMachine.PlayInstance.AddState(state);
                     //StateMachine.MenuInstance.AddState(new ControlOptionState("Controls"));

@@ -1,4 +1,5 @@
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Games.Mud.Things;
 using System;
 using System.Collections.Generic;
 
@@ -6,9 +7,9 @@ namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
 {
     class Level2 : RoomState
     {
-        public Level2(string name, IList<Actions> actionList, IList<Moves> moveList, IList<Item> items,
+        public Level2(string name, IList<Actions> actionList, IList<Moves> moveList, IList<IThing> things,
             IChatClient chatClient) :
-            base(name, actionList, moveList, items, chatClient)
+            base(name, actionList, moveList, things, chatClient)
         {
         }
 
