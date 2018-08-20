@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DevChatter.Bot.Core.Systems.Chat
 {
-    public interface IChatClient : IMessageSender
+    public interface IChatClient : IMessageSender, IMessageReceiver
     {
         Task Connect();
 
@@ -16,8 +16,7 @@ namespace DevChatter.Bot.Core.Systems.Chat
         void Ban(string username, string reason);
 
         IList<ChatUser> GetAllChatters();
-
-        event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
+        
         event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
         event EventHandler<UserStatusEventArgs> OnUserNoticed;
         event EventHandler<UserStatusEventArgs> OnUserLeft;

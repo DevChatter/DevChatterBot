@@ -10,6 +10,22 @@ namespace DevChatter.Bot.Infra.Twitch.Extensions
 {
     public static class EventArgsExtensions
     {
+        public static MessageReceivedEventArgs ToMessageReceivedEventArgs(this OnMessageReceivedArgs src)
+        {
+            var messageReceivedEventArgs = new MessageReceivedEventArgs
+            {
+                MessageText = src.ChatMessage.Message,
+                RoomId = src.ChatMessage.RoomId,
+                ChatUser = new ChatUser
+                {
+                    UserId = src.ChatMessage.UserId,
+                    DisplayName = src.ChatMessage.DisplayName,
+                    Role = GetTopRole(src.ChatMessage)
+                }
+            };
+            return messageReceivedEventArgs;
+        }
+
         public static CommandReceivedEventArgs ToCommandReceivedEventArgs(this OnChatCommandReceivedArgs src)
         {
             ChatMessage commandChatMessage = src.Command.ChatMessage;
@@ -30,20 +46,19 @@ namespace DevChatter.Bot.Infra.Twitch.Extensions
             return eventArgs;
         }
 
-        private static UserRole GetTopRole(ChatMessage commandChatMessage)
+        private static UserRole GetTopRole(ChatMessage chatMessage)
         {
-            var userRoles = new List<UserRole> {UserRole.Everyone};
-            if (commandChatMessage.IsBroadcaster)
+            if (chatMessage.IsBroadcaster)
             {
                 return UserRole.Streamer;
             }
 
-            if (commandChatMessage.IsModerator)
+            if (chatMessage.IsModerator)
             {
                 return UserRole.Mod;
             }
 
-            if (commandChatMessage.IsSubscriber)
+            if (chatMessage.IsSubscriber)
             {
                 return UserRole.Subscriber;
             }
