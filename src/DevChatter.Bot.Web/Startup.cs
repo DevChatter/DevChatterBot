@@ -21,6 +21,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using DevChatter.Bot.Infra.Web;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -33,10 +35,13 @@ namespace DevChatter.Bot.Web
             Configuration = configuration;
         }
 
+        public IContainer ApplicationContainer { get; private set; }
+
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -48,6 +53,23 @@ namespace DevChatter.Bot.Web
             services.Configure<CommandHandlerSettings>(Configuration.GetSection("CommandHandlerSettings"));
             services.Configure<TwitchClientSettings>(Configuration.GetSection("TwitchClientSettings"));
             services.Configure<GoogleCloudSettings>(Configuration.GetSection("GoogleCloudSettings"));
+
+            services.AddDbContext<AppDataContext>(ServiceLifetime.Transient);
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSignalR();
+
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+
+            // register types here
+
+            ApplicationContainer = builder.Build();
+
+
+
+
 
             var fullConfig = Configuration.Get<BotConfiguration>();
 
@@ -97,12 +119,7 @@ namespace DevChatter.Bot.Web
 
             services.AddSingleton<IHostedService, DevChatterBotBackgroundWorker>();
 
-            services.AddDbContext<AppDataContext>(ServiceLifetime.Transient);
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            services.AddSignalR();
-
+            return new AutofacServiceProvider(ApplicationContainer);
         }
 
         private static void RegisterTimezoneLookupClasses(IServiceCollection services)
