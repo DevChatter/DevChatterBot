@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
 {
-    internal abstract class RoomState : State
+    internal abstract class RoomState : State, IContainer
     {
-        protected IList<string> ThingsInRoom;
         protected IList<Moves> AvailableMoves;
         protected IList<Actions> AvailableActions;
+        public IList<Item> Items { get; }
 
         protected RoomState(string name,
-            IList<Actions> actionList, IList<Moves> moveList, IList<string> things,
+            IList<Actions> actionList, IList<Moves> moveList, IList<Item> items,
             IChatClient chatClient) :
             base(name, chatClient)
         {
-            ThingsInRoom = things;
+            Items = items;
             AvailableActions = actionList;
             AvailableMoves = moveList;
         }

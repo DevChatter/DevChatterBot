@@ -6,9 +6,9 @@ namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
 {
     class Level2 : RoomState
     {
-        public Level2(string name, List<Actions> actionList, List<Moves> moveList, List<string> things,
+        public Level2(string name, IList<Actions> actionList, IList<Moves> moveList, IList<Item> items,
             IChatClient chatClient) :
-            base(name, actionList, moveList, things, chatClient)
+            base(name, actionList, moveList, items, chatClient)
         {
         }
 
