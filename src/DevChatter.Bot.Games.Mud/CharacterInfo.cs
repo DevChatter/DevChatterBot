@@ -13,6 +13,8 @@ namespace DevChatter.Bot.Games.Mud
         public static List<IHoldable> Inventory = new List<IHoldable>();
         public static List<IEquippable> Equipped = new List<IEquippable>();
 
+        public IContainer InContainer { get; set; }
+
         public static List<State> StatesSeen = new List<State>();
     }
 }

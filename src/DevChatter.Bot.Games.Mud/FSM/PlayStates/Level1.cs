@@ -35,7 +35,7 @@ namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
         public override bool Run()
         {
             bool run = true;
-            string read = Console.ReadLine().ToLower();
+            string read = Console.ReadLine()?.ToLower();
 
 
             switch (read)
