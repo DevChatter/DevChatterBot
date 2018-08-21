@@ -1,63 +1,68 @@
-using DevChatter.Bot.Core.Commands;
+using Autofac;
 using DevChatter.Bot.Core.Games.Hangman;
 using DevChatter.Bot.Core.Games.Heist;
 using DevChatter.Bot.Core.Games.Quiz;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
 using DevChatter.Bot.Core.Games.Roulette;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DevChatter.Bot.Web.Extensions
 {
     public static class GameRegistrationExtensions
     {
-        public static IServiceCollection AddAllGames(this IServiceCollection services)
+        public static ContainerBuilder AddAllGames(this ContainerBuilder builder)
         {
-            services.AddHeistGame()
+            builder.AddHeistGame()
                 .AddHangmanGame()
                 .AddQuizGame()
                 .AddRouletteGame()
                 .AddRockPaperScissors();
 
-            return services;
+            return builder;
         }
 
-        public static IServiceCollection AddHeistGame(this IServiceCollection services)
+        public static ContainerBuilder AddHeistGame(this ContainerBuilder builder)
         {
-            services.AddSingleton<IBotCommand, HeistCommand>();
-            services.AddSingleton<HeistGame>();
+            builder.RegisterType<HeistCommand>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
+            builder.RegisterType<HeistGame>().SingleInstance();
 
-            return services;
+            return builder;
         }
 
-        public static IServiceCollection AddHangmanGame(this IServiceCollection services)
+        public static ContainerBuilder AddHangmanGame(this ContainerBuilder builder)
         {
-            services.AddSingleton<HangmanGame>();
-            services.AddSingleton<IBotCommand, HangmanCommand>();
+            builder.RegisterType<HangmanGame>().SingleInstance();
+            builder.RegisterType<HangmanCommand>()
+                .AsImplementedInterfaces().SingleInstance();
 
-            return services;
+            return builder;
         }
 
-        public static IServiceCollection AddRockPaperScissors(this IServiceCollection services)
+        public static ContainerBuilder AddRockPaperScissors(this ContainerBuilder builder)
         {
-            services.AddSingleton<RockPaperScissorsGame>();
-            services.AddSingleton<IBotCommand, RockPaperScissorsCommand>();
+            builder.RegisterType<RockPaperScissorsGame>().SingleInstance();
+            builder.RegisterType<RockPaperScissorsCommand>()
+                .AsImplementedInterfaces().SingleInstance();
 
-            return services;
+            return builder;
         }
 
-        public static IServiceCollection AddQuizGame(this IServiceCollection services)
+        public static ContainerBuilder AddQuizGame(this ContainerBuilder builder)
         {
-            services.AddSingleton<IBotCommand, QuizCommand>();
-            services.AddSingleton<QuizGame>();
+            builder.RegisterType<QuizCommand>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<QuizGame>().SingleInstance();
 
-            return services;
+            return builder;
         }
 
-        public static IServiceCollection AddRouletteGame(this IServiceCollection services)
+        public static ContainerBuilder AddRouletteGame(this ContainerBuilder builder)
         {
-            services.AddSingleton<IBotCommand, RouletteCommand>();
+            builder.RegisterType<RouletteCommand>()
+                .AsImplementedInterfaces().SingleInstance();
 
-            return services;
+            return builder;
         }
     }
 }

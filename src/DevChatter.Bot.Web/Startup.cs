@@ -117,32 +117,22 @@ namespace DevChatter.Bot.Web
                 .As<IClock>();
 
 
-            //services.AddSingleton<IStreamingPlatform, StreamingPlatform>();
-            //services.AddSingleton<IClock, SystemClock>();
+            builder.RegisterType<StreamingPlatform>()
+                .AsImplementedInterfaces().SingleInstance();
 
-            //services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
-            //services.AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
-            //services.AddSingleton<ISettingsFactory, SettingsFactory>();
+            builder.RegisterType<BotHubOverlayNotification>()
+                .AsImplementedInterfaces().SingleInstance();
 
-            //services.AddSingleton<IChatUserCollection, ChatUserCollection>();
+            builder.AddAllGames();
 
-            //services.AddSingleton(typeof(IList<>), typeof(List<>));
-            //services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
+            builder.AddStreamMetaCommands();
 
-            //services.AddSingleton<IOverlayNotification, BotHubOverlayNotification>();
-            
-            //services.AddAllGames();
+            //builder.AddSimpleCommandsFromRepository(repository);
 
-            //services.AddStreamMetaCommands();
+            //builder.AddCommandSystem();
 
-            //services.AddCurrencySystem();
-
-            //services.AddSimpleCommandsFromRepository(repository);
-
-            //services.AddCommandSystem();
             builder.Register(p =>
                 new CommandList(p.Resolve<IList<IBotCommand>>().ToList(), p));
-
 
             builder.AddTwitchLibConnection(fullConfig.TwitchClientSettings);
 

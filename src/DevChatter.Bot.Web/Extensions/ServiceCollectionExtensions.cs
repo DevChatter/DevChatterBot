@@ -51,19 +51,19 @@ namespace DevChatter.Bot.Web.Extensions
         /// <summary>
         /// Register commands dealing with the stream, shout outs, lists of users and quotes, etc.
         /// </summary>
-        public static IServiceCollection AddStreamMetaCommands(this IServiceCollection services)
+        public static ContainerBuilder AddStreamMetaCommands(this ContainerBuilder builder)
         {
-            services.AddSingleton<IBotCommand, HypeCommand>();
-            services.AddSingleton<IBotCommand, RefreshCommandListCommand>();
-            services.AddSingleton<IBotCommand, TopCommand>();
-            services.AddSingleton<IBotCommand, UptimeCommand>();
-            services.AddSingleton<IBotCommand, StreamsCommand>();
-            services.AddSingleton<IBotCommand, ScheduleCommand>();
-            services.AddSingleton<IBotCommand, ShoutOutCommand>();
-            services.AddSingleton<IBotCommand, QuoteCommand>();
-            services.AddSingleton<IBotCommand, ViewersCommand>();
+            builder.RegisterType<RefreshCommandListCommand>().As<IBotCommand>().SingleInstance();
+            builder.RegisterType<HypeCommand>().As<IBotCommand>().SingleInstance();
+            builder.RegisterType<TopCommand>().As<IBotCommand>().SingleInstance();
+            builder.RegisterType<UptimeCommand>().As<IBotCommand>().SingleInstance();
+            builder.RegisterType<StreamsCommand>().As<IBotCommand>().SingleInstance();
+            builder.RegisterType<ScheduleCommand>().As<IBotCommand>().SingleInstance();
+            builder.RegisterType<ShoutOutCommand>().As<IBotCommand>().SingleInstance();
+            builder.RegisterType<QuoteCommand>().As<IBotCommand>().SingleInstance();
+            builder.RegisterType<ViewersCommand>().As<IBotCommand>().SingleInstance();
 
-            return services;
+            return builder;
         }
 
         public static IServiceCollection AddCommandSystem(this IServiceCollection services)
