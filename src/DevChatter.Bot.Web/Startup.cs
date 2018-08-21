@@ -28,6 +28,7 @@ using Autofac.Extensions.DependencyInjection;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Infra.Web;
+using DevChatter.Bot.Web.Modules;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web
@@ -134,7 +135,7 @@ namespace DevChatter.Bot.Web
             builder.Register(p =>
                 new CommandList(p.Resolve<IList<IBotCommand>>().ToList(), p));
 
-            builder.AddTwitchLibConnection(fullConfig.TwitchClientSettings);
+            builder.RegisterModule(new TwitchModule(fullConfig.TwitchClientSettings));
 
             builder.RegisterType<AutomationSystem>()
                 .As<IAutomatedActionSystem>().SingleInstance();
