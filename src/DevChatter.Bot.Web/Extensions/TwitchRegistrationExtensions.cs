@@ -1,3 +1,4 @@
+using Autofac;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
@@ -11,25 +12,34 @@ namespace DevChatter.Bot.Web.Extensions
 {
     public static class TwitchRegistrationExtensions
     {
-        public static IServiceCollection AddTwitchLibConnection(this IServiceCollection services,
+        public static ContainerBuilder AddTwitchLibConnection(
+            this ContainerBuilder builder,
             TwitchClientSettings twitchClientSettings)
         {
-            services.AddSingleton<SubscriberHandler>();
+            builder.RegisterType<SubscriberHandler>()
+                .AsSelf().SingleInstance();
 
-            services.AddSingleton<IFollowableSystem, FollowableSystem>();
+            builder.RegisterType<FollowableSystem>()
+                .As<IFollowableSystem>().SingleInstance();
 
-            services.AddSingleton<IFollowerService, TwitchFollowerService>();
+            builder.RegisterType<TwitchFollowerService>()
+                .WithParameter("settings", twitchClientSettings)
+                .As<IFollowerService>().SingleInstance();
 
             var api = new TwitchAPI();
             api.Settings.ClientId = twitchClientSettings.TwitchClientId;
             api.Settings.AccessToken = twitchClientSettings.TwitchChannelOAuth;
-            services.AddSingleton<ITwitchAPI>(api);
 
-            services.AddSingleton<IChatClient, TwitchChatClient>();
+            builder.RegisterInstance(api).As<ITwitchAPI>().SingleInstance();
 
-            services.AddSingleton<IStreamingInfoService, TwitchStreamingInfoService>();
+            builder.RegisterType<TwitchChatClient>()
+                .WithParameter("settings", twitchClientSettings)
+                .As<IChatClient>().SingleInstance();
 
-            return services;
+            builder.RegisterType<TwitchStreamingInfoService>()
+                .As<IStreamingInfoService>().SingleInstance();
+
+            return builder;
         }
     }
 }

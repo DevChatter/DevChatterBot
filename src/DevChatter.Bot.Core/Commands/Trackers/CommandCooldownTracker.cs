@@ -8,6 +8,7 @@ using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Commands.Trackers
 {
+    // TODO: Fix the naming of this or the interface
     public class CommandCooldownTracker : ICommandUsageTracker
     {
         private readonly CommandHandlerSettings _settings;

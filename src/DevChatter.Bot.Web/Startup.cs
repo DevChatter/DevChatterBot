@@ -27,6 +27,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
+using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Infra.Web;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -70,9 +71,14 @@ namespace DevChatter.Bot.Web
             // register types here
             var fullConfig = Configuration.Get<BotConfiguration>();
 
-            builder.RegisterInstance(fullConfig.TwitchClientSettings);
-            builder.RegisterInstance(fullConfig.CommandHandlerSettings);
-            builder.RegisterInstance(fullConfig.GoogleCloudSettings);
+            builder.RegisterInstance(fullConfig.TwitchClientSettings)
+                .As<TwitchClientSettings>().SingleInstance();
+
+            builder.RegisterInstance(fullConfig.CommandHandlerSettings)
+                .AsSelf().SingleInstance();
+
+            builder.RegisterInstance(fullConfig.GoogleCloudSettings)
+                .AsSelf().SingleInstance();
 
 
             IRepository repository = SetUpDatabase.SetUpRepository(fullConfig.DatabaseConnectionString);
@@ -89,6 +95,38 @@ namespace DevChatter.Bot.Web
                 , Assembly.GetAssembly(typeof(BotHub))
                 , Assembly.GetAssembly(typeof(Program))
             );
+
+
+            builder.RegisterGeneric(typeof(Logger<>))
+                .As(typeof(ILogger<>)).SingleInstance();
+
+            builder.RegisterGeneric(typeof(LoggerAdapter<>))
+                .As(typeof(ILoggerAdapter<>)).SingleInstance();
+
+            builder.RegisterGeneric(typeof(List<>))
+                .As(typeof(IList<>)).SingleInstance();
+
+            builder.RegisterGeneric(typeof(Lazier<>))
+                .As(typeof(Lazy<>)).InstancePerRequest();
+
+            builder.RegisterType<AutomationSystem>()
+                .As<IAutomatedActionSystem>().SingleInstance();
+            builder.RegisterType<CommandHandler>()
+                .As<ICommandHandler>().SingleInstance();
+
+            builder.RegisterType<ChatUserCollection>()
+                .As<IChatUserCollection>()
+                .SingleInstance();
+
+            builder.RegisterType<SettingsFactory>()
+                .As<ISettingsFactory>();
+
+            builder.RegisterType<CommandCooldownTracker>()
+                .As<ICommandUsageTracker>();
+
+            builder.RegisterType<SystemClock>()
+                .As<IClock>();
+
 
             //services.AddSingleton<IStreamingPlatform, StreamingPlatform>();
             //services.AddSingleton<IClock, SystemClock>();
@@ -110,22 +148,26 @@ namespace DevChatter.Bot.Web
 
             //services.AddCurrencySystem();
 
-            services.AddSimpleCommandsFromRepository(repository);
+            //services.AddSimpleCommandsFromRepository(repository);
 
             //services.AddCommandSystem();
             builder.Register(p =>
                 new CommandList(p.Resolve<IList<IBotCommand>>().ToList(), p));
 
 
-            services.AddTwitchLibConnection(fullConfig.TwitchClientSettings);
+            builder.AddTwitchLibConnection(fullConfig.TwitchClientSettings);
 
-            services.AddSingleton<IAutomatedActionSystem, AutomationSystem>();
+            builder.RegisterType<AutomationSystem>()
+                .As<IAutomatedActionSystem>().SingleInstance();
 
-            services.AddSingleton<BotMain>();
+            builder.RegisterType<BotMain>().AsSelf().SingleInstance();
 
-            services.AddSingleton<IHostedService, DevChatterBotBackgroundWorker>();
+            builder.RegisterType<DevChatterBotBackgroundWorker>()
+                .As<IHostedService>();
 
-
+            builder.RegisterType<CurrencyGenerator>()
+                .As<ICurrencyGenerator>()
+                .SingleInstance();
 
             ApplicationContainer = builder.Build();
 
