@@ -21,8 +21,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Infra.Web;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -64,52 +68,54 @@ namespace DevChatter.Bot.Web
             builder.Populate(services);
 
             // register types here
-
-            ApplicationContainer = builder.Build();
-
-
-
-
-
             var fullConfig = Configuration.Get<BotConfiguration>();
 
-            services.AddSingleton(fullConfig.TwitchClientSettings);
-            services.AddSingleton(fullConfig.CommandHandlerSettings);
-            services.AddSingleton(fullConfig.GoogleCloudSettings);
+            builder.RegisterInstance(fullConfig.TwitchClientSettings);
+            builder.RegisterInstance(fullConfig.CommandHandlerSettings);
+            builder.RegisterInstance(fullConfig.GoogleCloudSettings);
 
-            services.Configure<BotConfiguration>(Configuration);
-
-            services.AddSingleton<ILoggerFactory,LoggerFactory>();
 
             IRepository repository = SetUpDatabase.SetUpRepository(fullConfig.DatabaseConnectionString);
 
-            services.AddSingleton(repository);
+            builder.RegisterInstance(repository);
 
-            RegisterTimezoneLookupClasses(services);
+            RegisterTimezoneLookupClasses(builder);
 
-            services.AddSingleton<IStreamingPlatform, StreamingPlatform>();
-            services.AddSingleton<IClock, SystemClock>();
+            builder.RegisterAssemblyTypes(
+                Assembly.GetAssembly(typeof(IRepository))
+                , Assembly.GetAssembly(typeof(EfGenericRepo))
+                , Assembly.GetAssembly(typeof(GoogleApiTimezoneLookup))
+                , Assembly.GetAssembly(typeof(TwitchChatClient))
+                , Assembly.GetAssembly(typeof(BotHub))
+                , Assembly.GetAssembly(typeof(Program))
+            );
 
-            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
-            services.AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
-            services.AddSingleton<ISettingsFactory, SettingsFactory>();
+            //services.AddSingleton<IStreamingPlatform, StreamingPlatform>();
+            //services.AddSingleton<IClock, SystemClock>();
 
-            services.AddSingleton<IChatUserCollection, ChatUserCollection>();
+            //services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            //services.AddSingleton(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
+            //services.AddSingleton<ISettingsFactory, SettingsFactory>();
 
-            services.AddSingleton(typeof(IList<>), typeof(List<>));
-            services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
+            //services.AddSingleton<IChatUserCollection, ChatUserCollection>();
 
-            services.AddSingleton<IOverlayNotification, BotHubOverlayNotification>();
+            //services.AddSingleton(typeof(IList<>), typeof(List<>));
+            //services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
+
+            //services.AddSingleton<IOverlayNotification, BotHubOverlayNotification>();
             
-            services.AddAllGames();
+            //services.AddAllGames();
 
-            services.AddStreamMetaCommands();
+            //services.AddStreamMetaCommands();
 
-            services.AddCurrencySystem();
+            //services.AddCurrencySystem();
 
             services.AddSimpleCommandsFromRepository(repository);
 
-            services.AddCommandSystem();
+            //services.AddCommandSystem();
+            builder.Register(p =>
+                new CommandList(p.Resolve<IList<IBotCommand>>().ToList(), p));
+
 
             services.AddTwitchLibConnection(fullConfig.TwitchClientSettings);
 
@@ -119,15 +125,19 @@ namespace DevChatter.Bot.Web
 
             services.AddSingleton<IHostedService, DevChatterBotBackgroundWorker>();
 
+
+
+            ApplicationContainer = builder.Build();
+
             return new AutofacServiceProvider(ApplicationContainer);
         }
 
-        private static void RegisterTimezoneLookupClasses(IServiceCollection services)
+        private static void RegisterTimezoneLookupClasses(ContainerBuilder builder)
         {
-            services.AddSingleton<GoogleApiTimezoneLookup>();
-            services.AddSingleton<ICacheLayer, EfCacheLayer>();
-            services.AddSingleton<ITimezoneLookup>(provider =>
-                new CachedTimezoneLookup(provider.GetService<GoogleApiTimezoneLookup>(), provider.GetService<ICacheLayer>()));
+            builder.RegisterType<GoogleApiTimezoneLookup>().AsImplementedInterfaces();
+            builder.RegisterType<EfCacheLayer>().AsImplementedInterfaces();
+            //builder.RegisterType<ITimezoneLookup>(provider =>
+            //    new CachedTimezoneLookup(provider.GetService<GoogleApiTimezoneLookup>(), provider.GetService<ICacheLayer>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

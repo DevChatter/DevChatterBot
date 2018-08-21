@@ -65,7 +65,7 @@ namespace DevChatter.Bot.Web.Extensions
             services.AddSingleton<IBotCommand, HelpCommand>();
             services.AddSingleton<IBotCommand, CommandsCommand>();
 
-            services.AddSingleton(p => new CommandList(p.GetServices<IBotCommand>().ToList(), p));
+            //services.AddSingleton(p => new CommandList(p.GetServices<IBotCommand>().ToList(), p));
 
             services.AddSingleton<ICommandUsageTracker, CommandCooldownTracker>();
             services.AddSingleton<ICommandHandler, CommandHandler>();
