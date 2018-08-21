@@ -7,6 +7,7 @@ using DevChatter.Bot.Core.Events;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
+using Autofac;
 
 namespace DevChatter.Bot.Web.Extensions
 {
@@ -29,16 +30,22 @@ namespace DevChatter.Bot.Web.Extensions
         /// <summary>
         /// Registering the commands for adding, removing, checking, and managing tokens.
         /// </summary>
-        public static IServiceCollection AddCurrencySystem(this IServiceCollection services)
+        public static ContainerBuilder AddCurrencySystem(this ContainerBuilder builder)
         {
-            services.AddSingleton<ICurrencyGenerator, CurrencyGenerator>();
-            services.AddSingleton<CurrencyUpdate>();
-            services.AddSingleton<IBotCommand, TaxCommand>();
-            services.AddSingleton<IBotCommand, GiveCommand>();
-            services.AddSingleton<IBotCommand, CoinsCommand>();
-            services.AddSingleton<IBotCommand, BonusCommand>();
+            builder.RegisterType<CurrencyGenerator>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<CurrencyUpdate>()
+                .SingleInstance();
+            builder.RegisterType<TaxCommand>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<GiveCommand>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<CoinsCommand>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<BonusCommand>()
+                .AsImplementedInterfaces().SingleInstance();
 
-            return services;
+            return builder;
         }
 
         /// <summary>

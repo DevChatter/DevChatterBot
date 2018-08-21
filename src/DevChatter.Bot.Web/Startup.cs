@@ -27,7 +27,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
-using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Infra.Web;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -86,16 +85,6 @@ namespace DevChatter.Bot.Web
             builder.RegisterInstance(repository);
 
             RegisterTimezoneLookupClasses(builder);
-
-            builder.RegisterAssemblyTypes(
-                Assembly.GetAssembly(typeof(IRepository))
-                , Assembly.GetAssembly(typeof(EfGenericRepo))
-                , Assembly.GetAssembly(typeof(GoogleApiTimezoneLookup))
-                , Assembly.GetAssembly(typeof(TwitchChatClient))
-                , Assembly.GetAssembly(typeof(BotHub))
-                , Assembly.GetAssembly(typeof(Program))
-            );
-
 
             builder.RegisterGeneric(typeof(Logger<>))
                 .As(typeof(ILogger<>)).SingleInstance();
@@ -165,9 +154,7 @@ namespace DevChatter.Bot.Web
             builder.RegisterType<DevChatterBotBackgroundWorker>()
                 .As<IHostedService>();
 
-            builder.RegisterType<CurrencyGenerator>()
-                .As<ICurrencyGenerator>()
-                .SingleInstance();
+            builder.AddCurrencySystem();
 
             ApplicationContainer = builder.Build();
 
