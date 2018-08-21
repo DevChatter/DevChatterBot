@@ -82,7 +82,7 @@ namespace DevChatter.Bot.Web
 
             IRepository repository = SetUpDatabase.SetUpRepository(fullConfig.DatabaseConnectionString);
 
-            builder.RegisterInstance(repository);
+            builder.RegisterInstance(repository).SingleInstance();
 
             RegisterTimezoneLookupClasses(builder);
 
