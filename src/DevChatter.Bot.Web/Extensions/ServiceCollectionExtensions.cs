@@ -13,18 +13,18 @@ namespace DevChatter.Bot.Web.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddSimpleCommandsFromRepository(
-            this IServiceCollection services,
+        public static ContainerBuilder AddSimpleCommandsFromRepository(
+            this ContainerBuilder builder,
             IRepository repository)
         {
             List<SimpleCommand> simpleCommands = repository.List(CommandPolicy.All());
 
             foreach (SimpleCommand simpleCommand in simpleCommands)
             {
-                services.AddSingleton<IBotCommand>(simpleCommand);
+                builder.RegisterInstance(simpleCommand).As<IBotCommand>();
             }
 
-            return services;
+            return builder;
         }
 
         /// <summary>
@@ -66,19 +66,15 @@ namespace DevChatter.Bot.Web.Extensions
             return builder;
         }
 
-        public static IServiceCollection AddCommandSystem(this IServiceCollection services)
+        public static ContainerBuilder AddCommandSystem(this ContainerBuilder builder)
         {
-            services.AddSingleton<IBotCommand, AliasCommand>();
-            services.AddSingleton<IBotCommand, HelpCommand>();
-            services.AddSingleton<IBotCommand, CommandsCommand>();
+            builder.RegisterType<AliasCommand>().As<IBotCommand>().SingleInstance();
+            builder.RegisterType<HelpCommand>().As<IBotCommand>().SingleInstance();
+            builder.RegisterType<CommandsCommand>().As<IBotCommand>().SingleInstance();
+            builder.RegisterType<CommandCooldownTracker>().As<ICommandUsageTracker>().SingleInstance();
+            builder.RegisterType<CommandHandler>().As<ICommandHandler>().SingleInstance();
 
-            //services.AddSingleton(p => new CommandList(p.GetServices<IBotCommand>().ToList(), p));
-
-            services.AddSingleton<ICommandUsageTracker, CommandCooldownTracker>();
-            services.AddSingleton<ICommandHandler, CommandHandler>();
-
-
-            return services;
+            return builder;
         }
     }
 }

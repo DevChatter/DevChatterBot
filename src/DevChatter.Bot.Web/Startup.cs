@@ -127,9 +127,9 @@ namespace DevChatter.Bot.Web
 
             builder.AddStreamMetaCommands();
 
-            //builder.AddSimpleCommandsFromRepository(repository);
+            builder.AddSimpleCommandsFromRepository(repository);
 
-            //builder.AddCommandSystem();
+            builder.AddCommandSystem();
 
             builder.Register(p =>
                 new CommandList(p.Resolve<IList<IBotCommand>>().ToList(), p));
