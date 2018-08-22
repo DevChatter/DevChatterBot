@@ -38,6 +38,7 @@ namespace DevChatter.Bot.Infra.Twitch
             _twitchClient = new TwitchClient();
             _twitchClient.Initialize(credentials, channel:settings.TwitchChannel);
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
+            _twitchClient.OnMessageReceived += ChatMessageReceived;
             _twitchClient.OnNewSubscriber += NewSubscriber;
             _twitchClient.OnUserJoined += TwitchClientOnOnUserJoined;
             _twitchClient.OnUserLeft += TwitchClientOnOnUserLeft;
@@ -61,6 +62,12 @@ namespace DevChatter.Bot.Infra.Twitch
         private void ChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
             OnCommandReceived?.Invoke(this, e.ToCommandReceivedEventArgs());
+            OnUserNoticed?.Invoke(this, e.ToUserStatusEventArgs());
+        }
+
+        private void ChatMessageReceived(object sender, OnMessageReceivedArgs e)
+        {
+            OnMessageReceived?.Invoke(this, e.ToMessageReceivedEventArgs());
             OnUserNoticed?.Invoke(this, e.ToUserStatusEventArgs());
         }
 
@@ -138,6 +145,7 @@ namespace DevChatter.Bot.Infra.Twitch
         }
 
         public event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
+        public event EventHandler<MessageReceivedEventArgs> OnMessageReceived;
         public event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
         public event EventHandler<UserStatusEventArgs> OnUserNoticed;
         public event EventHandler<UserStatusEventArgs> OnUserLeft;
