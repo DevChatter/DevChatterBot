@@ -10,6 +10,27 @@ namespace DevChatter.Bot.Infra.Twitch.Extensions
 {
     public static class EventArgsExtensions
     {
+        public static MessageReceivedEventArgs ToMessageReceivedEventArgs(
+            this OnMessageReceivedArgs src)
+        {
+            ChatMessage chatMessage = src.ChatMessage;
+            UserRole topRole = GetTopRole(chatMessage);
+
+            var eventArgs = new MessageReceivedEventArgs
+            {
+                Message = chatMessage.Message,
+                Channel = chatMessage.Channel,
+                RoomId = chatMessage.RoomId,
+                ChatUser = new ChatUser
+                {
+                    UserId = chatMessage.UserId,
+                    DisplayName = chatMessage.DisplayName,
+                    Role = topRole
+                }
+            };
+            return eventArgs;
+        }
+
         public static CommandReceivedEventArgs ToCommandReceivedEventArgs(this OnChatCommandReceivedArgs src)
         {
             ChatMessage commandChatMessage = src.Command.ChatMessage;
