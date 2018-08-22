@@ -1,16 +1,20 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Caching;
+using DevChatter.Bot.Core.Commands;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
-using DevChatter.Bot.Core.GoogleApi;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Core.Util;
 using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.GoogleApi;
 using DevChatter.Bot.Infra.Twitch;
+using DevChatter.Bot.Infra.Web;
 using DevChatter.Bot.Infra.Web.Hubs;
 using DevChatter.Bot.Web.Extensions;
+using DevChatter.Bot.Web.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,12 +27,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using DevChatter.Bot.Core.Commands;
-using DevChatter.Bot.Core.Commands.Trackers;
-using DevChatter.Bot.Infra.Web;
-using DevChatter.Bot.Web.Modules;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web
@@ -67,6 +65,24 @@ namespace DevChatter.Bot.Web
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
+
+            var assemblies = new[]
+            {
+                Assembly.GetAssembly(typeof(IRepository)),
+                Assembly.GetAssembly(typeof(EfGenericRepo)),
+                Assembly.GetAssembly(typeof(GoogleApiTimezoneLookup)),
+                Assembly.GetAssembly(typeof(TwitchChatClient)),
+                Assembly.GetAssembly(typeof(BotHub)),
+                Assembly.GetAssembly(typeof(Program)),
+            };
+
+            foreach (var assembly in assemblies)
+            {
+                builder.RegisterAssemblyTypes(assembly)
+                    .AssignableTo<BaseCommand>()
+                    .As<IBotCommand>()
+                    .SingleInstance();
+            }
 
             // register types here
             var fullConfig = Configuration.Get<BotConfiguration>();
@@ -125,8 +141,6 @@ namespace DevChatter.Bot.Web
                 .AsImplementedInterfaces().SingleInstance();
 
             builder.AddAllGames();
-
-            builder.AddStreamMetaCommands();
 
             builder.AddSimpleCommandsFromRepository(repository);
 
