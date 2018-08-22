@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace DevChatter.Bot.Web.Extensions
 {
-    public static class ServiceCollectionExtensions
+    public static class ContainerBuilderExtensions
     {
         public static ContainerBuilder AddSimpleCommandsFromRepository(
             this ContainerBuilder builder,
