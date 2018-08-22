@@ -159,7 +159,7 @@ namespace DevChatter.Bot.Web
             builder.RegisterType<DevChatterBotBackgroundWorker>()
                 .As<IHostedService>();
 
-            builder.AddCurrencySystem();
+            builder.RegisterModule<CurrencyModule>();
 
             ApplicationContainer = builder.Build();
 

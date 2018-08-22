@@ -25,19 +25,6 @@ namespace DevChatter.Bot.Web.Extensions
             return builder;
         }
 
-        /// <summary>
-        /// Registering the commands for adding, removing, checking, and managing tokens.
-        /// </summary>
-        public static ContainerBuilder AddCurrencySystem(this ContainerBuilder builder)
-        {
-            builder.RegisterType<CurrencyGenerator>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<CurrencyUpdate>()
-                .SingleInstance();
-
-            return builder;
-        }
-
         public static ContainerBuilder AddCommandSystem(this ContainerBuilder builder)
         {
             builder.RegisterType<CommandCooldownTracker>().As<ICommandUsageTracker>().SingleInstance();
