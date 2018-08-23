@@ -11,7 +11,7 @@ namespace DevChatter.Bot.Games.Mud
 {
     public class MudGame : IGame
     {
-        private readonly List<Player> _players = new List<Player>();
+        public List<Player> Players = new List<Player>();
 
         private readonly IMessageSender _messageSender;
         private readonly Room _dungeonEntrance;
@@ -40,7 +40,7 @@ namespace DevChatter.Bot.Games.Mud
                 Name = chatUser.DisplayName,
                 InRoom = _dungeonEntrance,
             };
-            _players.Add(player);
+            Players.Add(player);
 
             _messageSender.SendMessage($"{chatUser.DisplayName}: {player.InRoom.Look()}");
         }
@@ -52,11 +52,11 @@ namespace DevChatter.Bot.Games.Mud
         }
 
         private Player GetByChatUser(ChatUser chatUser)
-            => _players.SingleOrDefault(x => x.Name.EqualsIns(chatUser.DisplayName));
+            => Players.SingleOrDefault(x => x.Name.EqualsIns(chatUser.DisplayName));
 
         private bool IsAlreadyJoined(ChatUser chatUser)
         {
-            return _players.Any(x => x.Name.EqualsIns(chatUser.DisplayName));
+            return Players.Any(x => x.Name.EqualsIns(chatUser.DisplayName));
         }
 
         public void Move(ChatUser chatUser, IList<string> arguments)
