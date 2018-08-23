@@ -11,7 +11,7 @@ namespace DevChatter.Bot.Games.Mud
 {
     public class MudGame : IGame
     {
-        private readonly List<string> _joinedPlayers = new List<string>();
+        private readonly List<Player> _joinedPlayers = new List<Player>();
 
         private readonly IMessageSender _messageSender;
         private readonly Room _dungeonEntrance;
@@ -34,12 +34,20 @@ namespace DevChatter.Bot.Games.Mud
             }
             _messageSender.SendMessage(
                 $"Well met, {chatUser.DisplayName}! You are embarking on your greatest adventure!");
-            _joinedPlayers.Add(chatUser.DisplayName);
+
+            var player = new Player
+            {
+                Name = chatUser.DisplayName,
+                InRoom = _dungeonEntrance,
+            };
+            _joinedPlayers.Add(player);
+
+            _messageSender.SendMessage($"{chatUser.DisplayName}: {player.InRoom.Look()}");
         }
 
         private bool IsAlreadyJoined(ChatUser chatUser)
         {
-            return _joinedPlayers.Any(x => x.EqualsIns(chatUser.DisplayName));
+            return _joinedPlayers.Any(x => x.Name.EqualsIns(chatUser.DisplayName));
         }
     }
 }
