@@ -1,4 +1,3 @@
-using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Handlers;
@@ -26,9 +25,6 @@ namespace DevChatter.Bot.Games.Mud
         private void ChatClient_OnMessageReceived(
             object sender, MessageReceivedEventArgs e)
         {
-            if (e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
-            {
-            }
         }
 
         private void _chatClient_OnCommandReceived(
