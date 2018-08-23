@@ -38,6 +38,10 @@ namespace DevChatter.Bot.Games.Mud
             {
                 _mudGame.AttemptToJoin(e.ChatUser);
             }
+            if (e.CommandWord.EqualsIns("Look"))
+            {
+                _mudGame.Look(e.ChatUser);
+            }
         }
 
     }
