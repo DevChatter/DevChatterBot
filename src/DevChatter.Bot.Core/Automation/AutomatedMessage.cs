@@ -46,11 +46,11 @@ namespace DevChatter.Bot.Core.Automation
         public void Invoke()
         {
             _nextRunTime = _clock.UtcNow.AddMinutes(IntervalInMinutes);
+            _intervalMessage.LastSent = _clock.UtcNow;
             foreach (BufferedMessageSender chatClient in _chatClients)
             {
                 chatClient.SendMessage(Message);
             }
-            _intervalMessage.LastSent = _clock.UtcNow;
             _repository.Update(_intervalMessage);
         }
 

@@ -19,7 +19,7 @@ namespace DevChatter.Bot.Core.Events
         private readonly ILoggerAdapter<CommandHandler> _logger;
 
         public CommandHandler(IRepository repository, ICommandUsageTracker usageTracker,
-            IEnumerable<IChatClient> chatClients, CommandList commandList,
+            IList<IChatClient> chatClients, CommandList commandList,
             ILoggerAdapter<CommandHandler> logger)
         {
             _repository = repository;
