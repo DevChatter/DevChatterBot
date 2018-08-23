@@ -42,6 +42,10 @@ namespace DevChatter.Bot.Games.Mud
             {
                 _mudGame.Look(e.ChatUser);
             }
+            if (e.CommandWord.EqualsIns("Move"))
+            {
+                _mudGame.Move(e.ChatUser, e.Arguments);
+            }
         }
 
     }

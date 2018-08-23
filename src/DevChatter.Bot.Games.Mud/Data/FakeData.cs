@@ -8,14 +8,16 @@ namespace DevChatter.Bot.Games.Mud.Data
         /// <summary>
         /// Gets a dungeon all based on a starting room.
         /// </summary>
-        /// <returns>Starting Room</returns>
+        /// <returns>Starting Room with references to others</returns>
         public static Room GetDungeon()
         {
             var mainHall = new Room
             {
+                BasicText = "a long, dark hallway"
             };
             var entranceRoom = new Room
             {
+                BasicText = "a small room",
                 Items = new List<Item>(),
                 NorthRoom = mainHall
             };

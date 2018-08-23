@@ -58,5 +58,15 @@ namespace DevChatter.Bot.Games.Mud
         {
             return _players.Any(x => x.Name.EqualsIns(chatUser.DisplayName));
         }
+
+        public void Move(ChatUser chatUser, IList<string> arguments)
+        {
+            Player player = GetByChatUser(chatUser);
+            if (arguments.FirstOrDefault().EqualsIns("North"))
+            {
+                player.InRoom = player.InRoom.NorthRoom;
+            }
+            Look(chatUser);
+        }
     }
 }

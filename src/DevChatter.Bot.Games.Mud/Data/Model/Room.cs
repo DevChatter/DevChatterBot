@@ -5,7 +5,8 @@ namespace DevChatter.Bot.Games.Mud.Data.Model
 {
     public class Room : DataEntity
     {
-        public Room NorthRoom { get; set; }
+        public string BasicText { get; set; }
+        public Room NorthRoom { get; set; } // TODO: Make these `Exit` objects
         public Room SouthRoom { get; set; }
         public Room EastRoom { get; set; }
         public Room WestRoom { get; set; }
@@ -13,7 +14,8 @@ namespace DevChatter.Bot.Games.Mud.Data.Model
 
         public string Look()
         {
-            return $"You find yourself in a small room. A door leading North is open. You see a stack of torches on the ground.";
+            return $"You find yourself in {BasicText}. A door leading North is open. You see a stack of torches on the ground.";
         }
+
     }
 }
