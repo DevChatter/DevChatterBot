@@ -61,24 +61,37 @@ namespace DevChatter.Bot.Games.Mud
 
         public void Move(ChatUser chatUser, IList<string> arguments)
         {
+            string name = chatUser.DisplayName;
             Player player = GetByChatUser(chatUser);
-            if (arguments.FirstOrDefault().EqualsIns("North"))
+
+            if (arguments.FirstOrDefault().EqualsIns("North")
+                && player.InRoom.NorthRoom != null)
             {
+                _messageSender.SendMessage($"{name} moves North.");
                 player.InRoom = player.InRoom.NorthRoom;
             }
-            if (arguments.FirstOrDefault().EqualsIns("East"))
+            else if (arguments.FirstOrDefault().EqualsIns("East")
+                     && player.InRoom.EastRoom != null)
             {
+                _messageSender.SendMessage($"{name} moves East.");
                 player.InRoom = player.InRoom.EastRoom;
             }
-            if (arguments.FirstOrDefault().EqualsIns("South"))
+            else if (arguments.FirstOrDefault().EqualsIns("South")
+                     && player.InRoom.SouthRoom != null)
             {
+                _messageSender.SendMessage($"{name} moves South.");
                 player.InRoom = player.InRoom.SouthRoom;
             }
-            if (arguments.FirstOrDefault().EqualsIns("West"))
+            else if (arguments.FirstOrDefault().EqualsIns("West")
+                     && player.InRoom.WestRoom != null)
             {
+                _messageSender.SendMessage($"{name} moves West.");
                 player.InRoom = player.InRoom.WestRoom;
             }
-            Look(chatUser);
+            else
+            {
+                _messageSender.SendMessage($"{name} reads about movement.");
+            }
         }
     }
 }
