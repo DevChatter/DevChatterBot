@@ -11,17 +11,19 @@ namespace DevChatter.Bot.Games.Mud.Data
         /// <returns>Starting Room with references to others</returns>
         public static Room GetDungeon()
         {
-            var mainHall = new Room
-            {
-                BasicText = "a long, dark hallway"
-            };
             var entranceRoom = new Room
             {
                 BasicText = "a small room",
                 Items = new List<Item>(),
-                NorthRoom = mainHall
             };
-            var item = new Item { InRoom = entranceRoom, ItemType = "Torch"};
+            var mainHall = new Room
+            {
+                BasicText = "a long, dark hallway",
+                SouthRoom = entranceRoom,
+            };
+            entranceRoom.NorthRoom = mainHall;
+
+            var item = new Item { InRoom = entranceRoom, ItemType = "Torch", Description = "stack of torches on the ground."};
             entranceRoom.Items.Add(item);
 
             return entranceRoom;

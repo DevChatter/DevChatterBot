@@ -7,5 +7,6 @@ namespace DevChatter.Bot.Games.Mud.Data.Model
         public Room InRoom { get; set; }
         public Container InContainer { get; set; }
         public string ItemType { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -66,6 +66,18 @@ namespace DevChatter.Bot.Games.Mud
             {
                 player.InRoom = player.InRoom.NorthRoom;
             }
+            if (arguments.FirstOrDefault().EqualsIns("East"))
+            {
+                player.InRoom = player.InRoom.EastRoom;
+            }
+            if (arguments.FirstOrDefault().EqualsIns("South"))
+            {
+                player.InRoom = player.InRoom.SouthRoom;
+            }
+            if (arguments.FirstOrDefault().EqualsIns("West"))
+            {
+                player.InRoom = player.InRoom.WestRoom;
+            }
             Look(chatUser);
         }
     }
