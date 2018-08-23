@@ -1,19 +1,44 @@
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
+using DevChatter.Bot.Core.Extensions;
+using DevChatter.Bot.Core.Handlers;
 using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Games.Mud
 {
-    public class MudRoomHandler
+    public class MudRoomHandler : IBotHostedHandler
     {
-        public MudRoomHandler(IChatClient chatClient)
+        private readonly IChatClient _chatClient;
+        private readonly MudGame _mudGame;
+
+        public MudRoomHandler(IChatClient chatClient, MudGame mudGame)
         {
-            chatClient.OnMessageReceived += ChatClient_OnMessageReceived;
+            _chatClient = chatClient;
+            _mudGame = mudGame;
         }
 
-        private void ChatClient_OnMessageReceived(object sender,
-            MessageReceivedEventArgs e)
+        public void Connect()
         {
-            throw new System.NotImplementedException();
+            _chatClient.OnMessageReceived += ChatClient_OnMessageReceived;
+            _chatClient.OnCommandReceived += _chatClient_OnCommandReceived;
         }
+
+        private void ChatClient_OnMessageReceived(
+            object sender, MessageReceivedEventArgs e)
+        {
+            if (e.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
+            {
+            }
+        }
+
+        private void _chatClient_OnCommandReceived(
+            object sender, CommandReceivedEventArgs e)
+        {
+            if (e.CommandWord.EqualsIns("JoinMud"))
+            {
+                _mudGame.AttemptToJoin(e.ChatUser);
+            }
+        }
+
     }
 }

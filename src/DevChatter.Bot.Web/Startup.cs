@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DevChatter.Bot.Games.Mud;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web
@@ -83,6 +84,8 @@ namespace DevChatter.Bot.Web
                     .As<IBotCommand>()
                     .SingleInstance();
             }
+
+            builder.RegisterModule<MudDiModule>();
 
             // register types here
             var fullConfig = Configuration.Get<BotConfiguration>();

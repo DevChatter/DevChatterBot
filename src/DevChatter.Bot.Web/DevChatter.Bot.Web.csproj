@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DevChatter.Bot.Core\DevChatter.Bot.Core.csproj" />
+    <ProjectReference Include="..\DevChatter.Bot.Games.Mud\DevChatter.Bot.Games.Mud.csproj" />
     <ProjectReference Include="..\DevChatter.Bot.Infra.Ef\DevChatter.Bot.Infra.Ef.csproj" />
     <ProjectReference Include="..\DevChatter.Bot.Infra.GoogleApi\DevChatter.Bot.Infra.GoogleApi.csproj" />
     <ProjectReference Include="..\DevChatter.Bot.Infra.Twitch\DevChatter.Bot.Infra.Twitch.csproj" />

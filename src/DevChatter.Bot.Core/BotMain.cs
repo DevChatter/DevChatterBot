@@ -7,12 +7,14 @@ using DevChatter.Bot.Core.Systems.Streaming;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.Handlers;
 
 namespace DevChatter.Bot.Core
 {
     public class BotMain
     {
         private readonly IList<IChatClient> _chatClients;
+        private readonly IList<IBotHostedHandler> _hostedHandlers;
         private readonly IRepository _repository;
         private readonly ICommandHandler _commandHandler;
         private readonly SubscriberHandler _subscriberHandler;
@@ -21,6 +23,7 @@ namespace DevChatter.Bot.Core
         private readonly CurrencyUpdate _currencyUpdate;
 
         public BotMain(IList<IChatClient> chatClients,
+            IList<IBotHostedHandler> hostedHandlers,
             IRepository repository,
             IFollowableSystem followableSystem,
             IAutomatedActionSystem automatedActionSystem,
@@ -29,6 +32,7 @@ namespace DevChatter.Bot.Core
             CurrencyUpdate currencyUpdate)
         {
             _chatClients = chatClients;
+            _hostedHandlers = hostedHandlers;
             _repository = repository;
             _followableSystem = followableSystem;
             _automatedActionSystem = automatedActionSystem;
@@ -44,6 +48,11 @@ namespace DevChatter.Bot.Core
             WireUpCurrencyUpdate();
 
             ConnectChatClients();
+
+            foreach (var hostedHandler in _hostedHandlers)
+            {
+                hostedHandler.Connect();
+            }
 
             _followableSystem.HandleFollowerNotifications();
 

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using DevChatter.Bot.Core.Util;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.Undocumented.Chatters;
+using TwitchLib.Api.Models.v5.Chat;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Extensions;
@@ -37,6 +38,12 @@ namespace DevChatter.Bot.Infra.Twitch
             var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchBotOAuth);
             _twitchClient = new TwitchClient();
             _twitchClient.Initialize(credentials, channel:settings.TwitchChannel);
+
+            ConnectEvents();
+        }
+
+        private void ConnectEvents()
+        {
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
             _twitchClient.OnMessageReceived += ChatMessageReceived;
             _twitchClient.OnNewSubscriber += NewSubscriber;
@@ -88,6 +95,26 @@ namespace DevChatter.Bot.Infra.Twitch
             _connectionCompletionTask.SetResult(true);
             _disconnectionCompletionTask = new TaskCompletionSource<bool>();
             SendMessage("Hello World! The bot has arrived!");
+
+            //JoinChannelRoomsAsync();
+        }
+
+        private async Task JoinChannelRoomsAsync()
+        {
+            try
+            {
+                ChatRoomsByChannelResponse chatRooms =
+                    await _twitchApi.Chat.v5.GetChatRoomsByChannelAsync(_settings.TwitchChannelId);
+                foreach (var room in chatRooms.Rooms)
+                {
+                    _twitchClient.JoinRoom(_settings.TwitchChannelId, room.Id);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task Disconnect()
