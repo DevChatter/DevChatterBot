@@ -24,6 +24,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Infra.Google
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Infra.Web", "DevChatter.Bot.Infra.Web\DevChatter.Bot.Infra.Web.csproj", "{A8832815-5344-4963-9B11-8EA61BD12465}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MudGame", "MudGame", "{ED861D4B-AAB5-4695-B2EF-ABCED68D8361}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mud.UnitTests", "Mud.UnitTests\Mud.UnitTests.csproj", "{0912CE9F-AD86-42C5-8A11-117AFCF7A663}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,9 +66,17 @@ Global
 		{A8832815-5344-4963-9B11-8EA61BD12465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8832815-5344-4963-9B11-8EA61BD12465}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8832815-5344-4963-9B11-8EA61BD12465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0912CE9F-AD86-42C5-8A11-117AFCF7A663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0912CE9F-AD86-42C5-8A11-117AFCF7A663}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0912CE9F-AD86-42C5-8A11-117AFCF7A663}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0912CE9F-AD86-42C5-8A11-117AFCF7A663}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9E0E0FAC-E2A9-4E7F-B017-71A6B8236CE7} = {ED861D4B-AAB5-4695-B2EF-ABCED68D8361}
+		{0912CE9F-AD86-42C5-8A11-117AFCF7A663} = {ED861D4B-AAB5-4695-B2EF-ABCED68D8361}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA4E7D3F-481E-4FA9-983A-525CF9F4E0BD}
