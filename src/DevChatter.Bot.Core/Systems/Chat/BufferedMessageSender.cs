@@ -15,14 +15,14 @@ namespace DevChatter.Bot.Core.Systems.Chat
 
         public void SendMessage(string message)
         {
-            if (_timeLastSent.AddMinutes(1) > DateTime.UtcNow)
-            {
-                QueueTheMessage(message);
-            }
-            else
+            if (DateTime.UtcNow > _timeLastSent.AddMinutes(1))
             {
                 _internalChatClient.SendMessage(message);
                 _timeLastSent = DateTime.UtcNow;
+            }
+            else
+            {
+                QueueTheMessage(message);
             }
         }
 
