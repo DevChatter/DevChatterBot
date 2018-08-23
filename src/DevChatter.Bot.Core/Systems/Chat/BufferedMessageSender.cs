@@ -28,9 +28,9 @@ namespace DevChatter.Bot.Core.Systems.Chat
 
         private void QueueTheMessage(string message)
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                Task.Delay(TimeSpan.FromMinutes(1));
+                await Task.Delay(TimeSpan.FromMinutes(1));
                 SendMessage(message);
             });
         }
