@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Data.Model;
 
 namespace DevChatter.Bot.Games.Mud.Data.Model
@@ -8,5 +9,6 @@ namespace DevChatter.Bot.Games.Mud.Data.Model
         public Room SouthRoom { get; set; }
         public Room EastRoom { get; set; }
         public Room WestRoom { get; set; }
+        public List<Item> Items { get; set; }
     }
 }
