@@ -1,19 +1,21 @@
 using DevChatter.Bot.Core.Events.Args;
-using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Handlers;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Games.Mud.Actions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevChatter.Bot.Games.Mud
 {
     public class MudRoomHandler : IBotHostedHandler
     {
+        private readonly IList<IMudAction> _allActions;
         private readonly IChatClient _chatClient;
-        private readonly MudGame _mudGame;
 
-        public MudRoomHandler(IChatClient chatClient, MudGame mudGame)
+        public MudRoomHandler(IChatClient chatClient, IList<IMudAction> allActions)
         {
             _chatClient = chatClient;
-            _mudGame = mudGame;
+            _allActions = allActions;
         }
 
         public void Connect()
@@ -30,19 +32,8 @@ namespace DevChatter.Bot.Games.Mud
         private void _chatClient_OnCommandReceived(
             object sender, CommandReceivedEventArgs e)
         {
-            if (e.CommandWord.EqualsIns("JoinMud"))
-            {
-                _mudGame.AttemptToJoin(e.ChatUser);
-            }
-            if (e.CommandWord.EqualsIns("Look"))
-            {
-                _mudGame.Look(e.ChatUser);
-            }
-            if (e.CommandWord.EqualsIns("Move"))
-            {
-                _mudGame.Move(e.ChatUser, e.Arguments);
-            }
+            var mudAction = _allActions.FirstOrDefault(a => a.CanExecute(e.CommandWord));
+            mudAction?.Process(_chatClient, e.ChatUser, e.Arguments);
         }
-
     }
 }

@@ -1,5 +1,8 @@
+using System.Reflection;
 using Autofac;
 using DevChatter.Bot.Core.Handlers;
+using DevChatter.Bot.Games.Mud.Actions;
+using Module = Autofac.Module;
 
 namespace DevChatter.Bot.Games.Mud
 {
@@ -12,6 +15,11 @@ namespace DevChatter.Bot.Games.Mud
 
             builder.RegisterType<MudGame>()
                 .AsSelf()
+                .SingleInstance();
+
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IMudAction)))
+                .AssignableTo<BaseMudAction>()
+                .As<IMudAction>()
                 .SingleInstance();
         }
     }
