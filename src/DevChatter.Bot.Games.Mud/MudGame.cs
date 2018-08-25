@@ -93,5 +93,10 @@ namespace DevChatter.Bot.Games.Mud
                 _messageSender.SendMessage($"{name} reads about movement.");
             }
         }
+
+        public void Take(ChatUser chatUser, string itemToTake)
+        {
+            _messageSender.SendMessage($"Once we wire this up, we'll let you take the {itemToTake}. Assuming you din't troll me...");
+        }
     }
 }
