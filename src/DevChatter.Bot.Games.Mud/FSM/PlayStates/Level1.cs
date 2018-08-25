@@ -7,7 +7,7 @@ namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
     class Level1 : RoomState
     {
         public Level1(string name,
-            IList<Actions> actionList, IList<Moves> moveList, IList<string> things,
+            IList<ActionsEnum> actionList, IList<Moves> moveList, IList<string> things,
             IChatClient chatClient) :
             base(name, actionList, moveList, things, chatClient)
         {
@@ -46,7 +46,7 @@ namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
                     break;
                 case "west":
                     State state = new Level2("second room",
-                        new List<Actions>() {Actions.Take, Actions.Look, Actions.Hide},
+                        new List<ActionsEnum>() { ActionsEnum.Take, ActionsEnum.Look, ActionsEnum.Hide},
                         new List<Moves>() {Moves.North, Moves.South, Moves.East, Moves.West},
                         new List<string>() {"Fork", "Shovel", "Map"},
                         _chatClient);

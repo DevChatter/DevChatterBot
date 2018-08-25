@@ -83,7 +83,7 @@ namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
                     case "north":
                         CharacterInfo.StatesSeen.Add(this);
                         StateMachine.PlayInstance.AddState(new Level1("First room",
-                            new List<Actions>() {Actions.Look, Actions.Take},
+                            new List<ActionsEnum>() { ActionsEnum.Look, ActionsEnum.Take},
                             new List<Moves>() {Moves.North, Moves.South, Moves.West},
                             new List<string>() {"a Window", "Some pebbles", "a sword"},
                             _chatClient));
@@ -137,7 +137,7 @@ namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
                 }
             }
 
-            //action.actionDict.Add(Action.Actions.)
+            //action.actionDict.Add(Action.ActionsEnum.)
             return true;
         }
     }

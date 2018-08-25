@@ -7,10 +7,10 @@ namespace DevChatter.Bot.Games.Mud.FSM.PlayStates
     {
         protected IList<string> ThingsInRoom;
         protected IList<Moves> AvailableMoves;
-        protected IList<Actions> AvailableActions;
+        protected IList<ActionsEnum> AvailableActions;
 
         protected RoomState(string name,
-            IList<Actions> actionList, IList<Moves> moveList, IList<string> things,
+            IList<ActionsEnum> actionList, IList<Moves> moveList, IList<string> things,
             IChatClient chatClient) :
             base(name, chatClient)
         {

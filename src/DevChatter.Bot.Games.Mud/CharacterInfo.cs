@@ -6,7 +6,7 @@ namespace DevChatter.Bot.Games.Mud
     public class CharacterInfo
     {
         public Dictionary<Moves, string> MoveDict = new Dictionary<Moves, string>();
-        public Dictionary<Actions, string> ActionDict = new Dictionary<Actions, string>();
+        public Dictionary<ActionsEnum, string> ActionDict = new Dictionary<ActionsEnum, string>();
 
         public List<string> RoomsVisited = new List<string>();
         public static List<string> Inventory = new List<string>();

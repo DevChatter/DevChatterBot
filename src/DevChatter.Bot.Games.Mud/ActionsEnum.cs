@@ -1,6 +1,6 @@
 namespace DevChatter.Bot.Games.Mud
 {
-    public enum Actions
+    public enum ActionsEnum
     {
         Look,
         Take,
