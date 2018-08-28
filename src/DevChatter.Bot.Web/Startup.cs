@@ -150,6 +150,7 @@ namespace DevChatter.Bot.Web
                 new CommandList(p.Resolve<IList<IBotCommand>>().ToList(), p));
 
             builder.RegisterModule(new TwitchModule(fullConfig.TwitchClientSettings));
+            builder.RegisterModule(new CoreModule());
 
             builder.RegisterType<AutomationSystem>()
                 .As<IAutomatedActionSystem>().SingleInstance();
