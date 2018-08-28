@@ -7,8 +7,13 @@ namespace DevChatter.Bot.Core
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<DomainEventHandler>().AsSelf().SingleInstance();
-            builder.RegisterType<DomainEventRaiser>().As<IDomainEventRaiser>();
+            builder.RegisterType(typeof(DomainEventHandler<>))
+                .As(typeof(DomainEventHandler<>))
+                .As<BaseDomainEventHandler>()
+                .SingleInstance();
+
+            builder.RegisterType<DomainEventRaiser>()
+                .As<IDomainEventRaiser>();
         }
     }
 }

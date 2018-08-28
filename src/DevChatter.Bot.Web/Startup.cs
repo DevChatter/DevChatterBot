@@ -82,6 +82,11 @@ namespace DevChatter.Bot.Web
                     .AssignableTo<BaseCommand>()
                     .As<IBotCommand>()
                     .SingleInstance();
+
+                builder.RegisterAssemblyTypes(assembly)
+                    .AssignableTo(typeof(IHandler<>))
+                    .As(typeof(IHandler<>))
+                    .SingleInstance();
             }
 
             // register types here
@@ -146,11 +151,12 @@ namespace DevChatter.Bot.Web
 
             builder.AddCommandSystem();
 
+            builder.RegisterModule(new CoreModule());
+
             builder.Register(p =>
                 new CommandList(p.Resolve<IList<IBotCommand>>().ToList(), p));
 
             builder.RegisterModule(new TwitchModule(fullConfig.TwitchClientSettings));
-            builder.RegisterModule(new CoreModule());
 
             builder.RegisterType<AutomationSystem>()
                 .As<IAutomatedActionSystem>().SingleInstance();

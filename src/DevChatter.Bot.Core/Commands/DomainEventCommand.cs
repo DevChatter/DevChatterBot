@@ -7,19 +7,16 @@ using DevChatter.Bot.Core.Systems.Chat;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class DomainEventCommand : BaseCommand
+    public class DomainEventCommand : BaseCommand, IHandler<CommandCreatedEvent>
     {
         private int _timesEventRaised = 0;
         private readonly IDomainEventRaiser _domainEventRaiser;
 
         public DomainEventCommand(IRepository repository,
-            IDomainEventRaiser domainEventRaiser,
-            DomainEventHandler domainEventHandler)
+            IDomainEventRaiser domainEventRaiser)
             : base(repository, UserRole.Everyone)
         {
             _domainEventRaiser = domainEventRaiser;
-            Action<CommandCreatedEvent> foo = cce => { _timesEventRaised++; };
-            domainEventHandler.Subscribe(foo);
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
@@ -27,6 +24,11 @@ namespace DevChatter.Bot.Core.Commands
             chatClient.SendMessage($"I've been called {_timesEventRaised} times.");
 
             _domainEventRaiser.RaiseEvent(new CommandCreatedEvent(this));
+        }
+
+        public void Handle(CommandCreatedEvent domainEvent)
+        {
+            _timesEventRaised++;
         }
     }
 }

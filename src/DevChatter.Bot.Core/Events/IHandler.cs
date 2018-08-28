@@ -4,30 +4,33 @@ using System.Collections.Generic;
 
 namespace DevChatter.Bot.Core.Events
 {
-    public class DomainEventHandler
+    public interface IHandler<T>
     {
-        private readonly List<Delegate> _handlers = new List<Delegate>();
+        void Handle(T domainEvent);
+    }
 
-        public void Subscribe<T>(Action<T> domainEvent) where T : BaseDomainEvent
+    public class DomainEventHandler<T> : BaseDomainEventHandler
+        where T : BaseDomainEvent
+    {
+        private readonly IHandler<T> _handler;
+
+        public DomainEventHandler(IHandler<T> handler)
         {
-            _handlers.Add(domainEvent);
+            _handler = handler;
         }
 
-        public void Unsubscribe<T>(Action<T> domainEvent) where T : BaseDomainEvent
+        public override void Handle(BaseDomainEvent baseEvent)
         {
-            _handlers.Remove(domainEvent);
-        }
-
-        public void Handle<T>(T domainEvent) where T : BaseDomainEvent
-        {
-            foreach (var handler in _handlers)
+            if (baseEvent is T concreteEvent)
             {
-                if (handler is Action<T> action)
-                {
-                    action(domainEvent);
-                }
+                _handler.Handle(concreteEvent);
             }
         }
+    }
+
+    public abstract class BaseDomainEventHandler
+    {
+        public abstract void Handle(BaseDomainEvent baseEvent);
     }
 
     public interface IDomainEventRaiser
@@ -37,16 +40,19 @@ namespace DevChatter.Bot.Core.Events
 
     public class DomainEventRaiser : IDomainEventRaiser
     {
-        private readonly DomainEventHandler _domainEventHandler;
+        private readonly IList<BaseDomainEventHandler> _eventHandlers;
 
-        public DomainEventRaiser(DomainEventHandler domainEventHandler)
+        public DomainEventRaiser(IList<BaseDomainEventHandler> eventHandlers)
         {
-            _domainEventHandler = domainEventHandler;
+            _eventHandlers = eventHandlers;
         }
 
         public void RaiseEvent<T>(T domainEvent) where T : BaseDomainEvent
         {
-            _domainEventHandler.Handle(domainEvent);
+            foreach (var handler in _eventHandlers)
+            {
+                handler.Handle(domainEvent);
+            }
         }
     }
 
