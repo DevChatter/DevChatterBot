@@ -149,6 +149,8 @@ namespace DevChatter.Bot.Web
             builder.Register(p =>
                 new CommandList(p.Resolve<IList<IBotCommand>>().ToList(), p));
 
+            builder.RegisterModule<CoreRegistrationModule>();
+
             builder.RegisterModule(new TwitchModule(fullConfig.TwitchClientSettings));
 
             builder.RegisterType<AutomationSystem>()
