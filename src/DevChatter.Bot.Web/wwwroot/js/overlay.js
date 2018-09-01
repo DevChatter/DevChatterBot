@@ -35,6 +35,12 @@ var overlay = (function () {
       doHype();
       window.requestAnimationFrame(render);
     });
+    connection.on("VoteStart", (choices) => {
+      voting.voteStart(hangmanContext, choices);
+    });
+    connection.on("VoteEnd", () => {
+      voting.voteEnd(hangmanContext);
+    });
     connection.on("HangmanStart", () => {
       hangman.startGame();
       hangman.drawGallows(hangmanContext);

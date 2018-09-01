@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.Systems.Streaming;
@@ -18,6 +19,16 @@ namespace DevChatter.Bot.Infra.Web
         public async Task Hype()
         {
             await _internalContext.Clients.All.Hype();
+        }
+
+        public async Task VoteStart(IEnumerable<string> choices)
+        {
+            await _internalContext.Clients.All.VoteStart(choices);
+        }
+
+        public async Task VoteEnd()
+        {
+            await _internalContext.Clients.All.VoteEnd();
         }
 
         public async Task HangmanWin()

@@ -3,17 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Systems.Streaming;
 
 namespace DevChatter.Bot.Core.BotModules.VotingModule
 {
     public class VotingSystem
     {
+        private readonly IOverlayNotification _overlayNotification;
+
         private readonly Dictionary<string, int> _votes
             = new Dictionary<string, int>();
         private Dictionary<int, string> _choices
             = new Dictionary<int, string>();
 
         public bool IsVoteActive { get; set; }
+
+        public VotingSystem(IOverlayNotification overlayNotification)
+        {
+            _overlayNotification = overlayNotification;
+        }
 
         public void ApplyVote(ChatUser chatUser, string choice, IChatClient chatClient)
         {
@@ -40,6 +48,8 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
             string optionsString = string.Join(", ", _choices.OrderBy(x => x.Key).Select(x => $"({x.Key}) {x.Value}"));
 
+            _overlayNotification.VoteStart(_choices.Select(x => x.Value));
+
             return $"Voting has started. To vote type \"!vote [number]\" (ex: !vote 2). Options: {optionsString}";
         }
 
@@ -47,6 +57,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
         {
             string resultMessage = GetResultsOfVote();
             ResetVote();
+            _overlayNotification.VoteEnd();
             return resultMessage;
         }
 

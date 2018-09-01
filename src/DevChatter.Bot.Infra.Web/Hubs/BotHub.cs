@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DevChatter.Bot.Core;
 using Microsoft.AspNetCore.SignalR;
 
@@ -8,6 +9,16 @@ namespace DevChatter.Bot.Infra.Web.Hubs
         public void Hype()
         {
             Clients.All.Hype();
+        }
+
+        public void VoteStart(IEnumerable<string> choices)
+        {
+            Clients.All.VoteStart(choices);
+        }
+
+        public void VoteEnd()
+        {
+            Clients.All.VoteEnd();
         }
 
         public void HangmanStart()
