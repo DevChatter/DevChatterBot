@@ -15,20 +15,20 @@ namespace DevChatter.Bot.Core
         private readonly IList<IChatClient> _chatClients;
         private readonly IRepository _repository;
         private readonly ICommandHandler _commandHandler;
-        private readonly IList<IFollowableSystem> _followableSystems; // This will eventually be a list of these
+        private readonly IList<IStreamingPlatform> _streamingPlatforms;
         private readonly IAutomatedActionSystem _automatedActionSystem;
         private readonly CurrencyUpdate _currencyUpdate;
 
         public BotMain(IList<IChatClient> chatClients,
             IRepository repository,
-            IList<IFollowableSystem> followableSystems,
+            IList<IStreamingPlatform> streamingPlatforms,
             IAutomatedActionSystem automatedActionSystem,
             ICommandHandler commandHandler,
             CurrencyUpdate currencyUpdate)
         {
             _chatClients = chatClients;
             _repository = repository;
-            _followableSystems = followableSystems;
+            _streamingPlatforms = streamingPlatforms;
             _automatedActionSystem = automatedActionSystem;
             _commandHandler = commandHandler;
             _currencyUpdate = currencyUpdate;
@@ -42,9 +42,9 @@ namespace DevChatter.Bot.Core
 
             ConnectChatClients();
 
-            foreach (IFollowableSystem followableSystem in _followableSystems)
+            foreach (IStreamingPlatform streamingPlatform in _streamingPlatforms)
             {
-                followableSystem.Connect();
+                streamingPlatform.Connect();
             }
 
             await _automatedActionSystem.Start();
@@ -59,9 +59,9 @@ namespace DevChatter.Bot.Core
 
         public async Task Stop()
         {
-            foreach (IFollowableSystem followableSystem in _followableSystems)
+            foreach (IStreamingPlatform streamingPlatform in _streamingPlatforms)
             {
-                followableSystem.Disconnect();
+                streamingPlatform.Disconnect();
             }
 
             await DisconnectChatClients();
