@@ -18,7 +18,6 @@ namespace DevChatter.Bot.Core.Systems.Chat
         IList<ChatUser> GetAllChatters();
 
         event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
-        event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
         event EventHandler<UserStatusEventArgs> OnUserNoticed;
         event EventHandler<UserStatusEventArgs> OnUserLeft;
     }

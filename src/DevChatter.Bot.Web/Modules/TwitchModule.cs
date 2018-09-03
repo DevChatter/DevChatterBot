@@ -38,7 +38,7 @@ namespace DevChatter.Bot.Web.Modules
 
             builder.RegisterType<TwitchChatClient>()
                 .WithParameter("settings", _twitchClientSettings)
-                .As<IChatClient>().SingleInstance();
+                .As<IChatClient>().AsSelf().SingleInstance();
 
             builder.RegisterType<TwitchStreamingInfoService>()
                 .As<IStreamingInfoService>().SingleInstance();
