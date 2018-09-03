@@ -20,7 +20,7 @@ namespace DevChatter.Bot.Web.Modules
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<SubscriberHandler>()
+            builder.RegisterType<TwitchSubscriberHandler>()
                 .AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<FollowableSystem>()

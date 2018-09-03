@@ -7,11 +7,11 @@ using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Infra.Twitch.Events
 {
-    public class SubscriberHandler : ISubscriberHandler
+    public class TwitchSubscriberHandler : ISubscriberHandler
     {
-        private readonly ILoggerAdapter<SubscriberHandler> _logger;
+        private readonly ILoggerAdapter<TwitchSubscriberHandler> _logger;
 
-        public SubscriberHandler(IList<IChatClient> chatClients, ILoggerAdapter<SubscriberHandler> logger)
+        public TwitchSubscriberHandler(IList<IChatClient> chatClients, ILoggerAdapter<TwitchSubscriberHandler> logger)
         {
             _logger = logger;
             // This needing a chat client is twitch specific! Get rid of it!
