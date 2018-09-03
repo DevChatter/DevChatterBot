@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Web.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<SubscriberHandler>()
-                .AsSelf().SingleInstance();
+                .AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<FollowableSystem>()
                 .As<IFollowableSystem>().SingleInstance();

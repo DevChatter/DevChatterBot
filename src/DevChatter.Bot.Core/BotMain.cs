@@ -15,7 +15,6 @@ namespace DevChatter.Bot.Core
         private readonly IList<IChatClient> _chatClients;
         private readonly IRepository _repository;
         private readonly ICommandHandler _commandHandler;
-        private readonly SubscriberHandler _subscriberHandler;
         private readonly IList<IFollowableSystem> _followableSystems; // This will eventually be a list of these
         private readonly IAutomatedActionSystem _automatedActionSystem;
         private readonly CurrencyUpdate _currencyUpdate;
@@ -25,7 +24,6 @@ namespace DevChatter.Bot.Core
             IList<IFollowableSystem> followableSystems,
             IAutomatedActionSystem automatedActionSystem,
             ICommandHandler commandHandler,
-            SubscriberHandler subscriberHandler,
             CurrencyUpdate currencyUpdate)
         {
             _chatClients = chatClients;
@@ -33,7 +31,6 @@ namespace DevChatter.Bot.Core
             _followableSystems = followableSystems;
             _automatedActionSystem = automatedActionSystem;
             _commandHandler = commandHandler;
-            _subscriberHandler = subscriberHandler;
             _currencyUpdate = currencyUpdate;
         }
 
