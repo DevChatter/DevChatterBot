@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Util;
 
-namespace DevChatter.Bot.Core.Events
+namespace DevChatter.Bot.Infra.Twitch.Events
 {
     public class SubscriberHandler : ISubscriberHandler
     {
