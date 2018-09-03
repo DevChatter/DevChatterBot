@@ -80,7 +80,6 @@ namespace DevChatter.Bot.Infra.Twitch
             _isReady = true;
             _connectionCompletionTask.SetResult(true);
             _disconnectionCompletionTask = new TaskCompletionSource<bool>();
-            SendMessage("Hello World! The bot has arrived!");
         }
 
         public async Task Disconnect()

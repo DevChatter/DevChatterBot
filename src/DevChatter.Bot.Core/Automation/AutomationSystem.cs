@@ -3,6 +3,7 @@ using DevChatter.Bot.Core.Util;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.Data;
 
 namespace DevChatter.Bot.Core.Automation
 {

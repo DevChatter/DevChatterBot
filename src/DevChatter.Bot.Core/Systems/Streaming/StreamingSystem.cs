@@ -27,24 +27,26 @@ namespace DevChatter.Bot.Core.Systems.Streaming
             _streamingInfoService = streamingInfoService;
         }
 
-        public void Connect()
+        public async Task Connect()
         {
+            await _chatClient.Connect();
+            _chatClient.SendMessage("Hello World! The bot has arrived!");
             _followerService.OnNewFollower += FollowerServiceOnOnNewFollower;
             _subscriberHandler.OnNewSubscriber += SubscriberHandlerOnOnNewSubscriber;
         }
 
-        public void Disconnect()
+        public async Task Disconnect()
         {
+            _chatClient.SendMessage("Goodbye for now! The bot has left the building...");
             _followerService.OnNewFollower -= FollowerServiceOnOnNewFollower;
             _subscriberHandler.OnNewSubscriber -= SubscriberHandlerOnOnNewSubscriber;
+            await _chatClient.Disconnect();
         }
 
         private void SubscriberHandlerOnOnNewSubscriber(
             object sender, NewSubscriberEventArgs e)
         {
-            // We need to figure out how to handle subscribe services without a chat client
-            _chatClient?.SendMessage(
-                    $"Welcome, {e.SubscriberName}! You are awesome! Thank you for supporting us!");
+            _chatClient.SendMessage($"Welcome, {e.SubscriberName}! You are awesome! Thank you for supporting us!");
         }
 
         private void FollowerServiceOnOnNewFollower(
@@ -53,8 +55,7 @@ namespace DevChatter.Bot.Core.Systems.Streaming
             foreach (string followerName in eventArgs.FollowerNames)
             {
                 _currencyGenerator.AddCurrencyTo(followerName, TOKENS_FOR_FOLLOWING);
-                _chatClient.SendMessage(
-                    $"Welcome, {followerName}! Thank you for following! {TOKENS_FOR_FOLLOWING} coins to have some fun. Everyone, say \"hello\"!");
+                _chatClient.SendMessage($"Welcome, {followerName}! Thank you for following! {TOKENS_FOR_FOLLOWING} coins to have some fun. Everyone, say \"hello\"!");
             }
         }
 

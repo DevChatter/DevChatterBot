@@ -12,20 +12,20 @@ namespace DevChatter.Bot.Core.Automation
     {
         private readonly IRepository _repository;
         private readonly IClock _clock;
-        private readonly IList<BufferedMessageSender> _chatClients;
+        private readonly IList<IChatClient> _chatClients;
         public int IntervalInMinutes => IntervalTimeSpan.Minutes;
         private readonly IntervalMessage _intervalMessage;
         public string Message => _intervalMessage?.MessageText;
         public TimeSpan IntervalTimeSpan { get; }
 
         public AutomatedMessage(IntervalMessage intervalMessage,
-            IList<BufferedMessageSender> chatClients, IRepository repository)
+            IList<IChatClient> chatClients, IRepository repository)
             : this(intervalMessage, chatClients, repository, new SystemClock())
         {
         }
 
         public AutomatedMessage(IntervalMessage intervalMessage,
-            IList<BufferedMessageSender> chatClients, IRepository repository,
+            IList<IChatClient> chatClients, IRepository repository,
             IClock clock)
         {
             _intervalMessage = intervalMessage;
@@ -47,7 +47,7 @@ namespace DevChatter.Bot.Core.Automation
         {
             _nextRunTime = _clock.UtcNow.AddMinutes(IntervalInMinutes);
             _intervalMessage.LastSent = _clock.UtcNow;
-            foreach (BufferedMessageSender chatClient in _chatClients)
+            foreach (IChatClient chatClient in _chatClients)
             {
                 chatClient.SendMessage(Message);
             }
