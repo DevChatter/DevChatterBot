@@ -48,6 +48,7 @@ namespace DevChatter.Bot.Core.Systems.Streaming
         public void StopHandlingNotifications()
         {
             _followerService.OnNewFollower -= FollowerServiceOnOnNewFollower;
+            _subscriberHandler.OnNewSubscriber -= SubscriberHandlerOnOnNewSubscriber;
         }
     }
 }
