@@ -1,24 +1,16 @@
-using System;
-using System.Collections.Generic;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
-using DevChatter.Bot.Core.Util;
+using System;
 
 namespace DevChatter.Bot.Infra.Twitch.Events
 {
+    // TODO: Maybe rename this to "ChatBasedSubscriberHandler"
     public class TwitchSubscriberHandler : ISubscriberHandler
     {
-        private readonly ILoggerAdapter<TwitchSubscriberHandler> _logger;
-
-        public TwitchSubscriberHandler(IList<IChatClient> chatClients, ILoggerAdapter<TwitchSubscriberHandler> logger)
+        public TwitchSubscriberHandler(IChatClient chatClient)
         {
-            _logger = logger;
-            // This needing a chat client is twitch specific! Get rid of it!
-            foreach (IChatClient chatClient in chatClients)
-            {
-                chatClient.OnNewSubscriber += ChatClientOnOnNewSubscriber;
-            }
+            chatClient.OnNewSubscriber += ChatClientOnOnNewSubscriber;
         }
 
         private void ChatClientOnOnNewSubscriber(object sender, NewSubscriberEventArgs eventArgs)
