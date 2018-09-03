@@ -114,11 +114,6 @@ namespace DevChatter.Bot.Infra.Twitch
             _twitchClient.TimeoutUser(username, duration, reason);
         }
 
-        public void Ban(string username, string reason)
-        {
-            _twitchClient.BanUser(username, reason, false);
-        }
-
         public IList<ChatUser> GetAllChatters()
         {
             _logger.LogInformation("Getting all Twitch chatters");
