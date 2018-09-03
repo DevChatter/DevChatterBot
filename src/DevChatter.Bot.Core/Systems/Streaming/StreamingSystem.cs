@@ -1,10 +1,12 @@
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
+using System;
+using System.Threading.Tasks;
 
 namespace DevChatter.Bot.Core.Systems.Streaming
 {
-    public class FollowableSystem : IFollowableSystem //, IChatSystem
+    public class StreamingSystem : IStreamingPlatform
     {
         private const int TOKENS_FOR_FOLLOWING = 100;
 
@@ -12,30 +14,41 @@ namespace DevChatter.Bot.Core.Systems.Streaming
         private readonly IFollowerService _followerService;
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly ISubscriberHandler _subscriberHandler;
+        private readonly IStreamingInfoService _streamingInfoService;
 
-        public FollowableSystem(IChatClient chatClient, IFollowerService followerService,
-            ICurrencyGenerator currencyGenerator, ISubscriberHandler subscriberHandler)
+        public StreamingSystem(IChatClient chatClient, IFollowerService followerService,
+            ICurrencyGenerator currencyGenerator, ISubscriberHandler subscriberHandler,
+            IStreamingInfoService streamingInfoService)
         {
             _chatClient = chatClient;
             _followerService = followerService;
             _currencyGenerator = currencyGenerator;
             _subscriberHandler = subscriberHandler;
+            _streamingInfoService = streamingInfoService;
         }
 
-        public void HandleFollowerNotifications()
+        public void Connect()
         {
             _followerService.OnNewFollower += FollowerServiceOnOnNewFollower;
             _subscriberHandler.OnNewSubscriber += SubscriberHandlerOnOnNewSubscriber;
         }
 
-        private void SubscriberHandlerOnOnNewSubscriber(object sender, NewSubscriberEventArgs e)
+        public void Disconnect()
+        {
+            _followerService.OnNewFollower -= FollowerServiceOnOnNewFollower;
+            _subscriberHandler.OnNewSubscriber -= SubscriberHandlerOnOnNewSubscriber;
+        }
+
+        private void SubscriberHandlerOnOnNewSubscriber(
+            object sender, NewSubscriberEventArgs e)
         {
             // We need to figure out how to handle subscribe services without a chat client
             _chatClient?.SendMessage(
                     $"Welcome, {e.SubscriberName}! You are awesome! Thank you for supporting us!");
         }
 
-        private void FollowerServiceOnOnNewFollower(object sender, NewFollowersEventArgs eventArgs)
+        private void FollowerServiceOnOnNewFollower(
+            object sender, NewFollowersEventArgs eventArgs)
         {
             foreach (string followerName in eventArgs.FollowerNames)
             {
@@ -45,10 +58,15 @@ namespace DevChatter.Bot.Core.Systems.Streaming
             }
         }
 
-        public void StopHandlingNotifications()
+        public Task<TimeSpan?> GetUptimeAsync()
         {
-            _followerService.OnNewFollower -= FollowerServiceOnOnNewFollower;
-            _subscriberHandler.OnNewSubscriber -= SubscriberHandlerOnOnNewSubscriber;
+            return _streamingInfoService.GetUptimeAsync();
         }
+
+        public Task<int> GetViewerCountAsync()
+        {
+            return _streamingInfoService.GetViewerCountAsync();
+        }
+
     }
 }

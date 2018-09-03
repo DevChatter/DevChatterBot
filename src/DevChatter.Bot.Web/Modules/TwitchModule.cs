@@ -23,9 +23,6 @@ namespace DevChatter.Bot.Web.Modules
             builder.RegisterType<TwitchSubscriberHandler>()
                 .AsImplementedInterfaces().SingleInstance();
 
-            builder.RegisterType<FollowableSystem>()
-                .As<IFollowableSystem>().SingleInstance();
-
             builder.RegisterType<TwitchFollowerService>()
                 .WithParameter("settings", _twitchClientSettings)
                 .As<IFollowerService>().SingleInstance();

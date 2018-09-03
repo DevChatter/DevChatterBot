@@ -133,8 +133,7 @@ namespace DevChatter.Bot.Web
             builder.RegisterType<SystemClock>()
                 .As<IClock>();
 
-
-            builder.RegisterType<StreamingPlatform>()
+            builder.RegisterType<StreamingSystem>()
                 .AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<BotHubOverlayNotification>()

@@ -44,7 +44,7 @@ namespace DevChatter.Bot.Core
 
             foreach (IFollowableSystem followableSystem in _followableSystems)
             {
-                followableSystem.HandleFollowerNotifications();
+                followableSystem.Connect();
             }
 
             await _automatedActionSystem.Start();
@@ -61,7 +61,7 @@ namespace DevChatter.Bot.Core
         {
             foreach (IFollowableSystem followableSystem in _followableSystems)
             {
-                followableSystem.StopHandlingNotifications();
+                followableSystem.Disconnect();
             }
 
             await DisconnectChatClients();
