@@ -17,28 +17,23 @@ namespace DevChatter.Bot.Core
         private readonly ICommandHandler _commandHandler;
         private readonly IList<IStreamingPlatform> _streamingPlatforms;
         private readonly IAutomatedActionSystem _automatedActionSystem;
-        private readonly CurrencyUpdate _currencyUpdate;
 
         public BotMain(IList<IChatClient> chatClients,
             IRepository repository,
             IList<IStreamingPlatform> streamingPlatforms,
             IAutomatedActionSystem automatedActionSystem,
-            ICommandHandler commandHandler,
-            CurrencyUpdate currencyUpdate)
+            ICommandHandler commandHandler)
         {
             _chatClients = chatClients;
             _repository = repository;
             _streamingPlatforms = streamingPlatforms;
             _automatedActionSystem = automatedActionSystem;
             _commandHandler = commandHandler;
-            _currencyUpdate = currencyUpdate;
         }
 
         public async Task Run()
         {
             ScheduleAutomatedMessages();
-
-            WireUpCurrencyUpdate();
 
             ConnectChatClients();
 
@@ -50,11 +45,6 @@ namespace DevChatter.Bot.Core
             await _automatedActionSystem.Start();
 
             await Task.CompletedTask;
-        }
-
-        private void WireUpCurrencyUpdate()
-        {
-            _automatedActionSystem.AddAction(_currencyUpdate);
         }
 
         public async Task Stop()

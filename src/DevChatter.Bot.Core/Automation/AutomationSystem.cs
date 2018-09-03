@@ -11,9 +11,11 @@ namespace DevChatter.Bot.Core.Automation
         private readonly ILoggerAdapter<AutomationSystem> _logger;
         private readonly List<IIntervalAction> _actions = new List<IIntervalAction>();
 
-        public AutomationSystem(ILoggerAdapter<AutomationSystem> logger)
+        public AutomationSystem(ILoggerAdapter<AutomationSystem> logger,
+            IList<IIntervalAction> registeredActions)
         {
             _logger = logger;
+            _actions.AddRange(registeredActions);
         }
 
         public async Task Start()
