@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -9,14 +8,14 @@ namespace DevChatter.Bot.Core.Systems.Streaming
     {
         private const int TOKENS_FOR_FOLLOWING = 100;
 
-        private readonly IList<IChatClient> _chatClients;
+        private readonly IChatClient _chatClient;
         private readonly IFollowerService _followerService;
         private readonly ICurrencyGenerator _currencyGenerator;
 
-        public FollowableSystem(IList<IChatClient> chatClients, IFollowerService followerService,
+        public FollowableSystem(IChatClient chatClient, IFollowerService followerService,
             ICurrencyGenerator currencyGenerator)
         {
-            _chatClients = chatClients;
+            _chatClient = chatClient;
             _followerService = followerService;
             _currencyGenerator = currencyGenerator;
         }
@@ -28,14 +27,11 @@ namespace DevChatter.Bot.Core.Systems.Streaming
 
         private void FollowerServiceOnOnNewFollower(object sender, NewFollowersEventArgs eventArgs)
         {
-            foreach (IChatClient chatClient in _chatClients)
+            foreach (string followerName in eventArgs.FollowerNames)
             {
-                foreach (string followerName in eventArgs.FollowerNames)
-                {
-                    _currencyGenerator.AddCurrencyTo(followerName, TOKENS_FOR_FOLLOWING);
-                    chatClient.SendMessage(
-                        $"Welcome, {followerName}! Thank you for following! {TOKENS_FOR_FOLLOWING} coins to have some fun. Everyone, say \"hello\"!");
-                }
+                _currencyGenerator.AddCurrencyTo(followerName, TOKENS_FOR_FOLLOWING);
+                _chatClient.SendMessage(
+                    $"Welcome, {followerName}! Thank you for following! {TOKENS_FOR_FOLLOWING} coins to have some fun. Everyone, say \"hello\"!");
             }
         }
 
