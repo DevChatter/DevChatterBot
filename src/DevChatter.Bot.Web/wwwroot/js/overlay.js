@@ -24,6 +24,9 @@ var overlay = (function () {
     var hangmanCanvas = document.getElementById('hangmanCanvas');
     var hangmanContext = hangmanCanvas.getContext('2d');
 
+    var votingCanvas = document.getElementById('votingCanvas');
+    var votingContext = votingCanvas.getContext('2d');
+
     var connection = new signalR.HubConnectionBuilder()
       .withUrl("/BotHub")
       .configureLogging(signalR.LogLevel.Information)
@@ -36,13 +39,13 @@ var overlay = (function () {
       window.requestAnimationFrame(render);
     });
     connection.on("VoteStart", (choices) => {
-      voting.voteStart(hangmanContext, choices);
+      voting.voteStart(votingContext, choices);
     });
     connection.on("VoteReceived", (voteInfo) => {
-      voting.voteReceived(hangmanContext, voteInfo);
+      voting.voteReceived(votingContext, voteInfo);
     });
     connection.on("VoteEnd", () => {
-      voting.voteEnd(hangmanContext);
+      voting.voteEnd(votingContext);
     });
     connection.on("HangmanStart", () => {
       hangman.startGame();
