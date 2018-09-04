@@ -18,8 +18,8 @@ var overlay = (function () {
   };
 
   window.onload = function() {
-    var mainCanvas = document.getElementById('mainCanvas');
-    var mainContext = mainCanvas.getContext('2d');
+    var animationCanvas = document.getElementById('animationCanvas');
+    var animationContext = animationCanvas.getContext('2d');
 
     var hangmanCanvas = document.getElementById('hangmanCanvas');
     var hangmanContext = hangmanCanvas.getContext('2d');
@@ -63,10 +63,10 @@ var overlay = (function () {
     });
 
     function render() {
-      mainContext.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+      animationContext.clearRect(0, 0, animationCanvas.width, animationCanvas.height);
       sprites.forEach(function (sprite, i) {
-        sprite.update(mainCanvas);
-        sprite.render(mainContext);
+        sprite.update(animationCanvas);
+        sprite.render(animationContext);
         if (sprite.timesRendered > 300) {
           sprites.splice(i, 1);
         }
@@ -74,7 +74,7 @@ var overlay = (function () {
       if (sprites.length > 0) {
         window.requestAnimationFrame(render);
       } else {
-        mainContext.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+        animationContext.clearRect(0, 0, animationCanvas.width, animationCanvas.height);
       }
     }
   }
