@@ -31,7 +31,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
             string voteText = isValidNumber ? _choices[chosenNumber] : "nothing";
 
-            _votes[chatUser.DisplayName] = chosenNumber;
+            _votes[chatUser.UserId] = chosenNumber;
 
             if (isValidNumber)
             {
