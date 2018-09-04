@@ -3,6 +3,7 @@ using DevChatter.Bot.Core.Util;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.Data;
 
 namespace DevChatter.Bot.Core.Automation
 {
@@ -11,9 +12,11 @@ namespace DevChatter.Bot.Core.Automation
         private readonly ILoggerAdapter<AutomationSystem> _logger;
         private readonly List<IIntervalAction> _actions = new List<IIntervalAction>();
 
-        public AutomationSystem(ILoggerAdapter<AutomationSystem> logger)
+        public AutomationSystem(ILoggerAdapter<AutomationSystem> logger,
+            IList<IIntervalAction> registeredActions)
         {
             _logger = logger;
+            _actions.AddRange(registeredActions);
         }
 
         public async Task Start()

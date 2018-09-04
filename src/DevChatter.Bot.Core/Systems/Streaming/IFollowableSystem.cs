@@ -1,8 +1,10 @@
-﻿namespace DevChatter.Bot.Core.Systems.Streaming
+using System.Threading.Tasks;
+
+namespace DevChatter.Bot.Core.Systems.Streaming
 {
     public interface IFollowableSystem
     {
-        void HandleFollowerNotifications();
-        void StopHandlingNotifications();
+        Task Connect();
+        Task Disconnect();
     }
 }

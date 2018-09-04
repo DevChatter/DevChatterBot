@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Infra.Twitch.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Models.v5.Users;
 using TwitchLib.Api.Services;

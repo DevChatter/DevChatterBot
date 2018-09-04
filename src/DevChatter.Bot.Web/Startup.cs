@@ -133,8 +133,7 @@ namespace DevChatter.Bot.Web
             builder.RegisterType<SystemClock>()
                 .As<IClock>();
 
-
-            builder.RegisterType<StreamingPlatform>()
+            builder.RegisterType<StreamingSystem>()
                 .AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<BotHubOverlayNotification>()
@@ -161,6 +160,7 @@ namespace DevChatter.Bot.Web
             builder.RegisterType<DevChatterBotBackgroundWorker>()
                 .As<IHostedService>();
 
+            builder.RegisterModule(new AutomatedMessageModule(repository));
             builder.RegisterModule<CurrencyModule>();
 
             ApplicationContainer = builder.Build();
