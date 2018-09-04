@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.Data.Model;
 
 namespace DevChatter.Bot.Core.Systems.Streaming
 {
@@ -12,5 +13,6 @@ namespace DevChatter.Bot.Core.Systems.Streaming
         Task HangmanLose();
         Task HangmanStart();
         Task HangmanWrongAnswer();
+        Task VoteReceived(ChatUser chatUser, int chosenNumber, int[] voteTotals);
     }
 }

@@ -38,6 +38,9 @@ var overlay = (function () {
     connection.on("VoteStart", (choices) => {
       voting.voteStart(hangmanContext, choices);
     });
+    connection.on("VoteReceived", (voteInfo) => {
+      voting.voteReceived(hangmanContext, voteInfo);
+    });
     connection.on("VoteEnd", () => {
       voting.voteEnd(hangmanContext);
     });

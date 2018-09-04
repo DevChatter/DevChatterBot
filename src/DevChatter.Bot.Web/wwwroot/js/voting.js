@@ -1,31 +1,47 @@
 var voting = (function () {
-  var isRunning = false;
+  var options = [];
+  var votes = [];
 
   var voteEnd = function (ctx) {
     ctx.clearRect(0, 0, 1920, 1080);
-    isRunning = false;
+    options = [];
+    votes = [];
+  };
+
+  var voteReceived = function (ctx, voteInfo) {
+    votes = voteInfo.voteTotals;
+    // TODO: Announce the vote.
+    displayVoteOverlay(ctx);
   };
 
   var voteStart = function (ctx, choices) {
-    isRunning = true;
-    ctx.fillStyle = "#cbcbcb";
-    var height = 20 + (40 * choices.length);
-    ctx.font = "30px Arial";
-    var textWidth = Math.max(...choices.map(x => ctx.measureText(x).width));
-    ctx.fillRect(0, 0, textWidth + 20, height);
-    displayChoices(ctx, choices);
+    options = choices;
+    votes = Array(choices.length).fill(0);
+    displayVoteOverlay(ctx);
   };
 
-  function displayChoices(ctx, choices) {
+  function displayVoteOverlay(ctx) {
+    var optionDisplays = options.map((x, i) => (i + 1) + " ) " + x + " - " + (votes[i] || '0'));
+    ctx.clearRect(0, 0, 1920, 1080);
+    ctx.fillStyle = "#cbcbcb";
+    var height = 20 + (40 * optionDisplays.length);
+    ctx.font = "30px Arial";
+    var textWidth = Math.max(...optionDisplays.map(x => ctx.measureText(x).width));
+    ctx.fillRect(0, 0, textWidth + 20, height);
+    displayChoices(ctx, optionDisplays);
+  }
+
+  function displayChoices(ctx, optionDisplays) {
     ctx.fillStyle = "#000000";
-    for (var i = 0; i < choices.length; i++) {
-      ctx.fillText(choices[i], 10, 40 + 40*i);
+    for (var i = 0; i < optionDisplays.length; i++) {
+      ctx.fillText(optionDisplays[i], 10, 40 + 40*i);
     }
   }
 
   return {
     voteStart: voteStart,
-    voteEnd: voteEnd
+    voteEnd: voteEnd,
+    voteReceived: voteReceived
   };
 
 }());

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.BotModules.VotingModule;
 
 namespace DevChatter.Bot.Core
 {
@@ -12,5 +13,6 @@ namespace DevChatter.Bot.Core
         Task HangmanWin();
         Task HangmanLose();
         Task HangmanWrongAnswer();
+        Task VoteReceived(VoteInfoDto voteInfo);
     }
 }
