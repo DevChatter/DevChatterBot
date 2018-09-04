@@ -17,6 +17,7 @@ namespace DevChatter.Bot.Web.Modules
 
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<BufferedMessageSender>().AsSelf();
             var messages = _repository.List<IntervalMessage>();
             foreach (IntervalMessage intervalMessage in messages)
             {
