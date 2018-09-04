@@ -12,6 +12,7 @@ namespace DevChatter.Bot.Web.Modules
             builder.RegisterType<CurrencyGenerator>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CurrencyUpdate>()
+                .As<IIntervalAction>()
                 .SingleInstance();
             builder.RegisterType<TaxCommand>()
                 .AsImplementedInterfaces().SingleInstance();

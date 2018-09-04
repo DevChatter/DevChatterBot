@@ -13,12 +13,10 @@ namespace DevChatter.Bot.Core.Systems.Chat
         Task Disconnect();
 
         void Timeout(string username, TimeSpan duration, string reason);
-        void Ban(string username, string reason);
 
         IList<ChatUser> GetAllChatters();
 
         event EventHandler<CommandReceivedEventArgs> OnCommandReceived;
-        event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
         event EventHandler<UserStatusEventArgs> OnUserNoticed;
         event EventHandler<UserStatusEventArgs> OnUserLeft;
     }

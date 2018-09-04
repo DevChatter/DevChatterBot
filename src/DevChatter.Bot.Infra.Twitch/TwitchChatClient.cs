@@ -80,7 +80,6 @@ namespace DevChatter.Bot.Infra.Twitch
             _isReady = true;
             _connectionCompletionTask.SetResult(true);
             _disconnectionCompletionTask = new TaskCompletionSource<bool>();
-            SendMessage("Hello World! The bot has arrived!");
         }
 
         public async Task Disconnect()
@@ -112,11 +111,6 @@ namespace DevChatter.Bot.Infra.Twitch
         public void Timeout(string username, TimeSpan duration, string reason)
         {
             _twitchClient.TimeoutUser(username, duration, reason);
-        }
-
-        public void Ban(string username, string reason)
-        {
-            _twitchClient.BanUser(username, reason, false);
         }
 
         public IList<ChatUser> GetAllChatters()

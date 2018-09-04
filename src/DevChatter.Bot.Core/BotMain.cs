@@ -5,103 +5,48 @@ using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevChatter.Bot.Core
 {
     public class BotMain
     {
-        private readonly IList<IChatClient> _chatClients;
         private readonly IRepository _repository;
         private readonly ICommandHandler _commandHandler;
-        private readonly SubscriberHandler _subscriberHandler;
-        private readonly IFollowableSystem _followableSystem; // This will eventually be a list of these
+        private readonly IList<IStreamingPlatform> _streamingPlatforms;
         private readonly IAutomatedActionSystem _automatedActionSystem;
-        private readonly CurrencyUpdate _currencyUpdate;
 
-        public BotMain(IList<IChatClient> chatClients,
-            IRepository repository,
-            IFollowableSystem followableSystem,
+        public BotMain(IRepository repository,
+            IList<IStreamingPlatform> streamingPlatforms,
             IAutomatedActionSystem automatedActionSystem,
-            ICommandHandler commandHandler,
-            SubscriberHandler subscriberHandler,
-            CurrencyUpdate currencyUpdate)
+            ICommandHandler commandHandler)
         {
-            _chatClients = chatClients;
             _repository = repository;
-            _followableSystem = followableSystem;
+            _streamingPlatforms = streamingPlatforms;
             _automatedActionSystem = automatedActionSystem;
             _commandHandler = commandHandler;
-            _subscriberHandler = subscriberHandler;
-            _currencyUpdate = currencyUpdate;
         }
 
         public async Task Run()
         {
-            ScheduleAutomatedMessages();
-
-            WireUpCurrencyUpdate();
-
-            ConnectChatClients();
-
-            _followableSystem.HandleFollowerNotifications();
+            var connectTasks = new List<Task>();
+            foreach (IStreamingPlatform streamingPlatform in _streamingPlatforms)
+            {
+                connectTasks.Add(streamingPlatform.Connect());
+            }
+            await Task.WhenAll(connectTasks);
 
             await _automatedActionSystem.Start();
-
-            await Task.CompletedTask;
-        }
-
-        private void WireUpCurrencyUpdate()
-        {
-            _automatedActionSystem.AddAction(_currencyUpdate);
         }
 
         public async Task Stop()
         {
-            _followableSystem.StopHandlingNotifications();
-
-            await DisconnectChatClients();
-        }
-
-        private void ScheduleAutomatedMessages()
-        {
-            var messages = _repository.List<IntervalMessage>();
-            // HACK: These need to get wrapped elsewhere...
-            var bufferedSenders = _chatClients.Select(c => new BufferedMessageSender(c))
-                .ToList();
-            foreach (IntervalMessage message in messages)
+            var disconnectTasks = new List<Task>();
+            foreach (IStreamingPlatform streamingPlatform in _streamingPlatforms)
             {
-                var action = new AutomatedMessage(message, bufferedSenders, _repository);
-                _automatedActionSystem.AddAction(action);
+                disconnectTasks.Add(streamingPlatform.Disconnect());
             }
-        }
-
-        private async Task DisconnectChatClients()
-        {
-            foreach (var chatClient in _chatClients)
-            {
-                chatClient.SendMessage("Goodbye for now! The bot has left the building...");
-            }
-
-            var disconnectedTasks = new List<Task>();
-            foreach (var chatClient in _chatClients)
-            {
-                disconnectedTasks.Add(chatClient.Disconnect());
-            }
-            await Task.WhenAll(disconnectedTasks);
-        }
-
-        private async void ConnectChatClients()
-        {
-            var getUserTasks = new List<Task>();
-
-            foreach (var chatClient in _chatClients)
-            {
-                getUserTasks.Add(chatClient.Connect());
-            }
-
-            await Task.WhenAll(getUserTasks);
+            await Task.WhenAll(disconnectTasks);
         }
     }
 }

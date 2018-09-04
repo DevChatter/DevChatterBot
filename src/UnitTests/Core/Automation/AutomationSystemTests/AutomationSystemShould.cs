@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Util;
 using FluentAssertions;
@@ -29,7 +30,7 @@ namespace UnitTests.Core.Automation.AutomationSystemTests
         private static AutomationSystem GetTestAutomationSystem()
         {
             var loggerAdapter = new Mock<ILoggerAdapter<AutomationSystem>>().Object;
-            return new AutomationSystem(loggerAdapter);
+            return new AutomationSystem(loggerAdapter, new List<IIntervalAction>());
         }
     }
 }

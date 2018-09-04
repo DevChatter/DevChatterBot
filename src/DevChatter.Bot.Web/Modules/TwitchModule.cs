@@ -20,11 +20,8 @@ namespace DevChatter.Bot.Web.Modules
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<SubscriberHandler>()
-                .AsSelf().SingleInstance();
-
-            builder.RegisterType<FollowableSystem>()
-                .As<IFollowableSystem>().SingleInstance();
+            builder.RegisterType<TwitchSubscriberHandler>()
+                .AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<TwitchFollowerService>()
                 .WithParameter("settings", _twitchClientSettings)
@@ -38,7 +35,7 @@ namespace DevChatter.Bot.Web.Modules
 
             builder.RegisterType<TwitchChatClient>()
                 .WithParameter("settings", _twitchClientSettings)
-                .As<IChatClient>().SingleInstance();
+                .As<IChatClient>().AsSelf().SingleInstance();
 
             builder.RegisterType<TwitchStreamingInfoService>()
                 .As<IStreamingInfoService>().SingleInstance();
