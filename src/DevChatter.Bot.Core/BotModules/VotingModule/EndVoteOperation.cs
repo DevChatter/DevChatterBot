@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
+using System.Collections.Generic;
 
 namespace DevChatter.Bot.Core.BotModules.VotingModule
 {

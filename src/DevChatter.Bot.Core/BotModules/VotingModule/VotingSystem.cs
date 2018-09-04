@@ -1,19 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Systems.Streaming;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevChatter.Bot.Core.BotModules.VotingModule
 {
     public class VotingSystem
     {
+        private readonly IOverlayNotification _overlayNotification;
+
         private readonly Dictionary<string, int> _votes
             = new Dictionary<string, int>();
         private Dictionary<int, string> _choices
             = new Dictionary<int, string>();
 
         public bool IsVoteActive { get; set; }
+
+        public VotingSystem(IOverlayNotification overlayNotification)
+        {
+            _overlayNotification = overlayNotification;
+        }
 
         public void ApplyVote(ChatUser chatUser, string choice, IChatClient chatClient)
         {
@@ -24,7 +31,13 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
             string voteText = isValidNumber ? _choices[chosenNumber] : "nothing";
 
-            _votes[chatUser.DisplayName] = chosenNumber;
+            _votes[chatUser.UserId] = chosenNumber;
+
+            if (isValidNumber)
+            {
+                int[] voteTotals = _choices.Select(c => _votes.Count(x => x.Value == c.Key)).ToArray();
+                _overlayNotification.VoteReceived(chatUser, chosenNumber, voteTotals);
+            }
 
             string message = $"{chatUser.DisplayName} voted for {voteText}.";
             chatClient.SendMessage(message);
@@ -40,6 +53,8 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
             string optionsString = string.Join(", ", _choices.OrderBy(x => x.Key).Select(x => $"({x.Key}) {x.Value}"));
 
+            _overlayNotification.VoteStart(_choices.Select(x => x.Value));
+
             return $"Voting has started. To vote type \"!vote [number]\" (ex: !vote 2). Options: {optionsString}";
         }
 
@@ -47,16 +62,13 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
         {
             string resultMessage = GetResultsOfVote();
             ResetVote();
+            _overlayNotification.VoteEnd();
             return resultMessage;
         }
 
         private string GetResultsOfVote()
         {
-            var choiceVotes = _votes
-                .Where(x => x.Value > 0)
-                .GroupBy(x => x.Value)
-                .Select(grp => new { ChoiceKey = grp.Key, Votes = grp.Count() })
-                .ToList();
+            List<VoteCount> choiceVotes = GetVoteCounts();
             int topVoteCount = choiceVotes.Max(ch => ch.Votes);
             var topChoices = choiceVotes.Where(ch => ch.Votes == topVoteCount).ToList();
             if (topChoices.Count > 1)
@@ -73,11 +85,27 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
             return "Everyone wins, because you're all awesome!";
         }
 
+        private List<VoteCount> GetVoteCounts()
+        {
+            List<VoteCount> choiceVotes = _votes
+                .Where(x => x.Value > 0)
+                .GroupBy(x => x.Value)
+                .Select(grp => new VoteCount {ChoiceKey = grp.Key, Votes = grp.Count()})
+                .ToList();
+            return choiceVotes;
+        }
+
         private void ResetVote()
         {
             _votes.Clear();
             _choices.Clear();
             IsVoteActive = false;
         }
+    }
+
+    internal class VoteCount
+    {
+        public int ChoiceKey { get; set; }
+        public int Votes { get; set; }
     }
 }

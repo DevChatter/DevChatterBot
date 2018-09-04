@@ -22,14 +22,13 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
         {
             if (_votingSystem.IsVoteActive)
             {
-                return "There is aready an active vote.";
+                return "There is already an active vote.";
             }
             ChatUser chatUser = eventArgs.ChatUser;
 
             if (chatUser.IsInThisRoleOrHigher(UserRole.Mod))
             {
                 List<string> newVoteArguments = eventArgs.Arguments.Skip(1).ToList();
-
                 return _votingSystem.StartVote(newVoteArguments);
             }
             else
