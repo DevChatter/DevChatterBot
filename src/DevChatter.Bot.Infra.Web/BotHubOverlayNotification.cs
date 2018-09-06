@@ -13,12 +13,15 @@ namespace DevChatter.Bot.Infra.Web
     {
         private readonly IHubContext<BotHub, IOverlayDisplay> _botHubContext;
         private readonly IHubContext<VotingHub, IOverlayDisplay> _votingHubContext;
+        private readonly IHubContext<HangmanHub, IOverlayDisplay> _hangmanHubContext;
 
         public BotHubOverlayNotification(IHubContext<BotHub, IOverlayDisplay> botHubContext,
-            IHubContext<VotingHub, IOverlayDisplay> votingHubContext)
+            IHubContext<VotingHub, IOverlayDisplay> votingHubContext,
+            IHubContext<HangmanHub, IOverlayDisplay> hangmanHubContext)
         {
             _botHubContext = botHubContext;
             _votingHubContext = votingHubContext;
+            _hangmanHubContext = hangmanHubContext;
         }
 
         public async Task Hype()
@@ -49,22 +52,22 @@ namespace DevChatter.Bot.Infra.Web
 
         public async Task HangmanWin()
         {
-            await _botHubContext.Clients.All.HangmanWin();
+            await _hangmanHubContext.Clients.All.HangmanWin();
         }
 
         public async Task HangmanLose()
         {
-            await _botHubContext.Clients.All.HangmanLose();
+            await _hangmanHubContext.Clients.All.HangmanLose();
         }
 
         public async Task HangmanStart()
         {
-            await _botHubContext.Clients.All.HangmanStart();
+            await _hangmanHubContext.Clients.All.HangmanStart();
         }
 
         public async Task HangmanWrongAnswer()
         {
-            await _botHubContext.Clients.All.HangmanWrongAnswer();
+            await _hangmanHubContext.Clients.All.HangmanWrongAnswer();
         }
     }
 }

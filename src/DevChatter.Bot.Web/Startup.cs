@@ -197,6 +197,7 @@ namespace DevChatter.Bot.Web
             {
                 routes.MapHub<BotHub>("/BotHub");
                 routes.MapHub<VotingHub>("/VotingHub");
+                routes.MapHub<HangmanHub>("/HangmanHub");
             });
 
             app.UseMvc();

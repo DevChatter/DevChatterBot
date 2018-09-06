@@ -39,10 +39,17 @@ var overlay = (function () {
     .build();
     votingHubConn.hubName = "VotingHub";
 
+    var hangmanHubConn = new signalR.HubConnectionBuilder()
+    .withUrl("/HangmanHub") 
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+    hangmanHubConn.hubName = "HangmanHub";
+
     const maxRetryInterval = 30000;
 
     startHubConn(botHubConn);
     startHubConn(votingHubConn);
+    startHubConn(hangmanHubConn);
 
     function startHubConn(hubToConnect, retryInterval = 2000){
       console.log(`[${new Date()}] Connecting to ${hubToConnect.hubName}`);
@@ -76,19 +83,19 @@ var overlay = (function () {
     votingHubConn.on("VoteEnd", () => {
       voting.voteEnd(votingContext);
     });
-    botHubConn.on("HangmanStart", () => {
+    hangmanHubConn.on("HangmanStart", () => {
       hangman.startGame();
       hangman.drawGallows(hangmanContext);
     });
-    botHubConn.on("HangmanWrongAnswer", () => {
+    hangmanHubConn.on("HangmanWrongAnswer", () => {
       hangman.wrongAnswer(hangmanContext);
     });
-    botHubConn.on("HangmanLose", async function () {
+    hangmanHubConn.on("HangmanLose", async function () {
       hangman.displayGameOver(hangmanContext);
       await sleep(4000);
       hangman.endGame(hangmanContext);
     });
-    botHubConn.on("HangmanWin", async function () {
+    hangmanHubConn.on("HangmanWin", async function () {
       hangman.displayVictory(hangmanContext);
       await sleep(4000);
       hangman.endGame(hangmanContext);
