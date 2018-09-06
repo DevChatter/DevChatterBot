@@ -37,8 +37,38 @@ var overlay = (function () {
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
-    botHubConn.start().catch(err => console.error(err.toString()));
-    votingHubConn.start().catch(err => console.error(err.toString()));
+    const maxRetryInterval = 30000;
+
+    startBotHubConn();
+    startVotingHubConn();
+
+    function startBotHubConn(retryInterval = 2000){
+      botHubConn.start().then(()=> {
+      }, err => {
+        console.error(err.toString());
+        var i = Math.min(retryInterval * 1.5, maxRetryInterval);
+        console.log(`[BotHub ${new Date()}] Retry in ${i}`);
+        setTimeout(() => startBotHubConn(i), i);
+      });
+    }
+
+    function startVotingHubConn(retryInterval = 2000){
+      votingHubConn.start().then(()=> {
+      }, err => {
+        console.error(err.toString());
+        var i = Math.min(retryInterval * 1.5, maxRetryInterval);
+        console.log(`[VotingHub ${new Date()}] Retry in ${i}`);
+        setTimeout(() => startVotingHubConn(i), i);
+      });
+    }
+
+    botHubConn.onclose(() => {
+      setTimeout(() => startBotHubConn(), 2000);
+    });
+
+    votingHubConn.onclose(() => {
+      setTimeout(() => startVotingHubConn(), 2000);
+    });
 
     botHubConn.on("Hype", () => {
       doHype();
