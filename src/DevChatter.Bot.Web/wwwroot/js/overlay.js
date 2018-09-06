@@ -31,43 +31,36 @@ var overlay = (function () {
       .withUrl("/BotHub")
       .configureLogging(signalR.LogLevel.Information)
       .build();
+    botHubConn.hubName = "BotHub";
 
     var votingHubConn = new signalR.HubConnectionBuilder()
     .withUrl("/VotingHub") 
     .configureLogging(signalR.LogLevel.Information)
     .build();
+    votingHubConn.hubName = "VotingHub";
 
     const maxRetryInterval = 30000;
 
-    startBotHubConn();
-    startVotingHubConn();
+    startHubConn(botHubConn);
+    startHubConn(votingHubConn);
 
-    function startBotHubConn(retryInterval = 2000){
-      botHubConn.start().then(()=> {
+    function startHubConn(hubToConnect, retryInterval = 2000){
+      console.log(`[${new Date()}] Connecting to ${hubToConnect.hubName}`);
+      hubToConnect.start().then(()=> {
       }, err => {
         console.error(err.toString());
         var i = Math.min(retryInterval * 1.5, maxRetryInterval);
-        console.log(`[BotHub ${new Date()}] Retry in ${i}`);
-        setTimeout(() => startBotHubConn(i), i);
-      });
-    }
-
-    function startVotingHubConn(retryInterval = 2000){
-      votingHubConn.start().then(()=> {
-      }, err => {
-        console.error(err.toString());
-        var i = Math.min(retryInterval * 1.5, maxRetryInterval);
-        console.log(`[VotingHub ${new Date()}] Retry in ${i}`);
-        setTimeout(() => startVotingHubConn(i), i);
+        console.log(`[${new Date()}] Retry connection to ${hubToConnect.hubName} in ${i} ms.`);
+        setTimeout(() => startHubConn(hubToConnect, i), i);
       });
     }
 
     botHubConn.onclose(() => {
-      setTimeout(() => startBotHubConn(), 2000);
+      setTimeout(() => startHubConn(botHubConn), 2000);
     });
 
     votingHubConn.onclose(() => {
-      setTimeout(() => startVotingHubConn(), 2000);
+      setTimeout(() => startHubConn(votingHubConn), 2000);
     });
 
     botHubConn.on("Hype", () => {
