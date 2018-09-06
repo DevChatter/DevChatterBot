@@ -27,23 +27,20 @@ var overlay = (function () {
     var votingCanvas = document.getElementById('votingCanvas');
     var votingContext = votingCanvas.getContext('2d');
 
-    var botHubConn = new signalR.HubConnectionBuilder()
-      .withUrl("/BotHub")
-      .configureLogging(signalR.LogLevel.Information)
-      .build();
-    botHubConn.hubName = "BotHub";
+    var botHubConn = createHubConnection("BotHub");
 
-    var votingHubConn = new signalR.HubConnectionBuilder()
-    .withUrl("/VotingHub") 
-    .configureLogging(signalR.LogLevel.Information)
-    .build();
-    votingHubConn.hubName = "VotingHub";
+    var votingHubConn = createHubConnection("VotingHub");
 
-    var hangmanHubConn = new signalR.HubConnectionBuilder()
-    .withUrl("/HangmanHub") 
-    .configureLogging(signalR.LogLevel.Information)
-    .build();
-    hangmanHubConn.hubName = "HangmanHub";
+    var hangmanHubConn = createHubConnection("HangmanHub");
+
+    function createHubConnection(hubName) {
+      var hubConn = new signalR.HubConnectionBuilder()
+        .withUrl(`/${hubName}`)
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+      hubConn.hubName = hubName;
+      return hubConn;
+    }
 
     const maxRetryInterval = 30000;
 
