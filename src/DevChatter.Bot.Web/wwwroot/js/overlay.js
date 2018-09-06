@@ -27,39 +27,45 @@ var overlay = (function () {
     var votingCanvas = document.getElementById('votingCanvas');
     var votingContext = votingCanvas.getContext('2d');
 
-    var connection = new signalR.HubConnectionBuilder()
+    var botHubConn = new signalR.HubConnectionBuilder()
       .withUrl("/BotHub")
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
-    connection.start().catch(err => console.error(err.toString()));
+    var votingHubConn = new signalR.HubConnectionBuilder()
+    .withUrl("/VotingHub") 
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
 
-    connection.on("Hype", () => {
+    botHubConn.start().catch(err => console.error(err.toString()));
+    votingHubConn.start().catch(err => console.error(err.toString()));
+
+    botHubConn.on("Hype", () => {
       doHype();
       window.requestAnimationFrame(render);
     });
-    connection.on("VoteStart", (choices) => {
+    votingHubConn.on("VoteStart", (choices) => {
       voting.voteStart(votingContext, choices);
     });
-    connection.on("VoteReceived", (voteInfo) => {
+    votingHubConn.on("VoteReceived", (voteInfo) => {
       voting.voteReceived(votingContext, voteInfo);
     });
-    connection.on("VoteEnd", () => {
+    votingHubConn.on("VoteEnd", () => {
       voting.voteEnd(votingContext);
     });
-    connection.on("HangmanStart", () => {
+    botHubConn.on("HangmanStart", () => {
       hangman.startGame();
       hangman.drawGallows(hangmanContext);
     });
-    connection.on("HangmanWrongAnswer", () => {
+    botHubConn.on("HangmanWrongAnswer", () => {
       hangman.wrongAnswer(hangmanContext);
     });
-    connection.on("HangmanLose", async function () {
+    botHubConn.on("HangmanLose", async function () {
       hangman.displayGameOver(hangmanContext);
       await sleep(4000);
       hangman.endGame(hangmanContext);
     });
-    connection.on("HangmanWin", async function () {
+    botHubConn.on("HangmanWin", async function () {
       hangman.displayVictory(hangmanContext);
       await sleep(4000);
       hangman.endGame(hangmanContext);

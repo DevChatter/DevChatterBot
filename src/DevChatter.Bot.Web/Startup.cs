@@ -196,6 +196,7 @@ namespace DevChatter.Bot.Web
             app.UseSignalR(routes =>
             {
                 routes.MapHub<BotHub>("/BotHub");
+                routes.MapHub<VotingHub>("/VotingHub");
             });
 
             app.UseMvc();

@@ -11,21 +11,24 @@ namespace DevChatter.Bot.Infra.Web
 {
     public class BotHubOverlayNotification : IOverlayNotification
     {
-        private readonly IHubContext<BotHub, IOverlayDisplay> _internalContext;
+        private readonly IHubContext<BotHub, IOverlayDisplay> _botHubContext;
+        private readonly IHubContext<VotingHub, IOverlayDisplay> _votingHubContext;
 
-        public BotHubOverlayNotification(IHubContext<BotHub, IOverlayDisplay> internalContext)
+        public BotHubOverlayNotification(IHubContext<BotHub, IOverlayDisplay> botHubContext,
+            IHubContext<VotingHub, IOverlayDisplay> votingHubContext)
         {
-            _internalContext = internalContext;
+            _botHubContext = botHubContext;
+            _votingHubContext = votingHubContext;
         }
 
         public async Task Hype()
         {
-            await _internalContext.Clients.All.Hype();
+            await _botHubContext.Clients.All.Hype();
         }
 
         public async Task VoteStart(IEnumerable<string> choices)
         {
-            await _internalContext.Clients.All.VoteStart(choices);
+            await _votingHubContext.Clients.All.VoteStart(choices);
         }
 
         public async Task VoteReceived(ChatUser chatUser, int chosenNumber, int[] voteTotals)
@@ -36,32 +39,32 @@ namespace DevChatter.Bot.Infra.Web
                 VoterName = chatUser.DisplayName,
                 VoteTotals = voteTotals,
             };
-            await _internalContext.Clients.All.VoteReceived(voteInfo);
+            await _votingHubContext.Clients.All.VoteReceived(voteInfo);
         }
 
         public async Task VoteEnd()
         {
-            await _internalContext.Clients.All.VoteEnd();
+            await _votingHubContext.Clients.All.VoteEnd();
         }
 
         public async Task HangmanWin()
         {
-            await _internalContext.Clients.All.HangmanWin();
+            await _botHubContext.Clients.All.HangmanWin();
         }
 
         public async Task HangmanLose()
         {
-            await _internalContext.Clients.All.HangmanLose();
+            await _botHubContext.Clients.All.HangmanLose();
         }
 
         public async Task HangmanStart()
         {
-            await _internalContext.Clients.All.HangmanStart();
+            await _botHubContext.Clients.All.HangmanStart();
         }
 
         public async Task HangmanWrongAnswer()
         {
-            await _internalContext.Clients.All.HangmanWrongAnswer();
+            await _botHubContext.Clients.All.HangmanWrongAnswer();
         }
     }
 }
