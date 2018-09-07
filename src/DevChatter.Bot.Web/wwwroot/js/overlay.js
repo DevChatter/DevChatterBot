@@ -27,39 +27,72 @@ var overlay = (function () {
     var votingCanvas = document.getElementById('votingCanvas');
     var votingContext = votingCanvas.getContext('2d');
 
-    var connection = new signalR.HubConnectionBuilder()
-      .withUrl("/BotHub")
-      .configureLogging(signalR.LogLevel.Information)
-      .build();
+    var botHubConn = createHubConnection("BotHub");
 
-    connection.start().catch(err => console.error(err.toString()));
+    var votingHubConn = createHubConnection("VotingHub");
 
-    connection.on("Hype", () => {
+    var hangmanHubConn = createHubConnection("HangmanHub");
+
+    function createHubConnection(hubName) {
+      var hubConn = new signalR.HubConnectionBuilder()
+        .withUrl(`/${hubName}`)
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+      hubConn.hubName = hubName;
+      return hubConn;
+    }
+
+    const maxRetryInterval = 30000;
+
+    startHubConn(botHubConn);
+    startHubConn(votingHubConn);
+    startHubConn(hangmanHubConn);
+
+    function startHubConn(hubToConnect, retryInterval = 2000){
+      console.log(`[${new Date()}] Connecting to ${hubToConnect.hubName}`);
+      hubToConnect.start().then(()=> {
+      }, err => {
+        console.error(err.toString());
+        var i = Math.min(retryInterval * 1.5, maxRetryInterval);
+        console.log(`[${new Date()}] Retry connection to ${hubToConnect.hubName} in ${i} ms.`);
+        setTimeout(() => startHubConn(hubToConnect, i), i);
+      });
+    }
+
+    botHubConn.onclose(() => {
+      setTimeout(() => startHubConn(botHubConn), 2000);
+    });
+
+    votingHubConn.onclose(() => {
+      setTimeout(() => startHubConn(votingHubConn), 2000);
+    });
+
+    botHubConn.on("Hype", () => {
       doHype();
       window.requestAnimationFrame(render);
     });
-    connection.on("VoteStart", (choices) => {
+    votingHubConn.on("VoteStart", (choices) => {
       voting.voteStart(votingContext, choices);
     });
-    connection.on("VoteReceived", (voteInfo) => {
+    votingHubConn.on("VoteReceived", (voteInfo) => {
       voting.voteReceived(votingContext, voteInfo);
     });
-    connection.on("VoteEnd", () => {
+    votingHubConn.on("VoteEnd", () => {
       voting.voteEnd(votingContext);
     });
-    connection.on("HangmanStart", () => {
+    hangmanHubConn.on("HangmanStart", () => {
       hangman.startGame();
       hangman.drawGallows(hangmanContext);
     });
-    connection.on("HangmanWrongAnswer", () => {
+    hangmanHubConn.on("HangmanWrongAnswer", () => {
       hangman.wrongAnswer(hangmanContext);
     });
-    connection.on("HangmanLose", async function () {
+    hangmanHubConn.on("HangmanLose", async function () {
       hangman.displayGameOver(hangmanContext);
       await sleep(4000);
       hangman.endGame(hangmanContext);
     });
-    connection.on("HangmanWin", async function () {
+    hangmanHubConn.on("HangmanWin", async function () {
       hangman.displayVictory(hangmanContext);
       await sleep(4000);
       hangman.endGame(hangmanContext);
