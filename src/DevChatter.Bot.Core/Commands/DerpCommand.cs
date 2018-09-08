@@ -7,22 +7,22 @@ using System;
 
 namespace DevChatter.Bot.Core.Commands
 {
-    public class HypeCommand : BaseCommand
+    public class DerpCommand : BaseCommand
     {
         private readonly IOverlayNotification _overlayNotification;
 
-        public HypeCommand(IRepository repository,
+        public DerpCommand(IRepository repository,
             IOverlayNotification overlayNotification)
             : base(repository, UserRole.Everyone)
         {
             _overlayNotification = overlayNotification;
-            Cooldown = TimeSpan.FromMinutes(2);
+            Cooldown = TimeSpan.FromMinutes(5);
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            chatClient.SendMessage("Hype hype devchaHype !");
-            _overlayNotification.Hype();
+            chatClient.SendMessage("Derp derp devchaDerp !");
+            _overlayNotification.Derp();
         }
     }
 }

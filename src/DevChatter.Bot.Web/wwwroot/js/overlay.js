@@ -61,6 +61,11 @@ var overlay = (function () {
         animations.blastImages('/images/DevchaHypeEmote.png');
         window.requestAnimationFrame(animations.render);
       });
+    botHubConn.on("Derp",
+      () => {
+        animations.blastImages('/images/DevchaDerpEmote.png');
+        window.requestAnimationFrame(animations.render);
+      });
     votingHubConn.on("VoteStart",
       (choices) => {
         voting.voteStart(votingContext, choices);

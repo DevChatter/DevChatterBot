@@ -14,5 +14,6 @@ namespace DevChatter.Bot.Core
         Task HangmanLose();
         Task HangmanWrongAnswer();
         Task VoteReceived(VoteInfoDto voteInfo);
+        Task Derp();
     }
 }

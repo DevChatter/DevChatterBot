@@ -14,5 +14,6 @@ namespace DevChatter.Bot.Core.Systems.Streaming
         Task HangmanStart();
         Task HangmanWrongAnswer();
         Task VoteReceived(ChatUser chatUser, int chosenNumber, int[] voteTotals);
+        Task Derp();
     }
 }

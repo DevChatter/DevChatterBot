@@ -29,6 +29,11 @@ namespace DevChatter.Bot.Infra.Web
             await _botHubContext.Clients.All.Hype();
         }
 
+        public async Task Derp()
+        {
+            await _botHubContext.Clients.All.Derp();
+        }
+
         public async Task VoteStart(IEnumerable<string> choices)
         {
             await _votingHubContext.Clients.All.VoteStart(choices);
