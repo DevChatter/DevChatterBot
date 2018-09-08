@@ -1,25 +1,13 @@
 var overlay = (function () {
-  let sprites = [];
 
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  let doHype = async function() {
-    let image = new Image();
-    image.src = '/images/DevchaHypeEmote.png';
-    for (let blastIndex = 0; blastIndex < 20; blastIndex++) {
-      for (let i = 0; i < 10; i++) {
-        var hypeSprite = new Sprite(image);
-        sprites.push(hypeSprite);
-      }
-      await sleep(250);
-    }
-  };
-
   window.onload = function() {
     let animationCanvas = document.getElementById('animationCanvas');
     let animationContext = animationCanvas.getContext('2d');
+    animations.init(animationCanvas, animationContext);
 
     let hangmanCanvas = document.getElementById('hangmanCanvas');
     let hangmanContext = hangmanCanvas.getContext('2d');
@@ -70,8 +58,8 @@ var overlay = (function () {
 
     botHubConn.on("Hype",
       () => {
-        doHype();
-        window.requestAnimationFrame(render);
+        animations.doHype(animationContext);
+        window.requestAnimationFrame(animations.render);
       });
     votingHubConn.on("VoteStart",
       (choices) => {
@@ -107,24 +95,6 @@ var overlay = (function () {
         hangman.endGame(hangmanContext);
       });
 
-    function render() {
-      animationContext.clearRect(0, 0, animationCanvas.width, animationCanvas.height);
-      sprites.forEach(function(sprite, i) {
-        sprite.update(animationCanvas);
-        sprite.render(animationContext);
-        if (sprite.timesRendered > 300) {
-          sprites.splice(i, 1);
-        }
-      });
-      if (sprites.length > 0) {
-        window.requestAnimationFrame(render);
-      } else {
-        animationContext.clearRect(0, 0, animationCanvas.width, animationCanvas.height);
-      }
-    }
-  };
-  return {
-    doHype: doHype
   };
 }());
 
