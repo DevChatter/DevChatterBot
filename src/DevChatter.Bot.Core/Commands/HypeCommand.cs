@@ -9,20 +9,20 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class HypeCommand : BaseCommand
     {
-        private readonly IOverlayNotification _overlayNotification;
+        private readonly IAnimationDisplayNotification _animationDisplayNotification;
 
         public HypeCommand(IRepository repository,
-            IOverlayNotification overlayNotification)
+            IAnimationDisplayNotification animationDisplayNotification)
             : base(repository, UserRole.Everyone)
         {
-            _overlayNotification = overlayNotification;
+            _animationDisplayNotification = animationDisplayNotification;
             Cooldown = TimeSpan.FromMinutes(2);
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             chatClient.SendMessage("Hype hype devchaHype !");
-            _overlayNotification.Hype();
+            _animationDisplayNotification.Hype();
         }
     }
 }

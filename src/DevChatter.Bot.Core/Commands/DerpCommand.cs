@@ -9,20 +9,20 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class DerpCommand : BaseCommand
     {
-        private readonly IOverlayNotification _overlayNotification;
+        private readonly IAnimationDisplayNotification _animationDisplayNotification;
 
         public DerpCommand(IRepository repository,
-            IOverlayNotification overlayNotification)
+            IAnimationDisplayNotification animationDisplayNotification)
             : base(repository, UserRole.Everyone)
         {
-            _overlayNotification = overlayNotification;
+            _animationDisplayNotification = animationDisplayNotification;
             Cooldown = TimeSpan.FromMinutes(5);
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             chatClient.SendMessage("Derp derp devchaDerp !");
-            _overlayNotification.Derp();
+            _animationDisplayNotification.Derp();
         }
     }
 }
