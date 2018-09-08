@@ -1,8 +1,8 @@
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Infra.Web.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
-using DevChatter.Bot.Core.Systems.Streaming;
 
 namespace DevChatter.Bot.Infra.Web
 {
