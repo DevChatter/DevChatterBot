@@ -12,13 +12,13 @@ namespace DevChatter.Bot.Infra.Web
     public class BotHubOverlayNotification : IOverlayNotification
     {
         private readonly IHubContext<BotHub, IAnimationDisplay> _botHubContext;
-        private readonly IHubContext<VotingHub, IOverlayDisplay> _votingHubContext;
-        private readonly IHubContext<HangmanHub, IOverlayDisplay> _hangmanHubContext;
+        private readonly IHubContext<VotingHub, IVotingDisplay> _votingHubContext;
+        private readonly IHubContext<HangmanHub, IHangmanDisplay> _hangmanHubContext;
 
         public BotHubOverlayNotification(
             IHubContext<BotHub, IAnimationDisplay> botHubContext,
-            IHubContext<VotingHub, IOverlayDisplay> votingHubContext,
-            IHubContext<HangmanHub, IOverlayDisplay> hangmanHubContext)
+            IHubContext<VotingHub, IVotingDisplay> votingHubContext,
+            IHubContext<HangmanHub, IHangmanDisplay> hangmanHubContext)
         {
             _botHubContext = botHubContext;
             _votingHubContext = votingHubContext;

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace DevChatter.Bot.Infra.Web.Hubs
 {
-    public class VotingHub : Hub<IOverlayDisplay>
+    public class VotingHub : Hub<IVotingDisplay>
     {
         public void VoteStart(IEnumerable<string> choices)
         {

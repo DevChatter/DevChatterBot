@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace DevChatter.Bot.Infra.Web.Hubs
 {
-    public class HangmanHub : Hub<IOverlayDisplay>
+    public class HangmanHub : Hub<IHangmanDisplay>
     {
         public void HangmanStart()
         {
