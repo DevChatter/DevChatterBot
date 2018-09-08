@@ -10,7 +10,7 @@ var overlay = (function () {
     image.src = '/images/DevchaHypeEmote.png';
     for (let blastIndex = 0; blastIndex < 20; blastIndex++) {
       for (let i = 0; i < 10; i++) {
-        let hypeSprite = new Sprite(image);
+        var hypeSprite = new Sprite(image);
         sprites.push(hypeSprite);
       }
       await sleep(250);

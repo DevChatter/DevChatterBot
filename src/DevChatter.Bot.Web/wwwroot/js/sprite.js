@@ -5,27 +5,26 @@ function Sprite(image, x, y, direction, mod) {
   this.direction = direction || this.getRandomDirection();
   this.mod = mod || this.getRandomModifier(); //sets rate of displacement (how fast the sprite is moving)
   this.timesRendered = 0;
-};
+}
 
+//get random val between 0 and 2 Pi ~ 0 and 360 degrees
 Sprite.prototype.getRandomDirection = function () {
-  var rand = Math.random() * 2 * Math.PI; //get random val between 0 and 2 Pi ~ 0 and 360 degrees
-  
-  return rand;
+  return Math.random() * 2 * Math.PI;
 };
 
+//get random value between 1 and 4 (float)
 Sprite.prototype.getRandomModifier = function () {
-  var rand = Math.random() * 3 + 1; //get random value between 1 and 4 (float)
-  return rand;
+  return Math.random() * 3 + 1;
 };
 
 Sprite.prototype.update = function (canvas) {
   //assuming right is 0 and left is pi rad, though doesn't really matter
   //mod ~ modifier affects magnitude of displacement
 
-  var xRightBorder = canvas.width - this.image.width; //width of canvas - width of image, insures the right border of the image bounces off the right border of the canvas
-  var yBottomBorder = canvas.height - this.image.height; //same as above but for bottom of image and canvas
-  var xLeftBorder = 0;
-  var yTopBorder = 0;
+  let xRightBorder = canvas.width - this.image.width; //width of canvas - width of image, insures the right border of the image bounces off the right border of the canvas
+  let yBottomBorder = canvas.height - this.image.height; //same as above but for bottom of image and canvas
+  let xLeftBorder = 0;
+  let yTopBorder = 0;
 
   this.x += this.mod * Math.cos(this.direction); //apply degree to trig function for x displacement
   this.y += this.mod * Math.sin(this.direction); //apply degree to trig function for y displacement
@@ -49,8 +48,8 @@ Sprite.prototype.update = function (canvas) {
 // takes angle of colision and a bool to tell which kind of wall it's bouncing off of
 // outputs the incident angle that the sprite will be going in
 Sprite.prototype.getBounceAngle = function (angle, hitVerticalWall = true) { 
-  var FULL_CIRCLE = 2 * Math.PI;
-  var bounceAngle = 0;
+  const FULL_CIRCLE = 2 * Math.PI;
+  let bounceAngle = 0;
 
   
   //simplified angle calc code by benrick
