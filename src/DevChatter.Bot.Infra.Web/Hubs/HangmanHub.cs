@@ -1,4 +1,5 @@
 using DevChatter.Bot.Core;
+using DevChatter.Bot.Core.Streaming;
 using Microsoft.AspNetCore.SignalR;
 
 namespace DevChatter.Bot.Infra.Web.Hubs

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Core
+namespace DevChatter.Bot.Core.Streaming
 {
     public interface IAnimationDisplay
     {

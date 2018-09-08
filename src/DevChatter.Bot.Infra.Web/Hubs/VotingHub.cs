@@ -2,6 +2,7 @@ using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.BotModules.VotingModule;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
+using DevChatter.Bot.Core.Streaming;
 
 namespace DevChatter.Bot.Infra.Web.Hubs
 {
