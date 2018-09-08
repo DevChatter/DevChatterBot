@@ -1,16 +1,16 @@
 var overlay = (function () {
-  var sprites = [];
+  let sprites = [];
 
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  var doHype = async function() {
-    var image = new Image();
+  let doHype = async function() {
+    let image = new Image();
     image.src = '/images/DevchaHypeEmote.png';
-    for (var blastIndex = 0; blastIndex < 20; blastIndex++) {
-      for (var i = 0; i < 10; i++) {
-        var hypeSprite = new Sprite(image);
+    for (let blastIndex = 0; blastIndex < 20; blastIndex++) {
+      for (let i = 0; i < 10; i++) {
+        let hypeSprite = new Sprite(image);
         sprites.push(hypeSprite);
       }
       await sleep(250);
@@ -18,23 +18,23 @@ var overlay = (function () {
   };
 
   window.onload = function() {
-    var animationCanvas = document.getElementById('animationCanvas');
-    var animationContext = animationCanvas.getContext('2d');
+    let animationCanvas = document.getElementById('animationCanvas');
+    let animationContext = animationCanvas.getContext('2d');
 
-    var hangmanCanvas = document.getElementById('hangmanCanvas');
-    var hangmanContext = hangmanCanvas.getContext('2d');
+    let hangmanCanvas = document.getElementById('hangmanCanvas');
+    let hangmanContext = hangmanCanvas.getContext('2d');
 
-    var votingCanvas = document.getElementById('votingCanvas');
-    var votingContext = votingCanvas.getContext('2d');
+    let votingCanvas = document.getElementById('votingCanvas');
+    let votingContext = votingCanvas.getContext('2d');
 
-    var botHubConn = createHubConnection("BotHub");
+    let botHubConn = createHubConnection("BotHub");
 
-    var votingHubConn = createHubConnection("VotingHub");
+    let votingHubConn = createHubConnection("VotingHub");
 
-    var hangmanHubConn = createHubConnection("HangmanHub");
+    let hangmanHubConn = createHubConnection("HangmanHub");
 
     function createHubConnection(hubName) {
-      var hubConn = new signalR.HubConnectionBuilder()
+      let hubConn = new signalR.HubConnectionBuilder()
         .withUrl(`/${hubName}`)
         .configureLogging(signalR.LogLevel.Information)
         .build();
@@ -48,15 +48,16 @@ var overlay = (function () {
     startHubConn(votingHubConn);
     startHubConn(hangmanHubConn);
 
-    function startHubConn(hubToConnect, retryInterval = 2000){
+    function startHubConn(hubToConnect, retryInterval = 2000) {
       console.log(`[${new Date()}] Connecting to ${hubToConnect.hubName}`);
-      hubToConnect.start().then(()=> {
-      }, err => {
-        console.error(err.toString());
-        var i = Math.min(retryInterval * 1.5, maxRetryInterval);
-        console.log(`[${new Date()}] Retry connection to ${hubToConnect.hubName} in ${i} ms.`);
-        setTimeout(() => startHubConn(hubToConnect, i), i);
-      });
+      hubToConnect.start().then(() => {
+        },
+        err => {
+          console.error(err.toString());
+          let i = Math.min(retryInterval * 1.5, maxRetryInterval);
+          console.log(`[${new Date()}] Retry connection to ${hubToConnect.hubName} in ${i} ms.`);
+          setTimeout(() => startHubConn(hubToConnect, i), i);
+        });
     }
 
     botHubConn.onclose(() => {
@@ -67,40 +68,48 @@ var overlay = (function () {
       setTimeout(() => startHubConn(votingHubConn), 2000);
     });
 
-    botHubConn.on("Hype", () => {
-      doHype();
-      window.requestAnimationFrame(render);
-    });
-    votingHubConn.on("VoteStart", (choices) => {
-      voting.voteStart(votingContext, choices);
-    });
-    votingHubConn.on("VoteReceived", (voteInfo) => {
-      voting.voteReceived(votingContext, voteInfo);
-    });
-    votingHubConn.on("VoteEnd", () => {
-      voting.voteEnd(votingContext);
-    });
-    hangmanHubConn.on("HangmanStart", () => {
-      hangman.startGame();
-      hangman.drawGallows(hangmanContext);
-    });
-    hangmanHubConn.on("HangmanWrongAnswer", () => {
-      hangman.wrongAnswer(hangmanContext);
-    });
-    hangmanHubConn.on("HangmanLose", async function () {
-      hangman.displayGameOver(hangmanContext);
-      await sleep(4000);
-      hangman.endGame(hangmanContext);
-    });
-    hangmanHubConn.on("HangmanWin", async function () {
-      hangman.displayVictory(hangmanContext);
-      await sleep(4000);
-      hangman.endGame(hangmanContext);
-    });
+    botHubConn.on("Hype",
+      () => {
+        doHype();
+        window.requestAnimationFrame(render);
+      });
+    votingHubConn.on("VoteStart",
+      (choices) => {
+        voting.voteStart(votingContext, choices);
+      });
+    votingHubConn.on("VoteReceived",
+      (voteInfo) => {
+        voting.voteReceived(votingContext, voteInfo);
+      });
+    votingHubConn.on("VoteEnd",
+      () => {
+        voting.voteEnd(votingContext);
+      });
+    hangmanHubConn.on("HangmanStart",
+      () => {
+        hangman.startGame();
+        hangman.drawGallows(hangmanContext);
+      });
+    hangmanHubConn.on("HangmanWrongAnswer",
+      () => {
+        hangman.wrongAnswer(hangmanContext);
+      });
+    hangmanHubConn.on("HangmanLose",
+      async function() {
+        hangman.displayGameOver(hangmanContext);
+        await sleep(4000);
+        hangman.endGame(hangmanContext);
+      });
+    hangmanHubConn.on("HangmanWin",
+      async function() {
+        hangman.displayVictory(hangmanContext);
+        await sleep(4000);
+        hangman.endGame(hangmanContext);
+      });
 
     function render() {
       animationContext.clearRect(0, 0, animationCanvas.width, animationCanvas.height);
-      sprites.forEach(function (sprite, i) {
+      sprites.forEach(function(sprite, i) {
         sprite.update(animationCanvas);
         sprite.render(animationContext);
         if (sprite.timesRendered > 300) {
@@ -113,7 +122,7 @@ var overlay = (function () {
         animationContext.clearRect(0, 0, animationCanvas.width, animationCanvas.height);
       }
     }
-  }
+  };
   return {
     doHype: doHype
   };
