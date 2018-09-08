@@ -28,8 +28,7 @@ namespace DevChatter.Bot.Core.Commands
 
         public EventHandler<EventArgs> CommandAliasModified;
 
-        public override string FullHelpText => "Alias manages aliases for existing commands. "
-                                               + string.Join(" ", _operations.Select(x => x.HelpText));
+        public override string FullHelpText => "Alias manages aliases for existing commands. " + string.Join(" ", _operations.Select(x => x.HelpText));
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
