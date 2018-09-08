@@ -58,7 +58,7 @@ var overlay = (function () {
 
     botHubConn.on("Hype",
       () => {
-        animations.doHype('/images/DevchaHypeEmote.png');
+        animations.blastImages('/images/DevchaHypeEmote.png');
         window.requestAnimationFrame(animations.render);
       });
     votingHubConn.on("VoteStart",

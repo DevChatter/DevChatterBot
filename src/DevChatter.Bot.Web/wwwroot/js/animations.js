@@ -28,7 +28,7 @@ var animations = (function () {
     }
   }
 
-  let doHype = async function (imgSrc) {
+  let blastImages = async function (imgSrc) {
     let image = new Image();
     image.src = imgSrc;
     for (let blastIndex = 0; blastIndex < 20; blastIndex++) {
@@ -43,7 +43,7 @@ var animations = (function () {
   return {
     init: init,
     render : render,
-    doHype: doHype
+    blastImages: blastImages
   };
 
 }());
