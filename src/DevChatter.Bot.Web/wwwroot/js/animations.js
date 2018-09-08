@@ -28,9 +28,9 @@ var animations = (function () {
     }
   }
 
-  let doHype = async function () {
+  let doHype = async function (imgSrc) {
     let image = new Image();
-    image.src = '/images/DevchaHypeEmote.png';
+    image.src = imgSrc;
     for (let blastIndex = 0; blastIndex < 20; blastIndex++) {
       for (let i = 0; i < 10; i++) {
         var hypeSprite = new Sprite(image);
