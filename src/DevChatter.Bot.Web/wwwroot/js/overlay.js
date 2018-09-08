@@ -56,16 +56,17 @@ var overlay = (function () {
       setTimeout(() => startHubConn(votingHubConn), 2000);
     });
 
-    botHubConn.on("Hype",
-      () => {
-        animations.blastImages('/images/DevchaHypeEmote.png');
-        window.requestAnimationFrame(animations.render);
-      });
-    botHubConn.on("Derp",
-      () => {
-        animations.blastImages('/images/DevchaDerpEmote.png');
-        window.requestAnimationFrame(animations.render);
-      });
+    function doHype() {
+      animations.blastImages('/images/DevchaHypeEmote.png');
+      window.requestAnimationFrame(animations.render);
+    }
+    function doDerp() {
+      animations.blastImages('/images/DevchaDerpEmote.png');
+      window.requestAnimationFrame(animations.render);
+    }
+
+    botHubConn.on("Hype", doHype);
+    botHubConn.on("Derp", doDerp);
     votingHubConn.on("VoteStart",
       (choices) => {
         voting.voteStart(votingContext, choices);
@@ -92,12 +93,14 @@ var overlay = (function () {
         hangman.displayGameOver(hangmanContext);
         await sleep(4000);
         hangman.endGame(hangmanContext);
+        doDerp();
       });
     hangmanHubConn.on("HangmanWin",
       async function() {
         hangman.displayVictory(hangmanContext);
         await sleep(4000);
         hangman.endGame(hangmanContext);
+        doHype();
       });
 
   };
