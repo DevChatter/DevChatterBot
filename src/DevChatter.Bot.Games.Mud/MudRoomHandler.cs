@@ -27,6 +27,7 @@ namespace DevChatter.Bot.Games.Mud
         private void ChatClient_OnMessageReceived(
             object sender, MessageReceivedEventArgs e)
         {
+            _chatClient.SendDirectMessage("DevChatter", $"Room:{e.RoomId} Channel:{e.Channel} Message:{e.Message}");
         }
 
         private void _chatClient_OnCommandReceived(

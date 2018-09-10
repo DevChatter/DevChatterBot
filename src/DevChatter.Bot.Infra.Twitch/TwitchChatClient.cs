@@ -96,19 +96,19 @@ namespace DevChatter.Bot.Infra.Twitch
             _disconnectionCompletionTask = new TaskCompletionSource<bool>();
             SendMessage("Hello World! The bot has arrived!");
 
-            //JoinChannelRoomsAsync();
+            JoinChannelRoomsAsync();
         }
 
         private async Task JoinChannelRoomsAsync()
         {
             try
             {
-                ChatRoomsByChannelResponse chatRooms =
-                    await _twitchApi.Chat.v5.GetChatRoomsByChannelAsync(_settings.TwitchChannelId);
-                foreach (var room in chatRooms.Rooms)
-                {
-                    _twitchClient.JoinRoom(_settings.TwitchChannelId, room.Id);
-                }
+                //ChatRoomsByChannelResponse chatRooms =
+                //    await _twitchApi.Chat.v5.GetChatRoomsByChannelAsync(_settings.TwitchChannelId);
+                //foreach (var room in chatRooms.Rooms)
+                //{
+                    _twitchClient.JoinRoom(_settings.TwitchChannelId, "0bca869a-c927-4b55-8694-dfb7fe985e1f");
+                //}
             }
             catch (Exception e)
             {
