@@ -41,6 +41,12 @@ namespace DevChatter.Bot.Infra.Twitch
             _twitchClient.OnNewSubscriber += NewSubscriber;
             _twitchClient.OnUserJoined += TwitchClientOnOnUserJoined;
             _twitchClient.OnUserLeft += TwitchClientOnOnUserLeft;
+            _twitchClient.OnWhisperReceived += TwitchWhisperReceived;
+        }
+
+        private void TwitchWhisperReceived(object sender, OnWhisperReceivedArgs e)
+        {
+            OnWhisperReceived?.Invoke(this, e.ToWhisperReceivedEventArgs());
         }
 
         private void TwitchClientOnOnUserLeft(object sender, OnUserLeftArgs onUserLeftArgs)
@@ -135,5 +141,6 @@ namespace DevChatter.Bot.Infra.Twitch
         public event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
         public event EventHandler<UserStatusEventArgs> OnUserNoticed;
         public event EventHandler<UserStatusEventArgs> OnUserLeft;
+        public event EventHandler<WhisperReceivedEventArgs> OnWhisperReceived;
     }
 }
