@@ -56,7 +56,7 @@ namespace DevChatter.Bot.Core.Commands
                 argOne = eventArgs.Arguments?.ElementAtOrDefault(1);
             }
 
-            IBotCommand requestedCommand = AllCommands.SingleOrDefault(x => x.ShouldExecute(argOne));
+            IBotCommand requestedCommand = AllCommands.SingleOrDefault(x => x.ShouldExecute(argOne, out _));
 
             if (requestedCommand != null)
             {

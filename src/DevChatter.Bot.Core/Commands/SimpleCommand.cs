@@ -34,7 +34,11 @@ namespace DevChatter.Bot.Core.Commands
         public string HelpText { get; protected set; } = "No help text for this command yet.";
         public string FullHelpText => HelpText;
 
-        public bool ShouldExecute(string commandText) => CommandText.EqualsIns(commandText);
+        public bool ShouldExecute(string commandText, out IList<string> args)
+        {
+            args = default;
+            return CommandText.EqualsIns(commandText);
+        }
 
         public CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
