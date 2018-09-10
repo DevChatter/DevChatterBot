@@ -93,10 +93,13 @@ namespace DevChatter.Bot.Core.Events
 
                 if (e.ChatUser.CanRunCommand(botCommand))
                 {
-                    e.Arguments.Clear();
-                    foreach (string arg in args)
+                    if (args.Any())
                     {
-                        e.Arguments.Add(arg);
+                        e.Arguments.Clear();
+                        foreach (string arg in args)
+                        {
+                            e.Arguments.Add(arg);
+                        }
                     }
                     return botCommand.Process(chatClient1, e);
                 }
