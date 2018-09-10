@@ -49,11 +49,13 @@ namespace DevChatter.Bot.Core.Commands
 
         public bool ShouldExecute(string commandText, out IList<string> args)
         {
-            args = default;
+            args = new List<string>();
             if (_isEnabled)
             {
                 if (CommandWords.Any(x => x.Word.EqualsIns(commandText)))
                 {
+                    var alias = CommandWords.SingleOrDefault(x => x.Word.EqualsIns(commandText));
+                    args = alias.Args ?? args;
                     return true;
                 }
             }

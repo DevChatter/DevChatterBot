@@ -36,7 +36,7 @@ namespace DevChatter.Bot.Core.Commands
 
         public bool ShouldExecute(string commandText, out IList<string> args)
         {
-            args = default;
+            args = new List<string>();
             return CommandText.EqualsIns(commandText);
         }
 

@@ -76,7 +76,7 @@ namespace DevChatter.Bot.Core.Events
         private void ProcessTheCommand(CommandReceivedEventArgs e,
             IChatClient chatClient, IBotCommand botCommand, IList<string> args)
         {
-            CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient);
+            CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient, args);
             var commandUsageEntity = new CommandUsageEntity(e.CommandWord,
                 botCommand.GetType().FullName, e.ChatUser.UserId,
                 e.ChatUser.DisplayName, chatClient.GetType().Name);
@@ -85,7 +85,7 @@ namespace DevChatter.Bot.Core.Events
         }
 
         private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e,
-            IBotCommand botCommand, IChatClient chatClient1)
+            IBotCommand botCommand, IChatClient chatClient1, IList<string> args)
         {
             try
             {
@@ -93,6 +93,11 @@ namespace DevChatter.Bot.Core.Events
 
                 if (e.ChatUser.CanRunCommand(botCommand))
                 {
+                    e.Arguments.Clear();
+                    foreach (string arg in args)
+                    {
+                        e.Arguments.Add(arg);
+                    }
                     return botCommand.Process(chatClient1, e);
                 }
 
