@@ -21,8 +21,13 @@ namespace DevChatter.Bot.Core.Commands.Operations
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs)
         {
-            var word = eventArgs?.Arguments?.ElementAtOrDefault(1)?.ToLowerInvariant();
-            var newAlias = eventArgs?.Arguments?.ElementAtOrDefault(2)?.ToLowerInvariant();
+            if (eventArgs?.Arguments == null
+                || eventArgs.Arguments.Count < 3) { return HelpText; }
+
+            var word = eventArgs.Arguments[1].ToLowerInvariant();
+            var newAlias = eventArgs.Arguments[2].ToLowerInvariant();
+            var arguments = eventArgs.Arguments.Skip(3).ToList();
+
             var typeName = _repository.Single(CommandWordPolicy.ByWord(word))?.FullTypeName;
             var existingWord = _repository.Single(CommandWordPolicy.ByWord(newAlias));
 
@@ -43,9 +48,20 @@ namespace DevChatter.Bot.Core.Commands.Operations
                 IsPrimary = false
             };
 
+            for (int i = 0; i < arguments.Count; i++)
+            {
+                newCommand.Arguments.Add(new AliasArgumentEntity
+                {
+                    Argument = arguments[i],
+                    CommandWordEntity = newCommand,
+                    Index = i
+                });
+            }
+
             _repository.Create(newCommand);
 
             return $"Created new command alias '!{newAlias}' for '!{word}'.";
         }
+
     }
 }

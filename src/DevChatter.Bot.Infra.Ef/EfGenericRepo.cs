@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
@@ -18,13 +18,15 @@ namespace DevChatter.Bot.Infra.Ef
 
         public T Single<T>(ISpecification<T> spec) where T : DataEntity
         {
-            return _db.Set<T>().SingleOrDefault(spec.Criteria);
+            IQueryable<T> setWithIncludes = SetWithIncludes(spec);
+            return setWithIncludes.SingleOrDefault(spec.Criteria);
         }
 
         public List<T> List<T>(ISpecification<T> spec) where T : DataEntity
         {
-            DbSet<T> dbSet = _db.Set<T>();
-            return spec != null ? dbSet.Where(spec.Criteria).ToList() : dbSet.ToList();
+            return spec != null
+                ? SetWithIncludes(spec).Where(spec.Criteria).ToList()
+                : _db.Set<T>().ToList();
         }
 
         public T Create<T>(T dataItem) where T : DataEntity
@@ -59,6 +61,12 @@ namespace DevChatter.Bot.Infra.Ef
         {
             _db.Set<T>().Remove(dataItem);
             _db.SaveChanges();
+        }
+
+        private IQueryable<T> SetWithIncludes<T>(ISpecification<T> spec) where T : DataEntity
+        {
+            return spec?.Includes.Aggregate(_db.Set<T>().AsQueryable(),
+                (queryable, include) => queryable.Include(include));
         }
     }
 }

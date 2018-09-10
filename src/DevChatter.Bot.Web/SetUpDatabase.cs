@@ -76,6 +76,7 @@ namespace DevChatter.Bot.Web
             {
                 repository.Create(missingCommandWords);
             }
+            // TODO: Remove unnecessary Command Words
         }
 
         private static void CreateDefaultSettingsIfNeeded(IRepository repository)
@@ -205,7 +206,7 @@ namespace DevChatter.Bot.Web
             const string conventionSuffix = "Command";
 
             // Access the assembly to make sure it's loaded
-            Assembly assembly = typeof(HypeCommand).Assembly;
+            Assembly assembly = typeof(BlastCommand).Assembly;
 
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
@@ -220,7 +221,7 @@ namespace DevChatter.Bot.Web
 
             var storedCommandWords = repository.List(CommandWordPolicy.OnlyPrimaries()).Select(x => x.CommandWord);
 
-            List<CommandWordEntity> defaultCommandWords = concreteCommands
+            List<CommandWordEntity> missingDefaults = concreteCommands
                 .Select(commandType => new CommandWordEntity
                 {
                     CommandWord = commandType.Name.Substring(0, commandType.Name.Length - conventionSuffix.Length),
@@ -230,7 +231,7 @@ namespace DevChatter.Bot.Web
                 .Where(x => !storedCommandWords.Contains(x.CommandWord))
                 .ToList();
 
-            return defaultCommandWords;
+            return missingDefaults;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 using DevChatter.Bot.Core.Data.Model;
 
@@ -8,6 +8,7 @@ namespace DevChatter.Bot.Core.Data.Specifications
     {
         protected CommandWordPolicy(Expression<Func<CommandWordEntity, bool>> expression) : base(expression)
         {
+            AddInclude(cw => cw.Arguments);
         }
 
         public static CommandWordPolicy OnlyPrimaries()

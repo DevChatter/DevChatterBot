@@ -8,7 +8,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 {
     public class VotingSystem
     {
-        private readonly IOverlayNotification _overlayNotification;
+        private readonly IVotingDisplayNotification _votingDisplayNotification;
 
         private readonly Dictionary<string, int> _votes
             = new Dictionary<string, int>();
@@ -17,9 +17,9 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
         public bool IsVoteActive { get; set; }
 
-        public VotingSystem(IOverlayNotification overlayNotification)
+        public VotingSystem(IVotingDisplayNotification votingDisplayNotification)
         {
-            _overlayNotification = overlayNotification;
+            _votingDisplayNotification = votingDisplayNotification;
         }
 
         public void ApplyVote(ChatUser chatUser, string choice, IChatClient chatClient)
@@ -36,7 +36,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
             if (isValidNumber)
             {
                 int[] voteTotals = _choices.Select(c => _votes.Count(x => x.Value == c.Key)).ToArray();
-                _overlayNotification.VoteReceived(chatUser, chosenNumber, voteTotals);
+                _votingDisplayNotification.VoteReceived(chatUser, chosenNumber, voteTotals);
             }
 
             string message = $"{chatUser.DisplayName} voted for {voteText}.";
@@ -53,7 +53,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
             string optionsString = string.Join(", ", _choices.OrderBy(x => x.Key).Select(x => $"({x.Key}) {x.Value}"));
 
-            _overlayNotification.VoteStart(_choices.Select(x => x.Value));
+            _votingDisplayNotification.VoteStart(_choices.Select(x => x.Value));
 
             return $"Voting has started. To vote type \"!vote [number]\" (ex: !vote 2). Options: {optionsString}";
         }
@@ -62,7 +62,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
         {
             string resultMessage = GetResultsOfVote();
             ResetVote();
-            _overlayNotification.VoteEnd();
+            _votingDisplayNotification.VoteEnd();
             return resultMessage;
         }
 

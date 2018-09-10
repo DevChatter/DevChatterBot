@@ -40,7 +40,8 @@ namespace DevChatter.Bot.Core.Events
                 return;
             }
 
-            IBotCommand botCommand = _commandList.FirstOrDefault(c => c.ShouldExecute(e.CommandWord));
+            IList<string> args = new List<string>();
+            IBotCommand botCommand = _commandList.FirstOrDefault(c => c.ShouldExecute(e.CommandWord, out args));
             if (botCommand == null)
             {
                 return;
@@ -58,7 +59,7 @@ namespace DevChatter.Bot.Core.Events
             switch (cooldown)
             {
                 case NoCooldown none:
-                    ProcessTheCommand(e, chatClient, botCommand);
+                    ProcessTheCommand(e, chatClient, botCommand, args);
                     break;
                 case UserCooldown userCooldown:
                     chatClient.SendDirectMessage(e.ChatUser.DisplayName, userCooldown.Message);
@@ -72,17 +73,19 @@ namespace DevChatter.Bot.Core.Events
             }
         }
 
-        private void ProcessTheCommand(CommandReceivedEventArgs e, IChatClient chatClient, IBotCommand botCommand)
+        private void ProcessTheCommand(CommandReceivedEventArgs e,
+            IChatClient chatClient, IBotCommand botCommand, IList<string> args)
         {
-            CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient);
-            var commandUsageEntity = new CommandUsageEntity(e.CommandWord, botCommand.GetType().FullName,
-                e.ChatUser.UserId, e.ChatUser.DisplayName, chatClient.GetType().Name);
+            CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient, args);
+            var commandUsageEntity = new CommandUsageEntity(e.CommandWord,
+                botCommand.GetType().FullName, e.ChatUser.UserId,
+                e.ChatUser.DisplayName, chatClient.GetType().Name);
             _repository.Create(commandUsageEntity);
             _usageTracker.RecordUsage(commandUsage);
         }
 
         private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e,
-            IBotCommand botCommand, IChatClient chatClient1)
+            IBotCommand botCommand, IChatClient chatClient1, IList<string> args)
         {
             try
             {
@@ -90,6 +93,11 @@ namespace DevChatter.Bot.Core.Events
 
                 if (e.ChatUser.CanRunCommand(botCommand))
                 {
+                    e.Arguments.Clear();
+                    foreach (string arg in args)
+                    {
+                        e.Arguments.Add(arg);
+                    }
                     return botCommand.Process(chatClient1, e);
                 }
 

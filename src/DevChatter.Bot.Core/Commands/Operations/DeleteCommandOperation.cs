@@ -42,7 +42,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
                     return $"I didn't find a !{commandWord} command.";
                 }
 
-                IBotCommand botCommand = _allCommands.SingleOrDefault(x => x.ShouldExecute(commandWord));
+                IBotCommand botCommand = _allCommands.SingleOrDefault(x => x.ShouldExecute(commandWord, out _));
                 if (botCommand != null)
                 {
                     _allCommands.Remove(botCommand);

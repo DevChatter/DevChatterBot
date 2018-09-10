@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using DevChatter.Bot.Core.Data.Model;
 
@@ -22,5 +23,12 @@ namespace DevChatter.Bot.Core.Data.Specifications
         }
 
         public Expression<Func<T, bool>> Criteria { get; }
+
+        public IList<Expression<Func<T, object>>> Includes { get; }
+            = new List<Expression<Func<T, object>>>();
+
+        public void AddInclude(Expression<Func<T, object>> expression)
+            => Includes.Add(expression);
+
     }
 }
