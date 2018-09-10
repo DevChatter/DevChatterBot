@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Commands.Trackers;
@@ -19,8 +20,8 @@ namespace DevChatter.Bot.Core.Commands
         private readonly bool _isEnabled;
         public UserRole RoleRequired { get; }
         public TimeSpan Cooldown { get; protected set; } = TimeSpan.Zero;
-        public string PrimaryCommandText => CommandWords.FirstOrDefault();
-        public IList<string> CommandWords { get; private set; }
+        public string PrimaryCommandText => CommandWords.FirstOrDefault().Word;
+        public IList<(string Word, IList<string> Args)> CommandWords { get; private set; }
         public string HelpText { get; protected set; }
         public virtual string FullHelpText => HelpText;
 
@@ -32,18 +33,34 @@ namespace DevChatter.Bot.Core.Commands
             CommandWords = RefreshCommandWords();
         }
 
-        private List<string> RefreshCommandWords()
+        private List<(string Word, IList<string> Args)> RefreshCommandWords()
         {
-            return Repository
-                       .List(CommandWordPolicy.ByType(GetType()))
-                       ?.OrderByDescending(x => x.IsPrimary)
-                       .Select(word => word.CommandWord)
-                       .ToList() ?? new List<string>();
+            List<CommandWordEntity> commandWordEntities = Repository
+                .List(CommandWordPolicy.ByType(GetType())) ?? new List<CommandWordEntity>();
+            var words = commandWordEntities
+                .OrderByDescending(x => x.IsPrimary)
+                .Select(cw => (cw.CommandWord, (IList<string>)cw.Arguments.Select(x => x.Argument).ToList()))
+                .ToList();
+
+            return words;
         }
 
         public void NotifyWordsModified() => CommandWords = RefreshCommandWords();
 
-        public bool ShouldExecute(string commandText) => _isEnabled && CommandWords.Any(x => x.EqualsIns(commandText));
+        public bool ShouldExecute(string commandText, out IList<string> args)
+        {
+            args = new List<string>();
+            if (_isEnabled)
+            {
+                if (CommandWords.Any(x => x.Word.EqualsIns(commandText)))
+                {
+                    var alias = CommandWords.SingleOrDefault(x => x.Word.EqualsIns(commandText));
+                    args = alias.Args ?? args;
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {

@@ -21,6 +21,6 @@ namespace UnitTests.Fakes
         }
 
         public bool ProcessWasCalled { get; set; }
-        public string CommandText => CommandWords.First();
+        public string CommandText => CommandWords.First().Word;
     }
 }

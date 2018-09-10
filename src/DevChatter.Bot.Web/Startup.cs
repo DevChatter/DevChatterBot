@@ -136,7 +136,11 @@ namespace DevChatter.Bot.Web
             builder.RegisterType<StreamingSystem>()
                 .AsImplementedInterfaces().SingleInstance();
 
-            builder.RegisterType<BotHubOverlayNotification>()
+            builder.RegisterType<AnimationDisplayNotification>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<HangmanDisplayNotification>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<VotingDisplayNotification>()
                 .AsImplementedInterfaces().SingleInstance();
 
             builder.AddAllGames();

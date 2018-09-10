@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
@@ -13,7 +14,7 @@ namespace DevChatter.Bot.Core.Commands
         string PrimaryCommandText { get; }
         string HelpText { get; }
         string FullHelpText { get; }
-        bool ShouldExecute(string commandText);
+        bool ShouldExecute(string commandText, out IList<string> args);
         CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
         TimeSpan GetCooldownTimeRemaining();
         bool IsActiveGame();
