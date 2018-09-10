@@ -1,4 +1,5 @@
 using Autofac;
+using DevChatter.Bot.Core.BotModules.DuelingModule;
 using DevChatter.Bot.Core.BotModules.VotingModule;
 
 namespace DevChatter.Bot.Core
@@ -7,6 +8,7 @@ namespace DevChatter.Bot.Core
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<DuelingSystem>();
             builder.RegisterType<VotingSystem>();
         }
     }

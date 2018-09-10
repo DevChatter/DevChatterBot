@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 
@@ -15,5 +16,6 @@ namespace DevChatter.Bot.Core
         bool UserHasAtLeast(string username, int tokensToRemove);
         void WatchUser(string displayName);
         bool ReduceCoins(string username, int coinsToTake);
+        IReadOnlyCollection<string> AllChatUsers { get; }
     }
 }
