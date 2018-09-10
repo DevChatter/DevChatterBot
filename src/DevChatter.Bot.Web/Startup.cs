@@ -8,6 +8,7 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Core.Util;
+using DevChatter.Bot.Infra.Discord;
 using DevChatter.Bot.Infra.Ef;
 using DevChatter.Bot.Infra.GoogleApi;
 using DevChatter.Bot.Infra.Twitch;
@@ -56,6 +57,7 @@ namespace DevChatter.Bot.Web
             services.Configure<CommandHandlerSettings>(Configuration.GetSection("CommandHandlerSettings"));
             services.Configure<TwitchClientSettings>(Configuration.GetSection("TwitchClientSettings"));
             services.Configure<GoogleCloudSettings>(Configuration.GetSection("GoogleCloudSettings"));
+            services.Configure<DiscordClientSettings>(Configuration.GetSection("DiscordClientSettings"));
 
             services.AddDbContext<AppDataContext>(ServiceLifetime.Transient);
 
@@ -89,6 +91,9 @@ namespace DevChatter.Bot.Web
 
             builder.RegisterInstance(fullConfig.TwitchClientSettings)
                 .As<TwitchClientSettings>().SingleInstance();
+
+            builder.RegisterInstance(fullConfig.DiscordClientSettings)
+                .As<DiscordClientSettings>().SingleInstance();
 
             builder.RegisterInstance(fullConfig.CommandHandlerSettings)
                 .AsSelf().SingleInstance();
@@ -151,6 +156,8 @@ namespace DevChatter.Bot.Web
             builder.RegisterModule<CoreRegistrationModule>();
 
             builder.RegisterModule(new TwitchModule(fullConfig.TwitchClientSettings));
+
+            builder.RegisterModule(new DiscordModule(fullConfig.DiscordClientSettings));
 
             builder.RegisterType<AutomationSystem>()
                 .As<IAutomatedActionSystem>().SingleInstance();
