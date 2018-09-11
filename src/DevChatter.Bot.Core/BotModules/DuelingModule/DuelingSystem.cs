@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -10,10 +11,22 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
     {
         private readonly IChatClient _chatClient;
 
-        public DuelingSystem(IChatClient chatClient)
+        public DuelingSystem(IChatClient chatClient, IAutomatedActionSystem automatedActionSystem)
         {
             _chatClient = chatClient;
             _chatClient.OnWhisperReceived += ChatClientOnOnWhisperReceived;
+            var repeatingCallbackAction = new RepeatingCallbackAction(CheckForExpiredDuels,5);
+            automatedActionSystem.AddAction(repeatingCallbackAction);
+        }
+
+        private void CheckForExpiredDuels()
+        {
+            List<Duel> expiredDuels = _ongoingDuels.Where(duel => duel.IsExpired()).ToList();
+            foreach (Duel expiredDuel in expiredDuels)
+            {
+                _ongoingDuels.Remove(expiredDuel);
+                _chatClient.SendMessage(expiredDuel.GetExpirationMessage());
+            }
         }
 
         private void ChatClientOnOnWhisperReceived(object sender, WhisperReceivedEventArgs e)

@@ -1,4 +1,4 @@
-using System.Threading;
+using System;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Games;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
@@ -7,6 +7,7 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
 {
     public class Duel : IGame
     {
+        public DateTime DuelExirationTime { get; set; } = DateTime.UtcNow.AddMinutes(1);
         public bool IsRunning { get; private set; }
         public string Challenger { get; set; }
         public RockPaperScissors ChallengerChoice { get; set; }
@@ -68,6 +69,12 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
                    || (Opponent.EqualsIns(userDisplayName) && OpponentChoice == null);
         }
 
+        public bool IsExpired() => DateTime.UtcNow > DuelExirationTime;
+
+        public string GetExpirationMessage()
+        {
+            return $"The match between {Challenger} and {Opponent} won't happen. Someone was slow.";
+        }
     }
 
     public class DuelResult

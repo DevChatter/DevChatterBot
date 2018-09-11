@@ -141,6 +141,7 @@ namespace DevChatter.Bot.Infra.Twitch
         public event EventHandler<NewSubscriberEventArgs> OnNewSubscriber;
         public event EventHandler<UserStatusEventArgs> OnUserNoticed;
         public event EventHandler<UserStatusEventArgs> OnUserLeft;
+
         public event EventHandler<WhisperReceivedEventArgs> OnWhisperReceived;
     }
 }
