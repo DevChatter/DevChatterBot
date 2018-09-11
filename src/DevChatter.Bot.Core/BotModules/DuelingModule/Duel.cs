@@ -56,7 +56,7 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
             }
             else
             {
-                result.MessageForChat = $"The duel between {Challenger} and {Opponent} was a tie!";
+                result.MessageForChat = $"The duel between {Challenger} and {Opponent} was a tie! Both picked {ChallengerChoice}.";
             }
 
             return result;
