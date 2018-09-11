@@ -10,6 +10,15 @@ namespace DevChatter.Bot.Infra.Twitch.Extensions
 {
     public static class EventArgsExtensions
     {
+        public static WhisperReceivedEventArgs ToWhisperReceivedEventArgs(this OnWhisperReceivedArgs src)
+        {
+            return new WhisperReceivedEventArgs
+            {
+                FromDisplayName = src.WhisperMessage.DisplayName,
+                Message = src.WhisperMessage.Message
+            };
+        }
+
         public static CommandReceivedEventArgs ToCommandReceivedEventArgs(this OnChatCommandReceivedArgs src)
         {
             ChatMessage commandChatMessage = src.Command.ChatMessage;

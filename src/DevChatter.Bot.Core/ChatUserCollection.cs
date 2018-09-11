@@ -28,6 +28,7 @@ namespace DevChatter.Bot.Core
             return _activeChatUsers.All(name => name != displayName);
         }
 
+        public IReadOnlyCollection<string> AllChatUsers => _activeChatUsers;
 
         public void WatchUser(string displayName)
         {
