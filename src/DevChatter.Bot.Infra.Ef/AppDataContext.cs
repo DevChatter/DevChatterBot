@@ -1,3 +1,4 @@
+using DevChatter.Bot.Core.BotModules.DuelingModule.Model;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data.Model;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<CommandSettingsEntity> CommandSettings { get; set; }
         public DbSet<TimezoneEntity> Timezones { get; set; }
 
+        public DbSet<DuelPlayed> DuelsPlayed { get; set; }
 
         public AppDataContext()
         {
