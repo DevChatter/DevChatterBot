@@ -29,11 +29,14 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
                 _duelingSystem.Accept(existingChallenge);
                 return $"A fight breaks out between {existingChallenge.Challenger} and {existingChallenge.Opponent}";
             }
-            else
+
+            bool duelStarted = _duelingSystem.RequestDuel(eventArgs.ChatUser.DisplayName, opponent);
+            if (duelStarted)
             {
-                _duelingSystem.RequestDuel(eventArgs.ChatUser.DisplayName, opponent);
                 return $"{eventArgs.ChatUser.DisplayName} is challenging {opponent.NoAt()} to a duel! Type \"!duel {eventArgs.ChatUser.DisplayName}\" to accept!";
             }
+
+            return "";
         }
     }
 }
