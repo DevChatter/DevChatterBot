@@ -49,7 +49,7 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
             var result = new DuelResult { DuelIsOver = true };
             if (ChallengerChoice.LosesTo() == OpponentChoice)
             {
-                result.MessageForChat = $"In the epic duel, @{Challenger} 's {ChallengerChoice} lost! @{Opponent} 's {OpponentChoice} wins!";
+                result.MessageForChat = $"In the epic duel, @{Challenger} 's {ChallengerChoice} lost! @{Opponent} 's {OpponentChoice} won!";
             }
             else if (OpponentChoice.LosesTo() == ChallengerChoice)
             {
