@@ -19,13 +19,23 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
         private void ChatClientOnOnWhisperReceived(object sender, WhisperReceivedEventArgs e)
         {
             if (!_ongoingDuels.Any()) { return; }
-            string fromUser = e.FromDisplayName;
             Duel existingDuel = _ongoingDuels
-                .SingleOrDefault(duel => duel.Challenger.EqualsIns(fromUser)
-                               || duel.Opponent.EqualsIns(fromUser));
-            if (existingDuel != null)
+                .SingleOrDefault(duel => duel.IsExpectingInputFrom(e.FromDisplayName));
+            DuelResult duelResult = existingDuel?.ApplySelection(e.FromDisplayName, e.Message);
+
+            if (duelResult.DuelIsOver)
             {
-                existingDuel.ApplySelection(e.FromDisplayName, e.Message);
+                _ongoingDuels.Remove(existingDuel);
+            }
+
+            if (!string.IsNullOrWhiteSpace(duelResult.MessageForUser))
+            {
+                _chatClient.SendDirectMessage(e.FromDisplayName, duelResult.MessageForUser);
+            }
+
+            if (!string.IsNullOrWhiteSpace(duelResult.MessageForChat))
+            {
+                _chatClient.SendMessage(duelResult.MessageForChat);
             }
         }
 
