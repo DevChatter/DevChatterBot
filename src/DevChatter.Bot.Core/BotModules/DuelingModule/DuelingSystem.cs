@@ -74,7 +74,7 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
         public void Accept(Duel existingChallenge)
         {
             existingChallenge.Start();
-            var startMessage = "Choose your weapon: Rock, Paper, Or Scissors.";
+            var startMessage = "Choose your weapon by replying to this with: Rock, Paper, Or Scissors.";
             _chatClient.SendDirectMessage(existingChallenge.Challenger, startMessage);
             _chatClient.SendDirectMessage(existingChallenge.Opponent, startMessage);
         }
