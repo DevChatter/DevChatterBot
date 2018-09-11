@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
         {
             _chatClient = chatClient;
             _chatClient.OnWhisperReceived += ChatClientOnOnWhisperReceived;
-            var repeatingCallbackAction = new RepeatingCallbackAction(CheckForExpiredDuels,5);
+            var repeatingCallbackAction = new RepeatingCallbackAction(CheckForExpiredDuels);
             automatedActionSystem.AddAction(repeatingCallbackAction);
         }
 
