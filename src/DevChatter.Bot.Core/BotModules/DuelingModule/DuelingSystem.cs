@@ -49,7 +49,24 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
 
         public void RequestDuel(string challenger, string opponent)
         {
-            _ongoingDuels.Add(new Duel { Challenger = challenger, Opponent = opponent.NoAt() });
+            if (IsUserInAnotherDuel(challenger))
+            {
+                _chatClient.SendMessage($"Sorry, {challenger}, you are already in another duel.");
+            }
+            else if (IsUserInAnotherDuel(opponent))
+            {
+                _chatClient.SendMessage($"Sorry, {opponent} is in another duel already.");
+            }
+            else
+            {
+                _ongoingDuels.Add(new Duel { Challenger = challenger, Opponent = opponent.NoAt() });
+            }
+        }
+
+        private bool IsUserInAnotherDuel(string userDisplayName)
+        {
+            return _ongoingDuels.Any(x => x.Challenger.EqualsIns(userDisplayName)
+                                          || x.Opponent.EqualsIns(userDisplayName));
         }
 
         public void Accept(Duel existingChallenge)
