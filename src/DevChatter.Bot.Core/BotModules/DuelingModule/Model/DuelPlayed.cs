@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Data.Model;
 
 namespace DevChatter.Bot.Core.BotModules.DuelingModule.Model
@@ -7,5 +8,6 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule.Model
     {
         public string DuelType { get; set; }
         public DateTime DateDueled { get; set; }
+        public List<DuelPlayerRecord> PlayerRecords { get; set; }
     }
 }
