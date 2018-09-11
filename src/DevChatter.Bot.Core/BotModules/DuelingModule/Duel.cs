@@ -7,14 +7,27 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
 {
     public class Duel : IGame
     {
-        public DateTime DuelExirationTime { get; set; } = DateTime.UtcNow.AddMinutes(1);
+        public Duel()
+        {
+            SetExpiration();
+        }
+        public DateTime DuelExirationTime { get; set; }
         public bool IsRunning { get; private set; }
         public string Challenger { get; set; }
         public RockPaperScissors ChallengerChoice { get; set; }
         public string Opponent { get; set; }
         public RockPaperScissors OpponentChoice { get; set; }
 
-        public void Start() => IsRunning = true;
+        public void Start()
+        {
+            IsRunning = true;
+            SetExpiration();
+        }
+
+        private void SetExpiration()
+        {
+            DuelExirationTime = DateTime.UtcNow.AddMinutes(1);
+        }
 
         public DuelResult ApplySelection(string fromDisplayName, string message)
         {
