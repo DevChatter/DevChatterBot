@@ -1,5 +1,7 @@
 using DevChatter.Bot.Core.BotModules.DuelingModule;
+using DevChatter.Bot.Core.Systems.Chat;
 using FluentAssertions;
+using Moq;
 using UnitTests.Fakes;
 using Xunit;
 
@@ -10,7 +12,7 @@ namespace UnitTests.Core.BotModules.DuelingModule.DuelingSystemTests
         [Fact]
         public void ReturnNull_GivenNoDuelsYet()
         {
-            var duelingSystem = new DuelingSystem(null, new FakeActionSystem());
+            var duelingSystem = new DuelingSystem(new Mock<IChatClient>().Object, new FakeActionSystem());
 
             Duel challenges = duelingSystem.GetChallenges("Brendan", "Crimson");
 
@@ -23,7 +25,7 @@ namespace UnitTests.Core.BotModules.DuelingModule.DuelingSystemTests
             var initialChallenger = "Crimson";
             var acceptingOpponent = "Brendan";
 
-            var duelingSystem = new DuelingSystem(null, new FakeActionSystem());
+            var duelingSystem = new DuelingSystem(new Mock<IChatClient>().Object, new FakeActionSystem());
 
             duelingSystem.RequestDuel(initialChallenger, acceptingOpponent);
 
@@ -38,7 +40,7 @@ namespace UnitTests.Core.BotModules.DuelingModule.DuelingSystemTests
             var initialChallenger = "Crimson";
             var acceptingOpponent = "Brendan";
 
-            var duelingSystem = new DuelingSystem(null, new FakeActionSystem());
+            var duelingSystem = new DuelingSystem(new Mock<IChatClient>().Object, new FakeActionSystem());
 
             duelingSystem.RequestDuel(initialChallenger, acceptingOpponent);
 
