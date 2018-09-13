@@ -2,14 +2,13 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
+using DevChatter.Bot.Core.GoogleApi;
 using DevChatter.Bot.Core.Systems.Chat;
 using NodaTime;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.Serialization;
-using DevChatter.Bot.Core.GoogleApi;
 
 namespace DevChatter.Bot.Core.Commands
 {
