@@ -71,12 +71,15 @@ namespace DevChatter.Bot.Web
 
             CreateDefaultSettingsIfNeeded(repository);
 
-            var missingCommandWords = GetMissingCommandWords(repository);
-            if (missingCommandWords.Any())
+            var commandWordChanges = GetCommandWordChanges(repository);
+            if (commandWordChanges.AddList.Any())
             {
-                repository.Create(missingCommandWords);
+                repository.Create(commandWordChanges.AddList);
             }
-            // TODO: Remove unnecessary Command Words
+            if (commandWordChanges.RemoveList.Any())
+            {
+                repository.Remove(commandWordChanges.RemoveList);
+            }
         }
 
         private static void CreateDefaultSettingsIfNeeded(IRepository repository)
@@ -201,7 +204,7 @@ namespace DevChatter.Bot.Web
             };
         }
 
-        private static List<CommandWordEntity> GetMissingCommandWords(IRepository repository)
+        private static (List<CommandWordEntity> AddList, List<CommandWordEntity> RemoveList) GetCommandWordChanges(IRepository repository)
         {
             const string conventionSuffix = "Command";
 
@@ -210,16 +213,17 @@ namespace DevChatter.Bot.Web
 
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-            IEnumerable<TypeInfo> allTypes = assemblies.SelectMany(x => x.DefinedTypes);
+            IEnumerable<TypeInfo> allCommandTypes = assemblies.SelectMany(x => x.DefinedTypes);
 
-            var concreteCommands = allTypes
+            var concreteCommands = allCommandTypes
                 .Where(x => typeof(IBotCommand).IsAssignableFrom(x))
                 .Where(x => !x.IsAbstract)
                 .Where(x => !x.IsSubclassOf(typeof(DataEntity)))
                 .Where(x => x.FullName.EndsWith(conventionSuffix))
                 .ToList();
 
-            var storedCommandWords = repository.List(CommandWordPolicy.OnlyPrimaries()).Select(x => x.CommandWord);
+            List<CommandWordEntity> commandWordEntities = repository.List(CommandWordPolicy.All());
+            List<string> commandTypes = commandWordEntities.Select(x => x.FullTypeName).ToList();
 
             List<CommandWordEntity> missingDefaults = concreteCommands
                 .Select(commandType => new CommandWordEntity
@@ -228,10 +232,11 @@ namespace DevChatter.Bot.Web
                     FullTypeName = commandType.FullName,
                     IsPrimary = true
                 })
-                .Where(x => !storedCommandWords.Contains(x.CommandWord))
+                .Where(x => !commandTypes.Contains(x.FullTypeName))
                 .ToList();
 
-            return missingDefaults;
+            var entitiesToRemove = commandWordEntities.Where(x => concreteCommands.All(c => c.FullName != x.FullTypeName)).ToList();
+            return (missingDefaults, entitiesToRemove);
         }
     }
 }

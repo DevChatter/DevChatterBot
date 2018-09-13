@@ -63,6 +63,12 @@ namespace DevChatter.Bot.Infra.Ef
             _db.SaveChanges();
         }
 
+        public void Remove<T>(List<T> dataItems) where T : DataEntity
+        {
+            _db.Set<T>().RemoveRange(dataItems);
+            _db.SaveChanges();
+        }
+
         private IQueryable<T> SetWithIncludes<T>(ISpecification<T> spec) where T : DataEntity
         {
             return spec?.Includes.Aggregate(_db.Set<T>().AsQueryable(),
