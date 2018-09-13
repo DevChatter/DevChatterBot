@@ -5,8 +5,10 @@ using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using NodaTime;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Serialization;
 using DevChatter.Bot.Core.GoogleApi;
 
 namespace DevChatter.Bot.Core.Commands
@@ -75,13 +77,12 @@ namespace DevChatter.Bot.Core.Commands
         }
 
 
-        private static string GetTimeDisplay(Instant instant, DateTimeZone timeZone, bool useTwentyFourHour = false)
+        private static string GetTimeDisplay(Instant instant, DateTimeZone timeZone, bool isTwentyFourTime = false)
         {
-            LocalTime timeOfDay = instant.InZone(timeZone).TimeOfDay;
-            string timeText = useTwentyFourHour
-                ? $"{timeOfDay:HH:mm}"
-                : $"{timeOfDay:h:mm tt}";
-            return $"{instant.InZone(timeZone).DayOfWeek}s at " + timeText;
+            ZonedDateTime zonedDateTime = instant.InZone(timeZone);
+            string timeFormatString = isTwentyFourTime ? "HH:mm" : "h:mm tt";
+            string timeOfDay = zonedDateTime.TimeOfDay.ToString(timeFormatString, CultureInfo.InvariantCulture);
+            return $"{zonedDateTime.DayOfWeek}s at {timeOfDay}";
         }
 
         public static class Messages
