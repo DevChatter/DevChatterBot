@@ -1,4 +1,5 @@
 using DevChatter.Bot.Core.BotModules.DuelingModule;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Systems.Chat;
 using FluentAssertions;
 using Moq;
@@ -14,7 +15,7 @@ namespace UnitTests.Core.BotModules.DuelingModule.DuelingSystemTests
         {
             var duelingSystem = new DuelingSystem(new Mock<IChatClient>().Object, new FakeActionSystem());
 
-            Duel challenges = duelingSystem.GetChallenges("Brendan", "Crimson");
+            Duel challenges = duelingSystem.GetChallenges(GetTestUser("Brendan"), GetTestUser("Crimson"));
 
             challenges.Should().BeNull();
         }
@@ -22,8 +23,8 @@ namespace UnitTests.Core.BotModules.DuelingModule.DuelingSystemTests
         [Fact]
         public void ReturnDuel_WhenAlreadyAnOpponent()
         {
-            var initialChallenger = "Crimson";
-            var acceptingOpponent = "Brendan";
+            var initialChallenger = GetTestUser("Crimson");
+            var acceptingOpponent = GetTestUser("Brendan");
 
             var duelingSystem = new DuelingSystem(new Mock<IChatClient>().Object, new FakeActionSystem());
 
@@ -37,8 +38,8 @@ namespace UnitTests.Core.BotModules.DuelingModule.DuelingSystemTests
         [Fact]
         public void ReturnNull_WhenTryingToAcceptOwnChallenge()
         {
-            var initialChallenger = "Crimson";
-            var acceptingOpponent = "Brendan";
+            var initialChallenger = GetTestUser("Crimson");
+            var acceptingOpponent = GetTestUser("Brendan");
 
             var duelingSystem = new DuelingSystem(new Mock<IChatClient>().Object, new FakeActionSystem());
 
@@ -47,6 +48,11 @@ namespace UnitTests.Core.BotModules.DuelingModule.DuelingSystemTests
             Duel challenges = duelingSystem.GetChallenges(initialChallenger, acceptingOpponent);
 
             challenges.Should().BeNull();
+        }
+
+        private ChatUser GetTestUser(string name)
+        {
+            return new ChatUser {DisplayName = name, UserId = name};
         }
     }
 }

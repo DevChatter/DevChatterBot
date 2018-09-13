@@ -1,4 +1,5 @@
 using System;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Games;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
@@ -13,9 +14,9 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
         }
         public DateTime DuelExirationTime { get; set; }
         public bool IsRunning { get; private set; }
-        public string Challenger { get; set; }
+        public ChatUser Challenger { get; set; }
         public RockPaperScissors ChallengerChoice { get; set; }
-        public string Opponent { get; set; }
+        public ChatUser Opponent { get; set; }
         public RockPaperScissors OpponentChoice { get; set; }
 
         public void Start()
@@ -36,11 +37,13 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
                 return new DuelResult { MessageForUser = "Invalid Choice" };
             }
 
-            if (ChallengerChoice == null && fromDisplayName.EqualsIns(Challenger))
+            if (ChallengerChoice == null
+                && fromDisplayName.EqualsIns(Challenger.DisplayName))
             {
                 ChallengerChoice = choice;
             }
-            else if (OpponentChoice == null && fromDisplayName.EqualsIns(Opponent))
+            else if (OpponentChoice == null
+                     && fromDisplayName.EqualsIns(Opponent.DisplayName))
             {
                 OpponentChoice = choice;
             }
@@ -78,8 +81,8 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
 
         public bool IsExpectingInputFrom(string userDisplayName)
         {
-            return (Challenger.EqualsIns(userDisplayName) && ChallengerChoice == null)
-                   || (Opponent.EqualsIns(userDisplayName) && OpponentChoice == null);
+            return (Challenger.DisplayName.EqualsIns(userDisplayName) && ChallengerChoice == null)
+                   || (Opponent.DisplayName.EqualsIns(userDisplayName) && OpponentChoice == null);
         }
 
         public bool IsExpired() => DateTime.UtcNow > DuelExirationTime;
@@ -92,9 +95,10 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
 
     public class DuelResult
     {
+        public ChatUser Winner { get; set; }
+        public ChatUser Loser { get; set; }
         public bool DuelIsOver { get; set; }
         public string MessageForChat { get; set; }
         public string MessageForUser { get; set; }
-
     }
 }

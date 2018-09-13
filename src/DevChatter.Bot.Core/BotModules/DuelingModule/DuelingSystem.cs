@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Automation;
+using DevChatter.Bot.Core.BotModules.DuelingModule.Model;
+using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -39,6 +42,7 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
             if (duelResult.DuelIsOver)
             {
                 _ongoingDuels.Remove(existingDuel);
+                RecordDuelRecord(existingDuel, duelResult);
             }
 
             if (!string.IsNullOrWhiteSpace(duelResult.MessageForUser))
@@ -52,15 +56,48 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
             }
         }
 
-        private readonly List<Duel> _ongoingDuels = new List<Duel>();
-
-        public Duel GetChallenges(string challenger, string opponent)
+        private void RecordDuelRecord(Duel existingDuel, DuelResult duelResult)
         {
-            return _ongoingDuels
-                .SingleOrDefault(x => x.Opponent == challenger && x.Challenger == opponent);
+            // TODO: Get a Repo and store this stuff...
+
+
+            var duelPlayed = new DuelPlayed
+            {
+                DateDueled = DateTime.UtcNow,
+                DuelType = "RPS",
+                PlayerRecords = new List<DuelPlayerRecord>
+                {
+                    new DuelPlayerRecord
+                    {
+                        UserDisplayName = existingDuel.Challenger.DisplayName,
+                        UserId = existingDuel.Challenger.UserId,
+                        WinLossTie = GetWinLossTie(existingDuel.Challenger)
+                    },
+                    new DuelPlayerRecord
+                    {
+                        UserDisplayName = existingDuel.Opponent.DisplayName,
+                        UserId = existingDuel.Opponent.UserId,
+                        WinLossTie = GetWinLossTie(existingDuel.Opponent)
+                    },
+                }
+            };
+
+            string GetWinLossTie(ChatUser user)
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public bool RequestDuel(string challenger, string opponent)
+        private readonly List<Duel> _ongoingDuels = new List<Duel>();
+
+        public Duel GetChallenges(ChatUser challenger, ChatUser opponent)
+        {
+            return _ongoingDuels
+                .SingleOrDefault(x => x.Opponent == challenger
+                                      && x.Challenger == opponent);
+        }
+
+        public bool RequestDuel(ChatUser challenger, ChatUser opponent)
         {
             if (IsUserInAnotherDuel(challenger))
             {
@@ -74,22 +111,22 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
                 return false;
             }
 
-            _ongoingDuels.Add(new Duel { Challenger = challenger, Opponent = opponent.NoAt() });
+            _ongoingDuels.Add(new Duel { Challenger = challenger, Opponent = opponent });
             return true;
         }
 
-        private bool IsUserInAnotherDuel(string userDisplayName)
+        private bool IsUserInAnotherDuel(ChatUser chatUser)
         {
-            return _ongoingDuels.Any(x => x.Challenger.EqualsIns(userDisplayName)
-                                          || x.Opponent.EqualsIns(userDisplayName));
+            return _ongoingDuels.Any(x => x.Challenger == chatUser
+                                          || x.Opponent == chatUser);
         }
 
         public void Accept(Duel existingChallenge)
         {
             existingChallenge.Start();
             var startMessage = "Choose your weapon by replying to this with: Rock, Paper, Or Scissors.";
-            _chatClient.SendDirectMessage(existingChallenge.Challenger, startMessage);
-            _chatClient.SendDirectMessage(existingChallenge.Opponent, startMessage);
+            _chatClient.SendDirectMessage(existingChallenge.Challenger.DisplayName, startMessage);
+            _chatClient.SendDirectMessage(existingChallenge.Opponent.DisplayName, startMessage);
         }
     }
 }
