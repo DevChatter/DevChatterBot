@@ -48,9 +48,9 @@ namespace UnitTests.Core.Commands.ScheduleCommandTests
         }
 
         [Theory]
-        [InlineData("",   "Our usual schedule (at UTC +0) is: Tuesdays at 6:00 PM, Thursdays at 4:00 PM")]
-        [InlineData("-4", "Our usual schedule (at UTC -4) is: Tuesdays at 2:00 PM, Thursdays at 12:00 PM")]
-        [InlineData("+8", "Our usual schedule (at UTC +8) is: Wednesdays at 2:00 AM, Fridays at 12:00 AM")]
+        [InlineData("",   "Our usual schedule (at UTC +0) is: Tuesdays at 18:00, Thursdays at 16:00")]
+        [InlineData("-4", "Our usual schedule (at UTC -4) is: Tuesdays at 14:00, Thursdays at 12:00")]
+        [InlineData("+8", "Our usual schedule (at UTC +8) is: Wednesdays at 02:00, Fridays at 00:00")]
         public void SendMatchingScheduleMessage_GivenValidArguments(string argument, string expectedMessage)
         {
             List<string> arguments = new List<string>();
