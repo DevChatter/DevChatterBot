@@ -48,7 +48,7 @@ namespace DevChatter.Bot.Infra.Ef
                 .HasIndex(b => b.QuoteId);
 
             modelBuilder.Entity<CommandWordEntity>()
-                .HasIndex(b => b.CommandWord);
+                .HasIndex(b => b.CommandWord).IsUnique();
         }
     }
 
