@@ -4,7 +4,6 @@ namespace DevChatter.Bot.Core.Streaming
 {
     public interface IAnimationDisplay
     {
-        Task Hype();
-        Task Derp();
+        Task Blast(string imagePath);
     }
 }

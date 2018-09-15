@@ -56,17 +56,12 @@ var overlay = (function () {
       setTimeout(() => startHubConn(votingHubConn), 2000);
     });
 
-    function doHype() {
-      animations.blastImages('/images/DevchaHypeEmote.png');
-      window.requestAnimationFrame(animations.render);
-    }
-    function doDerp() {
-      animations.blastImages('/images/DevchaDerpEmote.png');
+    function doBlast(imagePath) {
+      animations.blastImages(imagePath);
       window.requestAnimationFrame(animations.render);
     }
 
-    botHubConn.on("Hype", doHype);
-    botHubConn.on("Derp", doDerp);
+    botHubConn.on("Blast", doBlast);
     votingHubConn.on("VoteStart",
       (choices) => {
         voting.voteStart(votingContext, choices);
