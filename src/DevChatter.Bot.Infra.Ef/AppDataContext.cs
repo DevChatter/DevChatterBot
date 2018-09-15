@@ -20,6 +20,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<QuizQuestion> QuizQuestions { get; set; }
         public DbSet<CommandSettingsEntity> CommandSettings { get; set; }
         public DbSet<TimezoneEntity> Timezones { get; set; }
+        public DbSet<BlastTypeEntity> BlastTypes { get; set; }
 
 
         public AppDataContext()
@@ -49,6 +50,9 @@ namespace DevChatter.Bot.Infra.Ef
 
             modelBuilder.Entity<CommandWordEntity>()
                 .HasIndex(b => b.CommandWord).IsUnique();
+
+            modelBuilder.Entity<BlastTypeEntity>()
+                .HasIndex(b => b.Name).IsUnique();
         }
     }
 
