@@ -15,15 +15,9 @@ namespace DevChatter.Bot.Infra.Web
             _botHubContext = botHubContext;
         }
 
-        public async Task Hype()
+        public async Task Blast(string imagePath)
         {
-            await _botHubContext.Clients.All.Hype();
+            await _botHubContext.Clients.All.Blast(imagePath);
         }
-
-        public async Task Derp()
-        {
-            await _botHubContext.Clients.All.Derp();
-        }
-
     }
 }

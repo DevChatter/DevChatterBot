@@ -1,5 +1,6 @@
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
@@ -10,12 +11,14 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class BlastCommand : BaseCommand
     {
+        private readonly IRepository _repository;
         private readonly IAnimationDisplayNotification _animationDisplayNotification;
 
         public BlastCommand(IRepository repository,
             IAnimationDisplayNotification animationDisplayNotification)
             : base(repository, UserRole.Everyone)
         {
+            _repository = repository;
             _animationDisplayNotification = animationDisplayNotification;
             Cooldown = TimeSpan.FromMinutes(2);
             string choiceText = "\"hype\" or \"derp\""; // create from operations later.
@@ -25,20 +28,16 @@ namespace DevChatter.Bot.Core.Commands
         protected override void HandleCommand(IChatClient chatClient,
             CommandReceivedEventArgs eventArgs)
         {
-            string thingToBlast = eventArgs?.Arguments?.ElementAtOrDefault(0);
-            switch (thingToBlast)
+            string blastName = eventArgs?.Arguments?.ElementAtOrDefault(0);
+            var blastType = _repository.Single(BlastTypeEntityPolicy.ByName(blastName));
+            if (blastType != null)
             {
-                case "hype":
-                    chatClient.SendMessage("Hype hype devchaHype !");
-                    _animationDisplayNotification.Hype();
-                    break;
-                case "derp":
-                    chatClient.SendMessage("Herp derp devchaDerp !");
-                    _animationDisplayNotification.Derp();
-                    break;
-                default:
-                    chatClient.SendMessage(HelpText);
-                    break;
+                chatClient.SendMessage(blastType.Message);
+                _animationDisplayNotification.Blast(blastType.ImagePath);
+            }
+            else
+            {
+                chatClient.SendMessage(HelpText);
             }
         }
     }
