@@ -44,7 +44,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
             var alias = new AliasEntity
             {
                 Word = newAlias,
-                CommandEntity = commandEntity,
+                Command = commandEntity,
             };
 
             for (int i = 0; i < arguments.Count; i++)
