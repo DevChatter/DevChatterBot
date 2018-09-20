@@ -41,7 +41,7 @@ namespace DevChatter.Bot.Core.Commands
                 .Select(a => (a.Word, (IList<string>)a.Arguments.OrderBy(arg => arg.Index)
                     .Select(arg => arg.Argument).ToList()))
                 .ToList();
-            cmdInfo.Add((command.CommandWord, new List<string>()));
+            cmdInfo.Insert(0, (command.CommandWord, new List<string>()));
 
             return cmdInfo;
         }
