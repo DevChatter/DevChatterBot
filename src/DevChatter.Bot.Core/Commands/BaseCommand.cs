@@ -35,14 +35,15 @@ namespace DevChatter.Bot.Core.Commands
 
         private List<(string Word, IList<string> Args)> RefreshCommandWords()
         {
-            List<CommandEntity> commandWordEntities = Repository
-                .List(CommandPolicy.ByType(GetType())) ?? new List<CommandEntity>();
-            var words = commandWordEntities
-                .OrderByDescending(x => x.IsPrimary)
-                .Select(cw => (cw.CommandWord, (IList<string>)cw.Arguments.Select(x => x.Argument).ToList()))
+            CommandEntity command = Repository
+                .Single(CommandPolicy.ByType(GetType())) ?? new CommandEntity();
+            var cmdInfo = command.Aliases
+                .Select(a => (a.Word, (IList<string>)a.Arguments.OrderBy(arg => arg.Index)
+                    .Select(arg => arg.Argument).ToList()))
                 .ToList();
+            cmdInfo.Add((command.CommandWord, new List<string>()));
 
-            return words;
+            return cmdInfo;
         }
 
         public void NotifyWordsModified() => CommandWords = RefreshCommandWords();

@@ -28,7 +28,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
             var newAlias = eventArgs.Arguments[2].ToLowerInvariant();
             var arguments = eventArgs.Arguments.Skip(3).ToList();
 
-            var typeName = _repository.Single(CommandPolicy.ByWord(word))?.FullTypeName;
+            var commandEntity = _repository.Single(CommandPolicy.ByWord(word));
             var existingWord = _repository.Single(CommandPolicy.ByWord(newAlias));
 
             if (string.IsNullOrEmpty(newAlias))
@@ -41,24 +41,25 @@ namespace DevChatter.Bot.Core.Commands.Operations
                 return $"The command word '!{existingWord.CommandWord}' already exists.";
             }
 
-            var newCommand = new CommandEntity
+            var alias = new AliasEntity
             {
-                CommandWord = newAlias,
-                FullTypeName = typeName,
-                IsPrimary = false
+                Word = newAlias,
+                CommandEntity = commandEntity,
             };
 
             for (int i = 0; i < arguments.Count; i++)
             {
-                newCommand.Arguments.Add(new AliasArgumentEntity
+                alias.Arguments.Add(new AliasArgumentEntity
                 {
                     Argument = arguments[i],
-                    CommandEntity = newCommand,
+                    Alias = alias,
                     Index = i
                 });
             }
 
-            _repository.Create(newCommand);
+            commandEntity.Aliases.Add(alias);
+
+            _repository.Update(commandEntity);
 
             return $"Created new command alias '!{newAlias}' for '!{word}'.";
         }

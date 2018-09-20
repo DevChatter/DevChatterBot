@@ -7,5 +7,6 @@ namespace DevChatter.Bot.Core.Data.Model
         public CommandEntity CommandEntity { get; set; }
         public string Word { get; set; }
         public List<AliasArgumentEntity> Arguments { get; set; }
+            = new List<AliasArgumentEntity>();
     }
 }

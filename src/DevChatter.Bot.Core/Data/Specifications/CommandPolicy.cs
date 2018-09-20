@@ -8,7 +8,7 @@ namespace DevChatter.Bot.Core.Data.Specifications
     {
         protected CommandPolicy(Expression<Func<CommandEntity, bool>> expression) : base(expression)
         {
-            AddInclude(cw => cw.Arguments);
+            AddInclude(cw => cw.Aliases); // TODO: Include Arguments as well.
         }
 
         public static CommandPolicy OnlyPrimaries()
