@@ -7,6 +7,6 @@ namespace DevChatter.Bot.Core.Data.Model
         public string CommandWord { get; set; }
         public string FullTypeName { get; set; }
         public bool IsPrimary { get; set; }
-        public List<AliasArgumentEntity> Arguments { get; set; } = new List<AliasArgumentEntity>();
+        public List<AliasEntity> Aliases { get; set; } = new List<AliasEntity>();
     }
 }
