@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace DevChatter.Bot.Core.Data.Model
 {
-    public class CommandWordEntity : DataEntity
+    public class CommandEntity : DataEntity
     {
         public string CommandWord { get; set; }
         public string FullTypeName { get; set; }

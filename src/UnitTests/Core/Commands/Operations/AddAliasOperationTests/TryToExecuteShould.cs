@@ -21,7 +21,7 @@ namespace UnitTests.Core.Commands.Operations.AddAliasOperationTests
 
             addAliasOperation.TryToExecute(commandReceivedEventArgs);
 
-            mockRepo.Verify(x => x.Create(It.IsAny<CommandWordEntity>()), Times.Never);
+            mockRepo.Verify(x => x.Create(It.IsAny<CommandEntity>()), Times.Never);
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace UnitTests.Core.Commands.Operations.AddAliasOperationTests
 
             addAliasOperation.TryToExecute(commandReceivedEventArgs);
 
-            mockRepo.Verify(x => x.Create(It.IsAny<CommandWordEntity>()), Times.Never);
+            mockRepo.Verify(x => x.Create(It.IsAny<CommandEntity>()), Times.Never);
         }
 
         [Fact]
@@ -42,12 +42,12 @@ namespace UnitTests.Core.Commands.Operations.AddAliasOperationTests
             var commandReceivedEventArgs = new CommandReceivedEventArgs {Arguments = new[] {"add", "foo", "bar"}};
             var mockRepo = new Mock<IRepository>();
             var addAliasOperation = new AddAliasOperation(mockRepo.Object);
-            var existingWord = new CommandWordEntity {CommandWord = Guid.NewGuid().ToString()};
+            var existingWord = new CommandEntity {CommandWord = Guid.NewGuid().ToString()};
             mockRepo.Setup(x => x.Single(It.IsAny<CommandWordPolicy>())).Returns(existingWord);
 
             string message = addAliasOperation.TryToExecute(commandReceivedEventArgs);
 
-            mockRepo.Verify(x => x.Create(It.IsAny<CommandWordEntity>()), Times.Never);
+            mockRepo.Verify(x => x.Create(It.IsAny<CommandEntity>()), Times.Never);
             message.Should().Contain(existingWord.CommandWord);
         }
 
@@ -58,15 +58,15 @@ namespace UnitTests.Core.Commands.Operations.AddAliasOperationTests
             var commandReceivedEventArgs = new CommandReceivedEventArgs {Arguments = new[] {"add", "foo", newAlias}};
             var mockRepo = new Mock<IRepository>();
             var addAliasOperation = new AddAliasOperation(mockRepo.Object);
-            var existingWord = new CommandWordEntity {CommandWord = Guid.NewGuid().ToString()};
+            var existingWord = new CommandEntity {CommandWord = Guid.NewGuid().ToString()};
             mockRepo.Setup(x => x.Single(It.IsAny<CommandWordPolicy>()))
                 .Returns(existingWord); // call for type to alias
             mockRepo.Setup(x => x.Single(It.IsAny<CommandWordPolicy>()))
-                .Returns(null as CommandWordEntity); // check for existing
+                .Returns(null as CommandEntity); // check for existing
 
             string message = addAliasOperation.TryToExecute(commandReceivedEventArgs);
 
-            mockRepo.Verify(x => x.Create(It.IsAny<CommandWordEntity>()), Times.Once);
+            mockRepo.Verify(x => x.Create(It.IsAny<CommandEntity>()), Times.Once);
             message.Should().Contain(newAlias);
         }
     }

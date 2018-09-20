@@ -13,7 +13,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<QuoteEntity> QuoteEntities { get; set; }
         public DbSet<ChatUser> ChatUsers { get; set; }
         public DbSet<StreamerEntity> Streamers { get; set; }
-        public DbSet<CommandWordEntity> CommandWords { get; set; }
+        public DbSet<CommandEntity> CommandWords { get; set; }
         public DbSet<HangmanWord> HangmanWords { get; set; }
         public DbSet<ScheduleEntity> ScheduleEntities { get; set; }
         public DbSet<CommandUsageEntity> CommandUsages { get; set; }
@@ -48,7 +48,7 @@ namespace DevChatter.Bot.Infra.Ef
             modelBuilder.Entity<QuoteEntity>()
                 .HasIndex(b => b.QuoteId);
 
-            modelBuilder.Entity<CommandWordEntity>()
+            modelBuilder.Entity<CommandEntity>()
                 .HasIndex(b => b.CommandWord).IsUnique();
 
             modelBuilder.Entity<BlastTypeEntity>()

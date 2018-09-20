@@ -4,9 +4,9 @@ using DevChatter.Bot.Core.Data.Model;
 
 namespace DevChatter.Bot.Core.Data.Specifications
 {
-    public class CommandWordPolicy : DataItemPolicy<CommandWordEntity>
+    public class CommandWordPolicy : DataItemPolicy<CommandEntity>
     {
-        protected CommandWordPolicy(Expression<Func<CommandWordEntity, bool>> expression) : base(expression)
+        protected CommandWordPolicy(Expression<Func<CommandEntity, bool>> expression) : base(expression)
         {
             AddInclude(cw => cw.Arguments);
         }

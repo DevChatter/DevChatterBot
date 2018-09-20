@@ -46,9 +46,9 @@ namespace UnitTests.Core.Events.CommandHandlerTests
         private static IRepository GetTestRepository()
         {
             var mockRepo = new Mock<IRepository>();
-            var commandWordEntities = new List<CommandWordEntity>
+            var commandWordEntities = new List<CommandEntity>
             {
-                new CommandWordEntity
+                new CommandEntity
                 {
                     CommandWord = "Fake",
                     FullTypeName = "UnitTests.Fakes.FakeCommand"

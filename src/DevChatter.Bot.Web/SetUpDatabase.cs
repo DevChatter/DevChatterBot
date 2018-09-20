@@ -216,7 +216,7 @@ namespace DevChatter.Bot.Web
             };
         }
 
-        private static (List<CommandWordEntity> WordsToAdd, List<CommandWordEntity> WordsToRemove) GetCommandWordChanges(IRepository repository)
+        private static (List<CommandEntity> WordsToAdd, List<CommandEntity> WordsToRemove) GetCommandWordChanges(IRepository repository)
         {
             const string conventionSuffix = "Command";
 
@@ -234,11 +234,11 @@ namespace DevChatter.Bot.Web
                 .Where(x => x.FullName.EndsWith(conventionSuffix))
                 .ToList();
 
-            List<CommandWordEntity> commandWordEntities = repository.List(CommandWordPolicy.All());
+            List<CommandEntity> commandWordEntities = repository.List(CommandWordPolicy.All());
             List<string> commandTypes = commandWordEntities.Select(x => x.FullTypeName).ToList();
 
-            List<CommandWordEntity> missingDefaults = concreteCommands
-                .Select(commandType => new CommandWordEntity
+            List<CommandEntity> missingDefaults = concreteCommands
+                .Select(commandType => new CommandEntity
                 {
                     CommandWord = commandType.Name.Substring(0, commandType.Name.Length - conventionSuffix.Length),
                     FullTypeName = commandType.FullName,

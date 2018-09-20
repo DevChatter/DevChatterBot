@@ -41,7 +41,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
                 return $"The command word '!{existingWord.CommandWord}' already exists.";
             }
 
-            var newCommand = new CommandWordEntity
+            var newCommand = new CommandEntity
             {
                 CommandWord = newAlias,
                 FullTypeName = typeName,
@@ -53,7 +53,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
                 newCommand.Arguments.Add(new AliasArgumentEntity
                 {
                     Argument = arguments[i],
-                    CommandWordEntity = newCommand,
+                    CommandEntity = newCommand,
                     Index = i
                 });
             }
