@@ -242,7 +242,6 @@ namespace DevChatter.Bot.Web
                 {
                     CommandWord = commandType.Name.Substring(0, commandType.Name.Length - conventionSuffix.Length),
                     FullTypeName = commandType.FullName,
-                    IsPrimary = true
                 })
                 .Where(x => !commandTypes.Contains(x.FullTypeName))
                 .ToList();
