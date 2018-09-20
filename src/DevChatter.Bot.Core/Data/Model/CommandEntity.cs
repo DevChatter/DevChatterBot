@@ -8,5 +8,6 @@ namespace DevChatter.Bot.Core.Data.Model
         public string FullTypeName { get; set; }
         public List<AliasEntity> Aliases { get; set; } = new List<AliasEntity>();
         public bool IsEnabled { get; set; } = true;
+        public UserRole RequiredRole { get; set; }
     }
 }
