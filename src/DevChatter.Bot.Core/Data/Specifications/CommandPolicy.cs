@@ -14,7 +14,7 @@ namespace DevChatter.Bot.Core.Data.Specifications
 
         public static CommandPolicy ByType(Type type)
         {
-            return new CommandPolicy(x => x.FullTypeName == type.FullName);
+            return new CommandPolicy(x => x.FullTypeName == type.FullName && x.IsEnabled);
         }
 
         public static CommandPolicy ByWord(string word)
