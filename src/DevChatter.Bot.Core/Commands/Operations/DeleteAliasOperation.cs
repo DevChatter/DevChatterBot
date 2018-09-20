@@ -22,21 +22,21 @@ namespace DevChatter.Bot.Core.Commands.Operations
         {
             var word = eventArgs?.Arguments?.ElementAtOrDefault(1)?.ToLowerInvariant();
 
-            var existingWord = _repository.Single(CommandPolicy.ByWord(word));
+            var commandEntity = _repository.Single(CommandPolicy.ByWord(word));
 
-            if (existingWord == null)
+            if (commandEntity == null)
             {
                 return $"The command word '!{word}' doesn't exist.";
             }
 
-            if (existingWord.IsPrimary)
+            int numberRemoved = commandEntity.Aliases.RemoveAll(a => a.Word == word);
+            if (numberRemoved != 1)
             {
-                return "The primary command cannot be deleted.";
+                return $"Something went wrong when trying to delete {word}.";
             }
+            _repository.Update(commandEntity);
 
-            _repository.Remove(existingWord);
-
-            return $"The command '!{existingWord.CommandWord}' has been deleted.";
+            return $"The command '!{commandEntity.CommandWord}' has been deleted.";
         }
     }
 }

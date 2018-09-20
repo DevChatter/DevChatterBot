@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using DevChatter.Bot.Core.Data.Model;
 
@@ -11,11 +12,6 @@ namespace DevChatter.Bot.Core.Data.Specifications
             AddInclude(cw => cw.Aliases); // TODO: Include Arguments as well.
         }
 
-        public static CommandPolicy OnlyPrimaries()
-        {
-            return new CommandPolicy(x => x.IsPrimary);
-        }
-
         public static CommandPolicy ByType(Type type)
         {
             return new CommandPolicy(x => x.FullTypeName == type.FullName);
@@ -23,7 +19,8 @@ namespace DevChatter.Bot.Core.Data.Specifications
 
         public static CommandPolicy ByWord(string word)
         {
-            return new CommandPolicy(x => x.CommandWord == word);
+            return new CommandPolicy(x => x.CommandWord == word
+                                          || x.Aliases.Any(a => a.Word == word));
         }
     }
 }
