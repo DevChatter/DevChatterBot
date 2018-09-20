@@ -23,7 +23,7 @@ namespace UnitTests.Core.Commands.Operations.DeleteCommandOperationTests
             _simpleCommand = new SimpleCommand("foo", "bar");
 
             _repositoryMock = new Mock<IRepository>();
-            _repositoryMock.Setup(x => x.Single(It.IsAny<CommandPolicy>())).Returns(_simpleCommand);
+            _repositoryMock.Setup(x => x.Single(It.IsAny<SimpleCommandPolicy>())).Returns(_simpleCommand);
 
             _allCommands = new List<IBotCommand>
             {
