@@ -41,7 +41,7 @@ namespace DevChatter.Bot.Core.Commands
                 return;
             }
 
-            var typeName = Repository.Single(CommandWordPolicy.ByWord(word))?.FullTypeName;
+            var typeName = Repository.Single(CommandPolicy.ByWord(word))?.FullTypeName;
 
             if (typeName == null)
             {

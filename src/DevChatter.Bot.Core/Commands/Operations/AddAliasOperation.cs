@@ -28,8 +28,8 @@ namespace DevChatter.Bot.Core.Commands.Operations
             var newAlias = eventArgs.Arguments[2].ToLowerInvariant();
             var arguments = eventArgs.Arguments.Skip(3).ToList();
 
-            var typeName = _repository.Single(CommandWordPolicy.ByWord(word))?.FullTypeName;
-            var existingWord = _repository.Single(CommandWordPolicy.ByWord(newAlias));
+            var typeName = _repository.Single(CommandPolicy.ByWord(word))?.FullTypeName;
+            var existingWord = _repository.Single(CommandPolicy.ByWord(newAlias));
 
             if (string.IsNullOrEmpty(newAlias))
             {

@@ -55,7 +55,7 @@ namespace UnitTests.Core.Events.CommandHandlerTests
                 }
             };
 
-            mockRepo.Setup(x => x.List(It.IsAny<CommandWordPolicy>())).Returns(commandWordEntities);
+            mockRepo.Setup(x => x.List(It.IsAny<CommandPolicy>())).Returns(commandWordEntities);
 
             return mockRepo.Object;
         }

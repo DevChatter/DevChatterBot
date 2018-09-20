@@ -22,7 +22,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
         {
             var word = eventArgs?.Arguments?.ElementAtOrDefault(1)?.ToLowerInvariant();
 
-            var existingWord = _repository.Single(CommandWordPolicy.ByWord(word));
+            var existingWord = _repository.Single(CommandPolicy.ByWord(word));
 
             if (existingWord == null)
             {

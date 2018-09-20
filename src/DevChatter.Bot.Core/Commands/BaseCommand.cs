@@ -36,7 +36,7 @@ namespace DevChatter.Bot.Core.Commands
         private List<(string Word, IList<string> Args)> RefreshCommandWords()
         {
             List<CommandEntity> commandWordEntities = Repository
-                .List(CommandWordPolicy.ByType(GetType())) ?? new List<CommandEntity>();
+                .List(CommandPolicy.ByType(GetType())) ?? new List<CommandEntity>();
             var words = commandWordEntities
                 .OrderByDescending(x => x.IsPrimary)
                 .Select(cw => (cw.CommandWord, (IList<string>)cw.Arguments.Select(x => x.Argument).ToList()))

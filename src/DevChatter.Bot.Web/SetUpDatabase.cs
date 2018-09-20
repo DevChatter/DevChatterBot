@@ -234,8 +234,8 @@ namespace DevChatter.Bot.Web
                 .Where(x => x.FullName.EndsWith(conventionSuffix))
                 .ToList();
 
-            List<CommandEntity> commandWordEntities = repository.List(CommandWordPolicy.All());
-            List<string> commandTypes = commandWordEntities.Select(x => x.FullTypeName).ToList();
+            List<CommandEntity> commandEntities = repository.List(CommandPolicy.All());
+            List<string> commandTypes = commandEntities.Select(x => x.FullTypeName).ToList();
 
             List<CommandEntity> missingDefaults = concreteCommands
                 .Select(commandType => new CommandEntity
@@ -247,7 +247,7 @@ namespace DevChatter.Bot.Web
                 .Where(x => !commandTypes.Contains(x.FullTypeName))
                 .ToList();
 
-            var entitiesToRemove = commandWordEntities.Where(x => concreteCommands.All(c => c.FullName != x.FullTypeName)).ToList();
+            var entitiesToRemove = commandEntities.Where(x => concreteCommands.All(c => c.FullName != x.FullTypeName)).ToList();
             return (missingDefaults, entitiesToRemove);
         }
     }
