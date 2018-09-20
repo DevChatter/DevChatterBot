@@ -9,7 +9,6 @@ using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Games.Roulette;
 using DevChatter.Bot.Core.Settings;
 using DevChatter.Bot.Infra.Ef;
-using DevChatter.Bot.Infra.Web;
 using Microsoft.EntityFrameworkCore;
 using QuizQuestion = DevChatter.Bot.Core.Data.Model.QuizQuestion;
 
@@ -71,14 +70,27 @@ namespace DevChatter.Bot.Web
 
             CreateDefaultSettingsIfNeeded(repository);
 
-            var commandWordChanges = GetCommandWordChanges(repository);
-            if (commandWordChanges.AddList.Any())
+            UpdateCommandData(repository);
+        }
+
+        private static void UpdateCommandData(IRepository repository)
+        {
+            try
             {
-                repository.Create(commandWordChanges.AddList);
+                var (wordsToAdd, wordsToRemove) = GetCommandWordChanges(repository);
+                if (wordsToAdd.Any())
+                {
+                    repository.Create(wordsToAdd);
+                }
+
+                if (wordsToRemove.Any())
+                {
+                    repository.Remove(wordsToRemove);
+                }
             }
-            if (commandWordChanges.RemoveList.Any())
+            catch (Exception e)
             {
-                repository.Remove(commandWordChanges.RemoveList);
+                Console.WriteLine(e);
             }
         }
 
@@ -204,7 +216,7 @@ namespace DevChatter.Bot.Web
             };
         }
 
-        private static (List<CommandWordEntity> AddList, List<CommandWordEntity> RemoveList) GetCommandWordChanges(IRepository repository)
+        private static (List<CommandWordEntity> WordsToAdd, List<CommandWordEntity> WordsToRemove) GetCommandWordChanges(IRepository repository)
         {
             const string conventionSuffix = "Command";
 
