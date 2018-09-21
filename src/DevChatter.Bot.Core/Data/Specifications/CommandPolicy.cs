@@ -9,7 +9,8 @@ namespace DevChatter.Bot.Core.Data.Specifications
     {
         protected CommandPolicy(Expression<Func<CommandEntity, bool>> expression) : base(expression)
         {
-            AddInclude(cw => cw.Aliases); // TODO: Include Arguments as well.
+            AddInclude(cw => cw.Aliases);
+            AddInclude($"{nameof(CommandEntity.Aliases)}.{nameof(AliasEntity.Arguments)}");
         }
 
         public static CommandPolicy ByType(Type type)

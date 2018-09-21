@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevChatter.Bot.Infra.Ef
 {
@@ -71,8 +71,15 @@ namespace DevChatter.Bot.Infra.Ef
 
         private IQueryable<T> SetWithIncludes<T>(ISpecification<T> spec) where T : DataEntity
         {
-            return spec?.Includes.Aggregate(_db.Set<T>().AsQueryable(),
-                (queryable, include) => queryable.Include(include));
+            var withExpressionIncludes = spec?.Includes
+                .Aggregate(_db.Set<T>().AsQueryable(),
+                    (queryable, include) => queryable.Include(include));
+
+            var withAllIncludes = spec?.IncludeStrings
+                .Aggregate(withExpressionIncludes,
+                    (queryable, include) => queryable.Include(include));
+
+            return withAllIncludes;
         }
     }
 }
