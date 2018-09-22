@@ -59,14 +59,13 @@ namespace UnitTests.Core.Commands.Operations.AddAliasOperationTests
             var mockRepo = new Mock<IRepository>();
             var addAliasOperation = new AddAliasOperation(mockRepo.Object);
             var existingWord = new CommandEntity {CommandWord = Guid.NewGuid().ToString()};
-            mockRepo.Setup(x => x.Single(It.IsAny<CommandPolicy>()))
-                .Returns(existingWord); // call for type to alias
-            mockRepo.Setup(x => x.Single(It.IsAny<CommandPolicy>()))
+            mockRepo.SetupSequence(x => x.Single(It.IsAny<CommandPolicy>()))
+                .Returns(existingWord) // call for type to alias
                 .Returns(null as CommandEntity); // check for existing
 
             string message = addAliasOperation.TryToExecute(commandReceivedEventArgs);
 
-            mockRepo.Verify(x => x.Create(It.IsAny<CommandEntity>()), Times.Once);
+            mockRepo.Verify(x => x.Update(It.IsAny<CommandEntity>()), Times.Once);
             message.Should().Contain(newAlias);
         }
     }
