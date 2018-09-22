@@ -1,7 +1,6 @@
 using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
@@ -9,7 +8,7 @@ namespace UnitTests.Fakes
 {
     public class FakeCommand : BaseCommand
     {
-        public FakeCommand(IRepository repository, bool isEnabled)
+        public FakeCommand(IRepository repository)
             : base(repository)
         {
             NotifyWordsModified();
