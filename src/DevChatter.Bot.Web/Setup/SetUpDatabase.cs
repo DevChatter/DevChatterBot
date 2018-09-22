@@ -69,28 +69,8 @@ namespace DevChatter.Bot.Web.Setup
 
             CreateDefaultSettingsIfNeeded(repository);
 
-            UpdateCommandData(repository);
-        }
-
-        private static void UpdateCommandData(IRepository repository)
-        {
-            try
-            {
-                var (wordsToAdd, wordsToRemove) = GetCommandWordChanges(repository);
-                if (wordsToAdd.Any())
-                {
-                    repository.Create(wordsToAdd);
-                }
-
-                if (wordsToRemove.Any())
-                {
-                    repository.Remove(wordsToRemove);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            // TODO: Remove static call, so it's more testable.
+            SetUpCommandData.UpdateCommandData(repository);
         }
 
         private static void CreateDefaultSettingsIfNeeded(IRepository repository)
@@ -213,41 +193,6 @@ namespace DevChatter.Bot.Web.Setup
                     Text = "I swear it's not rigged!"
                 },
             };
-        }
-
-        private static (List<CommandEntity> WordsToAdd, List<CommandEntity> WordsToRemove) GetCommandWordChanges(IRepository repository)
-        {
-            const string conventionSuffix = "Command";
-
-            // Access the assembly to make sure it's loaded
-            Assembly assembly = typeof(BlastCommand).Assembly;
-
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            IEnumerable<TypeInfo> allCommandTypes = assemblies.SelectMany(x => x.DefinedTypes);
-
-            var concreteCommands = allCommandTypes
-                .Where(x => typeof(IBotCommand).IsAssignableFrom(x))
-                .Where(x => !x.IsAbstract)
-                .Where(x => !x.IsSubclassOf(typeof(DataEntity)))
-                .Where(x => x.FullName.EndsWith(conventionSuffix))
-                .ToList();
-
-            List<CommandEntity> commandEntities = repository.List(CommandPolicy.All());
-            List<string> commandTypes = commandEntities.Select(x => x.FullTypeName).ToList();
-
-            List<CommandEntity> missingDefaults = concreteCommands
-                .Select(commandType => new CommandEntity
-                {
-                    CommandWord = commandType.Name.Substring(0, commandType.Name.Length - conventionSuffix.Length),
-                    FullTypeName = commandType.FullName,
-                    // TODO: Add the default RoleRequired
-                })
-                .Where(x => !commandTypes.Contains(x.FullTypeName))
-                .ToList();
-
-            var entitiesToRemove = commandEntities.Where(x => concreteCommands.All(c => c.FullName != x.FullTypeName)).ToList();
-            return (missingDefaults, entitiesToRemove);
         }
     }
 }
