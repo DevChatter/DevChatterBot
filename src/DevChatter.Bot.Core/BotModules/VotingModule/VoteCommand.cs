@@ -16,7 +16,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
         private readonly List<BaseCommandOperation> _operations
             = new List<BaseCommandOperation>();
         public VoteCommand(IRepository repository, VotingSystem votingSystem)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
             _votingSystem = votingSystem;
             _operations.Add(new StartVoteOperation(votingSystem));

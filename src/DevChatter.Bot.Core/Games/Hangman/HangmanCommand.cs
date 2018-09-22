@@ -28,13 +28,9 @@ namespace DevChatter.Bot.Core.Games.Hangman
         public IGame Game => _hangmanGame;
 
         public HangmanCommand(IRepository repository, HangmanGame hangmanGame)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
-            Cooldown = TimeSpan.FromMinutes(10);
-
             _hangmanGame = hangmanGame;
-            HelpText =
-                "Use \"!hangman\" to start a game. Use \"!hangman x\" to guess a letter. Use \"!hangman word\" to guess a word.";
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

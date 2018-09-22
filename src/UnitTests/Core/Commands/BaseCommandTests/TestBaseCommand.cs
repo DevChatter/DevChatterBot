@@ -9,7 +9,7 @@ namespace UnitTests.Core.Commands.BaseCommandTests
     public class TestBaseCommand : BaseCommand
     {
         public TestBaseCommand(IRepository repository)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
         }
 

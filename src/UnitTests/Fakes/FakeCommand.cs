@@ -10,7 +10,7 @@ namespace UnitTests.Fakes
     public class FakeCommand : BaseCommand
     {
         public FakeCommand(IRepository repository, bool isEnabled)
-            : base(repository, UserRole.Everyone, isEnabled)
+            : base(repository)
         {
             NotifyWordsModified();
         }

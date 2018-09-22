@@ -17,23 +17,21 @@ namespace DevChatter.Bot.Core.Commands
     {
         protected readonly IRepository Repository;
         protected DateTimeOffset _timeCommandLastInvoked;
-        private readonly bool _isEnabled;
-        public UserRole RoleRequired { get; }
-        public TimeSpan Cooldown { get; protected set; } = TimeSpan.Zero;
+        private bool _isEnabled;
+        public UserRole RoleRequired { get; private set; }
+        public TimeSpan Cooldown { get; private set; } = TimeSpan.Zero;
         public string PrimaryCommandText => CommandWords.FirstOrDefault().Word;
         public IList<(string Word, IList<string> Args)> CommandWords { get; private set; }
-        public string HelpText { get; protected set; }
+        public string HelpText { get; private set; }
         public virtual string FullHelpText => HelpText;
 
-        protected BaseCommand(IRepository repository, UserRole roleRequired, bool isEnabled = true)
+        protected BaseCommand(IRepository repository)
         {
             Repository = repository;
-            RoleRequired = roleRequired;
-            _isEnabled = isEnabled;
-            CommandWords = RefreshCommandWords();
+            RefreshCommandData();
         }
 
-        private List<(string Word, IList<string> Args)> RefreshCommandWords()
+        private void RefreshCommandData()
         {
             CommandEntity command = Repository
                 .Single(CommandPolicy.ByType(GetType())) ?? new CommandEntity();
@@ -43,10 +41,14 @@ namespace DevChatter.Bot.Core.Commands
                 .ToList();
             cmdInfo.Insert(0, (command.CommandWord, new List<string>()));
 
-            return cmdInfo;
+            RoleRequired = command.RequiredRole;
+            _isEnabled = command.IsEnabled;
+            HelpText = command.HelpText;
+            Cooldown = command.Cooldown;
+            CommandWords = cmdInfo;
         }
 
-        public void NotifyWordsModified() => CommandWords = RefreshCommandWords();
+        public void NotifyWordsModified() => RefreshCommandData();
 
         public bool ShouldExecute(string commandText, out IList<string> args)
         {
