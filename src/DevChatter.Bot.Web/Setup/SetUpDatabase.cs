@@ -10,9 +10,8 @@ using DevChatter.Bot.Core.Games.Roulette;
 using DevChatter.Bot.Core.Settings;
 using DevChatter.Bot.Infra.Ef;
 using Microsoft.EntityFrameworkCore;
-using QuizQuestion = DevChatter.Bot.Core.Data.Model.QuizQuestion;
 
-namespace DevChatter.Bot.Web
+namespace DevChatter.Bot.Web.Setup
 {
     public static class SetUpDatabase
     {
@@ -242,6 +241,7 @@ namespace DevChatter.Bot.Web
                 {
                     CommandWord = commandType.Name.Substring(0, commandType.Name.Length - conventionSuffix.Length),
                     FullTypeName = commandType.FullName,
+                    // TODO: Add the default RoleRequired
                 })
                 .Where(x => !commandTypes.Contains(x.FullTypeName))
                 .ToList();
