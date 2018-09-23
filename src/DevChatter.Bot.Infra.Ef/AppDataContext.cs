@@ -54,6 +54,9 @@ namespace DevChatter.Bot.Infra.Ef
             modelBuilder.Entity<AliasEntity>()
                 .HasIndex(b => b.Word).IsUnique();
 
+            modelBuilder.Entity<CommandWordEntity>()
+                .HasIndex(b => b.CommandWord).IsUnique();
+
             modelBuilder.Entity<BlastTypeEntity>()
                 .HasIndex(b => b.Name).IsUnique();
         }

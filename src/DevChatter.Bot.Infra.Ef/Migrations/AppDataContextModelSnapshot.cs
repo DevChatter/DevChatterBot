@@ -177,6 +177,26 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     b.ToTable("CommandUsages");
                 });
 
+            modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.CommandWordEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CommandWord");
+
+                    b.Property<string>("FullTypeName");
+
+                    b.Property<bool>("IsPrimary");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommandWord")
+                        .IsUnique()
+                        .HasFilter("[CommandWord] IS NOT NULL");
+
+                    b.ToTable("CommandWords");
+                });
+
             modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.HangmanWord", b =>
                 {
                     b.Property<Guid>("Id")
