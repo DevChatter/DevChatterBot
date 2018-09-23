@@ -86,13 +86,23 @@ var hangman = (function () {
     ctx.fillText("You win!", 10, 300);
   };
 
+  var displayGuessedLetters = function (ctx, guessedLetters) {
+    ctx.fillStyle = "#cccccc";
+    ctx.fillRect(300, 0, 480, 30);
+    ctx.fillStyle = "#000000";
+    ctx.font = "20px Arial";
+    ctx.fillText(guessedLetters, 310, 20);
+    ctx.fillStyle = "#cccccc";
+  };
+
   return {
     startGame: startGame,
     endGame: endGame,
     wrongAnswer: wrongAnswer,
     drawGallows: drawGallows,
     displayGameOver: displayGameOver,
-    displayVictory: displayVictory
+    displayVictory: displayVictory,
+    displayGuessedLetters: displayGuessedLetters
   };
 
 }());

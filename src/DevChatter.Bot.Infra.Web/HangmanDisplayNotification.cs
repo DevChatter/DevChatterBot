@@ -36,5 +36,10 @@ namespace DevChatter.Bot.Infra.Web
         {
             await _hangmanHubContext.Clients.All.HangmanWrongAnswer();
         }
+
+        public async Task HangmanShowGuessedLetters(string message)
+        {
+            await _hangmanHubContext.Clients.All.HangmanShowGuessedLetters(message);
+        }
     }
 }

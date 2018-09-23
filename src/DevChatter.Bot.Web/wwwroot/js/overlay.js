@@ -97,7 +97,10 @@ var overlay = (function () {
         hangman.endGame(hangmanContext);
         doHype();
       });
-
+    hangmanHubConn.on("HangmanShowGuessedLetters",
+      async (guessedLetters) => {
+        hangman.displayGuessedLetters(hangmanContext, guessedLetters);
+      });
   };
 }());
 
