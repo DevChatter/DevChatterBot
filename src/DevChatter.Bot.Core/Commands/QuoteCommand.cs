@@ -23,11 +23,8 @@ namespace DevChatter.Bot.Core.Commands
         });
 
         public QuoteCommand(IRepository repository)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
-            HelpText = $"Use !{PrimaryCommandText} to get a random quote, use !{PrimaryCommandText} [number] to get"
-                       + $" a specific quote, or a moderator may use !{PrimaryCommandText} add \"Quote here.\" <author> to add"
-                       + $" a quote. For example, \"!{PrimaryCommandText} add \"Oh what a day!\" Brendoneus creates a new quote.";
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

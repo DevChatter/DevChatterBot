@@ -14,10 +14,9 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IServiceProvider _provider;
 
         public HelpCommand(IRepository repository, IServiceProvider provider)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
             _provider = provider;
-            HelpText = "I think you figured this out already...";
         }
 
         private IList<IBotCommand> _allCommands;

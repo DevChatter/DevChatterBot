@@ -16,13 +16,10 @@ namespace DevChatter.Bot.Core.Commands
 
         public BlastCommand(IRepository repository,
             IAnimationDisplayNotification animationDisplayNotification)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
             _repository = repository;
             _animationDisplayNotification = animationDisplayNotification;
-            Cooldown = TimeSpan.FromMinutes(2);
-            string choiceText = "\"hype\" or \"derp\""; // create from operations later.
-            HelpText = $"Use \"!blast [choice]\". Replace [choice] with one of: {choiceText} ";
         }
 
         protected override void HandleCommand(IChatClient chatClient,

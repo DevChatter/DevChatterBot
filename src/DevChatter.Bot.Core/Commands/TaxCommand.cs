@@ -12,10 +12,9 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IChatUserCollection _chatUserCollection;
 
         public TaxCommand(IRepository repository, IChatUserCollection chatUserCollection)
-            : base(repository, UserRole.Mod)
+            : base(repository)
         {
             _chatUserCollection = chatUserCollection;
-            HelpText = "Take coins from someone. Example !tax AridTag 10";
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

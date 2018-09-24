@@ -1,0 +1,37 @@
+@page
+@model DevChatter.Bot.Web.Pages.Commands.Manage.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CommandEntity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CommandEntity.CommandWord)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CommandEntity.CommandWord)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CommandEntity.FullTypeName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CommandEntity.FullTypeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CommandEntity.IsEnabled)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CommandEntity.IsEnabled)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.CommandEntity.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

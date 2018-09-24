@@ -44,7 +44,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
 
             try
             {
-                if (_repository.Single(CommandPolicy.ByCommandText(command.CommandText)) != null)
+                if (_repository.Single(SimpleCommandPolicy.ByCommandText(command.CommandText)) != null)
                 {
                     return $"There's already a command using !{command.CommandText}";
                 }

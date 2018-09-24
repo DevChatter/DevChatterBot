@@ -15,11 +15,10 @@ namespace DevChatter.Bot.Core.Commands
 
         public UptimeCommand(IRepository repository, IStreamingPlatform streamingPlatform,
             ILoggerAdapter<UptimeCommand> logger)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
             _streamingPlatform = streamingPlatform;
             _logger = logger;
-            HelpText = "Just type \"!uptime\" and it will tell you how long we've been streaming.";
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

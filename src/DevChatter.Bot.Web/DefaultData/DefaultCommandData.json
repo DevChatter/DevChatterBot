@@ -1,0 +1,104 @@
+{
+  "Commands": [
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Games.Roulette.RouletteCommand",
+      "HelpText": "Just try the command and see what happens.",
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Games.RockPaperScissors.RockPaperScissorsCommand",
+      "HelpText": "Use \"!rps\" to join randomly. Use \"!rps rock\" to select rock. Bot will eventually choose randomly and award the winners.",
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Games.Quiz.QuizCommand",
+      "HelpText": "No help text yet.",
+      "Cooldown": "00:10:00"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Games.Heist.HeistCommand",
+      "HelpText": "But it's so intuitive... Sorry, help is coming soon...",
+      "Cooldown": "00:10:00"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Games.Hangman.HangmanCommand",
+      "HelpText": "Use \"!hangman\" to start a game. Use \"!hangman x\" to guess a letter. Use \"!hangman word\" to guess a word.",
+      "Cooldown": "00:10:00"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.AliasCommand",
+      "HelpText": "Use !alias add <existing> <new> to add a new command name, or !alias del <existing> to delete a command name. For example, \"!alias add hangman hm\" creates a new shorthand for Hangman.",
+      "RequiredRole": "Mod"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.BlastCommand",
+      "HelpText": "Use \"!blast [choice]\". Replace [choice] with one of: {choiceText} ",
+      "Cooldown": "00:02:00"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.BonusCommand",
+      "HelpText": "Use the bonus command to give free coins to someone example: !bonus sadukie 50",
+      "RequiredRole": "Mod"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.CoinsCommand",
+      "HelpText": "Use \"!coins\" to see your current coin total, or use \"!coins SomeoneElse\" to see another user's coin total."
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.CommandsCommand",
+      "HelpText": "Use this command to see available commands. Mods can use it to make new commands, using \"!Commands add hello \"Hello world!\" Everyone\""
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.GiveCommand",
+      "HelpText": "Give coins to someone. Example !give LNGgrinds 10"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.HelpCommand",
+      "HelpText": "I think you figured this out already..."
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.QuoteCommand",
+      "HelpText": "\"Use !Quote to get a random quote, use !Quote [number] to get a specific quote, or a moderator may use !Quote add \"Quote here.\" <author> to add a quote. For example, \"!Quote add \"Oh what a day!\" Brendoneus\" creates a new quote.\""
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.ScheduleCommand",
+      "HelpText": "To see our schedule just type !schedule followed by either a timezone offset of a city name. Example !schedule -4 or !schedule Cleveland"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.ShoutOutCommand",
+      "HelpText": "Use \"!ShoutOut @DevChatter\" or \"!ShoutOut DevChatter\"",
+      "RequiredRole": "Mod"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.StreamsCommand",
+      "HelpText": "Use \"!Streams\" to shout out the streams we like! To add a new one use \"!Streams add channelName\", but it only works for mods.",
+      "RequiredRole": "Mod"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.TaxCommand",
+      "HelpText": "Take coins from someone. Example !tax AridTag 10",
+      "RequiredRole": "Mod"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.TopCommand",
+      "HelpText": "List the biggest ballers in the chat!",
+      "Cooldown": "00:01:00"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.UptimeCommand",
+      "HelpText": "Just type \"!uptime\" and it will tell you how long we've been streaming.",
+      "Cooldown": "00:01:00"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.ViewersCommand",
+      "HelpText": "Shows the current viewer count.",
+      "Cooldown": "00:02:00"
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.BotModules.VotingModule.VoteCommand",
+      "HelpText": "This needs helps text."
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.BotModules.DuelingModule.DuelCommand",
+      "HelpText": "Use \"!duel Brendoneus\" to start a duel with Brendoneus. Once it begins you will each be whispered instructions."
+    }
+  ]
+}

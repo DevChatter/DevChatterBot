@@ -42,17 +42,37 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Argument");
+                    b.Property<Guid?>("AliasId");
 
-                    b.Property<Guid?>("CommandWordEntityId");
+                    b.Property<string>("Argument");
 
                     b.Property<int>("Index");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommandWordEntityId");
+                    b.HasIndex("AliasId");
 
                     b.ToTable("AliasArgumentEntity");
+                });
+
+            modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.AliasEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("CommandId");
+
+                    b.Property<string>("Word");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommandId");
+
+                    b.HasIndex("Word")
+                        .IsUnique()
+                        .HasFilter("[Word] IS NOT NULL");
+
+                    b.ToTable("AliasEntity");
                 });
 
             modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.BlastTypeEntity", b =>
@@ -91,6 +111,32 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ChatUsers");
+                });
+
+            modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.CommandEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CommandWord");
+
+                    b.Property<TimeSpan>("Cooldown");
+
+                    b.Property<string>("FullTypeName");
+
+                    b.Property<string>("HelpText");
+
+                    b.Property<bool>("IsEnabled");
+
+                    b.Property<int>("RequiredRole");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommandWord")
+                        .IsUnique()
+                        .HasFilter("[CommandWord] IS NOT NULL");
+
+                    b.ToTable("CommandWords");
                 });
 
             modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.CommandSettingsEntity", b =>
@@ -277,9 +323,16 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
 
             modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.AliasArgumentEntity", b =>
                 {
-                    b.HasOne("DevChatter.Bot.Core.Data.Model.CommandWordEntity", "CommandWordEntity")
+                    b.HasOne("DevChatter.Bot.Core.Data.Model.AliasEntity", "Alias")
                         .WithMany("Arguments")
-                        .HasForeignKey("CommandWordEntityId");
+                        .HasForeignKey("AliasId");
+                });
+
+            modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.AliasEntity", b =>
+                {
+                    b.HasOne("DevChatter.Bot.Core.Data.Model.CommandEntity", "Command")
+                        .WithMany("Aliases")
+                        .HasForeignKey("CommandId");
                 });
 #pragma warning restore 612, 618
         }

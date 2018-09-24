@@ -13,10 +13,9 @@ namespace DevChatter.Bot.Core.Games.Heist
         private readonly HeistGame _heistGame;
 
         public HeistCommand(IRepository repository, HeistGame heistGame)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
             _heistGame = heistGame;
-            HelpText = "But it's so intuitive... Sorry, help is coming soon...";
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

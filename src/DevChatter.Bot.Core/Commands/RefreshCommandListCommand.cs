@@ -1,4 +1,4 @@
-﻿using DevChatter.Bot.Core.Commands.Trackers;
+using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
@@ -11,7 +11,7 @@ namespace DevChatter.Bot.Core.Commands
         private CommandList _commandList;
 
         public RefreshCommandListCommand(IRepository repository)
-            : base(repository, UserRole.Mod)
+            : base(repository)
         {
         }
 

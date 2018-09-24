@@ -15,10 +15,9 @@ namespace DevChatter.Bot.Core.Commands
         private readonly ILoggerAdapter<CoinsCommand> _logger;
 
         public CoinsCommand(IRepository repository, ILoggerAdapter<CoinsCommand> logger)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
             _logger = logger;
-            HelpText = "Use \"!coins\" to see your current coin total, or use \"!coins SomeoneElse\" to see another user's coin total.";
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

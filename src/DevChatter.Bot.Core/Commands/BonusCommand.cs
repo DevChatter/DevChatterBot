@@ -13,10 +13,9 @@ namespace DevChatter.Bot.Core.Commands
         private readonly ICurrencyGenerator _currencyGenerator;
 
         public BonusCommand(IRepository repository, ICurrencyGenerator currencyGenerator)
-            : base(repository, UserRole.Mod)
+            : base(repository)
         {
             _currencyGenerator = currencyGenerator;
-            HelpText = "Use the bonus command to give free coins to someone example: !bonus sadukie 50";
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

@@ -19,7 +19,7 @@ namespace UnitTests.Core.Commands.Operations.AddCommandOperationTests
             var commandResponse = "responseText";
             var commandWord = "commandWord";
             var mockRepo = new Mock<IRepository>();
-            mockRepo.Setup(repo => repo.Single(It.IsAny<CommandPolicy>()))
+            mockRepo.Setup(repo => repo.Single(It.IsAny<SimpleCommandPolicy>()))
                 .Returns(new SimpleCommand(commandWord, commandResponse));
             var botCommands = new List<IBotCommand>();
 

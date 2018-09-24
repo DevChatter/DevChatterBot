@@ -22,11 +22,11 @@ namespace UnitTests.Core.Events.CommandHandlerTests
         [Fact]
         public void CallProcessOnCommandWhenEnabled()
         {
-            var fakeCommand = new FakeCommand(GetTestRepository(), true);
+            var fakeCommand = new FakeCommand(GetTestRepository(true));
             CommandHandler commandHandler = GetTestCommandHandler(fakeCommand);
 
             commandHandler.CommandReceivedHandler(new Mock<IChatClient>().Object,
-                new CommandReceivedEventArgs {CommandWord = fakeCommand.CommandText});
+                new CommandReceivedEventArgs { CommandWord = fakeCommand.CommandText });
 
             Assert.True(fakeCommand.ProcessWasCalled);
         }
@@ -34,28 +34,26 @@ namespace UnitTests.Core.Events.CommandHandlerTests
         [Fact]
         public void NotCallProcessOnCommandWhenDisabled()
         {
-            var fakeCommand = new FakeCommand(GetTestRepository(), false);
+            var fakeCommand = new FakeCommand(GetTestRepository(false));
             CommandHandler commandHandler = GetTestCommandHandler(fakeCommand);
 
             commandHandler.CommandReceivedHandler(new Mock<IChatClient>().Object,
-                new CommandReceivedEventArgs {CommandWord = fakeCommand.CommandText});
+                new CommandReceivedEventArgs { CommandWord = fakeCommand.CommandText });
 
             Assert.False(fakeCommand.ProcessWasCalled);
         }
 
-        private static IRepository GetTestRepository()
+        private static IRepository GetTestRepository(bool isEnabled)
         {
             var mockRepo = new Mock<IRepository>();
-            var commandWordEntities = new List<CommandWordEntity>
+            var commandEntity = new CommandEntity
             {
-                new CommandWordEntity
-                {
-                    CommandWord = "Fake",
-                    FullTypeName = "UnitTests.Fakes.FakeCommand"
-                }
+                CommandWord = "Fake",
+                FullTypeName = "UnitTests.Fakes.FakeCommand",
+                IsEnabled = isEnabled
             };
 
-            mockRepo.Setup(x => x.List(It.IsAny<CommandWordPolicy>())).Returns(commandWordEntities);
+            mockRepo.Setup(x => x.Single(It.IsAny<CommandPolicy>())).Returns(commandEntity);
 
             return mockRepo.Object;
         }
@@ -63,8 +61,8 @@ namespace UnitTests.Core.Events.CommandHandlerTests
         private static CommandHandler GetTestCommandHandler(FakeCommand fakeCommand)
         {
             var commandUsageTracker = new CommandCooldownTracker(new CommandHandlerSettings(), new LoggerAdapter<CommandCooldownTracker>(new NullLogger<CommandCooldownTracker>()));
-            var chatClients = new List<IChatClient> {new Mock<IChatClient>().Object};
-            var commandMessages = new List<IBotCommand> {fakeCommand};
+            var chatClients = new List<IChatClient> { new Mock<IChatClient>().Object };
+            var commandMessages = new List<IBotCommand> { fakeCommand };
             var commandHandler = new CommandHandler(new Mock<IRepository>().Object, commandUsageTracker, chatClients,
                 new CommandList(commandMessages, new Mock<IComponentContext>().Object), new LoggerAdapter<CommandHandler>(new NullLogger<CommandHandler>()));
             return commandHandler;

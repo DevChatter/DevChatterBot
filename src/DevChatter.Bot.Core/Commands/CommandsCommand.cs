@@ -24,7 +24,7 @@ namespace DevChatter.Bot.Core.Commands
         });
 
         public CommandsCommand(IRepository repository, IServiceProvider provider)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
             _provider = provider;
         }

@@ -12,10 +12,9 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IChatUserCollection _chatUserCollection;
 
         public GiveCommand(IRepository repository, IChatUserCollection chatUserCollection)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
             _chatUserCollection = chatUserCollection;
-            HelpText = "Give coins to someone. Example !give LNGgrinds 10";
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

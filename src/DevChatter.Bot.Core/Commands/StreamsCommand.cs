@@ -15,9 +15,8 @@ namespace DevChatter.Bot.Core.Commands
         private readonly List<BaseCommandOperation> _operations;
 
         public StreamsCommand(IRepository repository)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
-            HelpText = $"Use \"!{PrimaryCommandText}\" to shout out the streams we like! To add a new one use \"!{PrimaryCommandText} add channelName\", but it only works for mods.";
             _operations = new List<BaseCommandOperation>
             {
                 new AddStreamOperation(repository),
