@@ -15,6 +15,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         private const UserRole ROLE_REQUIRE_TO_START = UserRole.Subscriber;
         private const int PER_LETTER_TOKENS = 2;
         private const int TOKENS_TO_WINNER = 25;
+        private const string AllLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         private readonly List<HangmanGuess> _guessedLetters = new List<HangmanGuess>();
 
@@ -35,6 +36,19 @@ namespace DevChatter.Bot.Core.Games.Hangman
                         })
                         .ToArray()
                 );
+            }
+        }
+
+        private string AllGuessedLettersMasked
+        {
+            get
+            {
+                var guessedLetters = _guessedLetters.Select(g => g.Letter.ToUpperInvariant());
+                var guessedLettersMasked = AllLetters.Select(x =>
+                    {
+                        return guessedLetters.Contains(x.ToString()) ? x : '_';
+                    });
+                return string.Join(" ", guessedLettersMasked);
             }
         }
 
@@ -116,6 +130,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             }
 
             _guessedLetters.Add(new HangmanGuess(letterToAsk, chatUser));
+            SendAllGuessedLetters();
             if (Password.Contains(letterToAsk))
             {
                 if (Password == MaskedPassword)
@@ -175,6 +190,11 @@ namespace DevChatter.Bot.Core.Games.Hangman
         private void SendGameNotStartedMessage(IChatClient chatClient, ChatUser chatUser)
         {
             chatClient.SendMessage($"There's no {nameof(HangmanGame)} running, {chatUser.DisplayName}.");
+        }
+
+        private void SendAllGuessedLetters()
+        { 
+            _hangmanDisplayNotification.HangmanShowGuessedLetters(AllGuessedLettersMasked);
         }
     }
 }
