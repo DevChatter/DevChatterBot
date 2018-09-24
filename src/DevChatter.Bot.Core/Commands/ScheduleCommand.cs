@@ -16,10 +16,9 @@ namespace DevChatter.Bot.Core.Commands
     {
         private readonly ITimezoneLookup _timezoneLookup;
 
-        public ScheduleCommand(IRepository repository, ITimezoneLookup timezoneLookup) : base(repository, UserRole.Everyone)
+        public ScheduleCommand(IRepository repository, ITimezoneLookup timezoneLookup) : base(repository)
         {
             _timezoneLookup = timezoneLookup;
-            HelpText = "To see our schedule just type !schedule followed by either a timezone offset of a city name. Example !schedule -4 or !schedule Cleveland ";
         }
 
         protected override async void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)

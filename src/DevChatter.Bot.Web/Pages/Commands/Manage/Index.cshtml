@@ -1,0 +1,44 @@
+@page
+@model DevChatter.Bot.Web.Pages.Commands.Manage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CommandEntity[0].CommandWord)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommandEntity[0].FullTypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommandEntity[0].IsEnabled)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.CommandEntity) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommandWord)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsEnabled)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

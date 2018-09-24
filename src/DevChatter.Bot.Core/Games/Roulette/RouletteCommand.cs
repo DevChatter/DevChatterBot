@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Core.Games.Roulette
         private readonly RouletteSettings _rouletteSettings;
 
         public RouletteCommand(IRepository repository, ICurrencyGenerator currencyGenerator, ISettingsFactory settingsFactory)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
             _currencyGenerator = currencyGenerator;
             _rouletteSettings = settingsFactory.GetSettings<RouletteSettings>();

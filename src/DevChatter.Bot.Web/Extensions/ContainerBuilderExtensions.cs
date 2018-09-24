@@ -15,7 +15,7 @@ namespace DevChatter.Bot.Web.Extensions
             this ContainerBuilder builder,
             IRepository repository)
         {
-            List<SimpleCommand> simpleCommands = repository.List(CommandPolicy.All());
+            List<SimpleCommand> simpleCommands = repository.List(SimpleCommandPolicy.All());
 
             foreach (SimpleCommand simpleCommand in simpleCommands)
             {

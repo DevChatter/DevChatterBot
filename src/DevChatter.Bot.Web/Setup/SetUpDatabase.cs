@@ -9,11 +9,9 @@ using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Games.Roulette;
 using DevChatter.Bot.Core.Settings;
 using DevChatter.Bot.Infra.Ef;
-using DevChatter.Bot.Infra.Web;
 using Microsoft.EntityFrameworkCore;
-using QuizQuestion = DevChatter.Bot.Core.Data.Model.QuizQuestion;
 
-namespace DevChatter.Bot.Web
+namespace DevChatter.Bot.Web.Setup
 {
     public static class SetUpDatabase
     {
@@ -71,12 +69,8 @@ namespace DevChatter.Bot.Web
 
             CreateDefaultSettingsIfNeeded(repository);
 
-            var missingCommandWords = GetMissingCommandWords(repository);
-            if (missingCommandWords.Any())
-            {
-                repository.Create(missingCommandWords);
-            }
-            // TODO: Remove unnecessary Command Words
+            // TODO: Remove static call, so it's more testable.
+            SetUpCommandData.UpdateCommandData(repository);
         }
 
         private static void CreateDefaultSettingsIfNeeded(IRepository repository)
@@ -199,39 +193,6 @@ namespace DevChatter.Bot.Web
                     Text = "I swear it's not rigged!"
                 },
             };
-        }
-
-        private static List<CommandWordEntity> GetMissingCommandWords(IRepository repository)
-        {
-            const string conventionSuffix = "Command";
-
-            // Access the assembly to make sure it's loaded
-            Assembly assembly = typeof(BlastCommand).Assembly;
-
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            IEnumerable<TypeInfo> allTypes = assemblies.SelectMany(x => x.DefinedTypes);
-
-            var concreteCommands = allTypes
-                .Where(x => typeof(IBotCommand).IsAssignableFrom(x))
-                .Where(x => !x.IsAbstract)
-                .Where(x => !x.IsSubclassOf(typeof(DataEntity)))
-                .Where(x => x.FullName.EndsWith(conventionSuffix))
-                .ToList();
-
-            var storedCommandWords = repository.List(CommandWordPolicy.OnlyPrimaries()).Select(x => x.CommandWord);
-
-            List<CommandWordEntity> missingDefaults = concreteCommands
-                .Select(commandType => new CommandWordEntity
-                {
-                    CommandWord = commandType.Name.Substring(0, commandType.Name.Length - conventionSuffix.Length),
-                    FullTypeName = commandType.FullName,
-                    IsPrimary = true
-                })
-                .Where(x => !storedCommandWords.Contains(x.CommandWord))
-                .ToList();
-
-            return missingDefaults;
         }
     }
 }

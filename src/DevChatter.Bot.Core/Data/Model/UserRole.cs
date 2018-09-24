@@ -2,9 +2,9 @@ namespace DevChatter.Bot.Core.Data.Model
 {
     public enum UserRole
     {
-        Streamer,
-        Mod,
-        Subscriber,
-        Everyone
+        Streamer = 1,
+        Mod = 2,
+        Subscriber = 3,
+        Everyone = 4
     }
 }

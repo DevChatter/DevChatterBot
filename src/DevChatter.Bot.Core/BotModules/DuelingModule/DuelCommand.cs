@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
         public DuelCommand(IRepository repository,
             IChatUserCollection chatUserCollection,
             DuelingSystem duelingSystem)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
             _operations.Add(new AcceptChallengeOperation(duelingSystem));
             _operations.Add(new StartChallengeOperation(duelingSystem, chatUserCollection));

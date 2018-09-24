@@ -22,11 +22,9 @@ namespace DevChatter.Bot.Core.Games.Quiz
         });
 
         public QuizCommand(IRepository repository, QuizGame quizGame)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
-            HelpText = "No Quiz HelpText yet.";
             _quizGame = quizGame;
-            Cooldown = TimeSpan.FromMinutes(2);
         }
 
         private readonly QuizGame _quizGame;

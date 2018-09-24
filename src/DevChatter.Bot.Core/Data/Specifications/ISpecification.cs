@@ -8,6 +8,7 @@ namespace DevChatter.Bot.Core.Data.Specifications
     {
         Expression<Func<T, bool>> Criteria { get; }
         IList<Expression<Func<T, object>>> Includes { get; }
+        IList<string> IncludeStrings { get; }
         void AddInclude(Expression<Func<T, object>> expression);
     }
 }

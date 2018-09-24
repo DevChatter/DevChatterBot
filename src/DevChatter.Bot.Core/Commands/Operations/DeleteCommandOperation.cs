@@ -36,7 +36,7 @@ namespace DevChatter.Bot.Core.Commands.Operations
                     return "You need to be a moderator to delete a command.";
                 }
 
-                SimpleCommand command = _repository.Single(CommandPolicy.ByCommandText(commandWord));
+                SimpleCommand command = _repository.Single(SimpleCommandPolicy.ByCommandText(commandWord));
                 if (command == null)
                 {
                     return $"I didn't find a !{commandWord} command.";

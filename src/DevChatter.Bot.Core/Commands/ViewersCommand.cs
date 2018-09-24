@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Core.Commands
         private readonly IStreamingPlatform _streamingPlatform;
 
         public ViewersCommand(IRepository repository, IStreamingPlatform streamingPlatform)
-            : base(repository, UserRole.Everyone)
+            : base(repository)
         {
             _streamingPlatform = streamingPlatform;
         }

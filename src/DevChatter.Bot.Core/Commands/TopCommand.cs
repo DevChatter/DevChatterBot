@@ -9,9 +9,8 @@ namespace DevChatter.Bot.Core.Commands
 {
     public class TopCommand : BaseCommand
     {
-        public TopCommand(IRepository repository) : base(repository, UserRole.Everyone)
+        public TopCommand(IRepository repository) : base(repository)
         {
-            HelpText = "List the biggest ballers in the chat!";
         }
 
         public void DisplayTopUsers(IChatClient triggeringClient)
