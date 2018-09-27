@@ -32,6 +32,7 @@ var overlay = (function () {
 
     const maxRetryInterval = 30000;
 
+
     startHubConn(botHubConn);
     startHubConn(votingHubConn);
     startHubConn(hangmanHubConn);
@@ -47,6 +48,7 @@ var overlay = (function () {
           setTimeout(() => startHubConn(hubToConnect, i), i);
         });
     }
+
 
     botHubConn.onclose(() => {
       setTimeout(() => startHubConn(botHubConn), 2000);
@@ -88,14 +90,14 @@ var overlay = (function () {
         hangman.displayGameOver(hangmanContext);
         await sleep(4000);
         hangman.endGame(hangmanContext);
-        doDerp();
+        doBlast('/images/DevchaFailEmote.png');
       });
     hangmanHubConn.on("HangmanWin",
       async function() {
         hangman.displayVictory(hangmanContext);
         await sleep(4000);
         hangman.endGame(hangmanContext);
-        doHype();
+        doBlast('/images/DevchaHypeEmote.png');
       });
     hangmanHubConn.on("HangmanShowGuessedLetters",
       async (guessedLetters) => {
