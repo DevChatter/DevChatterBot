@@ -1,6 +1,7 @@
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 using System;
@@ -39,18 +40,8 @@ namespace DevChatter.Bot.Core.Games.Hangman
             }
         }
 
-        private string AllGuessedLettersMasked
-        {
-            get
-            {
-                var guessedLetters = _guessedLetters.Select(g => g.Letter.ToUpperInvariant());
-                var guessedLettersMasked = AllLetters.Select(x =>
-                    {
-                        return guessedLetters.Contains(x.ToString()) ? x : '_';
-                    });
-                return string.Join(" ", guessedLettersMasked);
-            }
-        }
+        private string AllGuessedLettersMasked => string.Join(" ", AllLetters.Select(x =>
+                _guessedLetters.Any(l => l.Letter.EqualsIns(x.ToString())) ? x : '_'));
 
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IRepository _repository;
@@ -87,7 +78,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         {
             chatClient.SendMessage(
                 $"Congratulations, {chatUser.DisplayName} ! You won the game and will get {TOKENS_TO_WINNER} tokens!");
-            _currencyGenerator.AddCurrencyTo(new List<string> {chatUser.DisplayName}, TOKENS_TO_WINNER);
+            _currencyGenerator.AddCurrencyTo(new List<string> { chatUser.DisplayName }, TOKENS_TO_WINNER);
             GivePerLetterTokens(chatClient);
             _hangmanDisplayNotification.HangmanWin();
             ResetGame();
@@ -193,7 +184,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         }
 
         private void SendAllGuessedLetters()
-        { 
+        {
             _hangmanDisplayNotification.HangmanShowGuessedLetters(AllGuessedLettersMasked);
         }
     }
