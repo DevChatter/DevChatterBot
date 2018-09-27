@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
-using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Games.Roulette;
 using DevChatter.Bot.Core.Settings;
 using DevChatter.Bot.Infra.Ef;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevChatter.Bot.Web.Setup
 {
@@ -67,10 +65,48 @@ namespace DevChatter.Bot.Web.Setup
                 repository.Create(GetInitialQuizQuestions());
             }
 
+            if (!repository.List<CanvasProperties>().Any())
+            {
+                repository.Create(GetInitialCanvasProperties());
+            }
+
             CreateDefaultSettingsIfNeeded(repository);
 
             // TODO: Remove static call, so it's more testable.
             SetUpCommandData.UpdateCommandData(repository);
+        }
+
+        private static List<CanvasProperties> GetInitialCanvasProperties()
+        {
+            var canvasProperties = new List<CanvasProperties>
+            {
+                new CanvasProperties
+                {
+                    CanvasId = "hangmanCanvas",
+                    Height = 300,
+                    Width = 600,
+                    TopY = 780,
+                    LeftX = 560
+                },
+                new CanvasProperties
+                {
+                    CanvasId = "animationCanvas",
+                    Height = 1080,
+                    Width = 1920,
+                    TopY = 0,
+                    LeftX = 0
+                },
+                new CanvasProperties
+                {
+                    CanvasId = "votingCanvas",
+                    Height = 1080,
+                    Width = 1920,
+                    TopY = 0,
+                    LeftX = 0
+                },
+            };
+
+            return canvasProperties;
         }
 
         private static void CreateDefaultSettingsIfNeeded(IRepository repository)
