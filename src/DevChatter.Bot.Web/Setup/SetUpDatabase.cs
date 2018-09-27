@@ -84,7 +84,7 @@ namespace DevChatter.Bot.Web.Setup
                 {
                     CanvasId = "hangmanCanvas",
                     Height = 300,
-                    Width = 600,
+                    Width = 800,
                     TopY = 780,
                     LeftX = 560
                 },
