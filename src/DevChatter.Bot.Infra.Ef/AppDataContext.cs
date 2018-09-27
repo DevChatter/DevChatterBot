@@ -21,6 +21,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<CommandSettingsEntity> CommandSettings { get; set; }
         public DbSet<TimezoneEntity> Timezones { get; set; }
         public DbSet<BlastTypeEntity> BlastTypes { get; set; }
+        public DbSet<CanvasProperties> CanvasProperties { get; set; }
 
 
         public AppDataContext()
@@ -56,6 +57,9 @@ namespace DevChatter.Bot.Infra.Ef
 
             modelBuilder.Entity<BlastTypeEntity>()
                 .HasIndex(b => b.Name).IsUnique();
+
+            modelBuilder.Entity<CanvasProperties>()
+                .HasIndex(b => b.CanvasId).IsUnique();
         }
     }
 
