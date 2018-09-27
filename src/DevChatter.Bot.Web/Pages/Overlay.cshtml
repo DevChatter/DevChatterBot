@@ -18,14 +18,12 @@
     <script src="~/js/overlay.js"></script>
 </head>
 <body>
-    <div id="wrapper" style="position:relative;">
-        <canvas style="position:absolute; top:0px; left:0px;"
-                id="hangmanCanvas" width="1920" height="1080"></canvas>
-        <canvas style="position:absolute; top:0px; left:0px;"
-                id="animationCanvas" width="1920" height="1080"></canvas>
-        <canvas style="position:absolute; top:0px; left:0px;"
-                id="votingCanvas" width="1920" height="1080"></canvas>
-    </div>
+<div id="wrapper" style="position: relative;">
+    @foreach (var canvas in Model.Canvases)
+    {
+        <canvas style="position: absolute; top:@(canvas.TopY + "px"); left:@(canvas.LeftX + "px");" id="@canvas.CanvasId" width="@canvas.Width" height="@canvas.Height"></canvas>
+    }
+</div>
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

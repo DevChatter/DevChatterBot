@@ -1,0 +1,60 @@
+﻿@page
+@model DevChatter.Bot.Web.Pages.ManageOverlay.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CanvasProperties[0].CanvasId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CanvasProperties[0].Width)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CanvasProperties[0].Height)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CanvasProperties[0].TopY)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CanvasProperties[0].LeftX)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.CanvasProperties) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanvasId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Width)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Height)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TopY)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeftX)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

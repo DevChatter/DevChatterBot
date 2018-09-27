@@ -76,13 +76,13 @@ var hangman = (function () {
 
   var displayGameOver = function (ctx) {
     ctx.clearRect(0, 0, 1920, 1080);
-    ctx.font = "300px Arial";
+    ctx.font = "60px Arial";
     ctx.fillText("Game Over", 10, 300);
   };
 
   var displayVictory = function (ctx) {
     ctx.clearRect(0, 0, 1920, 1080);
-    ctx.font = "300px Arial";
+    ctx.font = "60px Arial";
     ctx.fillText("You win!", 10, 300);
   };
 
