@@ -1,65 +1,51 @@
 var voting = (function () {
-  var options = [];
-  var votes = [];
+  var chart = {};
+  var data = {};
+
+  var optionsAnimation = {
+    scales: {
+      xAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  };
 
   var voteEnd = function (ctx) {
     ctx.clearRect(0, 0, 1920, 1080);
-    options = [];
-    votes = [];
+    chart = {};
+    data = {};
   };
 
-  var voteReceived = function (ctx, voteInfo) {
-    votes = voteInfo.voteTotals;
+  let voteReceived = function (ctx, voteInfo) {
     // TODO: Announce the vote.
-    displayVoteOverlay(ctx);
+
+    var dataSet = data["datasets"][0]["data"];
+    voteInfo.voteTotals.forEach(function(voteCount) {
+      dataSet.push(voteCount);
+      dataSet.shift();
+    });
+    chart.update();
   };
 
   var voteStart = function (ctx, choices) {
-    options = choices;
-    votes = Array(choices.length).fill(0);
-    displayChart(ctx);
-  };
-
-  function displayChart(ctx) {
-    var myChart = new Chart(ctx, {
-      type: 'horizontalBar',
-      data: {
-        labels: options,
-        datasets: [{
+    data = {
+      labels: choices,
+      datasets: [
+        {
           label: '# of Votes',
-          data: votes,
+          data: Array(choices.length).fill(0),
           borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          xAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
         }
-      }
+      ]
+    };
+    chart = new Chart(ctx, {
+      type: 'horizontalBar',
+      data: data,
+      options: optionsAnimation
     });
-  }
-
-  function displayVoteOverlay(ctx) {
-    var optionDisplays = options.map((x, i) => (i + 1) + " ) " + x + " - " + (votes[i] || '0'));
-    ctx.clearRect(0, 0, 1920, 1080);
-    ctx.fillStyle = "#cbcbcb";
-    var height = 20 + (40 * optionDisplays.length);
-    ctx.font = "30px Arial";
-    var textWidth = Math.max(...optionDisplays.map(x => ctx.measureText(x).width));
-    ctx.fillRect(0, 0, textWidth + 20, height);
-    displayChoices(ctx, optionDisplays);
-  }
-
-  function displayChoices(ctx, optionDisplays) {
-    ctx.fillStyle = "#000000";
-    for (var i = 0; i < optionDisplays.length; i++) {
-      ctx.fillText(optionDisplays[i], 10, 40 + 40*i);
-    }
-  }
+  };
 
   return {
     voteStart: voteStart,
