@@ -6,7 +6,13 @@ var voting = (function () {
     scales: {
       xAxes: [{
         ticks: {
-          beginAtZero: true
+          beginAtZero: true,
+          stepSize: 1
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          fontSize: 40
         }
       }]
     }
