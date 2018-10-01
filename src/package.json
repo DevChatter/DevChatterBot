@@ -2,7 +2,9 @@
   "name": "DevChatterBot",
   "version": "1.0.0",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "chart.js": "^2.7.2"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

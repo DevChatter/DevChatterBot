@@ -18,6 +18,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\lib\jquery\dist\" />
+    <Folder Include="wwwroot\lib\chartjs\" />
   </ItemGroup>
 
 

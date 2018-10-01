@@ -17,8 +17,31 @@ var voting = (function () {
   var voteStart = function (ctx, choices) {
     options = choices;
     votes = Array(choices.length).fill(0);
-    displayVoteOverlay(ctx);
+    displayChart(ctx);
   };
+
+  function displayChart(ctx) {
+    var myChart = new Chart(ctx, {
+      type: 'horizontalBar',
+      data: {
+        labels: options,
+        datasets: [{
+          label: '# of Votes',
+          data: votes,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  }
 
   function displayVoteOverlay(ctx) {
     var optionDisplays = options.map((x, i) => (i + 1) + " ) " + x + " - " + (votes[i] || '0'));
