@@ -66,6 +66,7 @@ var overlay = (function () {
     botHubConn.on("Blast", doBlast);
     votingHubConn.on("VoteStart",
       (choices) => {
+        $(votingCanvas).show();
         voting.voteStart(votingContext, choices);
       });
     votingHubConn.on("VoteReceived",
@@ -75,6 +76,7 @@ var overlay = (function () {
     votingHubConn.on("VoteEnd",
       () => {
         voting.voteEnd(votingContext);
+        $(votingCanvas).hide();
       });
     hangmanHubConn.on("HangmanStart",
       () => {
