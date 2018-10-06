@@ -6,20 +6,24 @@ using DevChatter.Bot.Core.Systems.Chat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Commands
 {
     public class AliasCommand : BaseCommand
     {
+        private readonly ILoggerAdapter<AliasCommand> _logger;
         private readonly List<BaseCommandOperation> _operations;
 
-        public AliasCommand(IRepository repository)
+        public AliasCommand(IRepository repository,
+            ILoggerAdapter<AliasCommand> logger)
             : base(repository)
         {
+            _logger = logger;
             _operations = new List<BaseCommandOperation>
             {
                 new AddAliasOperation(repository),
-                new DeleteAliasOperation(repository)
+                new DeleteAliasOperation(repository, logger)
             };
         }
 
