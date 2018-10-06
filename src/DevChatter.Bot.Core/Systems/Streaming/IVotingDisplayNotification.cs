@@ -8,6 +8,6 @@ namespace DevChatter.Bot.Core.Systems.Streaming
     {
         Task VoteStart(IEnumerable<string> choices);
         Task VoteEnd();
-        Task VoteReceived(ChatUser chatUser, int chosenNumber, int[] voteTotals);
+        Task VoteReceived(ChatUser chatUser, string chosenName, int[] voteTotals);
     }
 }

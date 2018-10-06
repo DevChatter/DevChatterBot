@@ -36,7 +36,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
             if (isValidNumber)
             {
                 int[] voteTotals = _choices.Select(c => _votes.Count(x => x.Value == c.Key)).ToArray();
-                _votingDisplayNotification.VoteReceived(chatUser, chosenNumber, voteTotals);
+                _votingDisplayNotification.VoteReceived(chatUser, voteText, voteTotals);
             }
 
             string message = $"{chatUser.DisplayName} voted for {voteText}.";
