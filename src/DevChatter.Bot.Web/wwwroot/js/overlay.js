@@ -1,15 +1,17 @@
 var overlay = (function () {
 
+  let notificationOptions = {
+    position: 'top-left',
+    maxNotifications: 6,
+    icons: { enabled: false }
+  };
+
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   window.onload = function () {
-    let awesomeNotifier = new AWN({
-      position: 'top-left',
-      maxNotifications: 6,
-      icons: { enabled: false }
-    });
+    let awesomeNotifier = new AWN(notificationOptions);
 
     let animationCanvas = document.getElementById('animationCanvas');
     let animationContext = animationCanvas.getContext('2d');
