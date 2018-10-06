@@ -25,11 +25,11 @@ namespace DevChatter.Bot.Infra.Web
             await _votingHubContext.Clients.All.VoteStart(choices);
         }
 
-        public async Task VoteReceived(ChatUser chatUser, int chosenNumber, int[] voteTotals)
+        public async Task VoteReceived(ChatUser chatUser, string chosenName, int[] voteTotals)
         {
             var voteInfo = new VoteInfoDto
             {
-                VoterChoice = chosenNumber,
+                VoterChoiceName = chosenName,
                 VoterName = chatUser.DisplayName,
                 VoteTotals = voteTotals,
             };

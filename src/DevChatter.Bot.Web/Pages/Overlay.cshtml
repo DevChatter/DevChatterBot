@@ -17,6 +17,7 @@
     <script src="~/js/voting.js"></script>
     <script src="~/js/animations.js"></script>
     <script src="~/js/overlay.js"></script>
+    <link href="~/lib/awesome-notifications/dist/style.css" rel="stylesheet" />
     <style>
         #votingCanvas {
             width: 600px !important;
@@ -33,11 +34,12 @@
         <canvas style="position: absolute; top:@(canvas.TopY + "px"); left:@(canvas.LeftX + "px");" id="@canvas.CanvasId" width="@canvas.Width" height="@canvas.Height"></canvas>
     }
 </div>
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
+<environment include="Development">
+    <script src="~/lib/awesome-notifications/dist/index.var.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"

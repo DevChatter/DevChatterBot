@@ -1,10 +1,18 @@
 var overlay = (function () {
 
+  let notificationOptions = {
+    position: 'top-left',
+    maxNotifications: 6,
+    icons: { enabled: false }
+  };
+
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  window.onload = function() {
+  window.onload = function () {
+    let awesomeNotifier = new AWN(notificationOptions);
+
     let animationCanvas = document.getElementById('animationCanvas');
     let animationContext = animationCanvas.getContext('2d');
     animations.init(animationCanvas, animationContext);
@@ -71,7 +79,7 @@ var overlay = (function () {
       });
     votingHubConn.on("VoteReceived",
       (voteInfo) => {
-        voting.voteReceived(votingContext, voteInfo);
+        voting.voteReceived(voteInfo, awesomeNotifier);
       });
     votingHubConn.on("VoteEnd",
       () => {

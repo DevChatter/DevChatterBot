@@ -1,6 +1,7 @@
 var voting = (function () {
   var chart = {};
   var data = {};
+  var choiceNames = [];
 
   function getRandomColor() {
     let colorOptions = [
@@ -32,8 +33,8 @@ var voting = (function () {
     data = {};
   };
 
-  let voteReceived = function (ctx, voteInfo) {
-    // TODO: Announce the vote.
+  let voteReceived = function (voteInfo, notifier) {
+    notifier.info(`${voteInfo.voterName} voted for ${voteInfo.voterChoiceName}`);
 
     var dataSet = data["datasets"][0]["data"];
     voteInfo.voteTotals.forEach(function(voteCount) {
@@ -45,6 +46,7 @@ var voting = (function () {
 
   var voteStart = function (ctx, choices) {
     var barColors = choices.map(x => getRandomColor());
+    choiceNames = choices; // set so we can access for notifier
     data = {
       labels: choices,
       datasets: [
