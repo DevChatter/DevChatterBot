@@ -25,7 +25,7 @@ namespace DevChatter.Bot.Core.Commands
             get { return _allCommands ?? (_allCommands = _provider.GetService<IList<IBotCommand>>()); }
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             if (eventArgs.Arguments.Count == 0)
             {

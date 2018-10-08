@@ -17,7 +17,7 @@ namespace DevChatter.Bot.Core.Commands
             _chatUserCollection = chatUserCollection;
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string coinGiver = eventArgs?.ChatUser?.DisplayName;
             string coinReceiver = eventArgs?.Arguments?.ElementAtOrDefault(0)?.NoAt();

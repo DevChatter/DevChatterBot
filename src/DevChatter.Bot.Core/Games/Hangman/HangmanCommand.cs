@@ -33,7 +33,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             _hangmanGame = hangmanGame;
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string argumentOne = eventArgs?.Arguments?.FirstOrDefault();
             ChatUser chatUser = eventArgs?.ChatUser;

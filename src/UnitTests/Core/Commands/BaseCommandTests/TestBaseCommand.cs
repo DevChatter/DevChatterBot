@@ -13,7 +13,7 @@ namespace UnitTests.Core.Commands.BaseCommandTests
         {
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             throw new System.NotImplementedException();
         }

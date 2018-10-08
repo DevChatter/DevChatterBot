@@ -24,7 +24,7 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
             _operations.Add(new StartChallengeOperation(duelingSystem, chatUserCollection));
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string firstArg = eventArgs.Arguments.ElementAtOrDefault(0);
 
@@ -34,11 +34,11 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
             {
                 string messageToSend = operationToUse.TryToExecute(eventArgs);
                 chatClient.SendMessage(messageToSend);
+                return true;
             }
-            else
-            {
-                chatClient.SendMessage(HelpText);
-            }
+
+            chatClient.SendMessage(HelpText);
+            return false;
         }
     }
 }

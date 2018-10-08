@@ -30,7 +30,7 @@ namespace DevChatter.Bot.Core.Games.Quiz
         private readonly QuizGame _quizGame;
         public IGame Game => _quizGame;
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string argumentOne = eventArgs.Arguments?.FirstOrDefault();
 

@@ -48,7 +48,7 @@ namespace DevChatter.Bot.Core.Commands
             string textToSend = ReplaceTokens(StaticResponse, findTokens, eventArgs);
             chatClient.SendMessage(textToSend);
 
-            return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
+            return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, this, true);
         }
 
         private string ReplaceTokens(string textToSend, IEnumerable<string> tokens, CommandReceivedEventArgs eventArgs)

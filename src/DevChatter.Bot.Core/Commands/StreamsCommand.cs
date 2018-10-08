@@ -24,7 +24,7 @@ namespace DevChatter.Bot.Core.Commands
             };
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             var oper = eventArgs?.Arguments?.ElementAtOrDefault(0)?.ToLowerInvariant();
 

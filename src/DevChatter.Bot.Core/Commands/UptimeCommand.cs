@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Core.Commands
             _logger = logger;
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             try
             {

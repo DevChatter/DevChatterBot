@@ -27,7 +27,7 @@ namespace DevChatter.Bot.Core.Commands
         {
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string argumentOne = eventArgs?.Arguments?.ElementAtOrDefault(0);
 

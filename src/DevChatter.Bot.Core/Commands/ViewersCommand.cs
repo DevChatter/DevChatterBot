@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
@@ -17,18 +18,22 @@ namespace DevChatter.Bot.Core.Commands
             _streamingPlatform = streamingPlatform;
         }
 
-        protected override async void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             try
             {
-                int viewerCount = await _streamingPlatform.GetViewerCountAsync();
+                int viewerCount = _streamingPlatform.GetViewerCountAsync()
+                    .GetAwaiter().GetResult();
 
                 chatClient.SendMessage($"We currently have {viewerCount} viewers!");
             }
             catch (Exception)
             {
                 chatClient.SendMessage("Something went wrong! We couldn't get the viewer count.");
+                return false;
             }
+
+            return true;
         }
     }
 }

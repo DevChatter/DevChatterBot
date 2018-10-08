@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Commands
             _currencyGenerator = currencyGenerator;
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string bonusReceiver = (eventArgs?.Arguments?.ElementAtOrDefault(0) ?? "").NoAt();
             string bonusGiver = eventArgs?.ChatUser?.DisplayName;

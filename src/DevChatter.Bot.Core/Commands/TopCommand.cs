@@ -36,7 +36,7 @@ namespace DevChatter.Bot.Core.Commands
                 .OrderByDescending(b => b.Tokens).Take(5));
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             DisplayTopUsers(chatClient);
         }

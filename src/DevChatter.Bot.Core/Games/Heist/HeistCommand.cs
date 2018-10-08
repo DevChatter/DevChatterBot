@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Games.Heist
             _heistGame = heistGame;
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             if (eventArgs == null) throw new ArgumentNullException(nameof(eventArgs)); // How!?!?
 

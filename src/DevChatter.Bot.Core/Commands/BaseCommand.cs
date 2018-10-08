@@ -68,8 +68,8 @@ namespace DevChatter.Bot.Core.Commands
         public CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             _timeCommandLastInvoked = DateTimeOffset.UtcNow;
-            HandleCommand(chatClient, eventArgs);
-            return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, this);
+            bool wasRun = HandleCommand(chatClient, eventArgs);
+            return new CommandUsage(eventArgs.ChatUser.DisplayName, DateTimeOffset.UtcNow, this, wasRun);
         }
 
         public TimeSpan GetCooldownTimeRemaining()
@@ -78,7 +78,7 @@ namespace DevChatter.Bot.Core.Commands
             return (Cooldown - timePassedSinceInvoke);
         }
 
-        protected abstract void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
+        protected abstract bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
 
         public bool IsActiveGame()
         {

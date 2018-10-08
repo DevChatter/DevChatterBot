@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace DevChatter.Bot.Core.Commands
 {
@@ -21,7 +22,8 @@ namespace DevChatter.Bot.Core.Commands
             _timezoneLookup = timezoneLookup;
         }
 
-        protected override async void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(
+            IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             var lookup = eventArgs?.Arguments?.ElementAtOrDefault(0);
             int offset;
@@ -45,24 +47,26 @@ namespace DevChatter.Bot.Core.Commands
                 else if (isValidInteger && (chatUserOffset > 18 || chatUserOffset < -18))
                 {
                     chatClient.SendMessage(Messages.OUT_OF_RANGE);
-                    return;
+                    return false;
                 }
                 else
                 {
                     var client = new HttpClient();
 
                     TimezoneLookupResult lookupResult =
-                        await _timezoneLookup.GetTimezoneInfoAsync(client, lookup);
+                        _timezoneLookup.GetTimezoneInfoAsync(client, lookup)
+                            .GetAwaiter().GetResult();
 
                     if (!lookupResult.Success)
                     {
                         chatClient.SendMessage(lookupResult.Message);
-                        return;
+                        return false;
                     }
 
                     offset = lookupResult.Offset;
                     timezoneDisplay = $"in {lookupResult.TimezoneName}";
                 }
+
             }
 
             DateTimeZone timeZone = DateTimeZone.ForOffset(Offset.FromHours(offset));
@@ -72,6 +76,8 @@ namespace DevChatter.Bot.Core.Commands
             string message = $"Our usual schedule ({timezoneDisplay}) is: " + string.Join(", ", streamTimes.Select(x => GetTimeDisplay(x, timeZone, useTwentyFourHourTime)));
 
             chatClient.SendMessage(message);
+
+            return true;
         }
 
 

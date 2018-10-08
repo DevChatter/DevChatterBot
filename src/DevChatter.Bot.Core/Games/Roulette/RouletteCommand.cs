@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Core.Games.Roulette
             _rouletteSettings = settingsFactory.GetSettings<RouletteSettings>();
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             var name = eventArgs.ChatUser.DisplayName;
             var random = MyRandom.RandomNumber(0, 100);
@@ -44,6 +44,8 @@ namespace DevChatter.Bot.Core.Games.Roulette
                     chatClient.Timeout(name, TimeSpan.FromSeconds(_rouletteSettings.TimeoutDurationInSeconds), "Died playing roulette");
                 }
             }
+
+            return true;
         }
     }
 }

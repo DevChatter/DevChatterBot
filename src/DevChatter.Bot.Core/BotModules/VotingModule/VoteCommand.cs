@@ -23,7 +23,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
             _operations.Add(new EndVoteOperation(votingSystem));
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string firstArg = eventArgs.Arguments.ElementAtOrDefault(0);
 

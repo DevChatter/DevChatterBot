@@ -90,11 +90,14 @@ namespace DevChatter.Bot.Core.Events
             IChatClient chatClient, IBotCommand botCommand, IList<string> args)
         {
             CommandUsage commandUsage = AttemptToRunCommand(e, botCommand, chatClient, args);
-            var commandUsageEntity = new CommandUsageEntity(e.CommandWord,
-                botCommand.GetType().FullName, e.ChatUser.UserId,
-                e.ChatUser.DisplayName, chatClient.GetType().Name);
-            _repository.Create(commandUsageEntity);
-            _usageTracker.RecordUsage(commandUsage);
+            if (commandUsage.WasProcessedCorrectly)
+            {
+                var commandUsageEntity = new CommandUsageEntity(e.CommandWord,
+                    botCommand.GetType().FullName, e.ChatUser.UserId,
+                    e.ChatUser.DisplayName, chatClient.GetType().Name);
+                _repository.Create(commandUsageEntity);
+                _usageTracker.RecordUsage(commandUsage);
+            }
         }
 
         private CommandUsage AttemptToRunCommand(CommandReceivedEventArgs e,
@@ -125,7 +128,8 @@ namespace DevChatter.Bot.Core.Events
                 _logger.LogError(exception, "Failed to run a command.");
             }
 
-            return new CommandUsage(e.ChatUser.DisplayName, DateTimeOffset.UtcNow, botCommand);
+            return new CommandUsage(e.ChatUser.DisplayName, DateTimeOffset.UtcNow,
+                botCommand, false);
         }
     }
 }

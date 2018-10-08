@@ -20,7 +20,7 @@ namespace DevChatter.Bot.Core.Commands
             _logger = logger;
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string userToCheck = eventArgs?.ChatUser?.DisplayName;
             try
@@ -39,7 +39,10 @@ namespace DevChatter.Bot.Core.Commands
             catch (Exception e)
             {
                 _logger.LogError(e, $"Failed to look up coins for {userToCheck}.");
+                return false;
             }
+
+            return true;
         }
     }
 }

@@ -14,9 +14,10 @@ namespace UnitTests.Fakes
             NotifyWordsModified();
         }
 
-        protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        protected override bool HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             ProcessWasCalled = true;
+            return true;
         }
 
         public bool ProcessWasCalled { get; set; }

@@ -22,7 +22,7 @@ namespace DevChatter.Bot.Core.Commands
             _animationDisplayNotification = animationDisplayNotification;
         }
 
-        protected override void HandleCommand(IChatClient chatClient,
+        protected override bool HandleCommand(IChatClient chatClient,
             CommandReceivedEventArgs eventArgs)
         {
             string blastName = eventArgs?.Arguments?.ElementAtOrDefault(0);
@@ -31,11 +31,11 @@ namespace DevChatter.Bot.Core.Commands
             {
                 chatClient.SendMessage(blastType.Message);
                 _animationDisplayNotification.Blast(blastType.ImagePath);
+                return true;
             }
-            else
-            {
-                chatClient.SendMessage(HelpText);
-            }
+
+            chatClient.SendMessage(HelpText);
+            return false;
         }
     }
 }

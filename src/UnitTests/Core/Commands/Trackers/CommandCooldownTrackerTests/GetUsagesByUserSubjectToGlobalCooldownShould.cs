@@ -28,7 +28,7 @@ namespace UnitTests.Core.Commands.Trackers.CommandCooldownTrackerTests
         {
             var tracker = new CommandCooldownTracker(new CommandHandlerSettings {GlobalCommandCooldown = 1}, _loggerAdapter);
             DateTimeOffset currentTime = DateTimeOffset.UtcNow;
-            tracker.RecordUsage(new CommandUsage(_testUser1, currentTime, null));
+            tracker.RecordUsage(new CommandUsage(_testUser1, currentTime, null, true));
 
             var usages = tracker.GetUsagesByUserSubjectToCooldown(_testUser1, currentTime);
 
@@ -41,7 +41,7 @@ namespace UnitTests.Core.Commands.Trackers.CommandCooldownTrackerTests
             var tracker = new CommandCooldownTracker(new CommandHandlerSettings {GlobalCommandCooldown = 1}, _loggerAdapter);
             DateTimeOffset currentTime = DateTimeOffset.UtcNow;
             DateTimeOffset timeUsageWasInvoked = currentTime.AddSeconds(-2);
-            tracker.RecordUsage(new CommandUsage(_testUser1, timeUsageWasInvoked, null));
+            tracker.RecordUsage(new CommandUsage(_testUser1, timeUsageWasInvoked, null, true));
 
             var usages = tracker.GetUsagesByUserSubjectToCooldown(_testUser1, currentTime);
 
