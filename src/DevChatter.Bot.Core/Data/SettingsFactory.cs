@@ -25,20 +25,21 @@ namespace DevChatter.Bot.Core.Data
                 var settingsEntity = settingsEntities.SingleOrDefault(x => x.Key == propertyInfo.Name);
                 if (settingsEntity != null)
                 {
-                    if (propertyInfo.PropertyType.IsEnum)
-                    {
-                        // TODO: Extract the value based on the if - in own method
-                        propertyInfo.SetValue(settings,
-                            Enum.Parse(propertyInfo.PropertyType, settingsEntity.Value));
-                    }
-                    else
-                    {
-                        propertyInfo.SetValue(settings,
-                            Convert.ChangeType(settingsEntity.Value, propertyInfo.PropertyType));
-                    }
+                    propertyInfo.SetValue(settings, ConvertValue(propertyInfo, settingsEntity));
                 }
             }
+
             return settings;
+
+            object ConvertValue(PropertyInfo propertyInfo, CommandSettingsEntity settingsEntity)
+            {
+                if (propertyInfo.PropertyType.IsEnum)
+                {
+                    return Enum.Parse(propertyInfo.PropertyType, settingsEntity.Value);
+                }
+
+                return Convert.ChangeType(settingsEntity.Value, propertyInfo.PropertyType);
+            }
         }
 
         public void CreateDefaultSettingsIfNeeded<T>() where T : class, new()
