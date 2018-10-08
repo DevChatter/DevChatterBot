@@ -4,7 +4,8 @@ namespace DevChatter.Bot.Core.Games.Hangman
 {
     public class HangmanSettings
     {
-        public UserRole DeleteWordRoleRequired { get; set; } = UserRole.Mod;
+        public UserRole RoleRequiredToDeleteWord { get; set; } = UserRole.Mod;
+        public UserRole RoleRequiredToStartGame { get; set; } = UserRole.Subscriber;
 
     }
 }

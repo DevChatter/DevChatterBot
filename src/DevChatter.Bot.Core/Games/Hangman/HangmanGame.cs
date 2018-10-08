@@ -12,8 +12,6 @@ namespace DevChatter.Bot.Core.Games.Hangman
 {
     public class HangmanGame : IGame
     {
-        private const int GUESS_WAIT_IN_SECONDS = 30;
-        private const UserRole ROLE_REQUIRE_TO_START = UserRole.Subscriber;
         private const int PER_LETTER_TOKENS = 2;
         private const int TOKENS_TO_WINNER = 25;
         private const string AllLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -161,10 +159,10 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 return;
             }
 
-            if (!chatUser.IsInThisRoleOrHigher(ROLE_REQUIRE_TO_START))
+            if (!chatUser.IsInThisRoleOrHigher(_hangmanSettings.RoleRequiredToStartGame))
             {
                 chatClient.SendMessage(
-                    $"You must be at least a {ROLE_REQUIRE_TO_START} to start a game, {chatUser.DisplayName}");
+                    $"You must be at least a {_hangmanSettings.RoleRequiredToStartGame} to start a game, {chatUser.DisplayName}");
                 return;
             }
 

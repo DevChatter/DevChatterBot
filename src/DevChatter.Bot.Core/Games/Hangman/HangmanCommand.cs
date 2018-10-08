@@ -18,7 +18,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         public List<ICommandOperation> Operations => _operations ?? (_operations = new List<ICommandOperation>
         {
             new AddHangmanWordOperation(Repository),
-            new GenericDeleteOperation<HangmanWord>(Repository, _hangmanSettings.DeleteWordRoleRequired,
+            new GenericDeleteOperation<HangmanWord>(Repository, _hangmanSettings.RoleRequiredToDeleteWord,
                 e => HangmanWordPolicy.ByWord(e.Arguments?.ElementAtOrDefault(1))),
         });
 
