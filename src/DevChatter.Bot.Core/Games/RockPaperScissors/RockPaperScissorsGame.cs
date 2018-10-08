@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.Automation;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Util;
@@ -10,9 +11,6 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
 {
     public class RockPaperScissorsGame : IGame
     {
-        private const int SECONDS_TO_JOIN_GAME = 120;
-        private const int TOKENS_FOR_WINNING = 100;
-        private const int TOKENS_REQUIRED_TO_PLAY = 30;
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IAutomatedActionSystem _automatedActionSystem;
         private readonly ILoggerAdapter<RockPaperScissorsGame> _logger;
@@ -21,14 +19,19 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             new Dictionary<string, RockPaperScissors>();
 
         private readonly object _gameStartLock = new object();
+        private readonly RockPaperScissorsSettings _settings;
 
         public bool IsRunning { get; private set; }
 
-        public RockPaperScissorsGame(ICurrencyGenerator currencyGenerator, IAutomatedActionSystem automatedActionSystem, ILoggerAdapter<RockPaperScissorsGame> logger)
+        public RockPaperScissorsGame(ICurrencyGenerator currencyGenerator,
+            IAutomatedActionSystem automatedActionSystem,
+            ISettingsFactory settingsFactory,
+            ILoggerAdapter<RockPaperScissorsGame> logger)
         {
             _currencyGenerator = currencyGenerator;
             _automatedActionSystem = automatedActionSystem;
             _logger = logger;
+            _settings = settingsFactory.GetSettings<RockPaperScissorsSettings>();
         }
 
         public void JoinMatch(IChatClient chatClient, (string username, RockPaperScissors choice) userChoice)
@@ -40,7 +43,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             }
             else
             {
-                if (_currencyGenerator.RemoveCurrencyFrom(userChoice.username, TOKENS_REQUIRED_TO_PLAY))
+                if (_currencyGenerator.RemoveCurrencyFrom(userChoice.username, _settings.TokensRequiredToPlay))
                 {
                     chatClient.SendMessage(Messages.GetJoinedMessage(userChoice.username, userChoice.choice));
                 }
@@ -74,7 +77,7 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         {
             List<string> winnersList = GetWinnerList(botChoice);
             if (winnersList.Any())
-                _currencyGenerator.AddCurrencyTo(winnersList, TOKENS_FOR_WINNING);
+                _currencyGenerator.AddCurrencyTo(winnersList, _settings.TokensForWinning);
         }
 
         public void AnnounceWinners(IChatClient chatClient, RockPaperScissors botChoice)
@@ -94,10 +97,10 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             if (winnersList.Count > 1)
             {
                 string winners = string.Join(", ", winnersList);
-                return Messages.GetWinnersMessage(winners, TOKENS_FOR_WINNING);
+                return Messages.GetWinnersMessage(winners, _settings.TokensForWinning);
             }
 
-            return Messages.GetSingleWinnerMessage(winnersList.Single(), TOKENS_FOR_WINNING);
+            return Messages.GetSingleWinnerMessage(winnersList.Single(), _settings.TokensForWinning);
         }
 
         public List<string> GetWinnerList(RockPaperScissors botChoice)
@@ -134,12 +137,12 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
         private void StartNewGame(IChatClient chatClient, string username)
         {
             _logger.LogInformation($"{nameof(StartNewGame)}({chatClient.GetType().Name}, {username}) - Starting Game");
-            chatClient.SendMessage(Messages.GetGameStartMessage(username,SECONDS_TO_JOIN_GAME));
+            chatClient.SendMessage(Messages.GetGameStartMessage(username, _settings.SecondsToJoinGame));
 
-            var triggerEngGame = new OneTimeCallBackAction(SECONDS_TO_JOIN_GAME, () => PlayMatch(chatClient));
+            var triggerEngGame = new OneTimeCallBackAction(_settings.SecondsToJoinGame, () => PlayMatch(chatClient));
             _automatedActionSystem.AddAction(triggerEngGame);
 
-            var lastWarningMessage = new DelayedMessageAction(SECONDS_TO_JOIN_GAME - 30,
+            var lastWarningMessage = new DelayedMessageAction(_settings.SecondsToJoinGame - 30,
                 Messages.LAST_CHANCE_TO_JOIN, chatClient);
             _automatedActionSystem.AddAction(lastWarningMessage);
         }
