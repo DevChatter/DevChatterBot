@@ -3,6 +3,7 @@ using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using System;
 using System.Threading.Tasks;
+using DevChatter.Bot.Core.Data.Model;
 
 namespace DevChatter.Bot.Core.Systems.Streaming
 {
@@ -52,10 +53,10 @@ namespace DevChatter.Bot.Core.Systems.Streaming
         private void FollowerServiceOnOnNewFollower(
             object sender, NewFollowersEventArgs eventArgs)
         {
-            foreach (string followerName in eventArgs.FollowerNames)
+            foreach (ChatUser newFollower in eventArgs.NewFollowers)
             {
-                _currencyGenerator.AddCurrencyTo(followerName, TOKENS_FOR_FOLLOWING);
-                _chatClient.SendMessage($"Welcome, {followerName}! Thank you for following! {TOKENS_FOR_FOLLOWING} coins to have some fun. Everyone, say \"hello\"!");
+                _currencyGenerator.AddCurrencyTo(newFollower.DisplayName, TOKENS_FOR_FOLLOWING);
+                _chatClient.SendMessage($"Welcome, {newFollower.DisplayName}! Thank you for following! {TOKENS_FOR_FOLLOWING} coins to have some fun. Everyone, say \"hello\"!");
             }
         }
 

@@ -4,10 +4,11 @@ using DevChatter.Bot.Infra.Twitch.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.Interfaces;
-using TwitchLib.Api.Models.v5.Users;
 using TwitchLib.Api.Services;
 using TwitchLib.Api.Services.Events.FollowerService;
+using TwitchLib.Api.V5.Models.Users;
 
 namespace DevChatter.Bot.Infra.Twitch.Events
 {
@@ -20,7 +21,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
         private UserFollow[] _userFollows;
 
         private IEnumerable<UserFollow> UserFollows => _userFollows
-                    ?? (_userFollows = _twitchApi.Users.v5.GetUserFollowsAsync(_settings.TwitchChannelId).Result.Follows);
+                    ?? (_userFollows = _twitchApi.V5.Users.GetUserFollowsAsync(_settings.TwitchChannelId).Result.Follows);
 
         public TwitchFollowerService(ITwitchAPI twitchApi, TwitchClientSettings settings)
         {
@@ -30,16 +31,18 @@ namespace DevChatter.Bot.Infra.Twitch.Events
 
             _followerService = new FollowerService(twitchApi);
 
-            _followerService.SetChannelByChannelId(settings.TwitchChannelId);
+            _followerService.SetChannelsById(new List<string> { settings.TwitchChannelId });
 
-            _followerService.StartService().Wait();
+            _followerService.Start();
 
             _followerService.OnNewFollowersDetected += FollowerServiceOnOnNewFollowersDetected;
         }
 
         private void FollowerServiceOnOnNewFollowersDetected(object sender, OnNewFollowersDetectedArgs eventArgs)
         {
-            OnNewFollower?.Invoke(sender, eventArgs.ToNewFollowerEventArgs());
+            GetUsersResponse getUsersResponse = _twitchApi.Helix.Users.GetUsersAsync(eventArgs.NewFollowers.Select(x => x.FromUserId).ToList()).Result;
+
+            OnNewFollower?.Invoke(sender, getUsersResponse.ToNewFollowerEventArgs());
         }
 
         public IList<string> GetUsersWeFollow()
