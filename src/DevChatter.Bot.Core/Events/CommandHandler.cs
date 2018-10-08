@@ -31,6 +31,26 @@ namespace DevChatter.Bot.Core.Events
             {
                 chatClient.OnCommandReceived += CommandReceivedHandler;
             }
+
+            SetUpAliasUpdating(commandList);
+        }
+
+        private void SetUpAliasUpdating(CommandList commandList)
+        {
+            var aliasCommand = commandList.GetCommandByType<AliasCommand>();
+            if (aliasCommand != null)
+            {
+                aliasCommand.CommandAliasModified += AliasModified;
+            }
+        }
+
+        private void AliasModified(object sender, CommandAliasModifiedEventArgs e)
+        {
+            IBotCommand command = _commandList.GetCommandByFullTypeName(e.FullTypeName);
+            if (command is BaseCommand baseCommand)
+            {
+                baseCommand.NotifyWordsModified();
+            }
         }
 
         public void CommandReceivedHandler(object sender, CommandReceivedEventArgs e)
@@ -45,13 +65,6 @@ namespace DevChatter.Bot.Core.Events
             if (botCommand == null)
             {
                 return;
-            }
-
-            // TODO:Remove this soon and replace with smarter code
-            if (botCommand is RefreshCommandListCommand refreshCommand
-                && refreshCommand.NeedsInitializing)
-            {
-                refreshCommand.Initialize(_commandList);
             }
 
             var cooldown = _usageTracker.GetActiveCooldown(e.ChatUser, botCommand);

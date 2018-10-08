@@ -151,7 +151,7 @@ namespace DevChatter.Bot.Web
             builder.AddCommandSystem();
 
             builder.Register(p =>
-                new CommandList(p.Resolve<IList<IBotCommand>>().ToList(), p));
+                new CommandList(p.Resolve<IList<IBotCommand>>().ToList()));
 
             builder.RegisterModule<CoreRegistrationModule>();
 

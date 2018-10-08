@@ -1,30 +1,33 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using DevChatter.Bot.Core.Util;
 
 namespace DevChatter.Bot.Core.Commands
 {
     public class AliasCommand : BaseCommand
     {
+        private readonly ILoggerAdapter<AliasCommand> _logger;
         private readonly List<BaseCommandOperation> _operations;
 
-        public AliasCommand(IRepository repository)
+        public AliasCommand(IRepository repository,
+            ILoggerAdapter<AliasCommand> logger)
             : base(repository)
         {
+            _logger = logger;
             _operations = new List<BaseCommandOperation>
             {
                 new AddAliasOperation(repository),
-                new DeleteAliasOperation(repository)
+                new DeleteAliasOperation(repository, logger)
             };
         }
 
-        public EventHandler<EventArgs> CommandAliasModified;
+        public EventHandler<CommandAliasModifiedEventArgs> CommandAliasModified;
 
         public override string FullHelpText => "Alias manages aliases for existing commands. " + string.Join(" ", _operations.Select(x => x.HelpText));
 
@@ -52,7 +55,8 @@ namespace DevChatter.Bot.Core.Commands
             {
                 string resultMessage = operationToUse.TryToExecute(eventArgs);
                 chatClient.SendMessage(resultMessage);
-                CommandAliasModified?.Invoke(this, EventArgs.Empty);
+                CommandAliasModified?.Invoke(this,
+                    new CommandAliasModifiedEventArgs(typeName));
             }
             else
             {
