@@ -46,14 +46,16 @@ namespace DevChatter.Bot.Core.Games.Hangman
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IRepository _repository;
         private readonly IHangmanDisplayNotification _hangmanDisplayNotification;
+        private HangmanSettings _hangmanSettings;
 
         public bool IsRunning { get; private set; }
 
-        public HangmanGame(ICurrencyGenerator currencyGenerator, IRepository repository, IHangmanDisplayNotification hangmanDisplayNotification)
+        public HangmanGame(ICurrencyGenerator currencyGenerator, IRepository repository, ISettingsFactory settingsFactory, IHangmanDisplayNotification hangmanDisplayNotification)
         {
             _currencyGenerator = currencyGenerator;
             _repository = repository;
             _hangmanDisplayNotification = hangmanDisplayNotification;
+            _hangmanSettings = settingsFactory.GetSettings<HangmanSettings>();
         }
 
         public void GuessWord(IChatClient chatClient, string guess, ChatUser chatUser)
