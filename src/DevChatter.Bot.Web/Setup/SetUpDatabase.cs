@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Games.Hangman;
+using DevChatter.Bot.Core.Games.RockPaperScissors;
 
 namespace DevChatter.Bot.Web.Setup
 {
@@ -114,6 +116,8 @@ namespace DevChatter.Bot.Web.Setup
             var settingsFactory = new SettingsFactory(repository);
             settingsFactory.CreateDefaultSettingsIfNeeded<RouletteSettings>();
             settingsFactory.CreateDefaultSettingsIfNeeded<CurrencySettings>();
+            settingsFactory.CreateDefaultSettingsIfNeeded<HangmanSettings>();
+            settingsFactory.CreateDefaultSettingsIfNeeded<RockPaperScissorsSettings>();
         }
 
         private static List<QuizQuestion> GetInitialQuizQuestions()

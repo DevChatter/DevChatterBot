@@ -18,18 +18,20 @@ namespace DevChatter.Bot.Core.Games.Hangman
         public List<ICommandOperation> Operations => _operations ?? (_operations = new List<ICommandOperation>
         {
             new AddHangmanWordOperation(Repository),
-            new GenericDeleteOperation<HangmanWord>(Repository, UserRole.Mod,
+            new GenericDeleteOperation<HangmanWord>(Repository, _hangmanSettings.RoleRequiredToDeleteWord,
                 e => HangmanWordPolicy.ByWord(e.Arguments?.ElementAtOrDefault(1))),
         });
 
         private static readonly object SingleFileLock = new object();
 
         private readonly HangmanGame _hangmanGame;
+        private readonly HangmanSettings _hangmanSettings;
         public IGame Game => _hangmanGame;
 
-        public HangmanCommand(IRepository repository, HangmanGame hangmanGame)
+        public HangmanCommand(IRepository repository, ISettingsFactory settingsFactory, HangmanGame hangmanGame)
             : base(repository)
         {
+            _hangmanSettings = settingsFactory.GetSettings<HangmanSettings>();
             _hangmanGame = hangmanGame;
         }
 
