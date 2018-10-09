@@ -1,0 +1,56 @@
+@page
+@using Newtonsoft.Json
+@model DevChatter.Bot.Web.Pages.Overlays.TopicOverlayModel
+@{
+    ViewData["Title"] = "Topic Overlay";
+    Layout = "Shared/_OverlayLayout";
+}
+
+<h2>@Model.TopicText</h2>
+<div id="appRoot"></div>
+
+
+@section Scripts
+{
+    <script type="text/babel">
+        class HelloMessage extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { topic: '' };
+            }
+
+            componentDidMount() {
+              this.hubConn = new signalR.HubConnectionBuilder()
+                .withUrl("/OverlayHub")
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+              this.hubConn.start();
+
+                this.hubConn.on('ChangeTopic', this.onDataReceived.bind(this));
+            }
+
+            componentWillUnmount() {
+            }
+
+            onDataReceived(topicText) {
+                this.setState({ topic: topicText });
+            }
+
+            render() {
+                return (
+                    <div>
+                        Hello {this.props.name}; {this.state.topic}
+                    </div>
+                );
+            }
+        }
+
+        const props = { name: "Chatasaurus" };
+        console.log(props);
+        ReactDOM.render(
+            <HelloMessage name={props.name} />,
+            document.getElementById('appRoot')
+        );
+    </script>
+}

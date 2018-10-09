@@ -73,6 +73,10 @@
       "RequiredRole": "Mod"
     },
     {
+      "FullTypeName": "DevChatter.Bot.Core.Commands.Overlays.TopicCommand",
+      "RequiredRole": "Mod"
+    },
+    {
       "FullTypeName": "DevChatter.Bot.Core.Commands.TaxCommand",
       "HelpText": "Take coins from someone. Example !tax AridTag 10",
       "RequiredRole": "Mod"

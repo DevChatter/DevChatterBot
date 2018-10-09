@@ -143,6 +143,8 @@ namespace DevChatter.Bot.Web
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<VotingDisplayNotification>()
                 .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<OverlayDisplayNotification>()
+                .AsImplementedInterfaces().SingleInstance();
 
             builder.AddAllGames();
 
@@ -203,6 +205,7 @@ namespace DevChatter.Bot.Web
                 routes.MapHub<BotHub>("/BotHub");
                 routes.MapHub<VotingHub>("/VotingHub");
                 routes.MapHub<HangmanHub>("/HangmanHub");
+                routes.MapHub<OverlayHub>("/OverlayHub");
             });
 
             app.UseMvc();
