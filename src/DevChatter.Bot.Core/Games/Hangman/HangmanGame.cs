@@ -130,11 +130,15 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
                 chatClient.SendMessage($"Yep, {letterToAsk} is in here. {MaskedPassword}");
             }
-            else
+            else if (ALL_LETTERS.Contains(letterToAsk))
             {
                 chatClient.SendMessage($"No, {letterToAsk} is not in the word.");
                 _hangmanDisplayNotification.HangmanWrongAnswer();
                 CheckForGameLost(chatClient);
+            }
+            else
+            {
+                chatClient.SendMessage($"Sorry, {letterToAsk} is not an A-Z character. Please try again.");
             }
         }
 
