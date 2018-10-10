@@ -118,6 +118,12 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 return;
             }
 
+            if (!ALL_LETTERS.Contains(letterToAsk))
+            {
+                chatClient.SendMessage($"Sorry, {letterToAsk} is not an A-Z character. Please try again.");
+                return;
+            }
+
             _guessedLetters.Add(new HangmanGuess(letterToAsk, chatUser));
             SendAllGuessedLetters();
             if (Password.Contains(letterToAsk))
@@ -130,16 +136,13 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
                 chatClient.SendMessage($"Yep, {letterToAsk} is in here. {MaskedPassword}");
             }
-            else if (ALL_LETTERS.Contains(letterToAsk))
+            else 
             {
                 chatClient.SendMessage($"No, {letterToAsk} is not in the word.");
                 _hangmanDisplayNotification.HangmanWrongAnswer();
                 CheckForGameLost(chatClient);
             }
-            else
-            {
-                chatClient.SendMessage($"Sorry, {letterToAsk} is not an A-Z character. Please try again.");
-            }
+
         }
 
         private void CheckForGameLost(IChatClient chatClient)
