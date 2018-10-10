@@ -12,18 +12,14 @@ namespace DevChatter.Bot.Core.Games.Hangman
 {
     public class HangmanGame : IGame
     {
-        private const int GUESS_WAIT_IN_SECONDS = 30;
-        private const UserRole ROLE_REQUIRE_TO_START = UserRole.Subscriber;
-        private const int PER_LETTER_TOKENS = 2;
-        private const int TOKENS_TO_WINNER = 25;
-        private const string AllLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private const string ALL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         private readonly List<HangmanGuess> _guessedLetters = new List<HangmanGuess>();
 
         private string _password;
 
         public string Password =>
-            _password ?? (_password = _repository.List<HangmanWord>().OrderBy(x => Guid.NewGuid()).FirstOrDefault().Word.ToLowerInvariant());
+            _password ?? (_password = _repository.List<HangmanWord>().OrderBy(x => Guid.NewGuid()).FirstOrDefault()?.Word.ToLowerInvariant());
 
         public string MaskedPassword
         {
@@ -40,20 +36,22 @@ namespace DevChatter.Bot.Core.Games.Hangman
             }
         }
 
-        private string AllGuessedLettersMasked => string.Join(" ", AllLetters.Select(x =>
+        private string AllGuessedLettersMasked => string.Join(" ", ALL_LETTERS.Select(x =>
                 _guessedLetters.Any(l => l.Letter.EqualsIns(x.ToString())) ? x : '_'));
 
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IRepository _repository;
         private readonly IHangmanDisplayNotification _hangmanDisplayNotification;
+        private HangmanSettings _hangmanSettings;
 
         public bool IsRunning { get; private set; }
 
-        public HangmanGame(ICurrencyGenerator currencyGenerator, IRepository repository, IHangmanDisplayNotification hangmanDisplayNotification)
+        public HangmanGame(ICurrencyGenerator currencyGenerator, IRepository repository, ISettingsFactory settingsFactory, IHangmanDisplayNotification hangmanDisplayNotification)
         {
             _currencyGenerator = currencyGenerator;
             _repository = repository;
             _hangmanDisplayNotification = hangmanDisplayNotification;
+            _hangmanSettings = settingsFactory.GetSettings<HangmanSettings>();
         }
 
         public void GuessWord(IChatClient chatClient, string guess, ChatUser chatUser)
@@ -77,8 +75,8 @@ namespace DevChatter.Bot.Core.Games.Hangman
         private void GameWon(IChatClient chatClient, ChatUser chatUser)
         {
             chatClient.SendMessage(
-                $"Congratulations, {chatUser.DisplayName} ! You won the game and will get {TOKENS_TO_WINNER} tokens!");
-            _currencyGenerator.AddCurrencyTo(new List<string> { chatUser.DisplayName }, TOKENS_TO_WINNER);
+                $"Congratulations, {chatUser.DisplayName} ! You won the game and will get {_hangmanSettings.TokensToWinner} tokens!");
+            _currencyGenerator.AddCurrencyTo(new List<string> { chatUser.DisplayName }, _hangmanSettings.TokensToWinner);
             GivePerLetterTokens(chatClient);
             _hangmanDisplayNotification.HangmanWin();
             ResetGame();
@@ -86,9 +84,9 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         private void GivePerLetterTokens(IChatClient chatClient)
         {
-            chatClient.SendMessage($"{PER_LETTER_TOKENS} tokens will be given for each correctly guessed letter.");
+            chatClient.SendMessage($"{_hangmanSettings.TokensPerLetter} tokens will be given for each correctly guessed letter.");
             var tokensToGiveOut = CalculateLetterAwards(_guessedLetters, Password);
-            _currencyGenerator.AddCurrencyTo(tokensToGiveOut, PER_LETTER_TOKENS);
+            _currencyGenerator.AddCurrencyTo(tokensToGiveOut, _hangmanSettings.TokensPerLetter);
         }
 
         public static List<string> CalculateLetterAwards(List<HangmanGuess> guessedLetters, string password)
@@ -159,10 +157,10 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 return;
             }
 
-            if (!chatUser.IsInThisRoleOrHigher(ROLE_REQUIRE_TO_START))
+            if (!chatUser.IsInThisRoleOrHigher(_hangmanSettings.RoleRequiredToStartGame))
             {
                 chatClient.SendMessage(
-                    $"You must be at least a {ROLE_REQUIRE_TO_START} to start a game, {chatUser.DisplayName}");
+                    $"You must be at least a {_hangmanSettings.RoleRequiredToStartGame} to start a game, {chatUser.DisplayName}");
                 return;
             }
 
