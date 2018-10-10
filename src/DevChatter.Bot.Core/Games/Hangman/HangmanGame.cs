@@ -1,5 +1,6 @@
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
@@ -12,14 +13,11 @@ namespace DevChatter.Bot.Core.Games.Hangman
 {
     public class HangmanGame : IGame
     {
-        private const string ALL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private string ALL_LETTERS;
 
         private readonly List<HangmanGuess> _guessedLetters = new List<HangmanGuess>();
 
-        private string _password;
-
-        public string Password =>
-            _password ?? (_password = _repository.List<HangmanWord>().OrderBy(x => Guid.NewGuid()).FirstOrDefault()?.Word.ToLowerInvariant());
+        private string Password;
 
         public string MaskedPassword
         {
@@ -101,7 +99,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         {
             IsRunning = false;
             _guessedLetters.Clear();
-            _password = null;
+            Password = null;
         }
 
         public void AskAboutLetter(IChatClient chatClient, string letterToAsk, ChatUser chatUser)
@@ -111,30 +109,39 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 SendGameNotStartedMessage(chatClient, chatUser);
                 return;
             }
-
-            if (_guessedLetters.Any(g => g.Letter == letterToAsk))
-            {
-                chatClient.SendMessage($"{letterToAsk} has already been guessed, {chatUser.DisplayName}.");
-                return;
-            }
-
-            _guessedLetters.Add(new HangmanGuess(letterToAsk, chatUser));
-            SendAllGuessedLetters();
-            if (Password.Contains(letterToAsk))
-            {
-                if (Password == MaskedPassword)
-                {
-                    GuessWord(chatClient, MaskedPassword, chatUser);
-                    return;
-                }
-
-                chatClient.SendMessage($"Yep, {letterToAsk} is in here. {MaskedPassword}");
-            }
             else
             {
-                chatClient.SendMessage($"No, {letterToAsk} is not in the word.");
-                _hangmanDisplayNotification.HangmanWrongAnswer();
-                CheckForGameLost(chatClient);
+                if (ALL_LETTERS.ToLower().Contains(letterToAsk))
+                {
+                    if (_guessedLetters.Any(g => g.Letter == letterToAsk))
+                    {
+                        chatClient.SendMessage($"{letterToAsk} has already been guessed, {chatUser.DisplayName}.");
+                        return;
+                    }
+
+                    _guessedLetters.Add(new HangmanGuess(letterToAsk, chatUser));
+                    SendAllGuessedLetters();
+                    if (Password.Contains(letterToAsk))
+                    {
+                        if (Password == MaskedPassword)
+                        {
+                            GuessWord(chatClient, MaskedPassword, chatUser);
+                            return;
+                        }
+
+                        chatClient.SendMessage($"Yep, {letterToAsk} is in here. {MaskedPassword}");
+                    }
+                    else
+                    {
+                        chatClient.SendMessage($"No, {letterToAsk} is not in the word.");
+                        _hangmanDisplayNotification.HangmanWrongAnswer();
+                        CheckForGameLost(chatClient);
+                    }
+                }
+                else
+                {
+                    chatClient.SendMessage($"\"{letterToAsk}\" is not a valid letter");
+                }
             }
         }
 
@@ -164,10 +171,34 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 return;
             }
 
-            IsRunning = true;
+            ALL_LETTERS = _hangmanSettings.AllowedCharacters;
+            if (ALL_LETTERS != null)
+            {
+                var wordList = _repository.List<HangmanWord>().OrderBy(x => Guid.NewGuid());
+                foreach(var w in wordList)
+                {
+                    if(w.Word.ToCharArray().All(l => ALL_LETTERS.ToLower().Contains(l)))
+                    {
+                        Password = w.Word.ToLowerInvariant();
+                        break;
+                    }
+                }
 
-            _hangmanDisplayNotification.HangmanStart();
-            chatClient.SendMessage($"Totally starting this game. You word to guess is {MaskedPassword}");
+                if(Password == null)
+                {
+                    chatClient.SendMessage("No words in the Hangman dictionary are compatible with the supported words");
+                }
+                else
+                {
+                    _hangmanDisplayNotification.HangmanStart();
+                    chatClient.SendMessage($"Totally starting this game. Your word to guess is {MaskedPassword}");
+                    IsRunning = true;
+                }
+            }
+            else
+            {
+                chatClient.SendMessage("Couldn't start a new game, there are no allowed letters");
+            }
         }
 
         private void SendGameAlreadyStartedMessage(IChatClient chatClient, ChatUser chatUser)
