@@ -4,11 +4,11 @@ using DevChatter.Bot.Infra.Twitch.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Api.Services;
 using TwitchLib.Api.Services.Events.FollowerService;
-using TwitchLib.Api.V5.Models.Users;
 
 namespace DevChatter.Bot.Infra.Twitch.Events
 {
@@ -19,10 +19,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
         private readonly TwitchClientSettings _settings;
         private readonly FollowerService _followerService;
 
-        private UserFollow[] _userFollows;
-
-        private IEnumerable<UserFollow> UserFollows => _userFollows
-                    ?? (_userFollows = _twitchApi.V5.Users.GetUserFollowsAsync(_settings.TwitchChannelId).Result.Follows);
+        private List<string> _followedUsers;
 
         public TwitchFollowerService(ITwitchAPI twitchApi, TwitchClientSettings settings)
         {
@@ -53,9 +50,18 @@ namespace DevChatter.Bot.Infra.Twitch.Events
             }
         }
 
-        public IList<string> GetUsersWeFollow()
+        public async Task<IList<string>> GetUsersWeFollow()
         {
-            return UserFollows.Select(uf => uf.Channel.Name).ToList();
+            if (_followedUsers == null)
+            {
+                GetUsersFollowsResponse getUsersFollowsResponse =
+                    await _twitchApi.Helix.Users.GetUsersFollowsAsync(fromId: _settings.TwitchChannelId);
+                var followedIds = getUsersFollowsResponse.Follows.Select(x => x.ToUserId).ToList();
+                GetUsersResponse getUsersResponse =
+                    await _twitchApi.Helix.Users.GetUsersAsync(followedIds);
+                _followedUsers = getUsersResponse.Users.Select(x => x.DisplayName).ToList();
+            }
+            return _followedUsers;
         }
 
         public event EventHandler<NewFollowersEventArgs> OnNewFollower;
