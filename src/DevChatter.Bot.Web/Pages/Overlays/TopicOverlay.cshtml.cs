@@ -6,7 +6,7 @@ namespace DevChatter.Bot.Web.Pages.Overlays
     {
         public void OnGet()
         {
-
+            TopicText = "Coding in C# and JavaScript!";
         }
 
         public string TopicText { get; set; }

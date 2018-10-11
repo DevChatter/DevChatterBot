@@ -6,7 +6,6 @@
     Layout = "Shared/_OverlayLayout";
 }
 
-<h2>@Model.TopicText</h2>
 <div id="appRoot"></div>
 
 
@@ -16,7 +15,7 @@
         class HelloMessage extends React.Component {
             constructor(props) {
                 super(props);
-                this.state = { topic: '' };
+                this.state = { topic: '@Model.TopicText' };
             }
 
             componentDidMount() {
@@ -40,7 +39,7 @@
             render() {
                 return (
                     <div>
-                        Hello {this.props.name}; {this.state.topic}
+                        {this.state.topic}
                     </div>
                 );
             }
