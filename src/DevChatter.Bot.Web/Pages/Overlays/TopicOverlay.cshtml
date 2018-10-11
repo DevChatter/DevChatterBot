@@ -20,12 +20,12 @@
             }
 
             componentDidMount() {
-              this.hubConn = new signalR.HubConnectionBuilder()
-                .withUrl("/OverlayHub")
-                .configureLogging(signalR.LogLevel.Information)
-                .build();
+                this.hubConn = new signalR.HubConnectionBuilder()
+                    .withUrl("/OverlayHub")
+                    .configureLogging(signalR.LogLevel.Information)
+                    .build();
 
-              this.hubConn.start();
+                this.hubConn.start();
 
                 this.hubConn.on('ChangeTopic', this.onDataReceived.bind(this));
             }
