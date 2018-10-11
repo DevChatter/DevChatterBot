@@ -16,11 +16,13 @@ namespace UnitTests.Core.Commands.BlastCommandTests
         [Fact]
         public void SendHelpText_GivenNoArguments()
         {
-            var (chatClient, _, _, blastCommand) = GetTestCommandAndMocks();
+            var (chatClient, repo, _, blastCommand) = GetTestCommandAndMocks();
+            repo.Setup(x => x.List(It.IsAny<DataItemPolicy<BlastTypeEntity>>()))
+                .Returns(new List<BlastTypeEntity>{new BlastTypeEntity{Name = "TestHype"}});
 
             blastCommand.Process(chatClient.Object, new CommandReceivedEventArgs());
 
-            chatClient.Verify(x => x.SendMessage(blastCommand.HelpText));
+            chatClient.Verify(x => x.SendMessage("The TestHype"));
         }
 
         [Fact]
@@ -45,6 +47,9 @@ namespace UnitTests.Core.Commands.BlastCommandTests
         {
             var chatClient = new Mock<IChatClient>();
             var repository = new Mock<IRepository>();
+            repository.Setup(x => x.Single(It.IsAny<CommandPolicy>()))
+                .Returns(new CommandEntity { HelpText = "The {0}" });
+
             var displayNotification = new Mock<IAnimationDisplayNotification>();
             var blastCommand = new BlastCommand(repository.Object, displayNotification.Object);
             return (chatClient, repository, displayNotification, blastCommand);
