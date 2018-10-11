@@ -14,6 +14,7 @@ namespace DevChatter.Bot.Infra.Twitch.Events
 {
     public class TwitchFollowerService : IFollowerService
     {
+        public DateTime StartUpTime { get; set; } = DateTime.UtcNow;
         private readonly ITwitchAPI _twitchApi;
         private readonly TwitchClientSettings _settings;
         private readonly FollowerService _followerService;
@@ -40,9 +41,16 @@ namespace DevChatter.Bot.Infra.Twitch.Events
 
         private void FollowerServiceOnOnNewFollowersDetected(object sender, OnNewFollowersDetectedArgs eventArgs)
         {
-            GetUsersResponse getUsersResponse = _twitchApi.Helix.Users.GetUsersAsync(eventArgs.NewFollowers.Select(x => x.FromUserId).ToList()).Result;
-
-            OnNewFollower?.Invoke(sender, getUsersResponse.ToNewFollowerEventArgs());
+            List<string> newFollowers = eventArgs.NewFollowers
+                .Where(f => f.FollowedAt > StartUpTime)
+                .Select(x => x.FromUserId)
+                .ToList();
+            if (newFollowers.Any())
+            {
+                GetUsersResponse getUsersResponse =
+                    _twitchApi.Helix.Users.GetUsersAsync(newFollowers).Result;
+                OnNewFollower?.Invoke(sender, getUsersResponse.ToNewFollowerEventArgs());
+            }
         }
 
         public IList<string> GetUsersWeFollow()
