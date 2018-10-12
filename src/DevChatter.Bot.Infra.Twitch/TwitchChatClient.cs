@@ -8,13 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DevChatter.Bot.Core.Util;
+using TwitchLib.Api.Core.Models.Undocumented.Chatters;
 using TwitchLib.Api.Interfaces;
-using TwitchLib.Api.Models.Undocumented.Chatters;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Extensions;
 using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
+using TwitchLib.Communication.Events;
 
 namespace DevChatter.Bot.Infra.Twitch
 {
@@ -96,7 +97,7 @@ namespace DevChatter.Bot.Infra.Twitch
             await _disconnectionCompletionTask.Task;
         }
 
-        private void TwitchClientOnOnDisconnected(object sender, OnDisconnectedArgs onDisconnectedArgs)
+        private void TwitchClientOnOnDisconnected(object sender, OnDisconnectedEventArgs e)
         {
             _logger.LogInformation($"{nameof(TwitchChatClient)} disconnected");
             _twitchClient.OnDisconnected -= TwitchClientOnOnDisconnected;
@@ -116,7 +117,7 @@ namespace DevChatter.Bot.Infra.Twitch
 
         public void Timeout(string username, TimeSpan duration, string reason)
         {
-            _twitchClient.TimeoutUser(username, duration, reason);
+            _twitchClient.TimeoutUser(_settings.TwitchChannel, username, duration, reason);
         }
 
         public IList<ChatUser> GetAllChatters()

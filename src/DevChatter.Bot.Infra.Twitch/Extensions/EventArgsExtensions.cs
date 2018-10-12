@@ -2,6 +2,7 @@ using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using System.Collections.Generic;
 using System.Linq;
+using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Api.Services.Events.FollowerService;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
@@ -70,13 +71,18 @@ namespace DevChatter.Bot.Infra.Twitch.Extensions
             return eventArgs;
         }
 
-        public static NewFollowersEventArgs ToNewFollowerEventArgs(this OnNewFollowersDetectedArgs src)
+        public static NewFollowersEventArgs ToNewFollowerEventArgs(
+            this GetUsersResponse src)
         {
             var eventArgs = new NewFollowersEventArgs();
 
-            foreach (var followerName in src.NewFollowers.Select(x => x.User.DisplayName))
+            foreach (var user in src.Users)
             {
-                eventArgs.FollowerNames.Add(followerName);
+                eventArgs.NewFollowers.Add(new ChatUser
+                {
+                    DisplayName = user.DisplayName,
+                    UserId = user.Id
+                });
             }
 
             return eventArgs;
