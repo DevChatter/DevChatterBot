@@ -34,7 +34,15 @@ namespace DevChatter.Bot.Core.Commands
             }
             else
             {
-                chatClient.SendMessage(HelpText);
+                var availableBlastTypes = _repository.List(BlastTypeEntityPolicy.All()).Select(bt => bt.Name);
+                if (availableBlastTypes.Count() > 0)
+                {
+                    chatClient.SendMessage(string.Format(HelpText, string.Join(", ", availableBlastTypes)));
+                }
+                else
+                {
+                    chatClient.SendMessage(string.Format(HelpText, "<No configured blast types>"));
+                }
             }
         }
     }

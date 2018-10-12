@@ -64,7 +64,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
                 else if (argumentOne.Length == 1)
                 {
                     // asking about a letter
-                    _hangmanGame.AskAboutLetter(chatClient, argumentOne.ToLowerInvariant(), chatUser);
+                    _hangmanGame.AskAboutLetter(chatClient, argumentOne, chatUser);
                 }
                 else
                 {

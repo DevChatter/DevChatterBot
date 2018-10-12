@@ -30,7 +30,7 @@
     },
     {
       "FullTypeName": "DevChatter.Bot.Core.Commands.BlastCommand",
-      "HelpText": "Use \"!blast [choice]\". Replace [choice] with one of: {choiceText} ",
+      "HelpText": "Use \"!blast [choice]\". Replace [choice] with one of: {0} ",
       "Cooldown": "00:02:00"
     },
     {

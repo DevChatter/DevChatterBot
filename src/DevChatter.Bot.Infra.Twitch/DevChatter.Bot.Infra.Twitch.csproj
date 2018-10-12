@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TwitchLib" Version="2.1.5" />
+    <PackageReference Include="TwitchLib" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>
