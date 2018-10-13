@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Web.Setup;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -116,8 +117,6 @@ namespace DevChatter.Bot.Web
             builder.RegisterGeneric(typeof(Lazier<>))
                 .As(typeof(Lazy<>)).InstancePerRequest();
 
-            builder.RegisterType<AutomationSystem>()
-                .As<IAutomatedActionSystem>().SingleInstance();
             builder.RegisterType<CommandHandler>()
                 .As<ICommandHandler>().SingleInstance();
 
@@ -144,6 +143,9 @@ namespace DevChatter.Bot.Web
             builder.RegisterType<VotingDisplayNotification>()
                 .AsImplementedInterfaces().SingleInstance();
 
+            builder.RegisterType<IntervalMessageCoordinator>()
+                .As<IIntervalAction>().SingleInstance();
+
             builder.AddAllGames();
 
             builder.AddSimpleCommandsFromRepository(repository);
@@ -165,7 +167,6 @@ namespace DevChatter.Bot.Web
             builder.RegisterType<DevChatterBotBackgroundWorker>()
                 .As<IHostedService>();
 
-            builder.RegisterModule(new AutomatedMessageModule(repository));
             builder.RegisterModule<CurrencyModule>();
 
             ApplicationContainer = builder.Build();
