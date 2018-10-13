@@ -34,8 +34,8 @@ namespace DevChatter.Bot.Core.Games.Hangman
             }
         }
 
-        private string AllGuessedLettersMasked => string.Join(" ", ALL_LETTERS.Select(x =>
-                _guessedLetters.Any(l => l.Letter.EqualsIns(x.ToString())) ? x : '_'));
+        private string AvailableLetters => string.Join(" ", ALL_LETTERS.Select(x =>
+                _guessedLetters.Any(l => l.Letter.EqualsIns(x.ToString())) ? '_': x));
 
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IRepository _repository;
@@ -196,7 +196,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             }
             else
             {
-                _hangmanDisplayNotification.HangmanStart();
+                _hangmanDisplayNotification.HangmanStart(AvailableLetters);
                 chatClient.SendMessage($"Totally starting this game. Your word to guess is {MaskedPassword}");
                 IsRunning = true;
             }
@@ -215,7 +215,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         private void SendAllGuessedLetters()
         {
-            _hangmanDisplayNotification.HangmanShowGuessedLetters(AllGuessedLettersMasked);
+            _hangmanDisplayNotification.HangmanShowGuessedLetters(AvailableLetters);
         }
     }
 }

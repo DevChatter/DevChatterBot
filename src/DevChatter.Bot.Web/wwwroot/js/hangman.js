@@ -57,7 +57,7 @@ var hangman = (function () {
   }
 
 
-  var drawGallows = function (ctx) {
+  var drawGallows = function (ctx, allLetters) {
 
     if (!isRunning) return;
 
@@ -72,6 +72,8 @@ var hangman = (function () {
     drawLine(ctx, 10, 0, 10, 300, 10); // Pole
     drawLine(ctx, 0, 5, 140, 5, 5); // Branch
     drawLine(ctx, 120, 5, 120, 30); // Noose
+
+    displayInfo(ctx, allLetters);
   };
 
   var displayGameOver = function (ctx) {
@@ -86,12 +88,13 @@ var hangman = (function () {
     ctx.fillText("You win!", 10, 300);
   };
 
-  var displayGuessedLetters = function (ctx, guessedLetters) {
+  function displayInfo(ctx, availableLetters) {
     ctx.fillStyle = "#cccccc";
-    ctx.fillRect(300, 0, 480, 30);
+    ctx.fillRect(300, 0, 480, 60);
     ctx.fillStyle = "#000000";
     ctx.font = "20px Arial";
-    ctx.fillText(guessedLetters, 310, 20);
+    ctx.fillText("Available Letters:", 310, 20);
+    ctx.fillText(availableLetters.toUpperCase(), 310, 50);
     ctx.fillStyle = "#cccccc";
   };
 
@@ -102,7 +105,7 @@ var hangman = (function () {
     drawGallows: drawGallows,
     displayGameOver: displayGameOver,
     displayVictory: displayVictory,
-    displayGuessedLetters: displayGuessedLetters
+    displayInfo: displayInfo
   };
 
 }());

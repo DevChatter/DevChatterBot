@@ -6,8 +6,8 @@ namespace DevChatter.Bot.Core.Systems.Streaming
     {
         Task HangmanWin();
         Task HangmanLose();
-        Task HangmanStart();
+        Task HangmanStart(string allLetters);
         Task HangmanWrongAnswer();
-        Task HangmanShowGuessedLetters(string message);
+        Task HangmanShowGuessedLetters(string availableLetters);
     }
 }

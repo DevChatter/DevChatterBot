@@ -87,9 +87,9 @@ var overlay = (function () {
         $(votingCanvas).hide();
       });
     hangmanHubConn.on("HangmanStart",
-      () => {
+      (allLetters) => {
         hangman.startGame();
-        hangman.drawGallows(hangmanContext);
+        hangman.drawGallows(hangmanContext, allLetters);
       });
     hangmanHubConn.on("HangmanWrongAnswer",
       () => {
@@ -110,8 +110,8 @@ var overlay = (function () {
         doBlast('/images/DevchaHypeEmote.png');
       });
     hangmanHubConn.on("HangmanShowGuessedLetters",
-      async (guessedLetters) => {
-        hangman.displayGuessedLetters(hangmanContext, guessedLetters);
+      async (availableLetters) => {
+        hangman.displayInfo(hangmanContext, availableLetters);
       });
   };
 }());
