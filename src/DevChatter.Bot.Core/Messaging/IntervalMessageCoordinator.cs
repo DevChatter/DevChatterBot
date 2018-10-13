@@ -13,7 +13,7 @@ namespace DevChatter.Bot.Core.Messaging
         private readonly IRepository _repository;
         private readonly IChatClient _chatClient;
         private readonly IClock _clock;
-        private DateTime _nextRunTime;
+        private DateTime _nextRunTime = DateTime.UtcNow.AddMinutes(1);
         private const int INTERVAL_IN_MINUTES = 5;
 
         public IntervalMessageCoordinator(IRepository repository, IChatClient chatClient, IClock clock)
@@ -21,7 +21,6 @@ namespace DevChatter.Bot.Core.Messaging
             _repository = repository;
             _chatClient = chatClient;
             _clock = clock;
-            SetNextRunTime();
         }
 
         private void SetNextRunTime()
