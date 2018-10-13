@@ -27,5 +27,21 @@ namespace DevChatter.Bot.Core.Util
 
             return (false, default(T));
         }
+
+        public static T ChooseRandomWeightedItem<T>(IList<T> weightedItems)
+            where T : IWeightedItem
+        {
+            List<T> fullSet = new List<T>();
+            foreach (T weightedItem in weightedItems)
+            {
+                for (int i = 0; i < weightedItem.Weight; i++)
+                {
+                    fullSet.Add(weightedItem);
+                }
+            }
+
+            (bool success, T chosenItem) = ChooseRandomItem(fullSet);
+            return success ? chosenItem : default(T);
+        }
     }
 }
