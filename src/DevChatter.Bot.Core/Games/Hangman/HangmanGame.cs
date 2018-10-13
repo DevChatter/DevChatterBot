@@ -34,8 +34,12 @@ namespace DevChatter.Bot.Core.Games.Hangman
             }
         }
 
+        public string MaskedPasswordForDisplay => string.Join(" ", MaskedPassword.Replace('*', '_').ToArray());
+
         private string AvailableLetters => string.Join(" ", ALL_LETTERS.Select(x =>
                 _guessedLetters.Any(l => l.Letter.EqualsIns(x.ToString())) ? '_': x));
+
+        private int LivesRemaining => 6 - _guessedLetters.Count(x => !Password.Contains(x.Letter));
 
         private readonly ICurrencyGenerator _currencyGenerator;
         private readonly IRepository _repository;
@@ -148,7 +152,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         private void CheckForGameLost(IChatClient chatClient)
         {
-            if (_guessedLetters.Count(x => !Password.Contains(x.Letter)) > 5)
+            if (LivesRemaining <= 0)
             {
                 chatClient.SendMessage(
                     $"That's too many failed guesses. You all lost. devchaFail. The word was: {Password}");
@@ -196,7 +200,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             }
             else
             {
-                _hangmanDisplayNotification.HangmanStart(AvailableLetters);
+                _hangmanDisplayNotification.HangmanStart(AvailableLetters, LivesRemaining, MaskedPasswordForDisplay);
                 chatClient.SendMessage($"Totally starting this game. Your word to guess is {MaskedPassword}");
                 IsRunning = true;
             }
@@ -215,7 +219,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
 
         private void SendAllGuessedLetters()
         {
-            _hangmanDisplayNotification.HangmanShowGuessedLetters(AvailableLetters);
+            _hangmanDisplayNotification.HangmanShowGuessedLetters(AvailableLetters, LivesRemaining, MaskedPasswordForDisplay);
         }
     }
 }

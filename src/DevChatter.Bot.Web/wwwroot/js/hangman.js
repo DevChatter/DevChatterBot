@@ -57,7 +57,7 @@ var hangman = (function () {
   }
 
 
-  var drawGallows = function (ctx, allLetters) {
+  var drawGallows = function (ctx, allLetters, livesRemaining, maskedWord) {
 
     if (!isRunning) return;
 
@@ -73,7 +73,7 @@ var hangman = (function () {
     drawLine(ctx, 0, 5, 140, 5, 5); // Branch
     drawLine(ctx, 120, 5, 120, 30); // Noose
 
-    displayInfo(ctx, allLetters);
+    displayInfo(ctx, allLetters, livesRemaining, maskedWord);
   };
 
   var displayGameOver = function (ctx) {
@@ -88,13 +88,21 @@ var hangman = (function () {
     ctx.fillText("You win!", 10, 300);
   };
 
-  function displayInfo(ctx, availableLetters) {
+  function displayInfo(ctx, availableLetters, livesRemaining, maskedWord) {
+    let textWidth = ctx.measureText(availableLetters);
     ctx.fillStyle = "#cccccc";
-    ctx.fillRect(300, 0, 480, 60);
+    ctx.fillRect(300, 0, 320 + textWidth.width, 300);
     ctx.fillStyle = "#000000";
     ctx.font = "20px Arial";
     ctx.fillText("Available Letters:", 310, 20);
     ctx.fillText(availableLetters.toUpperCase(), 310, 50);
+
+    ctx.fillText("Lives Remaining:", 310, 100);
+    ctx.fillText(livesRemaining, 310, 130);
+
+    ctx.fillText("Masked Word:", 310, 180);
+    ctx.fillText(maskedWord, 310, 210);
+
     ctx.fillStyle = "#cccccc";
   };
 
