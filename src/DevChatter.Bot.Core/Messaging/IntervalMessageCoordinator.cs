@@ -1,36 +1,50 @@
+using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Util;
 using System;
-using System.Collections.Generic;
 
 namespace DevChatter.Bot.Core.Messaging
 {
-    public class IntervalMessageCoordinator
+    public class IntervalMessageCoordinator : IIntervalAction
     {
         private readonly IRepository _repository;
+        private readonly IChatClient _chatClient;
+        private readonly IClock _clock;
+        private DateTime _nextRunTime;
+        private const int INTERVAL_IN_MINUTES = 5;
 
-        public IntervalMessageCoordinator(IRepository repository)
+        public IntervalMessageCoordinator(IRepository repository, IChatClient chatClient, IClock clock)
         {
             _repository = repository;
+            _chatClient = chatClient;
+            _clock = clock;
+            SetNextRunTime();
         }
 
-        public void SendMessage(IChatClient chatClient)
+        private void SetNextRunTime()
+        {
+            _nextRunTime = _clock.UtcNow.AddMinutes(INTERVAL_IN_MINUTES);
+        }
+
+        public void SendMessage()
         {
             var allMessages = _repository.List(IntervalMessagePolicy.All());
-            IntervalMessage message = SelectMessageToSend(allMessages);
+            IntervalMessage message = MyRandom.ChooseRandomWeightedItem(allMessages);
 
-            chatClient.SendMessage(message.MessageText);
+            _chatClient.SendMessage(message.MessageText);
 
+            SetNextRunTime();
             message.LastSent = DateTime.UtcNow;
             _repository.Update(message);
         }
 
-        private IntervalMessage SelectMessageToSend(List<IntervalMessage> allMessages)
-        {
-            return MyRandom.ChooseRandomWeightedItem(allMessages);
-        }
+        public bool IsTimeToRun() => _nextRunTime <= _clock.UtcNow;
+
+        public void Invoke() => SendMessage();
+
+        public bool IsDone  => false;
     }
 }
