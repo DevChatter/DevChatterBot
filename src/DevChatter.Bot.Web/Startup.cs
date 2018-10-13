@@ -165,7 +165,6 @@ namespace DevChatter.Bot.Web
             builder.RegisterType<DevChatterBotBackgroundWorker>()
                 .As<IHostedService>();
 
-            builder.RegisterModule(new AutomatedMessageModule(repository));
             builder.RegisterModule<CurrencyModule>();
 
             ApplicationContainer = builder.Build();

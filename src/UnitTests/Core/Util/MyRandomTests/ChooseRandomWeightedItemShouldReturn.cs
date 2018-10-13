@@ -31,7 +31,7 @@ namespace UnitTests.Core.Util.MyRandomTests
         [Fact]
         public void SingleItem_GivenOneWeightedItem()
         {
-            var item = new IntervalMessage(1,"foo", 354);
+            var item = new IntervalMessage("foo", 354);
 
             var weightedItem = MyRandom.ChooseRandomWeightedItem(new[]{ item });
 
@@ -41,12 +41,12 @@ namespace UnitTests.Core.Util.MyRandomTests
         [Fact]
         public void SingleItem_GivenMultipleItemsOnlyOneWeighted()
         {
-            var item = new IntervalMessage(0, "foo", 2);
+            var item = new IntervalMessage("foo", 2);
             var weightedItems = new List<IntervalMessage>
             {
                 item,
-                new IntervalMessage(0, "bar", 0),
-                new IntervalMessage(0, "fiz", 0),
+                new IntervalMessage("bar", 0),
+                new IntervalMessage("fiz", 0),
             };
 
             var weightedItem = MyRandom.ChooseRandomWeightedItem(weightedItems);
@@ -59,9 +59,9 @@ namespace UnitTests.Core.Util.MyRandomTests
         {
             var weightedItems = new List<IntervalMessage>
             {
-                new IntervalMessage(10, "foo", 3),
-                new IntervalMessage(12, "bar", 3),
-                new IntervalMessage(13, "fiz", 3),
+                new IntervalMessage("foo", 3),
+                new IntervalMessage("bar", 3),
+                new IntervalMessage("fiz", 3),
             };
 
             var chosenItem = MyRandom.ChooseRandomWeightedItem(weightedItems);

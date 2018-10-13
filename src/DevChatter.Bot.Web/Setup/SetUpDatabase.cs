@@ -186,8 +186,7 @@ namespace DevChatter.Bot.Web.Setup
         {
             var automatedMessages = new List<IntervalMessage>
             {
-                new IntervalMessage(15,
-                    "Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!")
+                new IntervalMessage("Hello and welcome! I hope you're enjoying the stream! Feel free to follow along, make suggestions, ask questions, or contribute! And make sure you click the follow button to know when the next stream is!")
             };
             return automatedMessages;
         }

@@ -9,14 +9,12 @@ namespace DevChatter.Bot.Core.Data.Model
         {
         }
 
-        public IntervalMessage(int delayInMinutes, string messageText, int weight = 1)
+        public IntervalMessage(string messageText, int weight = 1)
         {
-            DelayInMinutes = delayInMinutes;
             MessageText = messageText;
             Weight = weight;
         }
 
-        public int DelayInMinutes { get; protected set; }
         public string MessageText { get; protected set; }
         public int Weight { get; protected set; }
 
