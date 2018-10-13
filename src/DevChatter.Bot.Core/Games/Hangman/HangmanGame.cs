@@ -50,7 +50,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
             _repository = repository;
             _hangmanDisplayNotification = hangmanDisplayNotification;
             _hangmanSettings = settingsFactory.GetSettings<HangmanSettings>();
-            ALL_LETTERS = _hangmanSettings?.AllowedCharacters.ToUpperInvariant();
+            ALL_LETTERS = _hangmanSettings?.AllowedCharacters.ToLowerInvariant();
 
         }
 
@@ -107,7 +107,7 @@ namespace DevChatter.Bot.Core.Games.Hangman
         public void AskAboutLetter(IChatClient chatClient,
             string letterToAsk, ChatUser chatUser)
         {
-            letterToAsk = letterToAsk.ToUpperInvariant();
+            letterToAsk = letterToAsk.ToLowerInvariant();
             if (!IsRunning)
             {
                 SendGameNotStartedMessage(chatClient, chatUser);
@@ -181,9 +181,10 @@ namespace DevChatter.Bot.Core.Games.Hangman
             var wordList = _repository.List<HangmanWord>().OrderBy(x => Guid.NewGuid());
             foreach (var w in wordList)
             {
-                if (w.Word.ToCharArray().All(l => ALL_LETTERS.ToUpperInvariant().Contains(l)))
+                char[] letters = w.Word.ToLowerInvariant().ToCharArray();
+                if (letters.All(l => ALL_LETTERS.ToLowerInvariant().Contains(l)))
                 {
-                    Password = w.Word.ToUpperInvariant();
+                    Password = w.Word.ToLowerInvariant();
                     break;
                 }
             }
