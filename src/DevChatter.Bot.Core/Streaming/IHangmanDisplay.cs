@@ -4,10 +4,10 @@ namespace DevChatter.Bot.Core.Streaming
 {
     public interface IHangmanDisplay
     {
-        Task HangmanStart();
+        Task HangmanStart(string allLetters, int livesRemaining, string maskedWord);
         Task HangmanWin();
         Task HangmanLose();
         Task HangmanWrongAnswer();
-        Task HangmanShowGuessedLetters(string message);
+        Task HangmanShowGuessedLetters(string availableLetters, int livesRemaining, string maskedWord);
     }
 }
