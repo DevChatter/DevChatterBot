@@ -69,6 +69,10 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
         private string GetResultsOfVote()
         {
             List<VoteCount> choiceVotes = GetVoteCounts();
+            if (!choiceVotes.Any())
+            {
+                return "Everyone wins, because you're all awesome!";
+            }
             int topVoteCount = choiceVotes.Max(ch => ch.Votes);
             var topChoices = choiceVotes.Where(ch => ch.Votes == topVoteCount).ToList();
             if (topChoices.Count > 1)
