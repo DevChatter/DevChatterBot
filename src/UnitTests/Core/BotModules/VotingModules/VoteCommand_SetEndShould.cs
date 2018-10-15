@@ -1,27 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using DevChatter.Bot.Core.Automation;
 using DevChatter.Bot.Core.BotModules.VotingModule;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 using FluentAssertions;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 using UnitTests.Fakes;
 using Xunit;
 
 namespace UnitTests.Core.BotModules.VotingModules
 {
-    public class EndVoteOperationShould
+    public class VoteCommand_SetEndShould
     {
         [Fact]
         public void SetIsVoteActiveToFalse_GivenVoteEnded()
         {
-            var (operation, args, votingSystem, automationSystem) = GetTestOperation();
+            var (command, args, votingSystem, automationSystem) = GetTestOperation();
 
-            operation.TryToExecute(args);
+            command.TestIt(new Mock<IChatClient>().Object, args);
 
             votingSystem.IsVoteActive.Should().BeFalse();
         }
@@ -30,29 +31,32 @@ namespace UnitTests.Core.BotModules.VotingModules
         public void ScheduleEndOfVoting_GivenSpecifiedTimeLimit()
         {
             var (operation, args, _, automationSystem) = GetTestOperation();
+            var chatClient = new Mock<IChatClient>();
 
             args.Arguments.Add("2s");
 
-            operation.TryToExecute(args);
+            operation.TestIt(chatClient.Object, args);
             IIntervalAction action = automationSystem.IntervalAction;
 
-            action.Should().BeOfType<DelayedVoteEnd>();
+            action.Should().BeOfType<OneTimeCallBackAction>();
 
             action.IsTimeToRun().Should().BeFalse();
 
             Thread.Sleep(TimeSpan.FromSeconds(2));
 
             action.IsTimeToRun().Should().BeTrue();
+            action.Invoke();
+            chatClient.Verify(c => c.SendMessage(VotingMessages.NO_WINNER));
         }
 
-        private static (EndVoteOperation, CommandReceivedEventArgs, VotingSystem, FakeActionSystem) GetTestOperation(ChatUser chatUser = null)
+        private static (TestableVoteCommand, CommandReceivedEventArgs, VotingSystem, FakeActionSystem) GetTestOperation(ChatUser chatUser = null)
         {
             var mock = new Mock<IVotingDisplayNotification>();
             var votingSystem = new VotingSystem(mock.Object);
             votingSystem.StartVote(new List<string> {"A", "B", "C"});
-            votingSystem.ApplyVote(new ChatUser{UserId = "Foo"}, "1", new Mock<IChatClient>().Object);
             var automationSystem = new FakeActionSystem();
-            var endVoteOperation = new EndVoteOperation(votingSystem, automationSystem);
+            var endVoteOperation = new TestableVoteCommand(new Mock<IRepository>().Object,
+                votingSystem, automationSystem);
 
             var commandReceivedEventArgs = new CommandReceivedEventArgs
             {
