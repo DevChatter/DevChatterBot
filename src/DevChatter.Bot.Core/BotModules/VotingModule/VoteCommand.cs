@@ -20,6 +20,9 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
         private readonly List<BaseCommandOperation> _operations
             = new List<BaseCommandOperation>();
+
+        private OneTimeCallBackAction _endVoteCallback;
+
         public VoteCommand(IRepository repository, VotingSystem votingSystem, IAutomatedActionSystem automatedActionSystem)
             : base(repository)
         {
@@ -66,16 +69,12 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
                     return _votingSystem.EndVoting();
                 }
 
-                // Try parsing it to get the seconds 
-                var regex = new Regex("(?<seconds>\\d+)s");
-                Match match = regex.Match(delayArg);
-                if (match.Success
-                    && match.Groups.Count > 0
-                    && int.TryParse(match.Groups["seconds"].Value,
-                        out int secondsDelay))
+                int secondsDelay = GetSecondsDelay(delayArg);
+                if (secondsDelay > 0)
                 {
+                    _endVoteCallback = new OneTimeCallBackAction(secondsDelay, () => chatClient.SendMessage(_votingSystem.EndVoting()));
                     _automatedActionSystem.AddAction(
-                        new OneTimeCallBackAction(secondsDelay, () => chatClient.SendMessage(_votingSystem.EndVoting())));
+                        _endVoteCallback);
                     return $"Vote will end in {secondsDelay} seconds.";
                 }
                 return "Invalid delay specified";
@@ -84,5 +83,29 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
             return "You don't have permission to end the voting...";
         }
 
+        private int GetSecondsDelay(string delayArg)
+        {
+            int secondsDelay = 0;
+            var regex = new Regex("((?<minutes>\\d+)m)?((?<seconds>\\d+)s)?");
+            Match match = regex.Match(delayArg);
+            if (match.Success)
+            {
+                if (match.Groups["seconds"].Success
+                    && int.TryParse(match.Groups["seconds"].Value,
+                    out int secondsParsed))
+                {
+                    secondsDelay += secondsParsed;
+                }
+
+                if (match.Groups["minutes"].Success
+                    && int.TryParse(match.Groups["minutes"].Value,
+                    out int minutesParsed))
+                {
+                    secondsDelay += 60 * minutesParsed;
+                }
+            }
+
+            return secondsDelay;
+        }
     }
 }
