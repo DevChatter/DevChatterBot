@@ -41,7 +41,8 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
             }
             else if (_endWords.Contains(firstArg?.ToLower()))
             {
-                SetVoteToEnd(chatClient, eventArgs);
+                string messageToSend = SetVoteToEnd(chatClient, eventArgs);
+                chatClient.SendMessage(messageToSend);
             }
             else
             {
@@ -49,11 +50,11 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
             }
         }
 
-        private void SetVoteToEnd(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
+        private string SetVoteToEnd(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             if (!_votingSystem.IsVoteActive)
             {
-                chatClient.SendMessage("There's no vote right now...");
+                return "There's no vote right now...";
             }
 
             if (eventArgs.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
@@ -62,27 +63,25 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
                 if (string.IsNullOrWhiteSpace(delayArg))
                 {
-                    chatClient.SendMessage(_votingSystem.EndVoting());
+                    return _votingSystem.EndVoting();
                 }
-                else
+
+                // Try parsing it to get the seconds 
+                var regex = new Regex("(?<seconds>\\d+)s");
+                Match match = regex.Match(delayArg);
+                if (match.Success
+                    && match.Groups.Count > 0
+                    && int.TryParse(match.Groups["seconds"].Value,
+                        out int secondsDelay))
                 {
-                    // Try parsing it to get the seconds 
-                    var regex = new Regex("(?<seconds>\\d+)s");
-                    Match match = regex.Match(delayArg);
-                    if (match.Success
-                        && match.Groups.Count > 0
-                        && int.TryParse(match.Groups["seconds"].Value,
-                            out int secondsDelay))
-                    {
-                        _automatedActionSystem.AddAction(
-                            new OneTimeCallBackAction(secondsDelay, () => chatClient.SendMessage(_votingSystem.EndVoting())));
-                        chatClient.SendMessage($"Vote will end in {secondsDelay} seconds.");
-                    }
-                    chatClient.SendMessage("Invalid delay specified");
+                    _automatedActionSystem.AddAction(
+                        new OneTimeCallBackAction(secondsDelay, () => chatClient.SendMessage(_votingSystem.EndVoting())));
+                    return $"Vote will end in {secondsDelay} seconds.";
                 }
+                return "Invalid delay specified";
             }
 
-            chatClient.SendMessage("You don't have permission to end the voting...");
+            return "You don't have permission to end the voting...";
         }
 
     }
