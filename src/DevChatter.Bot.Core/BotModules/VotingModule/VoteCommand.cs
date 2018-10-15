@@ -5,6 +5,7 @@ using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Automation;
 
 namespace DevChatter.Bot.Core.BotModules.VotingModule
 {
@@ -14,12 +15,12 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
         private readonly List<BaseCommandOperation> _operations
             = new List<BaseCommandOperation>();
-        public VoteCommand(IRepository repository, VotingSystem votingSystem)
+        public VoteCommand(IRepository repository, VotingSystem votingSystem, IAutomatedActionSystem automatedActionSystem)
             : base(repository)
         {
             _votingSystem = votingSystem;
             _operations.Add(new StartVoteOperation(votingSystem));
-            _operations.Add(new EndVoteOperation(votingSystem));
+            _operations.Add(new EndVoteOperation(votingSystem, automatedActionSystem));
         }
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
