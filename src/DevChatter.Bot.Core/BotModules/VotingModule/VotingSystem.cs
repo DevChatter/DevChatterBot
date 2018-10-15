@@ -24,7 +24,11 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
         public void ApplyVote(ChatUser chatUser, string choice, IChatClient chatClient)
         {
-            if (!IsVoteActive) { return; }
+            if (!IsVoteActive)
+            {
+                chatClient.SendMessage("There's no vote right now...");
+                return;
+            }
 
             bool isValidNumber = int.TryParse(choice, out int chosenNumber)
                 && _choices.ContainsKey(chosenNumber);
