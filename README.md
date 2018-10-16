@@ -42,7 +42,10 @@ Details coming soon.
 Have I mentioned that you're awesome for even considering contributing to this project? Thanks!
 
 ## Contributors
-* That One Guy ([ThatOneGuy](https://github.com/thatoneguy))
+* AridTag ([AridTag](https://github.com/AridTag))
+* Dalton ([DCurtin](https://github.com/DCurtin))
+* Justin ([jdphenix](https://github.com/jdphenix))
+* Jake ([asyncawake](https://github.com/asyncawake))
 
 ## Acknowledgments
 * TwitchLib - https://github.com/twitchlib
