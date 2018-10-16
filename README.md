@@ -13,7 +13,6 @@
   <a href="#installing">Installing</a> •
   <a href="#contributing">Contributing</a> •
   <a href="#contributors">Contributors</a> •
-  <a href="#acknowledgments">Acknowledgments</a> •
   <a href="#license">License</a>
 </p>
 
