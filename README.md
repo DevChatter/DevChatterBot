@@ -5,7 +5,7 @@
 
 <p align="center">
 <img src="https://img.shields.io/badge/Platform-.NET Core 2.1-lightgrey.svg" style="max-height: 300px;" alt="Platform: iOS">
-<a href="https://discord.gg/??????????"><img src="https://img.shields.io/badge/Discord-DevChatter-red.svg" style="max-height: 300px;"></a>
+<a href="https://discord.gg/aQry9jG"><img src="https://img.shields.io/badge/Discord-DevChatter-red.svg" style="max-height: 300px;"></a>
 </p>
 
 <p align="center">
@@ -20,13 +20,13 @@
 ## Getting Started
 This project is a place for us to have fun and build a chat bot together. It's currently just a console application, but later, we might add a GUI for local execution. I'm open to ideas about where we want to take this project. We could run it somewhere on the cloud, and we could decide that it needs a web interface. Let me know [on-stream](https://www.twitch.tv/devchatter) what you want to do.
 
-Interested in joining a growing developer community? Connect with us on Discord! https://discord.gg/????????
+Interested in joining a growing developer community? Connect with us on Discord! https://discord.gg/aQry9jG
 
 ## Installing
 These [instructions](docs/Setting-Up.md) will get you a copy of the devchatterbot up and running on your local machine for development and testing purposes.
 
 ### Dependencies
-* Newtonsoft.Json 7.0.1+ ([nuget link](https://www.nuget.org/packages/Newtonsoft.Json/7.0.1)) ([GitHub](https://github.com/JamesNK/Newtonsoft.Json))
+* TwitchLib ([nuget link](https://www.nuget.org/packages/TwitchLib/)) ([GitHub](https://github.com/twitchlib))
 
 ## Contributing
 There are a few ways you can help, you can join us at DevChatter when we're streaming, you can report bugs or issues that you find, or you can suggest enhancements or changes.
@@ -46,9 +46,6 @@ Have I mentioned that you're awesome for even considering contributing to this p
 * Dalton ([DCurtin](https://github.com/DCurtin))
 * Justin ([jdphenix](https://github.com/jdphenix))
 * Jake ([asyncawake](https://github.com/asyncawake))
-
-## Acknowledgments
-* TwitchLib - https://github.com/twitchlib
 
 ## License
 This project is licensed under the ??? License - see the [LICENSE.md](LICENSE.md) file for details
