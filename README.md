@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="#" alt="Devchatterbot" width="200">img</a>
+  <a href="#" alt="Devchatterbot" width="200"><img src="https://www.devchatter.com/assets/css/images/DarkBack-Logo.png"></a>
 </p>
 <h4 align="center">A really cool bot that does things </h4>
 
