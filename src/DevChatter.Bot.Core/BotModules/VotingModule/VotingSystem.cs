@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
         private readonly Dictionary<string, int> _votes
             = new Dictionary<string, int>();
-        private Dictionary<int, string> _choices
+        private readonly Dictionary<int, string> _choices
             = new Dictionary<int, string>();
 
         public bool IsVoteActive { get; set; }
@@ -24,7 +24,11 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
 
         public void ApplyVote(ChatUser chatUser, string choice, IChatClient chatClient)
         {
-            if (!IsVoteActive) { return; }
+            if (!IsVoteActive)
+            {
+                chatClient.SendMessage("There's no vote right now...");
+                return;
+            }
 
             bool isValidNumber = int.TryParse(choice, out int chosenNumber)
                 && _choices.ContainsKey(chosenNumber);
@@ -69,6 +73,10 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
         private string GetResultsOfVote()
         {
             List<VoteCount> choiceVotes = GetVoteCounts();
+            if (!choiceVotes.Any())
+            {
+                return VotingMessages.NO_WINNER;
+            }
             int topVoteCount = choiceVotes.Max(ch => ch.Votes);
             var topChoices = choiceVotes.Where(ch => ch.Votes == topVoteCount).ToList();
             if (topChoices.Count > 1)
@@ -82,7 +90,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
                 return $"{_choices[topChoices.Single().ChoiceKey]} wins! Vote count: {topVoteCount}!";
             }
 
-            return "Everyone wins, because you're all awesome!";
+            return VotingMessages.NO_WINNER;
         }
 
         private List<VoteCount> GetVoteCounts()
@@ -101,6 +109,11 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
             _choices.Clear();
             IsVoteActive = false;
         }
+    }
+
+    public static class VotingMessages
+    {
+        public const string NO_WINNER = "Everyone wins, because you're all awesome!";
     }
 
     internal class VoteCount

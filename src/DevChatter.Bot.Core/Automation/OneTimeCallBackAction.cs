@@ -3,16 +3,13 @@ using System.Linq.Expressions;
 
 namespace DevChatter.Bot.Core.Automation
 {
-    public class OneTimeCallBackAction
-        : IIntervalAction, IAutomatedItem, IAutomatedAction, IDelayed
+    public class OneTimeCallBackAction : IIntervalAction
     {
-        private DateTime _timeOfNextRun;
+        protected DateTime _timeOfNextRun;
         public Expression<Action> Action { get; }
-        public TimeSpan DelayTimeSpan { get; }
 
         public OneTimeCallBackAction(int delayInSeconds, Expression<Action> actionToCall)
         {
-            DelayTimeSpan = TimeSpan.FromSeconds(delayInSeconds);
             Action = actionToCall;
             _timeOfNextRun = DateTime.UtcNow.AddSeconds(delayInSeconds);
         }
