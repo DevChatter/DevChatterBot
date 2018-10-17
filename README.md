@@ -47,4 +47,4 @@ Have I mentioned that you're awesome for even considering contributing to this p
 * Jake ([asyncawake](https://github.com/asyncawake))
 
 ## License
-This project is licensed under the ??? License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
