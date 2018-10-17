@@ -60,32 +60,33 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
                 return "There's no vote right now...";
             }
 
-            if (eventArgs.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
+            if (!eventArgs.ChatUser.IsInThisRoleOrHigher(UserRole.Mod))
             {
-                string delayArg = eventArgs.Arguments.ElementAtOrDefault(1);
+                return "You don't have permission to end the voting...";
+            }
 
-                if (string.IsNullOrWhiteSpace(delayArg))
-                {
-                    return _votingSystem.EndVoting();
-                }
+            string delayArg = eventArgs.Arguments.ElementAtOrDefault(1);
+            if (string.IsNullOrWhiteSpace(delayArg))
+            {
+                return _votingSystem.EndVoting();
+            }
 
-                int secondsDelay = GetSecondsDelay(delayArg);
-                if (secondsDelay > 0)
-                {
-                    if (_endVoteCallback == null)
-                    {
-                        _endVoteCallback = new DelayableCallbackAction(secondsDelay, () => chatClient.SendMessage(_votingSystem.EndVoting()));
-                        _automatedActionSystem.AddAction(_endVoteCallback);
-                        return $"Vote will end in {secondsDelay} seconds.";
-                    }
-
-                    _endVoteCallback.SetTimeout(secondsDelay);
-                    return $"Vote will instead end in {secondsDelay} seconds.";
-                }
+            int secondsDelay = GetSecondsDelay(delayArg);
+            if (secondsDelay <= 0)
+            {
                 return "Invalid delay specified";
             }
 
-            return "You don't have permission to end the voting...";
+            if (_endVoteCallback == null)
+            {
+                _endVoteCallback = new DelayableCallbackAction(secondsDelay, () => chatClient.SendMessage(_votingSystem.EndVoting()));
+                _automatedActionSystem.AddAction(_endVoteCallback);
+                return $"Vote will end in {secondsDelay} seconds.";
+            }
+
+            _endVoteCallback.SetTimeout(secondsDelay);
+            return $"Vote will instead end in {secondsDelay} seconds.";
+
         }
 
         private int GetSecondsDelay(string delayArg)
