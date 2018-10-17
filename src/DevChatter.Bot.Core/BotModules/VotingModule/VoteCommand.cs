@@ -21,7 +21,7 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
         private readonly List<BaseCommandOperation> _operations
             = new List<BaseCommandOperation>();
 
-        private OneTimeCallBackAction _endVoteCallback;
+        private DelayableCallbackAction _endVoteCallback;
 
         public VoteCommand(IRepository repository, VotingSystem votingSystem, IAutomatedActionSystem automatedActionSystem)
             : base(repository)
@@ -72,10 +72,15 @@ namespace DevChatter.Bot.Core.BotModules.VotingModule
                 int secondsDelay = GetSecondsDelay(delayArg);
                 if (secondsDelay > 0)
                 {
-                    _endVoteCallback = new OneTimeCallBackAction(secondsDelay, () => chatClient.SendMessage(_votingSystem.EndVoting()));
-                    _automatedActionSystem.AddAction(
-                        _endVoteCallback);
-                    return $"Vote will end in {secondsDelay} seconds.";
+                    if (_endVoteCallback == null)
+                    {
+                        _endVoteCallback = new DelayableCallbackAction(secondsDelay, () => chatClient.SendMessage(_votingSystem.EndVoting()));
+                        _automatedActionSystem.AddAction(_endVoteCallback);
+                        return $"Vote will end in {secondsDelay} seconds.";
+                    }
+
+                    _endVoteCallback.SetTimeout(secondsDelay);
+                    return $"Vote will instead end in {secondsDelay} seconds.";
                 }
                 return "Invalid delay specified";
             }
