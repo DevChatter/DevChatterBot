@@ -38,7 +38,7 @@ namespace UnitTests.Core.BotModules.VotingModules
             operation.TestIt(chatClient.Object, args);
             IIntervalAction action = automationSystem.IntervalAction;
 
-            action.Should().BeOfType<OneTimeCallBackAction>();
+            action.Should().BeOfType<DelayableCallbackAction>();
 
             action.IsTimeToRun().Should().BeFalse();
 
