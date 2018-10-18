@@ -1,5 +1,6 @@
 class MovableEntity {
-  constructor(x, y) {
+  constructor(grid, x, y) {
+    this._grid = grid;
     this._x = x;
     this._y = y;
   }
@@ -9,18 +10,26 @@ class MovableEntity {
   }
 
   moveLeft() {
-    this._x -= 1;
+    if (this._grid.canMoveTo(this._x - 1, this._y)) {
+      this._x -= 1;
+    }
   }
 
   moveRight() {
-    this._x += 1;
+    if (this._grid.canMoveTo(this._x + 1, this._y)) {
+      this._x += 1;
+    }
   }
 
   moveUp() {
-    this._y -= 1;
+    if (this._grid.canMoveTo(this._x, this._y - 1)) {
+      this._y -= 1;
+    }
   }
 
   moveDown() {
-    this._y += 1;
+    if (this._grid.canMoveTo(this._x, this._y + 1)) {
+      this._y += 1;
+    }
   }
 }

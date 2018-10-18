@@ -16,4 +16,8 @@ class Grid {
       this._context.drawImage(image, location.x * size, location.y * size);
     });
   }
+
+  canMoveTo(x, y) {
+    return true;
+  }
 }
