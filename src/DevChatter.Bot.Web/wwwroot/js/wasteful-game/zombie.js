@@ -1,8 +1,10 @@
 class Zombie {
-  constructor() {
+  constructor(grid) {
+    this._grid = grid;
     this._image = new Image();
     this._image.src = '/images/ZedChatter/Zombie-0.png';
     this._movable = new MovableEntity(20, 3);
+    this._grid.addSprite(this);
   }
 
   moveToward(player) {

@@ -1,8 +1,10 @@
 class Player {
-  constructor() {
+  constructor(grid) {
+    this._grid = grid;
     this._image = new Image();
     this._image.src =  '/images/ZedChatter/Hat-YellowShirt-Player-Idle-0.png';
     this._movable = new MovableEntity(2, 2);
+    this._grid.addSprite(this);
   }
 
   move(direction) {
