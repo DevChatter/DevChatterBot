@@ -4,6 +4,7 @@ let wasteful = function(canvas) {
 
   const context = canvas.getContext('2d');
   const myPlayer = player(canvas, context);
+  const myZombie = zombie(canvas, context);
 
   function startGame() {
     window.requestAnimationFrame(updateFrame);
@@ -11,12 +12,14 @@ let wasteful = function(canvas) {
 
   function movePlayer(direction) {
     myPlayer.move(direction);
+    myZombie.moveToward(myPlayer);
   }
 
   function updateFrame() {
     clearCanvas();
     drawBackground();
     myPlayer.draw();
+    myZombie.draw();
     window.requestAnimationFrame(updateFrame);
   }
 
