@@ -29,6 +29,10 @@ class Player {
     }
   }
 
+  get location() {
+    return { x: this._x, y: this._y };
+  }
+
   _moveLeft() {
     this._x = Math.max(0, this._x - size);
   }
@@ -43,9 +47,5 @@ class Player {
 
   _moveDown() {
     this._y = Math.min(this._canvas.height - size, this._y + size);
-  }
-
-  get location() {
-    return { x: this._x, y: this._y };
   }
 }
