@@ -6,8 +6,11 @@ class Wasteful {
   constructor(canvas) {
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
-    this._player = new Player(this._canvas, this._context);
-    this._zombie = new Zombie(this._canvas, this._context);
+    this._player = new Player();
+    this._zombie = new Zombie();
+    this._grid = new Grid(this._canvas, this._context);
+    this._grid.addSprite(this._player);
+    this._grid.addSprite(this._zombie);
   }
 
   startGame() {
@@ -22,8 +25,7 @@ class Wasteful {
   _updateFrame() {
     this._clearCanvas();
     this._drawBackground();
-    this._player.draw();
-    this._zombie.draw();
+    this._grid.draw();
     window.requestAnimationFrame(() => this._updateFrame());
   }
 

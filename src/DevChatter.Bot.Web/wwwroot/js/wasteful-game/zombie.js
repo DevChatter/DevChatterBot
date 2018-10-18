@@ -1,15 +1,9 @@
 class Zombie {
-  constructor(canvas, context) {
-    this._canvas = canvas;
-    this._context = context;
+  constructor() {
     this._image = new Image();
     this._image.src = '/images/ZedChatter/Zombie-0.png';
-    this._x = 840;
-    this._y = 126;
-  }
-
-  draw() {
-    this._context.drawImage(this._image, this._x, this._y);
+    this._x = 20;
+    this._y = 3;
   }
 
   moveToward(player) {
@@ -24,23 +18,30 @@ class Zombie {
       this._moveDown();
     } else {
       // nom nom nom
-      // How you get on the player?!?!?!
     }
   }
 
+  get location() {
+    return { x: this._x, y: this._y };
+  }
+
+  get image() {
+    return this._image;
+  }
+
   _moveLeft() {
-    this._x = Math.max(0, this._x - size);
+    this._x -= 1;
   }
 
   _moveRight() {
-    this._x = Math.min(this._canvas.width - size, this._x + size);
+    this._x += 1;
   }
 
   _moveUp() {
-    this._y = Math.max(0, this._y - size);
+    this._y -= 1;
   }
 
   _moveDown() {
-    this._y = Math.min(this._canvas.height - size, this._y + size);
+    this._y += 1;
   }
 }
