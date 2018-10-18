@@ -37,6 +37,10 @@ function player(canvas, context) {
     y = Math.min(canvas.height - size, y + size);
   }
 
-  return { draw, move };
+  function getLocation() {
+    return { x, y };
+  }
+
+  return { draw, move, getLocation };
 
 }

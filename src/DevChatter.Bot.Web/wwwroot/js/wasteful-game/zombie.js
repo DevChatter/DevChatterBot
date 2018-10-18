@@ -16,9 +16,20 @@ function zombie(canvas, context) {
     context.drawImage(playerImage, x, y);
   }
 
-  function move(direction) {
-    let moveIt = movers[direction];
-    if (moveIt) moveIt();
+  function moveToward(player) {
+    let location = player.getLocation();
+    if (location.x < x) {
+      moveLeft();
+    } else if (location.x > x) {
+      moveRight();
+    } else if (location.y < y) {
+      moveUp();
+    } else if (location.y > y) {
+      moveDown();
+    } else {
+      // nom nom nom
+      // How you get on the player?!?!?!
+    }
   }
 
   function moveLeft() {
@@ -37,5 +48,5 @@ function zombie(canvas, context) {
     y = Math.min(canvas.height - size, y + size);
   }
 
-  return { draw, move };
+  return { draw, moveToward };
 }
