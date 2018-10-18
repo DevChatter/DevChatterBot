@@ -6,7 +6,7 @@ class Wasteful {
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
     this._player = player(this._canvas, this._context);
-    this._zombie = zombie(this._canvas, this._context);
+    this._zombie = new Zombie(this._canvas, this._context);
   }
 
   startGame() {

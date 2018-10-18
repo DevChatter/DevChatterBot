@@ -1,52 +1,48 @@
-function zombie(canvas, context) {
-  const size = 42;
-  let x = 840;
-  let y = 126;
-  let playerImage = new Image();
-  playerImage.src = '/images/ZedChatter/Zombie-0.png';
+const size = 42;
 
-  let movers = {
-    left: moveLeft,
-    right: moveRight,
-    up: moveUp,
-    down: moveDown
-  };
-
-  function draw() {
-    context.drawImage(playerImage, x, y);
+class Zombie {
+  constructor(canvas, context) {
+    this._canvas = canvas;
+    this._context = context;
+    this._image = new Image();
+    this._image.src = '/images/ZedChatter/Zombie-0.png';
+    this._x = 840;
+    this._y = 126;
   }
 
-  function moveToward(player) {
+  draw() {
+    this._context.drawImage(this._image, this._x, this._y);
+  }
+
+  moveToward(player) {
     let location = player.getLocation();
-    if (location.x < x) {
-      moveLeft();
-    } else if (location.x > x) {
-      moveRight();
-    } else if (location.y < y) {
-      moveUp();
-    } else if (location.y > y) {
-      moveDown();
+    if (location.x < this._x) {
+      this._moveLeft();
+    } else if (location.x > this._x) {
+      this._moveRight();
+    } else if (location.y < this._y) {
+      this._moveUp();
+    } else if (location.y > this._y) {
+      this._moveDown();
     } else {
       // nom nom nom
       // How you get on the player?!?!?!
     }
   }
 
-  function moveLeft() {
-    x = Math.max(0, x - size);
+  _moveLeft() {
+    this._x = Math.max(0, this._x - size);
   }
 
-  function moveRight() {
-    x = Math.min(canvas.width - size, x + size);
+  _moveRight() {
+    this._x = Math.min(this._canvas.width - size, this._x + size);
   }
 
-  function moveUp() {
-    y = Math.max(0, y - size);
+  _moveUp() {
+    this._y = Math.max(0, this._y - size);
   }
 
-  function moveDown() {
-    y = Math.min(canvas.height - size, y + size);
+  _moveDown() {
+    this._y = Math.min(this._canvas.height - size, this._y + size);
   }
-
-  return { draw, moveToward };
 }
