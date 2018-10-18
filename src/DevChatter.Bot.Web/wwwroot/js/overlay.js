@@ -23,6 +23,12 @@ var overlay = (function () {
     let votingCanvas = document.getElementById('votingCanvas');
     let votingContext = votingCanvas.getContext('2d');
 
+    let wastefulCanvas = document.getElementById('wastefulCanvas');
+    let myWasteful = wasteful(wastefulCanvas);
+
+    // TODO: Move this
+    myWasteful.startGame();
+
     let botHubConn = createHubConnection("BotHub");
 
     let votingHubConn = createHubConnection("VotingHub");
