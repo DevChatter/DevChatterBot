@@ -3,7 +3,7 @@ let wasteful = function(canvas) {
   const hangryRed = '#ff0000';
 
   const context = canvas.getContext('2d');
-  const myPlayer = player(context);
+  const myPlayer = player(canvas, context);
 
   function startGame() {
     window.requestAnimationFrame(updateFrame);

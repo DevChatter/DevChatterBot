@@ -1,4 +1,4 @@
-function player(context) {
+function player(canvas, context) {
   const size = 42;
   let x = 84;
   let y = 84;
@@ -22,19 +22,19 @@ function player(context) {
   }
 
   function moveLeft() {
-    x -= size;
+    x = Math.max(0, x - size);
   }
 
   function moveRight() {
-    x += size;
+    x = Math.min(canvas.width - size, x + size);
   }
 
   function moveUp() {
-    y -= size;
+    y = Math.max(0, y - size);
   }
 
   function moveDown() {
-    y += size;
+    y = Math.min(canvas.height - size, y + size);
   }
 
   return { draw, move };
