@@ -1,36 +1,37 @@
-let wasteful = function(canvas) {
-  const wastefulBrown = '#dfd29e';
-  const hangryRed = '#ff0000';
+const wastefulBrown = '#dfd29e';
+const hangryRed = '#ff0000';
 
-  const context = canvas.getContext('2d');
-  const myPlayer = player(canvas, context);
-  const myZombie = zombie(canvas, context);
-
-  function startGame() {
-    window.requestAnimationFrame(updateFrame);
+class Wasteful {
+  constructor(canvas) {
+    this._canvas = canvas;
+    this._context = canvas.getContext('2d');
+    this._player = player(this._canvas, this._context);
+    this._zombie = zombie(this._canvas, this._context);
   }
 
-  function movePlayer(direction) {
-    myPlayer.move(direction);
-    myZombie.moveToward(myPlayer);
+  startGame() {
+    window.requestAnimationFrame(() => this._updateFrame());
   }
 
-  function updateFrame() {
-    clearCanvas();
-    drawBackground();
-    myPlayer.draw();
-    myZombie.draw();
-    window.requestAnimationFrame(updateFrame);
+  movePlayer(direction) {
+    this._player.move(direction);
+    this._zombie.moveToward(this._player);
   }
 
-  function clearCanvas() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
+  _updateFrame() {
+    this._clearCanvas();
+    this._drawBackground();
+    this._player.draw();
+    this._zombie.draw();
+    window.requestAnimationFrame(() => this._updateFrame());
   }
 
-  function drawBackground() {
-    context.fillStyle = wastefulBrown;
-    context.fillRect(0, 0, canvas.width, canvas.height);
+  _clearCanvas() {
+    this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
   }
 
-  return { startGame, movePlayer };
-};
+  _drawBackground() {
+    this._context.fillStyle = wastefulBrown;
+    this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
+  }
+}

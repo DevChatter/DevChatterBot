@@ -24,7 +24,7 @@ var overlay = (function () {
     let votingContext = votingCanvas.getContext('2d');
 
     let wastefulCanvas = document.getElementById('wastefulCanvas');
-    let myWasteful = wasteful(wastefulCanvas);
+    let myWasteful = new Wasteful(wastefulCanvas);
 
     // TODO: Move this
     myWasteful.startGame();
