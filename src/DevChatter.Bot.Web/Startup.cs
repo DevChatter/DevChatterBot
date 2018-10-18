@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DevChatter.Bot.Core.BotModules.WastefulModule;
 using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Web.Setup;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
@@ -143,6 +144,9 @@ namespace DevChatter.Bot.Web
             builder.RegisterType<VotingDisplayNotification>()
                 .AsImplementedInterfaces().SingleInstance();
 
+            builder.RegisterType<WastefulDisplayNotification>()
+                .AsImplementedInterfaces().SingleInstance();
+
             builder.RegisterType<IntervalMessageCoordinator>()
                 .As<IIntervalAction>().SingleInstance();
 
@@ -204,6 +208,7 @@ namespace DevChatter.Bot.Web
                 routes.MapHub<BotHub>("/BotHub");
                 routes.MapHub<VotingHub>("/VotingHub");
                 routes.MapHub<HangmanHub>("/HangmanHub");
+                routes.MapHub<WastefulHub>("/WastefulHub");
             });
 
             app.UseMvc();

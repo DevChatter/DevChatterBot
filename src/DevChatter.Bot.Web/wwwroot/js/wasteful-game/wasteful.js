@@ -9,6 +9,10 @@ let wasteful = function(canvas) {
     window.requestAnimationFrame(updateFrame);
   }
 
+  function movePlayer(direction) {
+    myPlayer.move(direction);
+  }
+
   function updateFrame() {
     clearCanvas();
     drawBackground();
@@ -25,5 +29,5 @@ let wasteful = function(canvas) {
     context.fillRect(0, 0, canvas.width, canvas.height);
   }
 
-  return { startGame };
+  return { startGame, movePlayer };
 };
