@@ -1,46 +1,51 @@
-function player(canvas, context) {
-  const size = 42;
-  let x = 84;
-  let y = 84;
-  let playerImage = new Image();
-  playerImage.src = '/images/ZedChatter/Hat-YellowShirt-Player-Idle-0.png';
-
-  let movers = {
-    left: moveLeft,
-    right: moveRight,
-    up: moveUp,
-    down: moveDown
-  };
-
-  function draw() {
-    context.drawImage(playerImage, x, y);
+class Player {
+  constructor(canvas, context) {
+    this._canvas = canvas;
+    this._context = context;
+    this._image = new Image();
+    this._image.src =  '/images/ZedChatter/Hat-YellowShirt-Player-Idle-0.png';
+    this._x = 84;
+    this._y = 84;
+  }
+  
+  draw() {
+    this._context.drawImage(this._image, this._x, this._y);
   }
 
-  function move(direction) {
-    let moveIt = movers[direction];
-    if (moveIt) moveIt();
+  move(direction) {
+    switch(direction) {
+      case 'left':
+        this._moveLeft();
+        break;
+      case 'right':
+        this._moveRight();
+        break;
+      case 'up':
+        this._moveUp();
+        break;
+      case 'down':
+        this._moveDown();
+        break;
+    }
   }
 
-  function moveLeft() {
-    x = Math.max(0, x - size);
+  _moveLeft() {
+    this._x = Math.max(0, this._x - size);
   }
 
-  function moveRight() {
-    x = Math.min(canvas.width - size, x + size);
+  _moveRight() {
+    this._x = Math.min(this._canvas.width - size, this._x + size);
   }
 
-  function moveUp() {
-    y = Math.max(0, y - size);
+  _moveUp() {
+    this._y = Math.max(0, this._y - size);
   }
 
-  function moveDown() {
-    y = Math.min(canvas.height - size, y + size);
+  _moveDown() {
+    this._y = Math.min(this._canvas.height - size, this._y + size);
   }
 
-  function getLocation() {
-    return { x, y };
+  get location() {
+    return { x: this._x, y: this._y };
   }
-
-  return { draw, move, getLocation };
-
 }

@@ -1,11 +1,12 @@
 const wastefulBrown = '#dfd29e';
 const hangryRed = '#ff0000';
+const size = 42;
 
 class Wasteful {
   constructor(canvas) {
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
-    this._player = player(this._canvas, this._context);
+    this._player = new Player(this._canvas, this._context);
     this._zombie = new Zombie(this._canvas, this._context);
   }
 

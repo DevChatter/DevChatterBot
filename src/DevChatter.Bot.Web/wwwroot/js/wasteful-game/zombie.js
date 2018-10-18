@@ -1,5 +1,3 @@
-const size = 42;
-
 class Zombie {
   constructor(canvas, context) {
     this._canvas = canvas;
@@ -15,7 +13,7 @@ class Zombie {
   }
 
   moveToward(player) {
-    let location = player.getLocation();
+    let location = player.location;
     if (location.x < this._x) {
       this._moveLeft();
     } else if (location.x > this._x) {
