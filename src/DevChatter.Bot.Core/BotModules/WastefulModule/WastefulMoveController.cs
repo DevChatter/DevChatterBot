@@ -1,4 +1,4 @@
-namespace DevChatter.Bot.Core.BotModules.RogueModule
+namespace DevChatter.Bot.Core.BotModules.WastefulModule
 {
     /// <summary>
     /// User Interaction for Movement Selection by Chat
