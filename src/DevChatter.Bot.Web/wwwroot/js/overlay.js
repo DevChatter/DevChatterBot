@@ -1,3 +1,5 @@
+import { Wasteful } from '/js/wasteful-game/wasteful.js';
+
 var overlay = (function () {
 
   let notificationOptions = {

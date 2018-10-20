@@ -1,3 +1,5 @@
+const size = 42;
+
 class Grid {
   constructor(canvas, context) {
     this._canvas = canvas;

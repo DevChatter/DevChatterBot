@@ -1,10 +1,13 @@
+import { Obstacle } from '/js/wasteful-game/obstacle.js';
+
 const wastefulBrown = '#dfd29e';
 const wastefulGray = '#cccccc';
 const hangryRed = '#ff0000';
 const size = 42;
 const wastefulInfoWidth = 126;
 
-class Wasteful {
+
+export class Wasteful {
   constructor(canvas) {
     this._canvas = canvas;
     this._context = canvas.getContext('2d');

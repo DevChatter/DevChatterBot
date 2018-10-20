@@ -1,4 +1,4 @@
-class Obstacle {
+export class Obstacle {
   constructor(grid) {
     grid.addSprite(this);
 
