@@ -20,7 +20,17 @@ class Grid {
   }
 
   canMoveTo(x, y) {
-    let withinBounds = x >= 0 && y >= 0 && x < this._max_x && y < this._max_y;
-    return withinBounds;
+    return this._isWithinBounds(x, y) && this._isClearOfObstacles(x, y);
+  }
+
+  _isClearOfObstacles(x, y) {
+    return this._sprites.every(sprite => {
+      let location = sprite.location;
+      return location.x !== x || location.y !== y;
+    });
+  }
+
+  _isWithinBounds(x, y) {
+    return x >= 0 && y >= 0 && x < this._max_x && y < this._max_y;
   }
 }
