@@ -9,6 +9,11 @@ class Taco {
     this._y = 3;
   }
 
+  hitByPlayer(player) {
+    this._grid.removeSprite(this);
+    player.increaseHealth(1);
+  }
+
   get location() {
     return { x: this._x, y: this._y };
   }

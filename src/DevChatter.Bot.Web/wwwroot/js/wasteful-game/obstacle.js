@@ -12,6 +12,10 @@ export class Obstacle {
     this._y = location.y;
   }
 
+  hitByPlayer() {
+    // Nothing happens
+  }
+
   get location() {
     return { x: this._x, y: this._y };
   }

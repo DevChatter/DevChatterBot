@@ -24,6 +24,13 @@ class Grid {
     this._sprites.push(sprite);
   }
 
+  removeSprite(sprite) {
+    var index = this._sprites.indexOf(sprite);
+    if (index > -1) {
+      this._sprites.splice(index, 1);
+    }
+  }
+
   draw() {
     this._sprites.forEach(sprite => {
       let location = sprite.location;
@@ -34,6 +41,13 @@ class Grid {
 
   canMoveTo(x, y) {
     return this._isWithinBounds(x, y) && this._isClearOfObstacles(x, y);
+  }
+
+  atLocation(x, y) {
+    return this._sprites.filter(sprite => {
+      let location = sprite.location;
+      return location.x === x && location.y === y;
+    })[0];
   }
 
   _isClearOfObstacles(x, y) {

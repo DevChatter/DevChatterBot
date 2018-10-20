@@ -17,7 +17,14 @@ class Player {
     if (this._grid.canMoveTo(newX, newY)) {
       this._x = newX;
       this._y = newY;
+    } else {
+      let target = this._grid.atLocation(newX, newY);
+      target.hitByPlayer(this);
     }
+  }
+
+  increaseHealth(amount) {
+    this._health = Math.min(this._health + amount, this._max_health);
   }
 
   get health() {
