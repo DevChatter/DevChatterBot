@@ -11,6 +11,7 @@ class Wasteful {
     this._zombie = new Zombie(this._grid);
     this._items = [];
     this._items.push(new Taco(this._grid));
+    this._items.push(new Obstacle(this._grid));
   }
 
   startGame() {
