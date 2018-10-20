@@ -87,6 +87,21 @@ namespace DevChatter.Bot.Infra.Twitch
             _isReady = true;
             _connectionCompletionTask.SetResult(true);
             _disconnectionCompletionTask = new TaskCompletionSource<bool>();
+
+            JoinChannelRoom(_settings.TwitchRoomId);
+        }
+
+        private void JoinChannelRoom(string roomId)
+        {
+            try
+            {
+                _twitchClient.JoinRoom(_settings.TwitchChannelId, roomId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task Disconnect()

@@ -24,7 +24,8 @@ namespace DevChatter.Bot.Core.BotModules.WastefulModule
             string direction = eventArgs.Arguments.FirstOrDefault()?.ToLower();
             if (_validDirections.Contains(direction))
             {
-                chatClient.SendMessage($"Moving {direction}...");
+                // TODO: Turn this back on when we can respond in a room.
+                //chatClient.SendMessage($"Moving {direction}...", eventArgs.RoomId);
                 _notification.MovePlayer(direction);
             }
         }
