@@ -1,4 +1,5 @@
 import { Obstacle } from '/js/wasteful-game/obstacle.js';
+import { Info } from '/js/wasteful-game/info.js';
 
 const wastefulBrown = '#dfd29e';
 const wastefulGray = '#cccccc';
@@ -12,6 +13,7 @@ export class Wasteful {
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
     this._grid = new Grid(this._canvas, this._context);
+    this._info = new Info(this._canvas, this._context);
     this._player = new Player(this._grid);
     this._zombie = new Zombie(this._grid);
     this._items = [];
@@ -32,6 +34,7 @@ export class Wasteful {
     this._clearCanvas();
     this._drawBackground();
     this._grid.draw();
+    this._info.draw(this._player);
     window.requestAnimationFrame(() => this._updateFrame());
   }
 
