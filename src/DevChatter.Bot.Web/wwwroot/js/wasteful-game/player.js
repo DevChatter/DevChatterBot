@@ -27,6 +27,11 @@ class Player {
     this._health = Math.min(this._health + amount, this._max_health);
   }
 
+  decreaseHealth(amount) {
+    this._health -= amount;
+    // TODO: Check for death
+  }
+
   get health() {
     return this._health;
   }

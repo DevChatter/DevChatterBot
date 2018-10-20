@@ -1,10 +1,11 @@
 class Zombie {
   constructor(grid) {
     grid.addSprite(this);
+    this._grid = grid;
 
     this._image = new Image();
     this._image.src = '/images/ZedChatter/Zombie-0.png';
-    this._movable = new MovableEntity(grid, 15, 3);
+    this._movable = new MovableEntity(grid, 7, 3);
   }
 
   moveToward(player) {
@@ -22,6 +23,11 @@ class Zombie {
     } else {
       // nom nom nom
     }
+  }
+
+  hitByPlayer(player) {
+    this._grid.removeSprite(this); // kill zombie
+    player.decreaseHealth(1); // get hurt in process
   }
 
   get location() {
