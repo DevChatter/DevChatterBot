@@ -4,9 +4,12 @@ class Obstacle {
 
     this._grid = grid; // for removing itself later
     this._image = new Image();
-    this._image.src =  '/images/ZedChatter/BarrelFires-0.png';
-    this._x = 8;
-    this._y = 4;
+    this._image.src = '/images/ZedChatter/BarrelFires-0.png';
+
+    var location = this._grid.getRandomOpenLocation();
+
+    this._x = location.x;
+    this._y = location.y;
   }
 
   get location() {

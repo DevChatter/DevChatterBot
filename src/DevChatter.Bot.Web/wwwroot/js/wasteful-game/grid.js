@@ -7,6 +7,17 @@ class Grid {
     this._max_y = Math.floor(canvas.height / 42);
   }
 
+  getRandomOpenLocation() {
+    let randomX;
+    let randomY;
+    do {
+      randomX = Math.floor(Math.random() * this._max_x);
+      randomY = Math.floor(Math.random() * this._max_y);
+    } while (!this._isClearOfObstacles(randomX, randomY));
+
+    return { x: randomX, y: randomY };
+  }
+
   addSprite(sprite) {
     this._sprites.push(sprite);
   }
