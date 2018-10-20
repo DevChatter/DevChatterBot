@@ -3,7 +3,7 @@ class Grid {
     this._canvas = canvas;
     this._context = context;
     this._sprites = [];
-    this._max_x = Math.floor(canvas.width / 42);
+    this._max_x = Math.floor((canvas.width - 126) / 42);
     this._max_y = Math.floor(canvas.height / 42);
   }
 

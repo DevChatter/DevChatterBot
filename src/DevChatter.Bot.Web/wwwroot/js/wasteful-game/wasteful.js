@@ -1,6 +1,8 @@
 const wastefulBrown = '#dfd29e';
+const wastefulGray = '#cccccc';
 const hangryRed = '#ff0000';
 const size = 42;
+const wastefulInfoWidth = 126;
 
 class Wasteful {
   constructor(canvas) {
@@ -36,7 +38,10 @@ class Wasteful {
 
   _drawBackground() {
     this._context.fillStyle = wastefulBrown;
-    this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
+    this._context.fillRect(0, 0, this._canvas.width - wastefulInfoWidth, this._canvas.height);
+
+    this._context.fillStyle = wastefulGray;
+    this._context.fillRect(this._canvas.width - wastefulInfoWidth, 0, wastefulInfoWidth, this._canvas.height);
   }
 
   _createObstacles() {
