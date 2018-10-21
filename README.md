@@ -1,7 +1,7 @@
 <p align="center">
   <a href="#" alt="Devchatterbot" width="200"><img src="https://www.devchatter.com/assets/css/images/DarkBack-Logo.png"></a>
 </p>
-<h4 align="center">A really cool bot that does things </h4>
+<h4 align="center">Chat Bot and Stream Overlay</h4>
 
 <p align="center">
 <img src="https://img.shields.io/badge/Platform-.NET Core 2.1-lightgrey.svg" style="max-height: 300px;" alt="Platform: iOS">
