@@ -29,7 +29,14 @@ class Player {
 
   decreaseHealth(amount) {
     this._health -= amount;
-    // TODO: Check for death
+    if (this._health <= 0) {
+      // TODO: Game Over or something
+    }
+  }
+
+  hitByZombie(zombie) {
+    // TODO: Add defensive items later
+    this.decreaseHealth(zombie.damage);
   }
 
   get health() {

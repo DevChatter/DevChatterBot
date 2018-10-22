@@ -1,6 +1,7 @@
 import { Obstacle } from '/js/wasteful-game/obstacle.js';
 import { Info } from '/js/wasteful-game/info.js';
 import { Direction } from '/js/wasteful-game/direction.js';
+import { Zombie } from '/js/wasteful-game/zombie.js';
 
 const wastefulBrown = '#dfd29e';
 const wastefulGray = '#cccccc';
