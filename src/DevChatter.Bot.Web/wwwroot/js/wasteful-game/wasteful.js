@@ -2,6 +2,9 @@ import { Obstacle } from '/js/wasteful-game/obstacle.js';
 import { Info } from '/js/wasteful-game/info.js';
 import { Direction } from '/js/wasteful-game/direction.js';
 import { Zombie } from '/js/wasteful-game/zombie.js';
+import { Player } from '/js/wasteful-game/player.js';
+import { Taco } from '/js/wasteful-game/taco.js';
+import { Grid } from '/js/wasteful-game/grid.js';
 
 const wastefulBrown = '#dfd29e';
 const wastefulGray = '#cccccc';
@@ -21,27 +24,43 @@ export class Wasteful {
     this._items = [];
     this._items.push(new Taco(this._grid));
     this._createObstacles();
+    this._isRunning = false;
   }
 
   startGame() {
+    this._isRunning = true;
     window.requestAnimationFrame(() => this._updateFrame());
   }
 
   movePlayer(direction) {
     this._player.move(new Direction(direction));
     this._zombie.moveToward(this._player);
+
+    if (this._player.health <= 0) {
+      this._isRunning = false;
+    }
   }
 
   _updateFrame() {
-    this._clearCanvas();
-    this._drawBackground();
-    this._grid.draw();
-    this._info.draw(this._player);
-    window.requestAnimationFrame(() => this._updateFrame());
+    if (this._isRunning) {
+      this._clearCanvas();
+      this._drawBackground();
+      this._grid.draw();
+      this._info.draw(this._player);
+      window.requestAnimationFrame(() => this._updateFrame());
+    } else {
+      this._drawGameOver();
+    }
   }
 
   _clearCanvas() {
     this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+  }
+
+  _drawGameOver() {
+    this._context.fillStyle = hangryRed;
+    this._context.font = "128px Arial";
+    this._context.fillText('Game Over', 20, this._canvas.height - 10);
   }
 
   _drawBackground() {

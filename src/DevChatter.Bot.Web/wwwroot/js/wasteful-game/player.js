@@ -1,4 +1,4 @@
-class Player {
+export class Player {
   constructor(grid) {
     grid.addSprite(this);
     this._grid = grid;
@@ -29,9 +29,6 @@ class Player {
 
   decreaseHealth(amount) {
     this._health -= amount;
-    if (this._health <= 0) {
-      // TODO: Game Over or something
-    }
   }
 
   hitByZombie(zombie) {

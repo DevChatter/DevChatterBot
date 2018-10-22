@@ -1,4 +1,4 @@
-class Taco {
+export class Taco {
   constructor(grid) {
     grid.addSprite(this);
 

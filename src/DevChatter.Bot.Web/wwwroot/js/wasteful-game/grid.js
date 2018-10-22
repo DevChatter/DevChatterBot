@@ -1,6 +1,6 @@
 const size = 42;
 
-class Grid {
+export class Grid {
   constructor(canvas, context) {
     this._canvas = canvas;
     this._context = context;
