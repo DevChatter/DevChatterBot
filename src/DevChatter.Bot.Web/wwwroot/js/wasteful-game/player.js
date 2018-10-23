@@ -42,6 +42,10 @@ export class Player {
     return this._health;
   }
 
+  get points() {
+    return 7;
+  }
+
   get location() {
     return { x: this._x , y : this._y };
   }

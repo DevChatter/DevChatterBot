@@ -11,12 +11,14 @@ export class Info {
 
   draw(player) {
     this._context.fillStyle = "#000000";
-    this._context.font = "20px Arial";
+    this._context.font = "16px Arial";
 
-    this._context.fillText(`Player:`, this._leftX + 5, this._topY + 30);
+    this._context.fillText(`Player:`, this._leftX + 5, this._topY + 24);
 
-    this._context.fillText(this._playerName, this._leftX + 5, this._topY + 60);
+    this._context.fillText(this._playerName, this._leftX + 5, this._topY + 48);
 
-    this._context.fillText(`Health: ${player.health}`, this._leftX + 5, this._topY + 90);
+    this._context.fillText('\u{1F499}'.repeat(player.health), this._leftX + 5, this._topY + 72);
+
+    this._context.fillText(`\u20BF: ${player.points}`, this._leftX + 5, this._topY + 96);
   }
 }
