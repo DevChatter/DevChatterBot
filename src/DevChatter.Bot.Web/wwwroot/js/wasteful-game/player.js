@@ -9,6 +9,7 @@ export class Player {
     this._y = 2;
     this._max_health = 5;
     this._health = 3;
+    this._points = 0;
   }
 
   move(dir) {
@@ -29,6 +30,10 @@ export class Player {
     this._health = Math.min(this._health + amount, this._max_health);
   }
 
+  increasePoints(amount) {
+    this._points += amount;
+  }
+
   decreaseHealth(amount) {
     this._health -= amount;
   }
@@ -43,7 +48,7 @@ export class Player {
   }
 
   get points() {
-    return 7;
+    return this._points;
   }
 
   get location() {

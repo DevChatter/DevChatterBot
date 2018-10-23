@@ -12,6 +12,7 @@ export class Taco {
   hitByPlayer(player) {
     this._grid.removeSprite(this);
     player.increaseHealth(1);
+    player.increasePoints(5);
   }
 
   hitByZombie() {

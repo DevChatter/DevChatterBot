@@ -46,6 +46,7 @@ export class Zombie {
     this.isKilled = true;
     this._grid.removeSprite(this); // kill zombie
     player.decreaseHealth(1); // get hurt in process
+    player.increasePoints(20);
   }
 
   get location() {
