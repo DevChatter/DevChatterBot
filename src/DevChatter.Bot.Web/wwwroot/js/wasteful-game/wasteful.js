@@ -25,9 +25,13 @@ export class Wasteful {
     this._items.push(new Taco(this._grid));
     this._createObstacles();
     this._isRunning = false;
+    this._backgroundImages = this._getBackgroundImages();
+    this._tileGrid = [];
   }
 
   startGame() {
+    this._tileGrid = this._createRandomGrid(this._canvas.width - wastefulInfoWidth, this._canvas.height, this._backgroundImages.length);
+
     this._isRunning = true;
     window.requestAnimationFrame(() => this._updateFrame());
   }
@@ -64,8 +68,12 @@ export class Wasteful {
   }
 
   _drawBackground() {
-    this._context.fillStyle = wastefulBrown;
-    this._context.fillRect(0, 0, this._canvas.width - wastefulInfoWidth, this._canvas.height);
+    this._tileGrid.forEach(
+      (col, colIndex) => col.forEach(
+        (imgIndex, rowIndex) => {
+          let image = this._backgroundImages[imgIndex];
+          this._context.drawImage(image, size * colIndex, size * rowIndex);
+        }));
 
     this._context.fillStyle = wastefulGray;
     this._context.fillRect(this._canvas.width - wastefulInfoWidth, 0, wastefulInfoWidth, this._canvas.height);
@@ -75,5 +83,28 @@ export class Wasteful {
     for (let i = 0; i < 10; i++) {
       this._items.push(new Obstacle(this._grid));
     }
+  }
+
+  _getBackgroundImages() {
+    let img1 = new Image();
+    img1.src = '/images/ZedChatter/RockyGroundTile-0.png';
+    let img2 = new Image();
+    img2.src = '/images/ZedChatter/RockyGroundTile-1.png';
+    let img3 = new Image();
+    img3.src = '/images/ZedChatter/RockyGroundTile-2.png';
+    return [img1, img2, img2, img3, img3, img3];
+  }
+
+  _createRandomGrid(width, height, choiceCount) {
+    let w = width / size;
+    let h = height / size;
+    var result = [];
+    for (var i = 0; i < w; i++) {
+      result[i] = [];
+      for (var j = 0; j < h; j++) {
+        result[i][j] = Math.floor(Math.random() * choiceCount);
+      }
+    }
+    return result;
   }
 }
