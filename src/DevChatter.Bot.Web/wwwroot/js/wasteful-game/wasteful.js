@@ -20,6 +20,8 @@ export class Wasteful {
   }
 
   startGame(displayName) {
+    if (this._isRunning) return;
+
     this._grid = new Grid(this._canvas, this._context);
     this._info = new Info(this._canvas, this._context, displayName);
     this._player = new Player(this._grid);
