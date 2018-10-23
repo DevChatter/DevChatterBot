@@ -19,7 +19,9 @@ export class Player {
       this._y = newY;
     } else {
       let target = this._grid.atLocation(newX, newY);
-      target.hitByPlayer(this);
+      if (target) {
+        target.hitByPlayer(this);
+      }
     }
   }
 
