@@ -1,14 +1,14 @@
 import { Direction } from '/js/wasteful-game/direction.js';
 
 export class Zombie {
-  constructor(grid) {
+  constructor(grid, x, y) {
     grid.addSprite(this);
     this._grid = grid;
 
     this._image = new Image();
     this._image.src = '/images/ZedChatter/Zombie-0.png';
-    this._x = 7;
-    this._y = 3;
+    this._x = x || 7;
+    this._y = y || 3;
     this._damage = 1;
     this.isKilled = false;
   }

@@ -23,6 +23,7 @@ export class Wasteful {
   startGame(displayName) {
     if (this._isRunning) return;
 
+    this._turnNumber = 0;
     this._grid = new Grid(this._canvas, this._context);
     this._info = new Info(this._canvas, this._context, displayName);
     this._player = new Player(this._grid);
@@ -38,12 +39,13 @@ export class Wasteful {
 
   movePlayer(direction) {
     this._player.move(new Direction(direction));
-    this._zombies = this._zombies.filter(zombie => !zombie.isKilled);
+    this._addOrRemoveZombies();
 
     this._zombies.forEach(zombie => zombie.moveToward(this._player));
     if (this._player.health <= 0) {
       this._isGameOver = true;
     }
+    this._turnNumber++;
   }
 
   _updateFrame() {
@@ -86,6 +88,14 @@ export class Wasteful {
   _createObstacles() {
     for (let i = 0; i < 10; i++) {
       this._items.push(new Obstacle(this._grid));
+    }
+  }
+
+  _addOrRemoveZombies() {
+    this._zombies = this._zombies.filter(zombie => !zombie.isKilled);
+    if (this._turnNumber % 6 === 0 && this._turnNumber > 0) {
+      let location = this._grid.getRandomOpenLocation();
+      this._zombies.push(new Zombie(this._grid, location.x, location.y));
     }
   }
 }
