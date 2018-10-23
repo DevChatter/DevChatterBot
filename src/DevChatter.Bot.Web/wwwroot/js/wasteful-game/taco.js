@@ -14,6 +14,10 @@ export class Taco {
     player.increaseHealth(1);
   }
 
+  hitByZombie() {
+    // Nothing happens
+  }
+
   get location() {
     return { x: this._x, y: this._y };
   }

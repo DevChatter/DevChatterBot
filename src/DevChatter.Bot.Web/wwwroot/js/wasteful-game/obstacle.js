@@ -16,6 +16,10 @@ export class Obstacle {
     // Nothing happens
   }
 
+  hitByZombie() {
+    // Nothing happens
+  }
+
   get location() {
     return { x: this._x, y: this._y };
   }
