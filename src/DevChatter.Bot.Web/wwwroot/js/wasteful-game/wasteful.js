@@ -17,6 +17,7 @@ export class Wasteful {
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
     this._isRunning = false;
+    this._isGameOver = false;
   }
 
   startGame(displayName) {
@@ -41,24 +42,32 @@ export class Wasteful {
 
     this._zombies.forEach(zombie => zombie.moveToward(this._player));
     if (this._player.health <= 0) {
-      this._isRunning = false;
+      this._isGameOver = true;
     }
   }
 
   _updateFrame() {
-    if (this._isRunning) {
+    if (this._isGameOver) {
+      this._drawGameOver();
+      let delay = ms => new Promise(r => setTimeout(r, ms));
+      delay(5000).then(() => this._endGame());
+    } else {
       this._clearCanvas();
       this._drawBackground();
       this._grid.draw();
       this._info.draw(this._player);
       window.requestAnimationFrame(() => this._updateFrame());
-    } else {
-      this._drawGameOver();
     }
   }
 
   _clearCanvas() {
     this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+  }
+
+  _endGame() {
+    this._isRunning = false;
+    this._isGameOver = false;
+    this._clearCanvas();
   }
 
   _drawGameOver() {
