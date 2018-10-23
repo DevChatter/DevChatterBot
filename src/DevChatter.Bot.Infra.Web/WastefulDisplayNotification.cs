@@ -19,5 +19,10 @@ namespace DevChatter.Bot.Infra.Web
         {
             await _wastefulHubContext.Clients.All.MovePlayer(direction);
         }
+
+        public async Task StartGame(string chatUserDisplayName)
+        {
+            await _wastefulHubContext.Clients.All.StartGame(chatUserDisplayName);
+        }
     }
 }

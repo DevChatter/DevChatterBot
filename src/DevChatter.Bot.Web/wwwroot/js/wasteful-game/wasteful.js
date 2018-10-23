@@ -16,17 +16,17 @@ export class Wasteful {
   constructor(canvas) {
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
-    this._grid = new Grid(this._canvas, this._context);
-    this._info = new Info(this._canvas, this._context);
-    this._player = new Player(this._grid);
-    this._zombies = [ new Zombie(this._grid) ];
-    this._items = [];
-    this._items.push(new Taco(this._grid));
-    this._createObstacles();
     this._isRunning = false;
   }
 
-  startGame() {
+  startGame(displayName) {
+    this._grid = new Grid(this._canvas, this._context);
+    this._info = new Info(this._canvas, this._context, displayName);
+    this._player = new Player(this._grid);
+    this._zombies = [new Zombie(this._grid)];
+    this._items = [];
+    this._items.push(new Taco(this._grid));
+    this._createObstacles();
     this._background = new Background(this._context, this._canvas.width - wastefulInfoWidth, this._canvas.height);
 
     this._isRunning = true;

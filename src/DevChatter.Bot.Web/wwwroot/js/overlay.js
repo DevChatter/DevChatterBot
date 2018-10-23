@@ -28,9 +28,6 @@ var overlay = (function () {
     let wastefulCanvas = document.getElementById('wastefulCanvas');
     let myWasteful = new Wasteful(wastefulCanvas);
 
-    // TODO: Move this
-    myWasteful.startGame();
-
     let botHubConn = createHubConnection("BotHub");
 
     let votingHubConn = createHubConnection("VotingHub");
@@ -131,6 +128,10 @@ var overlay = (function () {
     wastefulHubConn.on("MovePlayer",
       async (direction) => {
         myWasteful.movePlayer(direction);
+      });
+    wastefulHubConn.on("StartGame",
+      async (displayName) => {
+        myWasteful.startGame(displayName);
       });
   };
 }());
