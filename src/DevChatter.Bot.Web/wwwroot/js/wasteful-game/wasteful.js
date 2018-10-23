@@ -20,7 +20,7 @@ export class Wasteful {
     this._grid = new Grid(this._canvas, this._context);
     this._info = new Info(this._canvas, this._context);
     this._player = new Player(this._grid);
-    this._zombie = new Zombie(this._grid);
+    this._zombies = [ new Zombie(this._grid) ];
     this._items = [];
     this._items.push(new Taco(this._grid));
     this._createObstacles();
@@ -38,8 +38,9 @@ export class Wasteful {
 
   movePlayer(direction) {
     this._player.move(new Direction(direction));
-    this._zombie.moveToward(this._player);
+    this._zombies = this._zombies.filter(zombie => !zombie.isKilled);
 
+    this._zombies.forEach(zombie => zombie.moveToward(this._player));
     if (this._player.health <= 0) {
       this._isRunning = false;
     }

@@ -10,6 +10,7 @@ export class Zombie {
     this._x = 7;
     this._y = 3;
     this._damage = 1;
+    this.isKilled = false;
   }
 
   moveToward(player) {
@@ -42,6 +43,7 @@ export class Zombie {
 
 
   hitByPlayer(player) {
+    this.isKilled = true;
     this._grid.removeSprite(this); // kill zombie
     player.decreaseHealth(1); // get hurt in process
   }
