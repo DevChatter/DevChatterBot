@@ -4,7 +4,7 @@ import { Direction } from '/js/wasteful-game/direction.js';
 import { Zombie } from '/js/wasteful-game/zombie.js';
 import { ZombieSpawner } from '/js/wasteful-game/zombie-spawner.js';
 import { Player } from '/js/wasteful-game/player.js';
-import { Taco } from '/js/wasteful-game/taco.js';
+import { Consumable } from '/js/wasteful-game/consumable.js';
 import { Grid } from '/js/wasteful-game/grid.js';
 import { Background } from '/js/wasteful-game/background.js';
 
@@ -29,7 +29,7 @@ export class Wasteful {
     this._player = new Player(this._grid);
     this._actors = [new Zombie(this._grid)];
     this._items = [];
-    this._items.push(new Taco(this._grid));
+    this._items.push(new Consumable(this._grid));
     this._createObstacles();
     this._background = new Background(this._context, this._canvas.width - wastefulInfoWidth, this._canvas.height);
 

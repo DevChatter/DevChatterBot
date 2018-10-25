@@ -1,4 +1,4 @@
-export class Taco {
+export class Consumable {
   constructor(grid) {
     grid.addSprite(this);
 
