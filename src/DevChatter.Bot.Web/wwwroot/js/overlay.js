@@ -25,9 +25,6 @@ var overlay = (function () {
     let votingCanvas = document.getElementById('votingCanvas');
     let votingContext = votingCanvas.getContext('2d');
 
-    let wastefulCanvas = document.getElementById('wastefulCanvas');
-    let myWasteful = new Wasteful(wastefulCanvas);
-
     let botHubConn = createHubConnection("BotHub");
 
     let votingHubConn = createHubConnection("VotingHub");
@@ -35,6 +32,10 @@ var overlay = (function () {
     let hangmanHubConn = createHubConnection("HangmanHub");
 
     let wastefulHubConn = createHubConnection("WastefulHub");
+
+    let wastefulCanvas = document.getElementById('wastefulCanvas');
+    let myWasteful = new Wasteful(wastefulCanvas, wastefulHubConn);
+
 
     function createHubConnection(hubName) {
       let hubConn = new signalR.HubConnectionBuilder()

@@ -15,8 +15,9 @@ const hangryRed = '#ff0000';
 const wastefulInfoWidth = 126;
 
 export class Wasteful {
-  constructor(canvas) {
+  constructor(canvas, hub) {
     this._canvas = canvas;
+    this._hub = hub;
     this._context = canvas.getContext('2d');
     this._isRunning = false;
     this._isGameOver = false;
@@ -25,6 +26,7 @@ export class Wasteful {
   startGame(displayName) {
     if (this._isRunning) return;
 
+    this._levelNumber = 1;
     this._turnNumber = 0;
     this._grid = new Grid(this._canvas, this._context);
     this._info = new Info(this._canvas, this._context, displayName);
@@ -61,6 +63,7 @@ export class Wasteful {
   }
 
   exitLevel() {
+    this._levelNumber++;
     let exitLocation = this._exit.location;
     this._player.setNewLocation(0, exitLocation.y);
 
@@ -99,6 +102,9 @@ export class Wasteful {
     this._isRunning = false;
     this._isGameOver = false;
     this._clearCanvas();
+
+    // TODO: Organize data better, so it's not coming from separate objects.
+    this._hub.invoke("GameEnd", this._player.points, this._info._playerName, 'died', this._levelNumber).catch(err => console.error(err.toString()));
   }
 
   _drawGameOver() {
