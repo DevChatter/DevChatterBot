@@ -1,3 +1,4 @@
+import { Player } from '/js/wasteful-game/player.js';
 const size = 42;
 
 export class Grid {
@@ -48,6 +49,11 @@ export class Grid {
       let location = sprite.location;
       return location.x === x && location.y === y;
     })[0];
+  }
+
+  get playerLocation() {
+    let player = this._sprites.filter(sprite => sprite instanceof Player)[0];
+    return player.location;
   }
 
   _isClearOfObstacles(x, y) {

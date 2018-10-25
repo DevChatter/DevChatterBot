@@ -13,8 +13,8 @@ export class Zombie {
     this.isKilled = false;
   }
 
-  moveToward(player) {
-    let playerLocation = player.location;
+  takeTurn() {
+    let playerLocation = this._grid.playerLocation;
 
     if (playerLocation.x < this._x) {
       this._move(new Direction('left'));

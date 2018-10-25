@@ -2,6 +2,7 @@ import { Obstacle } from '/js/wasteful-game/obstacle.js';
 import { Info } from '/js/wasteful-game/info.js';
 import { Direction } from '/js/wasteful-game/direction.js';
 import { Zombie } from '/js/wasteful-game/zombie.js';
+import { ZombieSpawner } from '/js/wasteful-game/zombie-spawner.js';
 import { Player } from '/js/wasteful-game/player.js';
 import { Taco } from '/js/wasteful-game/taco.js';
 import { Grid } from '/js/wasteful-game/grid.js';
@@ -10,7 +11,6 @@ import { Background } from '/js/wasteful-game/background.js';
 const wastefulGray = '#cccccc';
 const hangryRed = '#ff0000';
 const wastefulInfoWidth = 126;
-
 
 export class Wasteful {
   constructor(canvas) {
@@ -27,7 +27,7 @@ export class Wasteful {
     this._grid = new Grid(this._canvas, this._context);
     this._info = new Info(this._canvas, this._context, displayName);
     this._player = new Player(this._grid);
-    this._zombies = [new Zombie(this._grid)];
+    this._actors = [new Zombie(this._grid)];
     this._items = [];
     this._items.push(new Taco(this._grid));
     this._createObstacles();
@@ -39,9 +39,16 @@ export class Wasteful {
 
   movePlayer(direction) {
     this._player.move(new Direction(direction));
+
     this._removeZombies();
 
-    this._zombies.forEach(zombie => zombie.moveToward(this._player));
+    this._actors.forEach(actor => {
+      let spawn = actor.takeTurn();
+      if (spawn) {
+        this._actors.push(spawn);
+      }
+    });
+
     if (this._player.health <= 0) {
       this._isGameOver = true;
     }
@@ -95,13 +102,13 @@ export class Wasteful {
   }
 
   _removeZombies() {
-    this._zombies = this._zombies.filter(zombie => !zombie.isKilled);
+    this._actors = this._actors.filter(zombie => !zombie.isKilled);
   }
 
   _addZombieSpawners() {
     if (this._turnNumber % 6 === 0 && this._turnNumber > 0) {
       let location = this._grid.getRandomOpenLocation();
-      this._zombies.push(new Zombie(this._grid, location.x, location.y));
+      this._actors.push(new ZombieSpawner(this._grid, location.x, location.y));
     }
   }
 }
