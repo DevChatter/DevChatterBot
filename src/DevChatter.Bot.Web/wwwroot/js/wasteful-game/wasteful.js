@@ -39,12 +39,15 @@ export class Wasteful {
 
   movePlayer(direction) {
     this._player.move(new Direction(direction));
-    this._addOrRemoveZombies();
+    this._removeZombies();
 
     this._zombies.forEach(zombie => zombie.moveToward(this._player));
     if (this._player.health <= 0) {
       this._isGameOver = true;
     }
+
+    this._addZombieSpawners();
+
     this._turnNumber++;
   }
 
@@ -91,8 +94,11 @@ export class Wasteful {
     }
   }
 
-  _addOrRemoveZombies() {
+  _removeZombies() {
     this._zombies = this._zombies.filter(zombie => !zombie.isKilled);
+  }
+
+  _addZombieSpawners() {
     if (this._turnNumber % 6 === 0 && this._turnNumber > 0) {
       let location = this._grid.getRandomOpenLocation();
       this._zombies.push(new Zombie(this._grid, location.x, location.y));
