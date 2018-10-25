@@ -49,6 +49,10 @@ export class Zombie {
     player.increasePoints(20);
   }
 
+  hitByZombie(zombie) {
+    // bonk
+  }
+
   get location() {
     return { x: this._x, y: this._y };
   }
