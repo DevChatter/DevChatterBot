@@ -13,6 +13,7 @@ export class ExitTile {
   }
 
   hitByPlayer(player) {
+    // TODO: Add locked doors that might require a key be in player inventory to open.
     player.increasePoints(20);
     this._game.exitLevel();
   }
