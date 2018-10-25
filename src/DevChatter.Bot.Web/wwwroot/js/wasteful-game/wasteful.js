@@ -28,7 +28,7 @@ export class Wasteful {
     this._turnNumber = 0;
     this._grid = new Grid(this._canvas, this._context);
     this._info = new Info(this._canvas, this._context, displayName);
-    this._exit = new ExitTile(this._grid);
+    this._exit = new ExitTile(this, this._grid);
     this._player = new Player(this._grid);
     this._actors = [new Zombie(this._grid)];
     this._items = [new Consumable(this._grid, new ItemEffect(1,5), '/images/ZedChatter/Taco-0.png')];
@@ -58,6 +58,23 @@ export class Wasteful {
     this._addZombieSpawners();
 
     this._turnNumber++;
+  }
+
+  exitLevel() {
+    let exitLocation = this._exit.location;
+    this._player.setNewLocation(0, exitLocation.y);
+
+    this._turnNumber = 0;
+    this._actors = [];
+    this._items = [];
+    this._grid.clearSprites();
+
+    this._grid.addSprite(this._player);
+    this._grid.addSprite(this._exit);
+
+    this._actors.push(new Zombie(this._grid));
+    this._items.push(new Consumable(this._grid, new ItemEffect(1, 5), '/images/ZedChatter/Taco-0.png'));
+    this._createObstacles();
   }
 
   _updateFrame() {

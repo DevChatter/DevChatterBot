@@ -1,7 +1,8 @@
 export class ExitTile {
-  constructor(grid) {
+  constructor(game, grid) {
     grid.addSprite(this);
 
+    this._game = game;
     this._grid = grid;
     this._image = new Image();
     this._image.src = '/images/ZedChatter/ExitTile-0.png';
@@ -11,9 +12,9 @@ export class ExitTile {
     this._y = location.y/2;
   }
 
-  hitByPlayer() {
-    // TODO: Exit Level
-    debugger;
+  hitByPlayer(player) {
+    player.increasePoints(20);
+    this._game.exitLevel();
   }
 
   hitByEnemy() {

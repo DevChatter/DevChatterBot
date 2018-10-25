@@ -32,6 +32,10 @@ export class Grid {
     }
   }
 
+  clearSprites() {
+    this._sprites = [];
+  }
+
   draw() {
     this._sprites.forEach(sprite => {
       let location = sprite.location;
