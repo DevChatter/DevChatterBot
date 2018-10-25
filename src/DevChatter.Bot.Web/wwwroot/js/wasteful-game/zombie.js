@@ -37,7 +37,7 @@ export class Zombie {
       this._y = newY;
     } else {
       let target = this._grid.atLocation(newX, newY);
-      target.hitByZombie(this);
+      target.hitByEnemy(this);
     }
   }
 
@@ -49,8 +49,8 @@ export class Zombie {
     player.increasePoints(20);
   }
 
-  hitByZombie(zombie) {
-    // bonk
+  hitByEnemy() {
+    // do nothing
   }
 
   get location() {

@@ -38,7 +38,7 @@ export class Player {
     this._health -= amount;
   }
 
-  hitByZombie(zombie) {
+  hitByEnemy(zombie) {
     // TODO: Add defensive items later
     this.decreaseHealth(zombie.damage);
   }

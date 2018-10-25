@@ -15,7 +15,7 @@ export class Taco {
     player.increasePoints(5);
   }
 
-  hitByZombie() {
+  hitByEnemy() {
     // Nothing happens
   }
 

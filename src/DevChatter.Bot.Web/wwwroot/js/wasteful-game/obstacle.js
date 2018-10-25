@@ -16,7 +16,7 @@ export class Obstacle {
     // Nothing happens
   }
 
-  hitByZombie() {
+  hitByEnemy() {
     // Nothing happens
   }
 
