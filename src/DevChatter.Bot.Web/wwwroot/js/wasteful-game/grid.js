@@ -56,6 +56,10 @@ export class Grid {
     return player.location;
   }
 
+  get lowerRightCorner() {
+    return { x: this._max_x, y: this._max_y };
+  }
+
   _isClearOfObstacles(x, y) {
     return this._sprites.every(sprite => {
       let location = sprite.location;

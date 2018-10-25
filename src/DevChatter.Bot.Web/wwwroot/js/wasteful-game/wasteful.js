@@ -8,6 +8,7 @@ import { Consumable } from '/js/wasteful-game/consumable.js';
 import { Grid } from '/js/wasteful-game/grid.js';
 import { Background } from '/js/wasteful-game/background.js';
 import { ItemEffect } from '/js/wasteful-game/item-effect.js';
+import { ExitTile } from '/js/wasteful-game/exit-tile.js';
 
 const wastefulGray = '#cccccc';
 const hangryRed = '#ff0000';
@@ -27,6 +28,7 @@ export class Wasteful {
     this._turnNumber = 0;
     this._grid = new Grid(this._canvas, this._context);
     this._info = new Info(this._canvas, this._context, displayName);
+    this._exit = new ExitTile(this._grid);
     this._player = new Player(this._grid);
     this._actors = [new Zombie(this._grid)];
     this._items = [new Consumable(this._grid, new ItemEffect(1,5), '/images/ZedChatter/Taco-0.png')];
