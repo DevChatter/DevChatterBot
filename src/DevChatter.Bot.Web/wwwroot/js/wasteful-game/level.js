@@ -6,7 +6,7 @@ import { Obstacle } from '/js/wasteful-game/obstacle.js';
 import { HeldItem } from '/js/wasteful-game/held-item.js';
 
 export class Level {
-  constructor(grid, levelNumber) {
+  constructor(grid, levelNumber, itemBuilder) {
     this._grid = grid;
     this._turnNumber = 0;
 
@@ -15,13 +15,7 @@ export class Level {
       this._actors.push(new Zombie(this._grid));
     }
 
-    this._items = [];
-    // TODO: Random consumable selection
-    let consumable = new Consumable(this._grid, new ItemEffect(1, 5), '/images/ZedChatter/Taco-0.png');
-    this._items.push(consumable);
-
-    let heldItem = new HeldItem(this._grid, '/images/ZedChatter/BaseballBat-1.png', true);
-    this._items.push(heldItem);
+    this._items = itemBuilder.getItemsForLevel(levelNumber);
 
     for (let i = 0; i < 10; i++) {
       this._items.push(new Obstacle(this._grid));

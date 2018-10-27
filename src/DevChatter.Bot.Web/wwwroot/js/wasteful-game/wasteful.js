@@ -6,6 +6,7 @@ import { Background } from '/js/wasteful-game/background.js';
 import { ExitTile } from '/js/wasteful-game/exit-tile.js';
 import { Level } from '/js/wasteful-game/level.js';
 import { MetaData } from '/js/wasteful-game/metadata.js';
+import { ItemBuilder } from '/js/wasteful-game/level-building/item-builder.js';
 
 const wastefulGray = '#cccccc';
 const hangryRed = '#ff0000';
@@ -34,11 +35,12 @@ export class Wasteful {
     this._levelNumber = 1;
     this._playerName = displayName;
     this._grid = new Grid(this._canvas, this._context);
+    this._itemBuilder = new ItemBuilder(this._grid);
     this._info = new Info(this._canvas, this._context, this._playerName);
     this._exit = new ExitTile(this, this._grid);
     this._player = new Player(this._grid);
     this._background = new Background(this._context, this._canvas.width - MetaData.wastefulInfoWidth, this._canvas.height);
-    this._level = new Level(this._grid, this._levelNumber);
+    this._level = new Level(this._grid, this._levelNumber, this._itemBuilder);
     this._isRunning = true;
     this._animationHandle = window.requestAnimationFrame(() => this._updateFrame());
     this._mouseDownHandle = this._onMouseDown.bind(this);
@@ -66,7 +68,7 @@ export class Wasteful {
     this._grid.addSprite(this._player);
     this._grid.addSprite(this._exit);
 
-    this._level = new Level(this._grid, this._levelNumber);
+    this._level = new Level(this._grid, this._levelNumber, this._itemBuilder);
   }
 
   _updateFrame() {
