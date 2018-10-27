@@ -12,25 +12,38 @@ const hangryRed = '#ff0000';
 
 export class Wasteful {
   constructor(canvas, hub) {
+    this._mouseDownHandle = this._onMouseDown.bind(this);
+    this._keyDownHandle = this._onKeyDown.bind(this);
     this._canvas = canvas;
     this._hub = hub;
     this._context = canvas.getContext('2d');
     this._isRunning = false;
     this._isGameOver = false;
+    this._lastMouseTarget = null;
+
+    const url = new URL(window.location.href);
+    if(url.searchParams.has('autostart')) {
+      this._lastMouseTarget = canvas;
+      this.startGame(url.searchParams.get('name'));
+    }
   }
 
   startGame(displayName) {
     if (this._isRunning) return;
 
     this._levelNumber = 1;
+    this._playerName = displayName;
     this._grid = new Grid(this._canvas, this._context);
-    this._info = new Info(this._canvas, this._context, displayName);
+    this._info = new Info(this._canvas, this._context, this._playerName);
     this._exit = new ExitTile(this, this._grid);
     this._player = new Player(this._grid);
     this._background = new Background(this._context, this._canvas.width - MetaData.wastefulInfoWidth, this._canvas.height);
     this._level = new Level(this._grid, this._levelNumber);
     this._isRunning = true;
-    window.requestAnimationFrame(() => this._updateFrame());
+    this._animationHandle = window.requestAnimationFrame(() => this._updateFrame());
+    this._mouseDownHandle = this._onMouseDown.bind(this);
+    document.addEventListener('mousedown', this._mouseDownHandle);
+    document.addEventListener('keydown', this._keyDownHandle);
   }
 
   movePlayer(direction) {
@@ -75,6 +88,9 @@ export class Wasteful {
   }
 
   _endGame() {
+    document.removeEventListener('mousedown', this._mouseDownHandle);
+    document.removeEventListener('keydown', this._keyDownHandle);
+    cancelAnimationFrame(this._animationHandle);
     this._isRunning = false;
     this._isGameOver = false;
     this._clearCanvas();
@@ -94,5 +110,49 @@ export class Wasteful {
 
     this._context.fillStyle = wastefulGray;
     this._context.fillRect(this._canvas.width - MetaData.wastefulInfoWidth, 0, MetaData.wastefulInfoWidth, this._canvas.height);
+  }
+
+  _onMouseDown(event) {
+    this._lastMouseTarget = event.target;
+  }
+
+  _onKeyDown(event) {
+    if(this._lastMouseTarget !== this._canvas) {
+      return;
+    }
+    switch (event.keyCode) {
+      case 38: // up
+      case 87: // w
+        this.movePlayer('up');
+        break;
+      case 39: // right
+      case 68: // d
+        this.movePlayer('right');
+        break;
+      case 40: // down
+      case 83: // s
+        this.movePlayer('down');
+        break;
+      case 37: // left
+      case 65: // a
+        this.movePlayer('left');
+        break;
+      case 82: // r
+        const timestamp = new Date().getTime();
+        const url = new URL(window.location.href);
+        if(url.searchParams.has('t')) {
+          url.searchParams.set('t', timestamp.toString())
+        } else {
+          url.searchParams.append('t', timestamp.toString())
+        }
+        if(!url.searchParams.has('autostart')) {
+          url.searchParams.append('autostart', 'true')
+        }
+        if(!url.searchParams.has('name')) {
+          url.searchParams.append('name', this._playerName)
+        }
+        window.location.href = url.toString();
+        break;
+    }
   }
 }
