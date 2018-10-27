@@ -88,7 +88,6 @@ export class Wasteful {
   }
 
   _endGame() {
-    console.log('test');
     document.removeEventListener('mousedown', this._mouseDownHandle);
     document.removeEventListener('keydown', this._keyDownHandle);
     cancelAnimationFrame(this._animationHandle);
