@@ -45,7 +45,9 @@ export class Zombie {
   hitByPlayer(player) {
     this.isKilled = true;
     this._grid.removeSprite(this); // kill zombie
-    player.decreaseHealth(1); // get hurt in process
+    if (!player.tryUseWeapon()) {
+      player.decreaseHealth(1); // get hurt in process
+    }
     player.increasePoints(20);
   }
 

@@ -20,7 +20,7 @@ export class Level {
     let consumable = new Consumable(this._grid, new ItemEffect(1, 5), '/images/ZedChatter/Taco-0.png');
     this._items.push(consumable);
 
-    let heldItem = new HeldItem(this._grid, '/images/ZedChatter/BaseballBat-1.png');
+    let heldItem = new HeldItem(this._grid, '/images/ZedChatter/BaseballBat-1.png', true);
     this._items.push(heldItem);
 
     for (let i = 0; i < 10; i++) {

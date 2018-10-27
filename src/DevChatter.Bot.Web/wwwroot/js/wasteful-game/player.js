@@ -44,6 +44,15 @@ export class Player {
     this.decreaseHealth(zombie.damage);
   }
 
+  tryUseWeapon() {
+    let weapons = this.inventory.getWeapons();
+    if (weapons.length > 0) {
+      weapons[0].use(this);
+      return true;
+    }
+    return false;
+  }
+
   setNewLocation(x, y) {
     this._x = x;
     this._y = y;
