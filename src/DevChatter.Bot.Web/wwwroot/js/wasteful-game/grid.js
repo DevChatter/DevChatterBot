@@ -1,4 +1,5 @@
 import { Player } from '/js/wasteful-game/player.js';
+import { MetaData } from '/js/wasteful-game/metadata.js';
 const size = 42;
 
 export class Grid {
@@ -6,7 +7,7 @@ export class Grid {
     this._canvas = canvas;
     this._context = context;
     this._sprites = [];
-    this._max_x = Math.floor((canvas.width - 126) / 42);
+    this._max_x = Math.floor((canvas.width - MetaData.wastefulInfoWidth) / 42);
     this._max_y = Math.floor(canvas.height / 42);
   }
 

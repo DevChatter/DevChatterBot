@@ -1,14 +1,17 @@
+import { Inventory } from '/js/wasteful-game/inventory.js';
+
 export class Player {
   constructor(grid) {
     grid.addSprite(this);
     this._grid = grid;
 
     this._image = new Image();
-    this._image.src =  '/images/ZedChatter/Hat-YellowShirt-Player-Idle-0.png';
+    this._image.src = '/images/ZedChatter/Hat-YellowShirt-Player-Idle-0.png';
     this.setNewLocation(2, 2);
     this._max_health = 5;
     this._health = 3;
     this._points = 0;
+    this.inventory = new Inventory();
   }
 
   move(dir) {

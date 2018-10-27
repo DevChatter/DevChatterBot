@@ -3,6 +3,7 @@ import { ZombieSpawner } from '/js/wasteful-game/zombie-spawner.js';
 import { Consumable } from '/js/wasteful-game/consumable.js';
 import { ItemEffect } from '/js/wasteful-game/item-effect.js';
 import { Obstacle } from '/js/wasteful-game/obstacle.js';
+import { HeldItem } from '/js/wasteful-game/held-item.js';
 
 export class Level {
   constructor(grid, levelNumber) {
@@ -18,6 +19,9 @@ export class Level {
     // TODO: Random consumable selection
     let consumable = new Consumable(this._grid, new ItemEffect(1, 5), '/images/ZedChatter/Taco-0.png');
     this._items.push(consumable);
+
+    let heldItem = new HeldItem(this._grid, '/images/ZedChatter/BaseballBat-1.png');
+    this._items.push(heldItem);
 
     for (let i = 0; i < 10; i++) {
       this._items.push(new Obstacle(this._grid));

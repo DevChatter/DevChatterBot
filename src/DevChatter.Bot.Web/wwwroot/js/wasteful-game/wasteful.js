@@ -5,10 +5,10 @@ import { Grid } from '/js/wasteful-game/grid.js';
 import { Background } from '/js/wasteful-game/background.js';
 import { ExitTile } from '/js/wasteful-game/exit-tile.js';
 import { Level } from '/js/wasteful-game/level.js';
+import { MetaData } from '/js/wasteful-game/metadata.js';
 
 const wastefulGray = '#cccccc';
 const hangryRed = '#ff0000';
-const wastefulInfoWidth = 126;
 
 export class Wasteful {
   constructor(canvas, hub) {
@@ -27,7 +27,7 @@ export class Wasteful {
     this._info = new Info(this._canvas, this._context, displayName);
     this._exit = new ExitTile(this, this._grid);
     this._player = new Player(this._grid);
-    this._background = new Background(this._context, this._canvas.width - wastefulInfoWidth, this._canvas.height);
+    this._background = new Background(this._context, this._canvas.width - MetaData.wastefulInfoWidth, this._canvas.height);
     this._level = new Level(this._grid, this._levelNumber);
     this._isRunning = true;
     window.requestAnimationFrame(() => this._updateFrame());
@@ -93,6 +93,6 @@ export class Wasteful {
     this._background.drawBackground();
 
     this._context.fillStyle = wastefulGray;
-    this._context.fillRect(this._canvas.width - wastefulInfoWidth, 0, wastefulInfoWidth, this._canvas.height);
+    this._context.fillRect(this._canvas.width - MetaData.wastefulInfoWidth, 0, MetaData.wastefulInfoWidth, this._canvas.height);
   }
 }
