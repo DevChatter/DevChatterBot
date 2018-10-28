@@ -41,10 +41,12 @@ Details coming soon.
 Have I mentioned that you're awesome for even considering contributing to this project? Thanks!
 
 ## Contributors
-* AridTag ([AridTag](https://github.com/AridTag))
-* Dalton ([DCurtin](https://github.com/DCurtin))
-* Justin ([jdphenix](https://github.com/jdphenix))
-* Jake ([asyncawake](https://github.com/asyncawake))
+* [AridTag](https://github.com/AridTag)
+* [DCurtin](https://github.com/DCurtin)
+* [jdphenix](https://github.com/jdphenix)
+* [asyncawake](https://github.com/asyncawake)
+* [Mackiovello](https://github.com/Mackiovello)
+* [zultralord](https://github.com/zultralord)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
