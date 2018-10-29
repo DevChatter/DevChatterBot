@@ -75,6 +75,13 @@ export class Level {
       barrel.setLocation(this._game.grid.getRandomOpenLocation());
       this._game.entityManager.add(barrel);
     }
+
+    let path = this._game.grid.findPath(this._player.location, this._exit.location);
+    if (path.length === 0) {
+      // No path to exit exists. Try again.
+      this._levelNumber--;
+      this.next();
+    }
   }
 
   /**

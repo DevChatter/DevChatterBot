@@ -1,4 +1,5 @@
 import { MetaData } from '/js/wasteful-game/metadata.js';
+import '/lib/pathfindingjs/pathfinding-browser.js';
 
 export class Grid {
   /**
@@ -24,6 +25,26 @@ export class Grid {
     } while (!this._isClearOfEntities(randomX, randomY));
 
     return { x: randomX, y: randomY };
+  }
+
+  /**
+   * @public
+   * @param {{x: number, y: number}} startLocation
+   * @param {{x: number, y: number}} endLocation
+   * @returns Array.<Array.<number>>
+   */
+  findPath(startLocation, endLocation) {
+    let gridArray = [];
+    for (let y = 0; y < this._max_y; y++) {
+      gridArray[y] = [];
+      for (let x = 0; x < this._max_x; x++) {
+        gridArray[y][x] = this._canWalkOn(x,y) ? 0 : 1;
+      }
+    }
+    let pathGrid = new PF.Grid(gridArray);
+    let finder = new PF.AStarFinder();
+    let path = finder.findPath(startLocation.x, startLocation.y, endLocation.x, endLocation.y, pathGrid);
+    return path;
   }
 
   /**
