@@ -43,6 +43,21 @@ export class Level {
 
     this._game.entityManager.add(this._player);
 
+    this._exit = new ExitItem(
+      this._game,
+      new Sprite('/images/ZedChatter/ExitTile-0.png', 1, 1, 1),
+      ItemType.CONSUMABLE,
+      ItemPickupType.INSTANT,
+      [ItemEffectType.HEALTH, ItemEffectType.POINTS],
+      1,
+      [
+        { [ItemEffectType.HEALTH]: 1 },
+        { [ItemEffectType.POINTS]: 20 + this._levelNumber * 3 }
+      ]
+    );
+    this._game.entityManager.add(this._exit);
+
+
     for (let i = 0; i < this._levelNumber; i++) {
       const zombie = new SimpleZombie(this._game);
       zombie.setLocation(this._game.grid.getRandomOpenLocation());
@@ -60,20 +75,6 @@ export class Level {
       barrel.setLocation(this._game.grid.getRandomOpenLocation());
       this._game.entityManager.add(barrel);
     }
-
-    this._exit = new ExitItem(
-      this._game,
-      new Sprite('/images/ZedChatter/ExitTile-0.png', 1, 1, 1),
-      ItemType.CONSUMABLE,
-      ItemPickupType.INSTANT,
-      [ItemEffectType.HEALTH, ItemEffectType.POINTS],
-      1,
-      [
-        { [ItemEffectType.HEALTH]: 1 },
-        { [ItemEffectType.POINTS]: 20 + this._levelNumber * 3 }
-      ]
-    );
-    this._game.entityManager.add(this._exit);
   }
 
   /**
