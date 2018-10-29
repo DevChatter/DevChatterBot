@@ -1,17 +1,21 @@
 import { Info } from '/js/wasteful-game/info.js';
-import { Direction } from '/js/wasteful-game/direction.js';
-import { Player } from '/js/wasteful-game/player.js';
 import { Grid } from '/js/wasteful-game/grid.js';
 import { Background } from '/js/wasteful-game/background.js';
-import { ExitTile } from '/js/wasteful-game/exit-tile.js';
 import { Level } from '/js/wasteful-game/level.js';
 import { MetaData } from '/js/wasteful-game/metadata.js';
-import { ItemBuilder } from '/js/wasteful-game/level-building/item-builder.js';
+import { Player } from '/js/wasteful-game/entity/player.js';
+import { MovableComponent } from '/js/wasteful-game/entity/components/movableComponent.js';
+import { AttackableComponent } from '/js/wasteful-game/entity/components/attackableComponent.js';
+import { EntityManager } from '/js/wasteful-game/entityManager.js';
 
 const wastefulGray = '#cccccc';
 const hangryRed = '#ff0000';
 
 export class Wasteful {
+  /**
+   * @param {HTMLCanvasElement} canvas
+   * @param {object} hub
+   */
   constructor(canvas, hub) {
     this._mouseDownHandle = this._onMouseDown.bind(this);
     this._keyDownHandle = this._onKeyDown.bind(this);
@@ -29,48 +33,82 @@ export class Wasteful {
     }
   }
 
+  /**
+   * @public
+   * @param {string} displayName
+   */
   startGame(displayName) {
-    if (this._isRunning) return;
+    if (this._isRunning) {
+      return;
+    }
 
-    this._levelNumber = 1;
-    this._playerName = displayName;
-    this._grid = new Grid(this._canvas, this._context);
-    this._itemBuilder = new ItemBuilder(this._grid);
-    this._info = new Info(this._canvas, this._context, this._playerName);
-    this._exit = new ExitTile(this, this._grid);
-    this._player = new Player(this._grid);
-    this._background = new Background(this._context, this._canvas.width - MetaData.wastefulInfoWidth, this._canvas.height);
-    this._level = new Level(this._grid, this._levelNumber, this._itemBuilder);
     this._isRunning = true;
+    this._playerName = displayName;
+    this._entityManager = new EntityManager();
+    this._grid = new Grid(this._entityManager, this._canvas);
+    this._info = new Info(this._canvas, this._context, this._playerName);
+    this._player = new Player(this);
+    this._level = new Level(this, this._player);
+    this._background = new Background(this._context, this._canvas.width - MetaData.wastefulInfoWidth, this._canvas.height);
+
+    this._level.next();
+
     this._animationHandle = window.requestAnimationFrame(() => this._updateFrame());
     this._mouseDownHandle = this._onMouseDown.bind(this);
+
     document.addEventListener('mousedown', this._mouseDownHandle);
     document.addEventListener('keydown', this._keyDownHandle);
   }
 
+  /**
+   * @public
+   * @returns {Grid}
+   */
+  get grid() {
+    return this._grid;
+  }
+
+  /**
+   * @public
+   * @returns {EntityManager}
+   */
+  get entityManager() {
+   return this._entityManager;
+  }
+
+  /**
+   * @public
+   * @returns {Player}
+   */
+  get player() {
+    return this._player;
+  }
+
+  /**
+   * @public
+   * @returns {Level}
+   */
+  get level() {
+    return this._level;
+  }
+
+  /**
+   * @public
+   * @param {string} direction
+   */
   movePlayer(direction) {
-    this._player.move(new Direction(direction));
+    this._player.getComponent(MovableComponent).move(direction);
 
     this._level.update();
 
-    if (this._player.health <= 0) {
+    if (this._player.getComponent(AttackableComponent).isDead) {
       this._isGameOver = true;
     }
   }
 
-  exitLevel() {
-    this._levelNumber++;
-    let exitLocation = this._exit.location;
-    this._player.setNewLocation(0, exitLocation.y);
-
-    this._grid.clearSprites();
-
-    this._grid.addSprite(this._player);
-    this._grid.addSprite(this._exit);
-
-    this._level = new Level(this._grid, this._levelNumber, this._itemBuilder);
-  }
-
+  /**
+   * @private
+   */
   _updateFrame() {
     if (this._isGameOver) {
       this._drawGameOver();
@@ -79,16 +117,30 @@ export class Wasteful {
     } else {
       this._clearCanvas();
       this._drawBackground();
-      this._grid.draw();
+
+      this._entityManager.update();
+      this._entityManager.all.forEach(entity => {
+        const location = entity.location;
+        if(entity.sprite !== null) {
+          this._context.drawImage(entity.sprite.image, location.x * MetaData.tileSize, location.y * MetaData.tileSize);
+        }
+      });
+
       this._info.draw(this._player);
-      window.requestAnimationFrame(() => this._updateFrame());
+      this._animationHandle = window.requestAnimationFrame(() => this._updateFrame());
     }
   }
 
+  /**
+   * @private
+   */
   _clearCanvas() {
     this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
   }
 
+  /**
+   * @private
+   */
   _endGame() {
     document.removeEventListener('mousedown', this._mouseDownHandle);
     document.removeEventListener('keydown', this._keyDownHandle);
@@ -98,15 +150,21 @@ export class Wasteful {
     this._clearCanvas();
 
     // TODO: Organize data better, so it's not coming from separate objects.
-    this._hub.invoke("GameEnd", this._player.points, this._info._playerName, 'died', this._levelNumber).catch(err => console.error(err.toString()));
+    this._hub.invoke('GameEnd', this.player.points, this._playerName, 'died', this.level.levelNumber).catch(err => console.error(err.toString()));
   }
 
+  /**
+   * @private
+   */
   _drawGameOver() {
     this._context.fillStyle = hangryRed;
-    this._context.font = "128px Arial";
+    this._context.font = '128px Arial';
     this._context.fillText('Game Over', 20, this._canvas.height - 10);
   }
 
+  /**
+   * @private
+   */
   _drawBackground() {
     this._background.drawBackground();
 
@@ -114,10 +172,18 @@ export class Wasteful {
     this._context.fillRect(this._canvas.width - MetaData.wastefulInfoWidth, 0, MetaData.wastefulInfoWidth, this._canvas.height);
   }
 
+  /**
+   * @private
+   * @param {object} event
+   */
   _onMouseDown(event) {
     this._lastMouseTarget = event.target;
   }
 
+  /**
+   * @private
+   * @param {object} event
+   */
   _onKeyDown(event) {
     if(this._lastMouseTarget !== this._canvas) {
       return;

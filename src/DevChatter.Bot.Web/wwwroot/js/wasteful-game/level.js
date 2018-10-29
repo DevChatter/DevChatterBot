@@ -1,54 +1,104 @@
-import { Zombie } from '/js/wasteful-game/zombie.js';
-import { ZombieSpawner } from '/js/wasteful-game/zombie-spawner.js';
-import { Consumable } from '/js/wasteful-game/consumable.js';
-import { ItemEffect } from '/js/wasteful-game/item-effect.js';
-import { Obstacle } from '/js/wasteful-game/obstacle.js';
-import { HeldItem } from '/js/wasteful-game/held-item.js';
+import { SimpleZombie } from '/js/wasteful-game/entity/enemies/simple-zombie.js';
+import { BarrelFire } from '/js/wasteful-game/entity/obstacles/barrel-fire.js';
+import { AutonomousComponent } from '/js/wasteful-game/entity/components/autonomousComponent.js';
+import { ExitItem } from '/js/wasteful-game/entity/items/exit-item.js';
+import { ItemBuilder } from '/js/wasteful-game/level-building/item-builder.js';
+import { Sprite } from '/js/wasteful-game/entity/sprite.js';
+import { ItemEffectType, ItemPickupType, ItemType } from '/js/wasteful-game/entity/items/item.js';
 
 export class Level {
-  constructor(grid, levelNumber, itemBuilder) {
-    this._grid = grid;
+  /**
+   * @param {Wasteful} game
+   * @param {Player} player
+   */
+  constructor(game, player) {
+    this._player = player;
+    this._game = game;
+    this._itemBuilder = new ItemBuilder(this._game);
+
+    this._levelNumber = 0;
     this._turnNumber = 0;
-
-    this._actors = [];
-    for (let i = 0; i < levelNumber; i++) {
-      this._actors.push(new Zombie(this._grid));
-    }
-
-    this._items = itemBuilder.getItemsForLevel(levelNumber);
-
-    for (let i = 0; i < 10; i++) {
-      this._items.push(new Obstacle(this._grid));
-    }
   }
 
+  /**
+   * @public
+   * @returns {number}
+   */
+  get levelNumber() {
+    return this._levelNumber;
+  }
+
+  /**
+   * @public
+   */
+  next() {
+    const oldExitLocation = this._game.entityManager.getFirstByClass(ExitItem);
+    this._game.entityManager.clear();
+
+    this._levelNumber++;
+
+    if(typeof oldExitLocation !== 'undefined') {
+      this._player.setLocation(0, oldExitLocation.location.y);
+    }
+
+    this._game.entityManager.add(this._player);
+
+    for (let i = 0; i < this._levelNumber; i++) {
+      const zombie = new SimpleZombie(this._game);
+      zombie.setLocation(this._game.grid.getRandomOpenLocation());
+      this._game.entityManager.add(zombie);
+    }
+
+    const items = this._itemBuilder.getItemsForLevel(this._levelNumber);
+    for (let i = 0; i < items.length; i++) {
+      items[i].setLocation(this._game.grid.getRandomOpenLocation());
+      this._game.entityManager.add(items[i]);
+    }
+
+    for (let i = 0; i < 10; i++) {
+      const barrel = new BarrelFire(this._game);
+      barrel.setLocation(this._game.grid.getRandomOpenLocation());
+      this._game.entityManager.add(barrel);
+    }
+
+    this._exit = new ExitItem(
+      this._game,
+      new Sprite('/images/ZedChatter/ExitTile-0.png', 1, 1, 1),
+      ItemType.CONSUMABLE,
+      ItemPickupType.INSTANT,
+      [ItemEffectType.HEALTH, ItemEffectType.POINTS],
+      1,
+      [
+        { [ItemEffectType.HEALTH]: 1 },
+        { [ItemEffectType.POINTS]: 20 + this._levelNumber * 3 }
+      ]
+    );
+    this._game.entityManager.add(this._exit);
+  }
+
+  /**
+   * @public
+   */
   update() {
-    this._removeZombies();
-
-    this._actors.forEach(actor => {
-      let spawn = actor.takeTurn();
-      if (spawn) {
-        this._actors.push(spawn);
+    for(let i = 0, l = this._game.entityManager.count; i < l; i++) {
+      const entity = this._game.entityManager.all[i];
+      if(typeof entity !== 'undefined' && entity.hasComponent(AutonomousComponent)) {
+        entity.getComponent(AutonomousComponent).takeTurn();
       }
-    });
+    }
 
-    this._addZombieSpawners();
-
+    this._spawnZombie();
     this._turnNumber++;
   }
 
-  _removeZombies() {
-    this._actors = this._actors.filter(zombie => !zombie.isKilled);
-  }
-
-  _addZombieSpawners() {
+  /**
+   * @private
+   */
+  _spawnZombie() {
     if (this._turnNumber % 6 === 0 && this._turnNumber > 0) {
-      let location = this._grid.getRandomOpenLocation();
-      this._actors.push(new ZombieSpawner(this._grid, location.x, location.y));
+      const zombie = new SimpleZombie(this._game);
+      zombie.setLocation(this._game.grid.getRandomOpenLocation());
+      this._game.entityManager.add(zombie);
     }
-  }
-
-  get actors() {
-    return this._actors;
   }
 }

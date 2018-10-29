@@ -3,22 +3,39 @@ export class Inventory {
     this.items = [];
   }
 
+  /**
+   * @public
+   * @param {Item} item
+   */
   addItem(item) {
     this.items.push(item);
   }
 
+  /**
+   * @public
+   * @param {Item} item
+   */
   removeItem(item) {
-    var index = this.items.indexOf(item);
-    if (index > -1) {
+    const index = this.items.indexOf(item);
+    if (index !== -1) {
       this.items.splice(index, 1);
     }
   }
 
+  /**
+   * @public
+   * @param {number} key
+   */
   useItem(key) {
     this.items[key].use();
   }
 
-  getWeapons() {
-    return this.items.filter(item => item.isWeapon);
+  /**
+   * @public
+   * @param {Symbol} itemType
+   * @returns {Array<Item>}
+   */
+  getByItemType(itemType) {
+    return this.items.filter(item => item.type === itemType);
   }
 }
