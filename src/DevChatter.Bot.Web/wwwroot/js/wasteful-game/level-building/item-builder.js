@@ -8,9 +8,6 @@ export class ItemBuilder {
    */
   constructor(game) {
     this._game = game;
-
-    // TODO: Get the Item Data from passed in argument
-    this._itemData = this._createStaticData();
   }
 
   /**
@@ -19,7 +16,7 @@ export class ItemBuilder {
    */
   getItemsForLevel(levelNumber) {
     let itemType = levelNumber % 2 === 0 ? ItemType.CONSUMABLE : ItemType.WEAPON;
-    return [this._pickRandom(this._itemData.filter(item => item.type === itemType))];
+    return [this._pickRandom(this._createStaticData().filter(item => item.type === itemType))];
   }
 
   /**
