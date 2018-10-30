@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Linq;
 using DevChatter.Bot.Core.BotModules.WastefulModule.Model;
+using DevChatter.Bot.Core.BotModules.WastefulModule.Model.Specifications;
 using DevChatter.Bot.Core.Data;
 
 namespace DevChatter.Bot.Infra.Web.Hubs
@@ -21,20 +22,29 @@ namespace DevChatter.Bot.Infra.Web.Hubs
         }
 
         public void GameEnd(int points, string playerName,
-            string userid, string endType, int levelNumber)
+            string userId, string endType, int levelNumber)
         {
             string message = $"{playerName} has {endType} on level {levelNumber} with {points} points.";
             _chatClients.ForEach(c => c.SendMessage(message));
 
             var gameEndRecord = new GameEndRecord
             {
-                UserId = userid,
-                DisplayName = playerName,
                 LevelNumber = levelNumber,
                 Points = points
             };
 
-            _repository.Create(gameEndRecord);
+            Survivor survivor = _repository.Single(SurvivorPolicy.ByUserId(userId));
+            if (survivor == null)
+            {
+                survivor = new Survivor(playerName, userId);
+                survivor.GameEndRecords.Add(gameEndRecord);
+                _repository.Create(survivor);
+            }
+            else
+            {
+                gameEndRecord.Survivor = survivor;
+                _repository.Create(gameEndRecord);
+            }
         }
     }
 }

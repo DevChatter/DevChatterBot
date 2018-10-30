@@ -24,6 +24,8 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<BlastTypeEntity> BlastTypes { get; set; }
         public DbSet<CanvasProperties> CanvasProperties { get; set; }
         public DbSet<GameEndRecord> GameEndRecords { get; set; }
+        public DbSet<Survivor> Survivors { get; set; }
+        public DbSet<Team> Teams { get; set; }
 
 
         public AppDataContext()
