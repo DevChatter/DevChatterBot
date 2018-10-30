@@ -27,6 +27,11 @@ namespace DevChatter.Bot.Core.BotModules.DuelingModule
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string firstArg = eventArgs.Arguments.ElementAtOrDefault(0);
+            if (firstArg == null)
+            {
+                chatClient.SendMessage(HelpText);
+                return;
+            }
 
             var operationToUse = _operations.SingleOrDefault(
                 x => x.ShouldExecute(firstArg.NoAt()));
