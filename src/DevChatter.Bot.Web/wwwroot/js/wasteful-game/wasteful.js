@@ -205,6 +205,9 @@ export class Wasteful {
       case 65: // a
         this.movePlayer('left');
         break;
+      case 90: // z
+        this._level.next();
+      break;
       case 82: // r
         const timestamp = new Date().getTime();
         const url = new URL(window.location.href);
