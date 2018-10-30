@@ -49,7 +49,7 @@ export class MovableComponent extends Component {
   moveTowardsLocation(x, y, advanced = false) {
     if(advanced) {
       // TODO: A* Pathfinding
-      throw new Error('Advanced pathfinding is not implemented yet.')
+      throw new Error('Advanced pathfinding is not implemented yet.');
     } else {
       const location = this.entity.location;
       for(let i = 0; i < this.steps; i++) {

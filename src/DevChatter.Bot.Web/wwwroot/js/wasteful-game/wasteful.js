@@ -212,18 +212,18 @@ export class Wasteful {
         const timestamp = new Date().getTime();
         const url = new URL(window.location.href);
         if(url.searchParams.has('t')) {
-          url.searchParams.set('t', timestamp.toString())
+          url.searchParams.set('t', timestamp.toString());
         } else {
-          url.searchParams.append('t', timestamp.toString())
+          url.searchParams.append('t', timestamp.toString());
         }
         if(!url.searchParams.has('autostart')) {
-          url.searchParams.append('autostart', 'true')
+          url.searchParams.append('autostart', 'true');
         }
         if(!url.searchParams.has('name')) {
-          url.searchParams.append('name', this._userInfo.displayName)
+          url.searchParams.append('name', this._userInfo.displayName);
         }
         if(!url.searchParams.has('userid')) {
-          url.searchParams.append('userid', this._userInfo.userId)
+          url.searchParams.append('userid', this._userInfo.userId);
         }
         window.location.href = url.toString();
         break;
