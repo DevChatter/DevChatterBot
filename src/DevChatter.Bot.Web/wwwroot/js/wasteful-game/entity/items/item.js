@@ -87,11 +87,11 @@ export class Item extends Entity {
         this._applyEffect();
       }
       this._uses--;
-      if(this.pickupType === ItemPickupType.INVENTORY) {
-        this.game.player.inventory.removeItem(this);
-      }
       if(this.remainingUses <= 0) {
         this.destroy();
+        if(this.pickupType === ItemPickupType.INVENTORY) {
+          this.game.player.inventory.removeItem(this);
+        }
       }
     }
   }
