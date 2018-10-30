@@ -11,6 +11,8 @@ namespace DevChatter.Bot.Core.BotModules.WastefulModule.Model
 
         public Survivor(string displayName, string userId)
         {
+            DisplayName = displayName;
+            UserId = userId;
         }
 
         public string UserId { get; set; }

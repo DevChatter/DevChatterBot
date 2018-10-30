@@ -1,11 +1,11 @@
 using DevChatter.Bot.Core.BotModules.WastefulModule;
+using DevChatter.Bot.Core.BotModules.WastefulModule.Model;
+using DevChatter.Bot.Core.BotModules.WastefulModule.Model.Specifications;
+using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Systems.Chat;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Core.BotModules.WastefulModule.Model;
-using DevChatter.Bot.Core.BotModules.WastefulModule.Model.Specifications;
-using DevChatter.Bot.Core.Data;
 
 namespace DevChatter.Bot.Infra.Web.Hubs
 {
