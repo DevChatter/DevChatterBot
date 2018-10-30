@@ -83,7 +83,7 @@ export class ItemBuilder {
         ItemType.WEAPON,
         ItemPickupType.INVENTORY,
         null,
-        1
+        2
       ),
       new Item(
         this._game,
@@ -91,7 +91,7 @@ export class ItemBuilder {
         ItemType.WEAPON,
         ItemPickupType.INVENTORY,
         null,
-        1
+        3
       ),
     ];
   }
