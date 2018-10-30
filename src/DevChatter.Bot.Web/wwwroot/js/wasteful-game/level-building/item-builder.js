@@ -40,27 +40,33 @@ export class ItemBuilder {
         new Sprite('/images/ZedChatter/Taco-0.png', 1, 1, 1),
         ItemType.CONSUMABLE,
         ItemPickupType.INSTANT,
-        ItemEffectType.HEALTH,
+        [ItemEffectType.HEALTH, ItemEffectType.POINTS],
         1,
-        [{ [ItemEffectType.HEALTH]: 1 }]
+        [
+          { [ItemEffectType.HEALTH]: 2 },
+          { [ItemEffectType.POINTS]: 5 }
+        ]
       ),
       new EffectItem(
         this._game,
         new Sprite('/images/ZedChatter/Pizza-0.png', 1, 1, 1),
         ItemType.CONSUMABLE,
         ItemPickupType.INSTANT,
-        ItemEffectType.POINTS,
+        ItemEffectType.HEALTH,
         1,
-        [{ [ItemEffectType.POINTS]: 10 }]
+        [{ [ItemEffectType.HEALTH]: 3 }]
       ),
       new EffectItem(
         this._game,
         new Sprite('/images/ZedChatter/BlackCan-0.png', 1, 1, 1),
         ItemType.CONSUMABLE,
         ItemPickupType.INSTANT,
-        ItemEffectType.POINTS,
+        [ItemEffectType.HEALTH, ItemEffectType.POINTS],
         1,
-        [{ [ItemEffectType.POINTS]: 25 }]
+        [
+          { [ItemEffectType.HEALTH]: 1 },
+          { [ItemEffectType.POINTS]: 15 }
+        ]
       ),
 
       new Item(
