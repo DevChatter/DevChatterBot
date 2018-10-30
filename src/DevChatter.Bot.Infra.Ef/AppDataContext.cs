@@ -1,3 +1,4 @@
+using DevChatter.Bot.Core.BotModules.WastefulModule.Model;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data.Model;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<TimezoneEntity> Timezones { get; set; }
         public DbSet<BlastTypeEntity> BlastTypes { get; set; }
         public DbSet<CanvasProperties> CanvasProperties { get; set; }
+        public DbSet<GameEndRecord> GameEndRecords { get; set; }
 
 
         public AppDataContext()

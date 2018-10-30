@@ -131,8 +131,8 @@ var overlay = (function () {
         myWasteful.movePlayer(direction);
       });
     wastefulHubConn.on("StartGame",
-      async (displayName) => {
-        myWasteful.startGame(displayName);
+      async (displayName, userId) => {
+        myWasteful.startGame({displayName, userId});
       });
   };
 }());

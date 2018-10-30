@@ -6,6 +6,6 @@ namespace DevChatter.Bot.Core.BotModules.WastefulModule
     public interface IWastefulDisplayNotification
     {
         Task MovePlayer(string direction);
-        Task StartGame(string chatUserDisplayName);
+        Task StartGame(string chatUserDisplayName, string chatUserUserId);
     }
 }

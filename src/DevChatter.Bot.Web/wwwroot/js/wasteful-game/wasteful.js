@@ -29,24 +29,24 @@ export class Wasteful {
     const url = new URL(window.location.href);
     if(url.searchParams.has('autostart')) {
       this._lastMouseTarget = canvas;
-      this.startGame(url.searchParams.get('name'));
+      this.startGame({ displayName: url.searchParams.get('name'), userId: url.searchParams.get('userid')});
     }
   }
 
   /**
    * @public
-   * @param {string} displayName
+   * @param {{displayName: string, userId: string}} userInfo
    */
-  startGame(displayName) {
+  startGame(userInfo) {
     if (this._isRunning) {
       return;
     }
 
     this._isRunning = true;
-    this._playerName = displayName;
+    this._userInfo = userInfo;
     this._entityManager = new EntityManager();
     this._grid = new Grid(this._entityManager, this._canvas);
-    this._info = new Info(this._canvas, this._context, this._playerName);
+    this._info = new Info(this._canvas, this._context, this._userInfo.displayName);
     this._player = new Player(this);
     this._level = new Level(this, this._player);
     this._background = new Background(this._context, this._canvas.width - MetaData.wastefulInfoWidth, this._canvas.height);
@@ -150,7 +150,7 @@ export class Wasteful {
     this._clearCanvas();
 
     // TODO: Organize data better, so it's not coming from separate objects.
-    this._hub.invoke('GameEnd', this.player.points, this._playerName, 'died', this.level.levelNumber).catch(err => console.error(err.toString()));
+    this._hub.invoke('GameEnd', this.player.points, this._userInfo.displayName, this._userInfo.userId, 'died', this.level.levelNumber).catch(err => console.error(err.toString()));
   }
 
   /**
@@ -217,7 +217,10 @@ export class Wasteful {
           url.searchParams.append('autostart', 'true')
         }
         if(!url.searchParams.has('name')) {
-          url.searchParams.append('name', this._playerName)
+          url.searchParams.append('name', this._userInfo.displayName)
+        }
+        if(!url.searchParams.has('userid')) {
+          url.searchParams.append('userid', this._userInfo.userId)
         }
         window.location.href = url.toString();
         break;

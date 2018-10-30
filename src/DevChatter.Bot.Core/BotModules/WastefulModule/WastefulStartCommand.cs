@@ -16,7 +16,7 @@ namespace DevChatter.Bot.Core.BotModules.WastefulModule
 
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
-            _notification.StartGame(eventArgs.ChatUser.DisplayName);
+            _notification.StartGame(eventArgs.ChatUser.DisplayName, eventArgs.ChatUser.UserId);
         }
     }
 }
