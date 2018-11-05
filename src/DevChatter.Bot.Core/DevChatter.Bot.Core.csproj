@@ -10,4 +10,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NodaTime" Version="2.4.1" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BotModules\WastefulModule\" />
+  </ItemGroup>
 </Project>

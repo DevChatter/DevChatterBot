@@ -5,7 +5,7 @@ using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 
-namespace DevChatter.Bot.Core.BotModules.WastefulModule
+namespace DevChatter.Bot.Modules.WastefulGame
 { 
     public class WastefulMoveCommand : BaseCommand
     {

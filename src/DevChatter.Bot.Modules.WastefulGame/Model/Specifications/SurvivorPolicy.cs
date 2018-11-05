@@ -2,7 +2,7 @@ using DevChatter.Bot.Core.Data.Specifications;
 using System;
 using System.Linq.Expressions;
 
-namespace DevChatter.Bot.Core.BotModules.WastefulModule.Model.Specifications
+namespace DevChatter.Bot.Modules.WastefulGame.Model.Specifications
 {
     public class SurvivorPolicy : DataItemPolicy<Survivor>
     {

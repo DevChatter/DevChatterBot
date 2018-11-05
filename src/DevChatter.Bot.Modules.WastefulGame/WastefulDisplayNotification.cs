@@ -1,9 +1,8 @@
-using System.Threading.Tasks;
-using DevChatter.Bot.Core.BotModules.WastefulModule;
-using DevChatter.Bot.Infra.Web.Hubs;
+using DevChatter.Bot.Modules.WastefulGame.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Infra.Web
+namespace DevChatter.Bot.Modules.WastefulGame
 {
     public class WastefulDisplayNotification : IWastefulDisplayNotification
     {

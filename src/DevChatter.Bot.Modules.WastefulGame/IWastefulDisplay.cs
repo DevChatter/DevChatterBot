@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DevChatter.Bot.Core.BotModules.WastefulModule
+namespace DevChatter.Bot.Modules.WastefulGame
 {
-    public interface IWastefulDisplayNotification
+    public interface IWastefulDisplay
     {
         Task MovePlayer(string direction);
         Task StartGame(string chatUserDisplayName, string chatUserUserId);

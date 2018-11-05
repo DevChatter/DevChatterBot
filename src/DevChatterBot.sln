@@ -20,7 +20,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Web", "DevCh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Infra.GoogleApi", "DevChatter.Bot.Infra.GoogleApi\DevChatter.Bot.Infra.GoogleApi.csproj", "{29A822EF-C182-46F7-9947-B44AEC48A706}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevChatter.Bot.Infra.Web", "DevChatter.Bot.Infra.Web\DevChatter.Bot.Infra.Web.csproj", "{A8832815-5344-4963-9B11-8EA61BD12465}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Infra.Web", "DevChatter.Bot.Infra.Web\DevChatter.Bot.Infra.Web.csproj", "{A8832815-5344-4963-9B11-8EA61BD12465}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WastefulGame", "WastefulGame", "{724D949D-82B4-4CA5-8EC6-6B72698CD74F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevChatter.Bot.Modules.WastefulGame", "DevChatter.Bot.Modules.WastefulGame\DevChatter.Bot.Modules.WastefulGame.csproj", "{8B05963D-A350-4045-B3C4-6A2D9B5CE52C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,9 +60,16 @@ Global
 		{A8832815-5344-4963-9B11-8EA61BD12465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8832815-5344-4963-9B11-8EA61BD12465}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8832815-5344-4963-9B11-8EA61BD12465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B05963D-A350-4045-B3C4-6A2D9B5CE52C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B05963D-A350-4045-B3C4-6A2D9B5CE52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B05963D-A350-4045-B3C4-6A2D9B5CE52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B05963D-A350-4045-B3C4-6A2D9B5CE52C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8B05963D-A350-4045-B3C4-6A2D9B5CE52C} = {724D949D-82B4-4CA5-8EC6-6B72698CD74F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA4E7D3F-481E-4FA9-983A-525CF9F4E0BD}

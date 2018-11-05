@@ -1,7 +1,7 @@
-using System;
 using DevChatter.Bot.Core.Data.Model;
+using System;
 
-namespace DevChatter.Bot.Core.BotModules.WastefulModule.Model
+namespace DevChatter.Bot.Modules.WastefulGame.Model
 {
     public class GameEndRecord : DataEntity
     {

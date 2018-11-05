@@ -27,8 +27,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DevChatter.Bot.Core.BotModules.WastefulModule;
 using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Modules.WastefulGame;
+using DevChatter.Bot.Modules.WastefulGame.Hubs;
+using DevChatter.Bot.Modules.WastefulGame.Startup;
 using DevChatter.Bot.Web.Setup;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -144,9 +146,6 @@ namespace DevChatter.Bot.Web
             builder.RegisterType<VotingDisplayNotification>()
                 .AsImplementedInterfaces().SingleInstance();
 
-            builder.RegisterType<WastefulDisplayNotification>()
-                .AsImplementedInterfaces().SingleInstance();
-
             builder.RegisterType<IntervalMessageCoordinator>()
                 .As<IIntervalAction>().SingleInstance();
 
@@ -158,6 +157,8 @@ namespace DevChatter.Bot.Web
 
             builder.Register(p =>
                 new CommandList(p.Resolve<IList<IBotCommand>>().ToList()));
+
+            builder.RegisterModule<WastefulAutofacModule>();
 
             builder.RegisterModule<CoreRegistrationModule>();
 

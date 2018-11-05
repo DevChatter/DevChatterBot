@@ -1,4 +1,4 @@
-namespace DevChatter.Bot.Core.BotModules.WastefulModule
+namespace DevChatter.Bot.Modules.WastefulGame
 {
     /// <summary>
     /// User Interaction for Movement Selection by Chat
