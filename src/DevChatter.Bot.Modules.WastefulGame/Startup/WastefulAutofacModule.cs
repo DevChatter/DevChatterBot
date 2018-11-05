@@ -1,4 +1,5 @@
 using Autofac;
+using DevChatter.Bot.Modules.WastefulGame.Data;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Startup
 {
@@ -14,6 +15,12 @@ namespace DevChatter.Bot.Modules.WastefulGame.Startup
 
             builder.RegisterType<WastefulDisplayNotification>()
                 .AsImplementedInterfaces().SingleInstance();
+
+            IGameRepository repo = SetUpGameDatabase.SetUpRepository("nope");
+
+            builder.RegisterInstance(repo)
+                .AsImplementedInterfaces()
+                .SingleInstance();
         }
     }
 }

@@ -23,12 +23,10 @@ namespace DevChatter.Bot.Modules.WastefulGame.Startup
 
         private static void EnsureInitialData(IGameRepository repository)
         {
-            throw new System.NotImplementedException();
         }
 
         private static void EnsureDatabase(GameDataContext dataContext)
         {
-            throw new System.NotImplementedException();
         }
     }
 }
