@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Model
 {
-    public class Team : DataEntity
+    public class Team : GameData
     {
         public string Name { get; set; }
         public List<Survivor> Members { get; set; }

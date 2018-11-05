@@ -3,7 +3,7 @@ using System;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Model
 {
-    public class GameEndRecord : DataEntity
+    public class GameEndRecord : GameData
     {
         public Survivor Survivor { get; set; }
         public DateTime DateTime { get; set; } = DateTime.UtcNow;

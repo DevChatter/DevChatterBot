@@ -1,10 +1,9 @@
-using DevChatter.Bot.Core.Data.Specifications;
 using System;
 using System.Linq.Expressions;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Model.Specifications
 {
-    public class SurvivorPolicy : DataItemPolicy<Survivor>
+    public class SurvivorPolicy : GameDataPolicy<Survivor>
     {
         protected SurvivorPolicy(Expression<Func<Survivor, bool>> expression)
             : base(expression)
@@ -13,7 +12,8 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model.Specifications
 
         public static SurvivorPolicy ByName(string displayName)
         {
-            return new SurvivorPolicy(survivor => survivor.DisplayName == displayName);
+            return new SurvivorPolicy(
+                survivor => survivor.DisplayName == displayName);
         }
 
         public static SurvivorPolicy ByUserId(string userId)

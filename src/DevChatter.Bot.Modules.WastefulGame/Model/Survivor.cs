@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Model
 {
-    public class Survivor : DataEntity
+    public class Survivor : GameData
     {
         public Survivor() // Required for EF
         {
