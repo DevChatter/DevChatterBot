@@ -1,4 +1,5 @@
 using Autofac;
+using DevChatter.Bot.Modules.WastefulGame.Commands;
 using DevChatter.Bot.Modules.WastefulGame.Data;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Startup
