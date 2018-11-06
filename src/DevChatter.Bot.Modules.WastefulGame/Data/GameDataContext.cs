@@ -1,5 +1,6 @@
 using DevChatter.Bot.Modules.WastefulGame.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Data
 {
@@ -17,5 +18,13 @@ namespace DevChatter.Bot.Modules.WastefulGame.Data
         : base(options)
         {
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            string connectionString = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["ConnectionStrings:WastefulGame"];
+            optionsBuilder.UseSqlServer(connectionString);
+            base.OnConfiguring(optionsBuilder);
+        }
+
     }
 }
