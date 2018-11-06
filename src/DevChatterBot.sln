@@ -24,7 +24,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Infra.Web", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WastefulGame", "WastefulGame", "{724D949D-82B4-4CA5-8EC6-6B72698CD74F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevChatter.Bot.Modules.WastefulGame", "DevChatter.Bot.Modules.WastefulGame\DevChatter.Bot.Modules.WastefulGame.csproj", "{8B05963D-A350-4045-B3C4-6A2D9B5CE52C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Modules.WastefulGame", "DevChatter.Bot.Modules.WastefulGame\DevChatter.Bot.Modules.WastefulGame.csproj", "{8B05963D-A350-4045-B3C4-6A2D9B5CE52C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WastefulGame.UnitTests", "WastefulGame.UnitTests\WastefulGame.UnitTests.csproj", "{A11F383B-6287-4304-83B4-7C6F99F92417}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,12 +66,17 @@ Global
 		{8B05963D-A350-4045-B3C4-6A2D9B5CE52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B05963D-A350-4045-B3C4-6A2D9B5CE52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B05963D-A350-4045-B3C4-6A2D9B5CE52C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A11F383B-6287-4304-83B4-7C6F99F92417}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A11F383B-6287-4304-83B4-7C6F99F92417}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A11F383B-6287-4304-83B4-7C6F99F92417}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A11F383B-6287-4304-83B4-7C6F99F92417}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8B05963D-A350-4045-B3C4-6A2D9B5CE52C} = {724D949D-82B4-4CA5-8EC6-6B72698CD74F}
+		{A11F383B-6287-4304-83B4-7C6F99F92417} = {724D949D-82B4-4CA5-8EC6-6B72698CD74F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA4E7D3F-481E-4FA9-983A-525CF9F4E0BD}
