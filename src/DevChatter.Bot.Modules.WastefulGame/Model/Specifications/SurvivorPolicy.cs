@@ -8,6 +8,7 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model.Specifications
         protected SurvivorPolicy(Expression<Func<Survivor, bool>> expression)
             : base(expression)
         {
+            AddInclude(x => x.Team);
         }
 
         public static SurvivorPolicy ByName(string displayName)

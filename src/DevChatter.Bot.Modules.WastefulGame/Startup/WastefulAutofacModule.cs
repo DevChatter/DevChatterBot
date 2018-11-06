@@ -11,13 +11,20 @@ namespace DevChatter.Bot.Modules.WastefulGame.Startup
             builder.RegisterType<WastefulStartCommand>()
                 .AsImplementedInterfaces().SingleInstance();
 
+            builder.RegisterType<SurvivorRepo>()
+                .AsSelf();
+
             builder.RegisterType<WastefulMoveCommand>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            builder.RegisterType<TeamCommand>()
                 .AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<WastefulDisplayNotification>()
                 .AsImplementedInterfaces().SingleInstance();
 
-            IGameRepository repo = SetUpGameDatabase.SetUpRepository("nope");
+            // TODO: Remove this connection string!!!!
+            IGameRepository repo = SetUpGameDatabase.SetUpRepository("Server=(localdb)\\mssqllocaldb;Database=WastefulGame;Trusted_Connection=True;MultipleActiveResultSets=true");
 
             builder.RegisterInstance(repo)
                 .AsImplementedInterfaces()

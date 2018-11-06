@@ -1,4 +1,3 @@
-using DevChatter.Bot.Core.Data.Model;
 using System.Collections.Generic;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Model
@@ -18,7 +17,19 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
         public string UserId { get; set; }
         public string DisplayName { get; set; }
         public Team Team { get; set; }
+        public long Money { get; set; }
         public List<GameEndRecord> GameEndRecords { get; set; }
             = new List<GameEndRecord>();
+
+        public bool TryPay(int amount)
+        {
+            if (Money >= amount)
+            {
+                Money -= amount;
+                return true;
+            }
+
+            return false;
+        }
     }
 }
