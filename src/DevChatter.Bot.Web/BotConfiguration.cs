@@ -6,9 +6,15 @@ namespace DevChatter.Bot.Web
 {
     public class BotConfiguration
     {
-        public string DatabaseConnectionString { get; set; }
+        public ConnectionStrings ConnectionStrings { get; set; }
         public GoogleCloudSettings GoogleCloudSettings { get; set; }
         public TwitchClientSettings TwitchClientSettings { get; set; }
         public CommandHandlerSettings CommandHandlerSettings { get; set; }
+    }
+
+    public class ConnectionStrings
+    {
+        public string DefaultDatabase { get; set; }
+        public string WastefulGame { get; set; }
     }
 }

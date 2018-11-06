@@ -35,7 +35,7 @@ namespace DevChatter.Bot.Infra.Ef
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString =
-                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["DatabaseConnectionString"];
+                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["ConnectionStrings:DefaultDatabase"];
             optionsBuilder.UseSqlServer(connectionString);
             base.OnConfiguring(optionsBuilder);
         }
@@ -67,7 +67,7 @@ namespace DevChatter.Bot.Infra.Ef
         public AppDataContext CreateDbContext(string[] args)
         {
             string connectionString =
-                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["DatabaseConnectionString"];
+                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["ConnectionStrings:DefaultDatabase"];
 
             var optionsBuilder = new DbContextOptionsBuilder<AppDataContext>();
             optionsBuilder.UseSqlServer(connectionString);

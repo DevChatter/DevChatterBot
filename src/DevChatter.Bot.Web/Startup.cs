@@ -102,7 +102,7 @@ namespace DevChatter.Bot.Web
                 .AsSelf().SingleInstance();
 
 
-            IRepository repository = SetUpDatabase.SetUpRepository(fullConfig.DatabaseConnectionString);
+            IRepository repository = SetUpDatabase.SetUpRepository(fullConfig.ConnectionStrings.DefaultDatabase);
 
             builder.RegisterInstance(repository).SingleInstance();
 
