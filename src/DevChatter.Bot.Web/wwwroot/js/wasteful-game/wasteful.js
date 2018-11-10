@@ -106,7 +106,11 @@ export class Wasteful {
       this._isGameOver = true;
       this._endType = EndTypes.died; 
     }
-    // TODO: Add an escape check here.
+  }
+
+  escape() {
+    this._isGameOver = true;
+    this._endType = EndTypes.escaped;
   }
 
   /**
