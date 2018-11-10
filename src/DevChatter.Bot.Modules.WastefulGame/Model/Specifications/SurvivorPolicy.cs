@@ -9,6 +9,7 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model.Specifications
             : base(expression)
         {
             AddInclude(x => x.Team);
+            AddInclude(x => x.InventoryItems);
         }
 
         public static SurvivorPolicy ByName(string displayName)

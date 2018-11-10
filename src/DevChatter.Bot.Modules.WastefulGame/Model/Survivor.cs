@@ -21,6 +21,9 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
         public List<GameEndRecord> GameEndRecords { get; set; }
             = new List<GameEndRecord>();
 
+        public List<InventoryItem> InventoryItems { get; set; }
+            = new List<InventoryItem>();
+
         public bool TryPay(int amount)
         {
             if (Money >= amount)

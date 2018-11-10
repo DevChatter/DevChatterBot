@@ -1,11 +1,11 @@
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Modules.WastefulGame.Data;
+using DevChatter.Bot.Modules.WastefulGame.Hubs.Dtos;
 using DevChatter.Bot.Modules.WastefulGame.Model;
 using DevChatter.Bot.Modules.WastefulGame.Model.Specifications;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Modules.WastefulGame.Hubs.Dtos;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Hubs
 {
@@ -31,7 +31,8 @@ namespace DevChatter.Bot.Modules.WastefulGame.Hubs
             var gameEndRecord = new GameEndRecord
             {
                 LevelNumber = levelNumber,
-                Points = points
+                Points = points,
+                EndType = endType
             };
 
             Survivor survivor = _repository.Single(SurvivorPolicy.ByUserId(userId));
@@ -39,12 +40,14 @@ namespace DevChatter.Bot.Modules.WastefulGame.Hubs
             {
                 survivor = new Survivor(playerName, userId);
                 survivor.GameEndRecords.Add(gameEndRecord);
+                survivor.InventoryItems.AddRange(items.Select(x => x.ToInventoryItem()));
                 _repository.Create(survivor);
             }
             else
             {
-                gameEndRecord.Survivor = survivor;
-                _repository.Create(gameEndRecord);
+                survivor.GameEndRecords.Add(gameEndRecord);
+                survivor.InventoryItems.AddRange(items.Select(x => x.ToInventoryItem()));
+                _repository.Update(survivor);
             }
         }
     }
