@@ -40,6 +40,7 @@ export const ItemMessages = Object.freeze({
 
 export class Item extends Entity {
   /**
+   * @param {string} name
    * @param {Wasteful} game
    * @param {Sprite|null} sprite
    * @param {ItemType} type
@@ -47,9 +48,10 @@ export class Item extends Entity {
    * @param {ItemEffectType|Array<ItemEffectType>|null} effectTypes
    * @param {number} uses
    */
-  constructor(game, sprite, type, pickupType, effectTypes, uses = 1) {
+  constructor(name, game, sprite, type, pickupType, effectTypes, uses = 1) {
     super(game, sprite, true);
 
+    this._name = name;
     this._type = type;
     this._pickupType = pickupType;
 
@@ -136,6 +138,14 @@ export class Item extends Entity {
    */
   _applyEffect() {
 
+  }
+
+  /**
+   * @public
+   * @returns {string}
+   */
+  get name() {
+    return this._name;
   }
 
   /**

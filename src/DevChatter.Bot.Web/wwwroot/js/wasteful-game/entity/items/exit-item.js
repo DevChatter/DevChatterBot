@@ -21,10 +21,10 @@ export class ExitItem extends EffectItem {
    * @param {Array<{ItemEffectType: number}>} effectPointMap
    */
   constructor(game, sprite, type, pickupType, effectTypes, uses, effectPointMap) {
-    super(game, sprite, type, pickupType, effectTypes, uses, effectPointMap);
+    super('exit',game, sprite, type, pickupType, effectTypes, uses, effectPointMap);
 
     const location = this.game.grid.lowerRightCorner;
-    this.setLocation(location.x - 1, Math.ceil(location.y / 2))
+    this.setLocation(location.x - 1, Math.ceil(location.y / 2));
   }
 
   /**

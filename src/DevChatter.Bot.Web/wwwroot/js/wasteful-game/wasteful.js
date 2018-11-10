@@ -2,7 +2,7 @@ import { Info } from '/js/wasteful-game/info.js';
 import { Grid } from '/js/wasteful-game/grid.js';
 import { Background } from '/js/wasteful-game/background.js';
 import { Level } from '/js/wasteful-game/level.js';
-import { MetaData } from '/js/wasteful-game/metadata.js';
+import { MetaData, EndTypes } from '/js/wasteful-game/metadata.js';
 import { Player } from '/js/wasteful-game/entity/player.js';
 import { MovableComponent } from '/js/wasteful-game/entity/components/movableComponent.js';
 import { AttackableComponent } from '/js/wasteful-game/entity/components/attackableComponent.js';
@@ -24,6 +24,7 @@ export class Wasteful {
     this._context = canvas.getContext('2d');
     this._isRunning = false;
     this._isGameOver = false;
+    this._endType = '';
     this._lastMouseTarget = null;
 
     const url = new URL(window.location.href);
@@ -103,7 +104,9 @@ export class Wasteful {
 
     if (this._player.getComponent(AttackableComponent).isDead) {
       this._isGameOver = true;
+      this._endType = EndTypes.died; 
     }
+    // TODO: Add an escape check here.
   }
 
   /**
@@ -145,12 +148,20 @@ export class Wasteful {
     document.removeEventListener('mousedown', this._mouseDownHandle);
     document.removeEventListener('keydown', this._keyDownHandle);
     window.cancelAnimationFrame(this._animationHandle);
+
+    // TODO: Organize data better, so it's not coming from separate objects.
+    let heldItems = this.player.inventory.items.map(item => ({
+        name: item.name,
+        uses: item.remainingUses
+    }));
+
+    this._hub.invoke('GameEnd', this.player.points, this._userInfo.displayName, this._userInfo.userId, this._endType, this.level.levelNumber, heldItems)
+      .catch(err => console.error(err.toString()));
+
     this._isRunning = false;
     this._isGameOver = false;
     this._clearCanvas();
-
-    // TODO: Organize data better, so it's not coming from separate objects.
-    this._hub.invoke('GameEnd', this.player.points, this._userInfo.displayName, this._userInfo.userId, 'died', this.level.levelNumber).catch(err => console.error(err.toString()));
+    this._endType = '';
   }
 
   /**

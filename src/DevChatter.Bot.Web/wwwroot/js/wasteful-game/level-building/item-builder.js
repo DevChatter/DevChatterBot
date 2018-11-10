@@ -33,18 +33,18 @@ export class ItemBuilder {
    */
   _createItemOfType(itemType) {
     const items = [
-      new EffectItem(this._game, new Sprite('/images/ZedChatter/Taco-0.png', 1, 1, 1), ItemType.CONSUMABLE, ItemPickupType.INSTANT, [ItemEffectType.HEALTH, ItemEffectType.POINTS], 1, [
+      new EffectItem('Taco', this._game, new Sprite('/images/ZedChatter/Taco-0.png', 1, 1, 1), ItemType.CONSUMABLE, ItemPickupType.INSTANT, [ItemEffectType.HEALTH, ItemEffectType.POINTS], 1, [
         { [ItemEffectType.HEALTH]: 2 },
         { [ItemEffectType.POINTS]: 5 }
       ]),
-      new EffectItem(this._game, new Sprite('/images/ZedChatter/Pizza-0.png', 1, 1, 1), ItemType.CONSUMABLE, ItemPickupType.INSTANT, ItemEffectType.HEALTH, 1, [{ [ItemEffectType.HEALTH]: 3 }]),
-      new EffectItem(this._game, new Sprite('/images/ZedChatter/BlackCan-0.png', 1, 1, 1), ItemType.CONSUMABLE, ItemPickupType.INSTANT, [ItemEffectType.HEALTH, ItemEffectType.POINTS], 1, [
+      new EffectItem('Pizza', this._game, new Sprite('/images/ZedChatter/Pizza-0.png', 1, 1, 1), ItemType.CONSUMABLE, ItemPickupType.INSTANT, ItemEffectType.HEALTH, 1, [{ [ItemEffectType.HEALTH]: 3 }]),
+      new EffectItem('BlackCan', this._game, new Sprite('/images/ZedChatter/BlackCan-0.png', 1, 1, 1), ItemType.CONSUMABLE, ItemPickupType.INSTANT, [ItemEffectType.HEALTH, ItemEffectType.POINTS], 1, [
         { [ItemEffectType.HEALTH]: 1 },
         { [ItemEffectType.POINTS]: 15 }
       ]),
-      new Item(this._game, new Sprite('/images/ZedChatter/BaseballBat-1.png', 1, 1, 1), ItemType.WEAPON, ItemPickupType.INVENTORY, null, 1),
-      new Item(this._game, new Sprite('/images/ZedChatter/Axe-1.png', 1, 1, 1), ItemType.WEAPON, ItemPickupType.INVENTORY, null, 2),
-      new Item(this._game, new Sprite('/images/ZedChatter/Sword-1.png', 1, 1, 1), ItemType.WEAPON, ItemPickupType.INVENTORY, null, 3),
+      new Item('Bat', this._game, new Sprite('/images/ZedChatter/BaseballBat-1.png', 1, 1, 1), ItemType.WEAPON, ItemPickupType.INVENTORY, null, 1),
+      new Item('Axe', this._game, new Sprite('/images/ZedChatter/Axe-1.png', 1, 1, 1), ItemType.WEAPON, ItemPickupType.INVENTORY, null, 2),
+      new Item('Sword', this._game, new Sprite('/images/ZedChatter/Sword-1.png', 1, 1, 1), ItemType.WEAPON, ItemPickupType.INVENTORY, null, 3),
     ];
     return [this._pickRandom(items.filter(item => item.type === itemType))];
   }

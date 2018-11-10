@@ -5,6 +5,7 @@ using DevChatter.Bot.Modules.WastefulGame.Model.Specifications;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Modules.WastefulGame.Hubs.Dtos;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Hubs
 {
@@ -21,9 +22,10 @@ namespace DevChatter.Bot.Modules.WastefulGame.Hubs
         }
 
         public void GameEnd(int points, string playerName,
-            string userId, string endType, int levelNumber)
+            string userId, string endType, int levelNumber, List<HeldItemDto> items)
         {
-            string message = $"{playerName} has {endType} on level {levelNumber} with {points} points.";
+            string itemDisplayText = items.Any() ? string.Join(", ", items.Select(x => x.Name)) : "nothing";
+            string message = $"{playerName} has {endType} on level {levelNumber} with {points} points while holding {itemDisplayText}.";
             _chatClients.ForEach(c => c.SendMessage(message));
 
             var gameEndRecord = new GameEndRecord
