@@ -1,6 +1,10 @@
 export class Inventory {
-  constructor() {
-    this.items = [];
+  /**
+   * @public
+   * @param {Array<Item>} startingItems
+   */
+  constructor(startingItems) {
+    this.items = startingItems || [];
   }
 
   /**

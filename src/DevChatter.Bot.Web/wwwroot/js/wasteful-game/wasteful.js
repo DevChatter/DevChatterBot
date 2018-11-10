@@ -2,6 +2,7 @@ import { Info } from '/js/wasteful-game/info.js';
 import { Grid } from '/js/wasteful-game/grid.js';
 import { Background } from '/js/wasteful-game/background.js';
 import { Level } from '/js/wasteful-game/level.js';
+import { ItemBuilder } from '/js/wasteful-game/level-building/item-builder.js';
 import { MetaData, EndTypes } from '/js/wasteful-game/metadata.js';
 import { Player } from '/js/wasteful-game/entity/player.js';
 import { MovableComponent } from '/js/wasteful-game/entity/components/movableComponent.js';
@@ -37,8 +38,9 @@ export class Wasteful {
   /**
    * @public
    * @param {{displayName: string, userId: string}} userInfo
+   * @param {Array<{string, number}>} startingItems
    */
-  startGame(userInfo) {
+  startGame(userInfo, startingItems) {
     if (this._isRunning) {
       return;
     }
@@ -48,8 +50,18 @@ export class Wasteful {
     this._entityManager = new EntityManager();
     this._grid = new Grid(this._entityManager, this._canvas);
     this._info = new Info(this._canvas, this._context, this._userInfo.displayName);
-    this._player = new Player(this);
-    this._level = new Level(this, this._player);
+
+    let itemBuilder = new ItemBuilder(this._game);
+    let items = [];
+    if (startingItems !== undefined && startingItems.length > 0) {
+      items = startingItems.map(item => itemBuilder.createItemByName(item.name, item.uses));
+      items.forEach(item => this._entityManager.add(item));
+    }
+
+    this._player = new Player(this, items);
+
+
+    this._level = new Level(this, this._player, itemBuilder);
     this._background = new Background(this._context, this._canvas.width - MetaData.wastefulInfoWidth, this._canvas.height);
 
     this._level.next();

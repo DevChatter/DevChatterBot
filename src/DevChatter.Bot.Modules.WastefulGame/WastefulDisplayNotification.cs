@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using DevChatter.Bot.Modules.WastefulGame.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
+using DevChatter.Bot.Modules.WastefulGame.Hubs.Dtos;
 
 namespace DevChatter.Bot.Modules.WastefulGame
 {
@@ -19,9 +21,10 @@ namespace DevChatter.Bot.Modules.WastefulGame
             await _wastefulHubContext.Clients.All.MovePlayer(direction);
         }
 
-        public async Task StartGame(string chatUserDisplayName, string chatUserUserId)
+        public async Task StartGame(string chatUserDisplayName, string chatUserUserId,
+            IEnumerable<HeldItemDto> inventoryItems)
         {
-            await _wastefulHubContext.Clients.All.StartGame(chatUserDisplayName, chatUserUserId);
+            await _wastefulHubContext.Clients.All.StartGame(chatUserDisplayName, chatUserUserId, inventoryItems);
         }
     }
 }

@@ -3,7 +3,6 @@ import { BarrelFire } from '/js/wasteful-game/entity/obstacles/barrel-fire.js';
 import { AutonomousComponent } from '/js/wasteful-game/entity/components/autonomousComponent.js';
 import { ExitItem } from '/js/wasteful-game/entity/items/exit-item.js';
 import { EscapeItem } from '/js/wasteful-game/entity/items/escape-item.js';
-import { ItemBuilder } from '/js/wasteful-game/level-building/item-builder.js';
 import { Sprite } from '/js/wasteful-game/entity/sprite.js';
 import { ItemEffectType, ItemPickupType, ItemType } from '/js/wasteful-game/entity/items/item.js';
 
@@ -12,10 +11,10 @@ export class Level {
    * @param {Wasteful} game
    * @param {Player} player
    */
-  constructor(game, player) {
+  constructor(game, player, itemBuilder) {
     this._player = player;
     this._game = game;
-    this._itemBuilder = new ItemBuilder(this._game);
+    this._itemBuilder = itemBuilder;
 
     this._levelNumber = 0;
   }

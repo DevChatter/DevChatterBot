@@ -15,5 +15,14 @@ namespace DevChatter.Bot.Modules.WastefulGame.Hubs.Dtos
                 Uses = Uses
             };
         }
+
+        public static HeldItemDto FromInventoryItem(InventoryItem inventoryItem)
+        {
+            return new HeldItemDto
+            {
+                Name = inventoryItem.Name,
+                Uses = inventoryItem.Uses
+            };
+        }
     }
 }

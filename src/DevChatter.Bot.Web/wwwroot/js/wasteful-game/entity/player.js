@@ -10,8 +10,9 @@ import Mediator from '/js/wasteful-game/helpers/mediator.js';
 export class Player extends Entity {
   /**
    * @param {Wasteful} game
+   * @param {Array<Item>} startingItems
    */
-  constructor(game) {
+  constructor(game, startingItems) {
     super(game, new Sprite('/images/ZedChatter/Hat-YellowShirt-Player-Idle-0.png', 1, 1, 100));
 
     this._movableComponent = new MovableComponent(game, this, 1);
@@ -27,7 +28,7 @@ export class Player extends Entity {
     this.setLocation(2, 2);
 
     this._points = 0;
-    this.inventory = new Inventory();
+    this.inventory = new Inventory(startingItems);
 
     Mediator.subscribe(MovableComponentMessages.BLOCKED, this._onMove.bind(this));
   }
