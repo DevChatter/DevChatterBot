@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
+using DevChatter.Bot.Modules.WastefulGame.Hubs.Dtos;
+using DevChatter.Bot.Modules.WastefulGame.Model.Enums;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Model
 {
@@ -33,6 +36,20 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
             }
 
             return false;
+        }
+
+        public void ApplyEscape(int levelNumber, int points, IEnumerable<InventoryItem> items)
+        {
+            var gameEndRecord = new GameEndRecord
+            {
+                LevelNumber = levelNumber,
+                Points = points,
+                EndType = EndTypes.Escaped
+            };
+
+            GameEndRecords.Add(gameEndRecord);
+            InventoryItems.Clear();
+            InventoryItems.AddRange(items);
         }
     }
 }

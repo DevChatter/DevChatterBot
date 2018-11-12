@@ -16,19 +16,29 @@ namespace DevChatter.Bot.Modules.WastefulGame
 
         public Survivor GetOrCreate(ChatUser chatUser)
         {
-            return Get(chatUser) ?? Create(chatUser);
+            return GetOrCreate(chatUser.DisplayName, chatUser.UserId);
         }
 
-        private Survivor Get(ChatUser chatUser)
+        public Survivor GetOrCreate(string displayName, string userId)
         {
-            return _gameRepository.Single(SurvivorPolicy.ByUserId(chatUser.UserId));
+            return Get(userId) ?? Create(displayName, userId);
         }
 
-        private Survivor Create(ChatUser chatUser)
+        private Survivor Get(string userId)
         {
-            var survivor = new Survivor(chatUser.DisplayName, chatUser.UserId);
+            return _gameRepository.Single(SurvivorPolicy.ByUserId(userId));
+        }
+
+        private Survivor Create(string displayName, string userId)
+        {
+            var survivor = new Survivor(displayName, userId);
             _gameRepository.Create(survivor);
             return survivor;
+        }
+
+        public void Save(Survivor survivor)
+        {
+            _gameRepository.Update(survivor);
         }
     }
 }

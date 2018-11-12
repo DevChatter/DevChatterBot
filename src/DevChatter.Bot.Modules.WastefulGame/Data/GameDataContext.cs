@@ -1,6 +1,8 @@
 using DevChatter.Bot.Modules.WastefulGame.Model;
+using DevChatter.Bot.Modules.WastefulGame.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Data
 {
@@ -26,5 +28,14 @@ namespace DevChatter.Bot.Modules.WastefulGame.Data
             base.OnConfiguring(optionsBuilder);
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<GameEndRecord>()
+                .Property(x => x.EndType)
+                .HasConversion(
+                    e => e.ToString(),
+                    s => (EndTypes)Enum.Parse(typeof(EndTypes), s));
+        }
     }
 }
