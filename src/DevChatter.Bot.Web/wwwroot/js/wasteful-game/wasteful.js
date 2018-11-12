@@ -60,7 +60,6 @@ export class Wasteful {
 
     this._player = new Player(this, items);
 
-
     this._level = new Level(this, this._player, itemBuilder);
     this._background = new Background(this._context, this._canvas.width - MetaData.wastefulInfoWidth, this._canvas.height);
 

@@ -89,11 +89,7 @@ export class ItemBuilder {
   createItemByName(name, uses) {
     let itemData = itemMetaData.filter(item => item.name === name)[0];
 
-    if (uses !== undefined) {
-      itemData.uses = uses;
-    }
-
-    return this._createItemFromItemData(itemData);
+    return this._createItemFromItemData(itemData, uses);
   }
 
   /**
@@ -114,13 +110,18 @@ export class ItemBuilder {
     return this._createItemFromItemData(itemData);
   }
 
-  _createItemFromItemData(itemData) {
+  _createItemFromItemData(itemData, uses) {
     let item;
     if (itemData.effectMap !== undefined) {
       item = new EffectItem(itemData.name, this._game, new Sprite(itemData.imgSrc, 1, 1, 1), itemData.itemType, itemData.pickupType, itemData.effectType, itemData.uses, itemData.effectMap);
     } else {
-      item = new Item(itemData.name, this._game, new Sprite(itemData.imgSrc, 1, 1, 1), itemData.itemType, itemData.pickupType, itemData.effectType, itemData.uses);
+      if (uses === undefined) {
+        uses = itemData.uses;
+      }
+
+      item = new Item(itemData.name, this._game, new Sprite(itemData.imgSrc, 1, 1, 1), itemData.itemType, itemData.pickupType, itemData.effectType, uses);
     }
+
     return item;
   }
 }
