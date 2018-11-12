@@ -1,4 +1,3 @@
-using DevChatter.Bot.Core.BotModules.WastefulModule.Model;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data.Model;
 using Microsoft.EntityFrameworkCore;
@@ -23,10 +22,6 @@ namespace DevChatter.Bot.Infra.Ef
         public DbSet<TimezoneEntity> Timezones { get; set; }
         public DbSet<BlastTypeEntity> BlastTypes { get; set; }
         public DbSet<CanvasProperties> CanvasProperties { get; set; }
-        public DbSet<GameEndRecord> GameEndRecords { get; set; }
-        public DbSet<Survivor> Survivors { get; set; }
-        public DbSet<Team> Teams { get; set; }
-
 
         public AppDataContext()
         {
@@ -40,7 +35,7 @@ namespace DevChatter.Bot.Infra.Ef
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString =
-                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["DatabaseConnectionString"];
+                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["ConnectionStrings:DefaultDatabase"];
             optionsBuilder.UseSqlServer(connectionString);
             base.OnConfiguring(optionsBuilder);
         }
@@ -72,7 +67,7 @@ namespace DevChatter.Bot.Infra.Ef
         public AppDataContext CreateDbContext(string[] args)
         {
             string connectionString =
-                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["DatabaseConnectionString"];
+                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["ConnectionStrings:DefaultDatabase"];
 
             var optionsBuilder = new DbContextOptionsBuilder<AppDataContext>();
             optionsBuilder.UseSqlServer(connectionString);

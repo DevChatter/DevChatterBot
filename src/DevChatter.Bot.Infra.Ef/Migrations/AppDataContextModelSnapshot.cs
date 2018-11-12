@@ -19,56 +19,6 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DevChatter.Bot.Core.BotModules.WastefulModule.Model.GameEndRecord", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DateTime");
-
-                    b.Property<int>("LevelNumber");
-
-                    b.Property<int>("Points");
-
-                    b.Property<Guid?>("SurvivorId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SurvivorId");
-
-                    b.ToTable("GameEndRecords");
-                });
-
-            modelBuilder.Entity("DevChatter.Bot.Core.BotModules.WastefulModule.Model.Survivor", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("DisplayName");
-
-                    b.Property<Guid?>("TeamId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("Survivors");
-                });
-
-            modelBuilder.Entity("DevChatter.Bot.Core.BotModules.WastefulModule.Model.Team", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Teams");
-                });
-
             modelBuilder.Entity("DevChatter.Bot.Core.Commands.SimpleCommand", b =>
                 {
                     b.Property<Guid>("Id")
@@ -373,20 +323,6 @@ namespace DevChatter.Bot.Infra.Ef.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Timezones");
-                });
-
-            modelBuilder.Entity("DevChatter.Bot.Core.BotModules.WastefulModule.Model.GameEndRecord", b =>
-                {
-                    b.HasOne("DevChatter.Bot.Core.BotModules.WastefulModule.Model.Survivor", "Survivor")
-                        .WithMany("GameEndRecords")
-                        .HasForeignKey("SurvivorId");
-                });
-
-            modelBuilder.Entity("DevChatter.Bot.Core.BotModules.WastefulModule.Model.Survivor", b =>
-                {
-                    b.HasOne("DevChatter.Bot.Core.BotModules.WastefulModule.Model.Team", "Team")
-                        .WithMany("Members")
-                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("DevChatter.Bot.Core.Data.Model.AliasArgumentEntity", b =>

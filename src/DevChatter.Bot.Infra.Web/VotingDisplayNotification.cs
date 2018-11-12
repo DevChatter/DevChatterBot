@@ -1,13 +1,11 @@
-using DevChatter.Bot.Core;
 using DevChatter.Bot.Core.BotModules.VotingModule;
 using DevChatter.Bot.Core.Data.Model;
+using DevChatter.Bot.Core.Streaming;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Infra.Web.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DevChatter.Bot.Core.BotModules.WastefulModule;
-using DevChatter.Bot.Core.Streaming;
 
 namespace DevChatter.Bot.Infra.Web
 {

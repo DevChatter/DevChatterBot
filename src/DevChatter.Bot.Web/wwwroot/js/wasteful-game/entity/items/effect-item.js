@@ -11,6 +11,7 @@ export const EffectItemMessages = Object.freeze({
 
 export class EffectItem extends Item {
   /**
+   * @param {string} name
    * @param {Wasteful} game
    * @param {Sprite|null} sprite
    * @param {ItemType} type
@@ -19,8 +20,8 @@ export class EffectItem extends Item {
    * @param {number} uses
    * @param {Array<{ItemEffectType: number}>} effectPointMap
    */
-  constructor(game, sprite, type, pickupType, effectTypes, uses, effectPointMap) {
-    super(game, sprite, type, pickupType, effectTypes, uses);
+  constructor(name, game, sprite, type, pickupType, effectTypes, uses, effectPointMap) {
+    super(name, game, sprite, type, pickupType, effectTypes, uses);
 
     this._effectPointMap = effectPointMap;
   }

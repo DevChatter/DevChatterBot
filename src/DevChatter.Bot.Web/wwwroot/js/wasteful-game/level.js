@@ -2,7 +2,7 @@ import { SimpleZombie } from '/js/wasteful-game/entity/enemies/simple-zombie.js'
 import { BarrelFire } from '/js/wasteful-game/entity/obstacles/barrel-fire.js';
 import { AutonomousComponent } from '/js/wasteful-game/entity/components/autonomousComponent.js';
 import { ExitItem } from '/js/wasteful-game/entity/items/exit-item.js';
-import { ItemBuilder } from '/js/wasteful-game/level-building/item-builder.js';
+import { EscapeItem } from '/js/wasteful-game/entity/items/escape-item.js';
 import { Sprite } from '/js/wasteful-game/entity/sprite.js';
 import { ItemEffectType, ItemPickupType, ItemType } from '/js/wasteful-game/entity/items/item.js';
 
@@ -11,13 +11,12 @@ export class Level {
    * @param {Wasteful} game
    * @param {Player} player
    */
-  constructor(game, player) {
+  constructor(game, player, itemBuilder) {
     this._player = player;
     this._game = game;
-    this._itemBuilder = new ItemBuilder(this._game);
+    this._itemBuilder = itemBuilder;
 
     this._levelNumber = 0;
-    this._turnNumber = 0;
   }
 
   /**
@@ -32,6 +31,7 @@ export class Level {
    * @public
    */
   next() {
+    this._turnNumber = 0;
     const oldExitLocation = this._game.entityManager.getFirstByClass(ExitItem);
     this._game.entityManager.clear();
 
@@ -43,20 +43,13 @@ export class Level {
 
     this._game.entityManager.add(this._player);
 
-    this._exit = new ExitItem(
-      this._game,
-      new Sprite('/images/ZedChatter/ExitTile-0.png', 1, 1, 1),
-      ItemType.CONSUMABLE,
-      ItemPickupType.INSTANT,
-      [ItemEffectType.HEALTH, ItemEffectType.POINTS],
-      1,
-      [
-        { [ItemEffectType.HEALTH]: 1 },
-        { [ItemEffectType.POINTS]: 20 + this._levelNumber * 3 }
-      ]
-    );
-    this._game.entityManager.add(this._exit);
+    if (this._levelNumber === 3) {
+      this._exit = this._createEscape();
+    } else {
+      this._exit = this._createExit();
+    }
 
+    this._game.entityManager.add(this._exit);
 
     for (let i = 0; i < this._levelNumber; i++) {
       const zombie = new SimpleZombie(this._game);
@@ -76,7 +69,8 @@ export class Level {
       this._game.entityManager.add(barrel);
     }
 
-    let path = this._game.grid.findPath(this._player.location, this._exit.location);
+    let requiredLocation = this._exit.location;
+    let path = this._game.grid.findPath(this._player.location, requiredLocation);
     if (path.length === 0) {
       // No path to exit exists. Try again.
       this._levelNumber--;
@@ -103,10 +97,39 @@ export class Level {
    * @private
    */
   _spawnZombie() {
-    if (this._turnNumber % 6 === 0 && this._turnNumber > 0) {
+    if (this._turnNumber % 8 === 0 && this._turnNumber > 0) {
       const zombie = new SimpleZombie(this._game);
       zombie.setLocation(this._game.grid.getRandomOpenLocation());
       this._game.entityManager.add(zombie);
     }
+  }
+
+  _createExit() {
+    return new ExitItem(
+      this._game,
+      new Sprite('/images/ZedChatter/ExitTile-0.png', 1, 1, 1),
+      ItemType.CONSUMABLE,
+      ItemPickupType.INSTANT,
+      [ItemEffectType.HEALTH, ItemEffectType.POINTS],
+      1,
+      [
+        { [ItemEffectType.HEALTH]: 1 },
+        { [ItemEffectType.POINTS]: 20 + this._levelNumber * 3 }
+      ]
+    );
+  }
+
+  _createEscape() {
+    return new EscapeItem(
+      this._game,
+      new Sprite('images/ZedChatter/HeliPad-0.png', 1, 1, 1),
+      ItemType.CONSUMABLE,
+      ItemPickupType.INSTANT,
+      ItemEffectType.POINTS,
+      1,
+      [
+        { [ItemEffectType.POINTS]: 100 }
+      ]
+    );
   }
 }
