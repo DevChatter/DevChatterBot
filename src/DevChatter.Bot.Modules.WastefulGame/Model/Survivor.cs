@@ -38,19 +38,21 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
             return false;
         }
 
-        public void ApplyEscape(int levelNumber,
-            int points, IEnumerable<InventoryItem> items)
+        public void ApplyEndGame(int levelNumber, int points, EndTypes endType, IList<InventoryItem> items)
         {
             var gameEndRecord = new GameEndRecord
             {
                 LevelNumber = levelNumber,
                 Points = points,
-                EndType = EndTypes.Escaped
+                EndType = endType
             };
 
             GameEndRecords.Add(gameEndRecord);
             InventoryItems.Clear();
-            InventoryItems.AddRange(items);
+            if (endType != EndTypes.Died && items.Any())
+            {
+                InventoryItems.AddRange(items);
+            }
         }
     }
 }
