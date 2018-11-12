@@ -51,7 +51,7 @@ export class Wasteful {
     this._grid = new Grid(this._entityManager, this._canvas);
     this._info = new Info(this._canvas, this._context, this._userInfo.displayName);
 
-    let itemBuilder = new ItemBuilder(this._game);
+    let itemBuilder = new ItemBuilder(this);
     let items = [];
     if (startingItems !== undefined && startingItems.length > 0) {
       items = startingItems.map(item => itemBuilder.createItemByName(item.name, item.uses));

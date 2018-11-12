@@ -38,7 +38,8 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
             return false;
         }
 
-        public void ApplyEscape(int levelNumber, int points, IEnumerable<InventoryItem> items)
+        public void ApplyEscape(int levelNumber,
+            int points, IEnumerable<InventoryItem> items)
         {
             var gameEndRecord = new GameEndRecord
             {

@@ -78,7 +78,7 @@ export class ItemBuilder {
    */
   getItemsForLevel(levelNumber) {
     let itemType = levelNumber % 2 === 0 ? ItemType.CONSUMABLE : ItemType.WEAPON;
-    return this._createItemOfType(itemType);
+    return [this._createItemOfType(itemType)];
   }
 
   /**
