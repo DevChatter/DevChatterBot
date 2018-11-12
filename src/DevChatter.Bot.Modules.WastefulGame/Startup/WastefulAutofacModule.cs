@@ -23,6 +23,9 @@ namespace DevChatter.Bot.Modules.WastefulGame.Startup
             builder.RegisterType<WastefulDisplayNotification>()
                 .AsImplementedInterfaces().SingleInstance();
 
+            builder.RegisterType<InventoryCommand>()
+                .AsImplementedInterfaces().SingleInstance();
+
             // TODO: Remove this connection string!!!!
             IGameRepository repo = SetUpGameDatabase.SetUpRepository("Server=(localdb)\\mssqllocaldb;Database=WastefulGame;Trusted_Connection=True;MultipleActiveResultSets=true");
 
