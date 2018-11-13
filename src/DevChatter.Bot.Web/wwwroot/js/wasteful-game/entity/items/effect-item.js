@@ -48,6 +48,9 @@ export class EffectItem extends Item {
             case ItemEffectType.POINTS:
               player.increasePoints(event.args.amount);
               break;
+            case ItemEffectType.MONEY:
+              player.increaseMoney(event.args.amount);
+              break;
           }
         }
       }

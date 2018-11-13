@@ -28,6 +28,7 @@ export class Player extends Entity {
     this.setLocation(2, 2);
 
     this._points = 0;
+    this._money = 0;
     this.inventory = new Inventory(startingItems);
 
     Mediator.subscribe(MovableComponentMessages.BLOCKED, this._onMove.bind(this));
@@ -51,6 +52,14 @@ export class Player extends Entity {
 
   /**
    * @public
+   * @param {number} amount
+   */
+  increaseMoney(amount) {
+    this._money += amount;
+  }
+
+  /**
+   * @public
    * @returns {number}
    */
   get health() {
@@ -63,6 +72,14 @@ export class Player extends Entity {
    */
   get points() {
     return this._points;
+  }
+
+  /**
+   * @public
+   * @returns {number}
+   */
+  get money() {
+    return this._money;
   }
 
   /**

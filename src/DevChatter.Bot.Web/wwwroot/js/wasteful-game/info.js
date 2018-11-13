@@ -28,7 +28,7 @@ export class Info {
     this._writeLine(this._playerName);
     this._writeLine('\u{1F499}'.repeat(player.getComponent(AttackableComponent).health));
     this._writeLine(`Points: ${player.points}`);
-    this._writeLine(`Money: 0`);
+    this._writeLine(`Money: ${player.money}`);
 
     this._showItems(player.inventory.items);
   }

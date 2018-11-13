@@ -33,7 +33,6 @@ const itemMetaData = [
     itemType: ItemType.CONSUMABLE,
     pickupType: ItemPickupType.INSTANT,
     effectType: [ItemEffectType.HEALTH, ItemEffectType.POINTS],
-    uses: 1,
     effectMap: [
       { [ItemEffectType.HEALTH]: 2 },
       { [ItemEffectType.POINTS]: 5 }
@@ -45,7 +44,6 @@ const itemMetaData = [
     itemType: ItemType.CONSUMABLE,
     pickupType: ItemPickupType.INSTANT,
     effectType: ItemEffectType.HEALTH,
-    uses: 2,
     effectMap: [
       { [ItemEffectType.HEALTH]: 3 }
     ]
@@ -56,10 +54,29 @@ const itemMetaData = [
     itemType: ItemType.CONSUMABLE,
     pickupType: ItemPickupType.INSTANT,
     effectType: [ItemEffectType.HEALTH, ItemEffectType.POINTS],
-    uses: 3,
     effectMap: [
       { [ItemEffectType.HEALTH]: 1 },
       { [ItemEffectType.POINTS]: 15 }
+    ]
+  },
+  {
+    name: 'CoinPile',
+    imgSrc: '/images/ZedChatter/CoinPile-0.png',
+    itemType: ItemType.CONSUMABLE,
+    pickupType: ItemPickupType.INSTANT,
+    effectType: ItemEffectType.MONEY,
+    effectMap: [
+      { [ItemEffectType.MONEY]: 10 }
+    ]
+  },
+  {
+    name: 'CoinStack',
+    imgSrc: '/images/ZedChatter/CoinStack-0.png',
+    itemType: ItemType.CONSUMABLE,
+    pickupType: ItemPickupType.INSTANT,
+    effectType: ItemEffectType.MONEY,
+    effectMap: [
+      { [ItemEffectType.MONEY]: 25 }
     ]
   }
 ];

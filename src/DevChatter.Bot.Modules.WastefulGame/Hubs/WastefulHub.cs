@@ -22,12 +22,13 @@ namespace DevChatter.Bot.Modules.WastefulGame.Hubs
         }
 
         public void GameEnd(int points, string playerName,
-            string userId, EndTypes endType, int levelNumber, List<HeldItemDto> items)
+            string userId, EndTypes endType, int levelNumber,
+            List<HeldItemDto> items, int money)
         {
             string itemDisplayText = items.Any()
                 ? string.Join(", ", items.Select(x => x.Name))
                 : "nothing";
-            string message = $"{playerName} has {endType} on level {levelNumber} with {points} points while holding {itemDisplayText}.";
+            string message = $"{playerName} has {endType} on level {levelNumber} with {points} points while holding {itemDisplayText} and {money} coins.";
             _chatClients.ForEach(c => c.SendMessage(message));
 
             Survivor survivor = _survivorRepo.GetOrCreate(playerName, userId);

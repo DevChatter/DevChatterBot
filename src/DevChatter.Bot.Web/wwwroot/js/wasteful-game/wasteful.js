@@ -178,7 +178,7 @@ export class Wasteful {
         uses: item.remainingUses
     }));
 
-    this._hub.invoke('GameEnd', this.player.points, this._userInfo.displayName, this._userInfo.userId, this._endType, this.level.levelNumber, heldItems)
+    this._hub.invoke('GameEnd', this.player.points, this._userInfo.displayName, this._userInfo.userId, this._endType, this.level.levelNumber, heldItems, this.player.money)
       .catch(err => console.error(err.toString()));
 
     this._isRunning = false;

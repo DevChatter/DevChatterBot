@@ -27,6 +27,7 @@ export const ItemPickupType = Object.freeze({
 export const ItemEffectType = Object.freeze({
   HEALTH: Symbol('health'),
   POINTS: Symbol('points'),
+  MONEY: Symbol('money'),
 });
 
 /**
