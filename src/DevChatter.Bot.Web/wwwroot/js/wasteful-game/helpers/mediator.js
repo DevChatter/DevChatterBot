@@ -1,7 +1,7 @@
 export class Event {
   /**
    * @public
-   * @param {object} args
+   * @param {object} args event args
    */
   constructor(args) {
     this._process = true;
@@ -10,7 +10,7 @@ export class Event {
 
   /**
    * @public
-   * @returns {boolean}
+   * @returns {boolean} process
    */
   get process() {
     return this._process;
@@ -18,7 +18,7 @@ export class Event {
 
   /**
    * @public
-   * @param {boolean} process
+   * @param {boolean} process process
    */
   set process(process) {
     this._process = process;
@@ -26,7 +26,7 @@ export class Event {
 
   /**
    * @public
-   * @returns {object}
+   * @returns {object} args
    */
   get args() {
     return this._args;
@@ -34,7 +34,7 @@ export class Event {
 
   /**
    * @public
-   * @param {object} args
+   * @param {object} args eventargs
    */
   set args(args) {
     this._args = args;
@@ -48,8 +48,8 @@ class Mediator {
 
   /**
    * @public
-   * @param {symbol|string} channel
-   * @param {function} fn
+   * @param {symbol|string} channel channel to subscrube to
+   * @param {function} fn callback function
    */
   subscribe(channel, fn) {
     if (!this.channels[channel]) {
@@ -64,8 +64,8 @@ class Mediator {
 
   /**
    * @public
-   * @param {symbol|string} channel
-   * @param {function} fn
+   * @param {symbol|string} channel channel to unsubscribe from
+   * @param {function} fn callback function to remove
    */
   unsubscribe(channel, fn) {
     if (!this.channels[channel]) {
@@ -80,9 +80,9 @@ class Mediator {
 
   /**
    * @public
-   * @param {symbol|string} channel
-   * @param {Event} args
-   * @returns {Event}
+   * @param {symbol|string} channel channel to publish to
+   * @param {Event} args event args
+   * @returns {Event} event
    */
   publish(channel, args) {
     let retVal = new Event(args);
@@ -102,7 +102,7 @@ class Mediator {
 
   /**
    * @public
-   * @param {object} obj
+   * @param {object} obj object to install onto
    */
   installTo(obj) {
     obj.channels = {};

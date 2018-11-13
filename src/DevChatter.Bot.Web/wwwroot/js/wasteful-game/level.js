@@ -8,8 +8,9 @@ import { ItemEffectType, ItemPickupType, ItemType } from '/js/wasteful-game/enti
 
 export class Level {
   /**
-   * @param {Wasteful} game
-   * @param {Player} player
+   * @param {Wasteful} game wasteful game object
+   * @param {Player} player player playing the level
+   * @param {ItemBuilder} itemBuilder item builder to build items for new levels
    */
   constructor(game, player, itemBuilder) {
     this._player = player;
@@ -21,7 +22,7 @@ export class Level {
 
   /**
    * @public
-   * @returns {number}
+   * @returns {number} current level number
    */
   get levelNumber() {
     return this._levelNumber;
@@ -37,7 +38,7 @@ export class Level {
 
     this._levelNumber++;
 
-    if(typeof oldExitLocation !== 'undefined') {
+    if (typeof oldExitLocation !== 'undefined') {
       this._player.setLocation(0, oldExitLocation.location.y);
     }
 
@@ -82,9 +83,9 @@ export class Level {
    * @public
    */
   update() {
-    for(let i = 0, l = this._game.entityManager.count; i < l; i++) {
+    for (let i = 0, l = this._game.entityManager.count; i < l; i++) {
       const entity = this._game.entityManager.all[i];
-      if(typeof entity !== 'undefined' && entity.hasComponent(AutonomousComponent)) {
+      if (typeof entity !== 'undefined' && entity.hasComponent(AutonomousComponent)) {
         entity.getComponent(AutonomousComponent).takeTurn();
       }
     }
@@ -104,6 +105,10 @@ export class Level {
     }
   }
 
+  /**
+   * @private
+   * @return {ExitItem} new exit item
+   */
   _createExit() {
     return new ExitItem(
       this._game,
@@ -119,6 +124,10 @@ export class Level {
     );
   }
 
+  /**
+   * @private
+   * @return {EscapeItem} new escape item
+   */
   _createEscape() {
     return new EscapeItem(
       this._game,

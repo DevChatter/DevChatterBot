@@ -1,7 +1,7 @@
 export class Inventory {
   /**
    * @public
-   * @param {Array<Item>} startingItems
+   * @param {Array<Item>} startingItems initial items for the inventory
    */
   constructor(startingItems) {
     this.items = startingItems || [];
@@ -9,7 +9,7 @@ export class Inventory {
 
   /**
    * @public
-   * @param {Item} item
+   * @param {Item} item item to add
    */
   addItem(item) {
     this.items.push(item);
@@ -17,7 +17,7 @@ export class Inventory {
 
   /**
    * @public
-   * @param {Item} item
+   * @param {Item} item item to remove (if exists)
    */
   removeItem(item) {
     const index = this.items.indexOf(item);
@@ -28,7 +28,7 @@ export class Inventory {
 
   /**
    * @public
-   * @param {number} key
+   * @param {number} key index of item to use
    */
   useItem(key) {
     this.items[key].use();
@@ -36,8 +36,8 @@ export class Inventory {
 
   /**
    * @public
-   * @param {Symbol} itemType
-   * @returns {Array<Item>}
+   * @param {Symbol} itemType type of item
+   * @returns {Array<Item>} items of requested type
    */
   getByItemType(itemType) {
     return this.items.filter(item => item.type === itemType);

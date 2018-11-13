@@ -3,8 +3,8 @@ import '/lib/pathfindingjs/pathfinding-browser.js';
 
 export class Grid {
   /**
-   * @param {EntityManager} entityManger
-   * @param {HTMLCanvasElement} canvas
+   * @param {EntityManager} entityManger entities to show on grid
+   * @param {HTMLCanvasElement} canvas canvas used only fir width and height
    */
   constructor(entityManger, canvas) {
     this._entityManager = entityManger;
@@ -14,7 +14,7 @@ export class Grid {
 
   /**
    * @public
-   * @returns {{x: number, y: number}}
+   * @returns {{x: number, y: number}} random x and y coordinates clear of other entities
    */
   getRandomOpenLocation() {
     let randomX;
@@ -29,9 +29,9 @@ export class Grid {
 
   /**
    * @public
-   * @param {{x: number, y: number}} startLocation
-   * @param {{x: number, y: number}} endLocation
-   * @returns Array.<Array.<number>>
+   * @param {{x: number, y: number}} startLocation starting location
+   * @param {{x: number, y: number}} endLocation ending location
+   * @returns {Array<Array<number>>} path from start to end location
    */
   findPath(startLocation, endLocation) {
     let gridArray = [];
@@ -49,9 +49,9 @@ export class Grid {
 
   /**
    * @public
-   * @param {number} x
-   * @param {number} y
-   * @returns {boolean}
+   * @param {number} x horizontal index
+   * @param {number} y vertical index
+   * @returns {boolean} true if location is open for movement
    */
   canMoveTo(x, y) {
     return this._isWithinBounds(x, y) && this._canWalkOn(x, y);
@@ -59,7 +59,7 @@ export class Grid {
 
   /**
    * @public
-   * @returns {{x: number, y: number}}
+   * @returns {{x: number, y: number}} coordinates of the lower right corner
    */
   get lowerRightCorner() {
     return { x: this._max_x, y: this._max_y };
@@ -67,9 +67,9 @@ export class Grid {
 
   /**
    * @private
-   * @param {number} x
-   * @param {number} y
-   * @returns {boolean}
+   * @param {number} x x index
+   * @param {number} y y index
+   * @returns {boolean} true if there are no entities, false if there is one or more entity
    */
   _isClearOfEntities(x, y) {
     return this._entityManager.all.every(entity => {
@@ -80,9 +80,9 @@ export class Grid {
 
   /**
    * @public
-   * @param {number} x
-   * @param {number} y
-   * @returns {boolean}
+   * @param {number} x x index
+   * @param {number} y y index
+   * @returns {boolean} true if location is empty or otherwise walkable
    */
   _canWalkOn(x, y) {
     return this._entityManager.all.every(entity => {
@@ -93,9 +93,9 @@ export class Grid {
 
   /**
    * @public
-   * @param {number} x
-   * @param {number} y
-   * @returns {boolean}
+   * @param {number} x x index
+   * @param {number} y y index
+   * @returns {boolean} true if within bounds of grid; false if out of bounds
    */
   _isWithinBounds(x, y) {
     return x >= 0 && y >= 0 && x < this._max_x && y < this._max_y;

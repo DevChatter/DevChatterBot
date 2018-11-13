@@ -3,9 +3,9 @@ import { AttackableComponent } from '/js/wasteful-game/entity/components/attacka
 
 export class Info {
   /**
-   * @param {HTMLCanvasElement} canvas
-   * @param {CanvasRenderingContext2D} context
-   * @param {string} displayName
+   * @param {HTMLCanvasElement} canvas canvas we're drawing on
+   * @param {CanvasRenderingContext2D} context context to use for drawing
+   * @param {string} displayName name of the player
    */
   constructor(canvas, context, displayName) {
     this._canvas = canvas;
@@ -18,7 +18,7 @@ export class Info {
 
   /**
    * @public
-   * @param {Player} player
+   * @param {Player} player the player's data to draw
    */
   draw(player) {
     this._lineNumber = 1;
@@ -35,7 +35,7 @@ export class Info {
 
   /**
    * @private
-   * @param {string} text
+   * @param {string} text text to write
    */
   _writeLine(text) {
     this._context.fillText(text, this._leftX + 5, this._topY + 24 * this._lineNumber);
@@ -44,7 +44,7 @@ export class Info {
 
   /**
    * @private
-   * @param {Array<Item>} items
+   * @param {Array<Item>} items items to display
    */
   _showItems(items) {
     let y = this._canvas.height - MetaData.tileSize;

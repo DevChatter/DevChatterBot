@@ -7,7 +7,7 @@ export class EntityManager {
 
   /**
    * @public
-   * @param {Entity} entity
+   * @param {Entity} entity entity to add
    */
   add(entity) {
     this._entities.push(entity);
@@ -16,7 +16,7 @@ export class EntityManager {
 
   /**
    * @public
-   * @param {Entity} entity
+   * @param {Entity} entity entity to remove (if exists)
    */
   remove(entity) {
     const index = this._entities.indexOf(entity);
@@ -34,8 +34,8 @@ export class EntityManager {
 
   /**
    * @public
-   * @param {{x: number, y: number}} location
-   * @returns {Array<Entity>}
+   * @param {{x: number, y: number}} location location to check
+   * @returns {Array<Entity>} all entities at the location
    */
   getAtLocation(location) {
     return this._entities.filter(entity => entity.location.x === location.x && entity.location.y === location.y);
@@ -43,20 +43,20 @@ export class EntityManager {
 
   /**
    * @public
-   * @param {function} className
-   * @returns {Entity|undefined}
+   * @param {function} className class to look for
+   * @returns {Entity|undefined} first Entity of the requested type (undefined if none)
    */
   getFirstByClass(className) {
-    return this._entities.find(entity => entity instanceof className)
+    return this._entities.find(entity => entity instanceof className);
   }
 
   /**
    * @public
-   * @param {function} className
-   * @returns {Array<Entity>}
+   * @param {function} className class to look for
+   * @returns {Array<Entity>} array of Entities of the requested type
    */
   getByClass(className) {
-    return this._entities.filter(entity => entity instanceof className)
+    return this._entities.filter(entity => entity instanceof className);
   }
 
   /**
@@ -73,7 +73,7 @@ export class EntityManager {
 
   /**
    * @public
-   * @returns {number}
+   * @returns {number} number of Entities managed by EntityManager
    */
   get count() {
     return this._entities.length;
@@ -81,7 +81,7 @@ export class EntityManager {
 
   /**
    * @public
-   * @returns {Array<Entity>}
+   * @returns {Array<Entity>} all the Entities managed by EntityManager
    */
   get all() {
     return this._entities;

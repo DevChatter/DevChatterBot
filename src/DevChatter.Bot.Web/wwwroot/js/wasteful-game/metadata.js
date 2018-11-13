@@ -7,7 +7,7 @@ export class MetaData {
 
   /**
    * @public
-   * @returns {number}
+   * @returns {number} wastefulInfoWidth
    */
   static get wastefulInfoWidth() {
     return wastefulInfoWidth;
@@ -15,7 +15,7 @@ export class MetaData {
 
   /**
    * @public
-   * @returns {number}
+   * @returns {number} tileSize
    */
   static get tileSize() {
     return tileSize;
@@ -26,7 +26,7 @@ export class EndTypes {
 
   /**
   * @public
-  * @returns {string}
+  * @returns {string} died
   */
   static get died() {
     return endTypeDied;
@@ -34,7 +34,7 @@ export class EndTypes {
 
   /**
   * @public
-  * @returns {string}
+  * @returns {string} escaped
   */
   static get escaped() {
     return endTypeEscaped;

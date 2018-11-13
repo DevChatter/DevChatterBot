@@ -66,7 +66,7 @@ const itemMetaData = [
 
 export class ItemBuilder {
   /**
-   * @param {Wasteful} game
+   * @param {Wasteful} game wasteful game object
    */
   constructor(game) {
     this._game = game;
@@ -74,7 +74,8 @@ export class ItemBuilder {
 
   /**
    * @public
-   * @param {number} levelNumber
+   * @param {number} levelNumber level number to build items for
+   * @return {Array<Item>} items
    */
   getItemsForLevel(levelNumber) {
     let itemType = levelNumber % 2 === 0 ? ItemType.CONSUMABLE : ItemType.WEAPON;
@@ -83,8 +84,9 @@ export class ItemBuilder {
 
   /**
    * @public
-   * @param {string} name
-   * @param {number} uses
+   * @param {string} name name of the item to look up and create
+   * @param {number} [uses] number of uses of the item
+   * @return {Item} item
    */
   createItemByName(name, uses) {
     let itemData = itemMetaData.filter(item => item.name === name)[0];
@@ -94,15 +96,17 @@ export class ItemBuilder {
 
   /**
    * @private
-   * @param {Array} choices
+   * @param {Array} choices - collection to choose from
+   * @return {Object} randomly selected choice
    */
   _pickRandom(choices) {
     return choices[Math.floor(Math.random() * choices.length)];
   }
 
   /**
-   * @param {ItemType.CONSUMABLE|ItemType.WEAPON} itemType
    * @private
+   * @param {ItemType.CONSUMABLE|ItemType.WEAPON} itemType - type of item to create
+   * @return {Item} item
    */
   _createItemOfType(itemType) {
     let itemData = this._pickRandom(itemMetaData.filter(item => item.itemType === itemType));
@@ -110,7 +114,13 @@ export class ItemBuilder {
     return this._createItemFromItemData(itemData);
   }
 
-  _createItemFromItemData(itemData, uses) {
+  /**
+   * @private
+   * @param {Object} itemData - data to use for the item
+   * @param {number} [uses] - number of uses of the item
+   * @return {Item} item
+   */
+    _createItemFromItemData(itemData, uses) {
     let item;
     if (itemData.effectMap !== undefined) {
       item = new EffectItem(itemData.name, this._game, new Sprite(itemData.imgSrc, 1, 1, 1), itemData.itemType, itemData.pickupType, itemData.effectType, itemData.uses, itemData.effectMap);

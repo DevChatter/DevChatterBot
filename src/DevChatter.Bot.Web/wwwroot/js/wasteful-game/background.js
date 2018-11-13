@@ -2,9 +2,9 @@ import { MetaData } from '/js/wasteful-game/metadata.js';
 
 export class Background {
   /**
-   * @param {CanvasRenderingContext2D} context
-   * @param {number} width
-   * @param {number} height
+   * @param {CanvasRenderingContext2D} context context to draw on
+   * @param {number} width width of background
+   * @param {number} height height of background
    */
   constructor(context, width, height) {
     this._context = context;
@@ -26,6 +26,7 @@ export class Background {
 
   /**
    * @private
+   * @return {Array<Image>} all images to use in tiling the background
    */
   _getBackgroundImages() {
     let img1 = new Image();
@@ -39,9 +40,10 @@ export class Background {
 
   /**
    * @private
-   * @param {number} width
-   * @param {number} height
-   * @param {number} choiceCount
+   * @param {number} width width of background to tile
+   * @param {number} height height of background to tile
+   * @param {number} choiceCount number of background tiles to choose from
+   * @return {Array<Array<number>>} grid of background tile indexes
    */
   _createRandomGrid(width, height, choiceCount) {
     let w = width / MetaData.tileSize;
