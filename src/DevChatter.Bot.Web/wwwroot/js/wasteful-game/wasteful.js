@@ -106,9 +106,10 @@ export class Wasteful {
 
   /**
    * @public
-   * @param {string} direction
+   * @param {string} direction direction to move player
+   * @param {number} moveNumber number of spaces to move
    */
-  movePlayer(direction, moveNumber) {
+  movePlayer(direction, moveNumber = 1) {
     if (moveNumber > 0) {
       this._player.getComponent(MovableComponent).move(direction);
 
