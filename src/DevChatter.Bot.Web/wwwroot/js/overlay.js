@@ -127,8 +127,8 @@ var overlay = (function () {
         hangman.displayInfo(hangmanContext, availableLetters, livesRemaining, maskedWord);
       });
     wastefulHubConn.on("MovePlayer",
-      async (direction) => {
-        myWasteful.movePlayer(direction);
+      async (direction, moveNumber) => {
+        myWasteful.movePlayer(direction, moveNumber);
       });
     wastefulHubConn.on("StartGame",
       async (displayName, userId, inventoryItems) => {

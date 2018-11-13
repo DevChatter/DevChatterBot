@@ -16,9 +16,9 @@ namespace DevChatter.Bot.Modules.WastefulGame
             _wastefulHubContext = wastefulHubContext;
         }
 
-        public async Task MovePlayer(string direction)
+        public async Task MovePlayer(string direction, int moveNumber)
         {
-            await _wastefulHubContext.Clients.All.MovePlayer(direction);
+            await _wastefulHubContext.Clients.All.MovePlayer(direction, moveNumber);
         }
 
         public async Task StartGame(string chatUserDisplayName, string chatUserUserId,

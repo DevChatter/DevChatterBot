@@ -22,11 +22,21 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands
         protected override void HandleCommand(IChatClient chatClient, CommandReceivedEventArgs eventArgs)
         {
             string direction = eventArgs.Arguments.FirstOrDefault()?.ToLower();
-            if (_validDirections.Contains(direction))
+            string moveNumberText = eventArgs.Arguments.ElementAtOrDefault(1) ?? "1";
+            if (!int.TryParse(moveNumberText, out int moveNumber))
+            {
+                moveNumber = 1;
+            }
+            if (_validDirections.Contains(direction)
+                && moveNumber > 0 && moveNumber < 10)
             {
                 // TODO: Turn this back on when we can respond in a room.
                 //chatClient.SendMessage($"Moving {direction}...", eventArgs.RoomId);
-                _notification.MovePlayer(direction);
+                _notification.MovePlayer(direction, moveNumber);
+            }
+            else
+            {
+                // TODO: Give some kind of feedback about the invalid movement request.
             }
         }
     }

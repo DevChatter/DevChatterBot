@@ -108,14 +108,21 @@ export class Wasteful {
    * @public
    * @param {string} direction
    */
-  movePlayer(direction) {
-    this._player.getComponent(MovableComponent).move(direction);
+  movePlayer(direction, moveNumber) {
+    if (moveNumber > 0) {
+      this._player.getComponent(MovableComponent).move(direction);
 
-    this._level.update();
+      this._level.update();
 
-    if (this._player.getComponent(AttackableComponent).isDead) {
-      this._isGameOver = true;
-      this._endType = EndTypes.died; 
+      if (this._player.getComponent(AttackableComponent).isDead) {
+        this._isGameOver = true;
+        this._endType = EndTypes.died;
+        return;
+      }
+
+      //TODO: Stop recursion if going to new level.
+      const millisecondsToWait = 200;
+      setTimeout(() => this.movePlayer(direction, moveNumber - 1), millisecondsToWait);
     }
   }
 
