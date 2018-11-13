@@ -14,8 +14,8 @@ const hangryRed = '#ff0000';
 
 export class Wasteful {
   /**
-   * @param {HTMLCanvasElement} canvas
-   * @param {object} hub
+   * @param {HTMLCanvasElement} canvas canvas to draw on
+   * @param {object} hub server to send messages to
    */
   constructor(canvas, hub) {
     this._mouseDownHandle = this._onMouseDown.bind(this);
@@ -37,8 +37,8 @@ export class Wasteful {
 
   /**
    * @public
-   * @param {{displayName: string, userId: string}} userInfo
-   * @param {Array<{string, number}>} startingItems
+   * @param {{displayName: string, userId: string}} userInfo details of the player
+   * @param {Array<{string, number}>} startingItems starting items for the player
    */
   startGame(userInfo, startingItems) {
     if (this._isRunning) {
@@ -74,7 +74,7 @@ export class Wasteful {
 
   /**
    * @public
-   * @returns {Grid}
+   * @returns {Grid} the grid object
    */
   get grid() {
     return this._grid;
@@ -82,7 +82,7 @@ export class Wasteful {
 
   /**
    * @public
-   * @returns {EntityManager}
+   * @returns {EntityManager} the entity manager
    */
   get entityManager() {
    return this._entityManager;
@@ -90,7 +90,7 @@ export class Wasteful {
 
   /**
    * @public
-   * @returns {Player}
+   * @returns {Player} the player
    */
   get player() {
     return this._player;
@@ -98,7 +98,7 @@ export class Wasteful {
 
   /**
    * @public
-   * @returns {Level}
+   * @returns {Level} current level number
    */
   get level() {
     return this._level;
@@ -208,7 +208,7 @@ export class Wasteful {
 
   /**
    * @private
-   * @param {object} event
+   * @param {object} event event args
    */
   _onMouseDown(event) {
     this._lastMouseTarget = event.target;
@@ -216,7 +216,7 @@ export class Wasteful {
 
   /**
    * @private
-   * @param {object} event
+   * @param {object} event event args
    */
   _onKeyDown(event) {
     if(this._lastMouseTarget !== this._canvas) {
