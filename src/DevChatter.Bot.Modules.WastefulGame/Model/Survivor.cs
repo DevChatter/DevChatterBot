@@ -54,5 +54,15 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
                 InventoryItems.AddRange(items);
             }
         }
+
+        public bool BuyItem(ShopItem shopItem)
+        {
+            if (TryPay(shopItem.Price))
+            {
+                InventoryItems.Add(new InventoryItem(shopItem));
+                return true;
+            }
+            return false;
+        }
     }
 }

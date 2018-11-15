@@ -33,6 +33,8 @@ namespace DevChatter.Bot.Modules.WastefulGame.Hubs
 
             Survivor survivor = _survivorRepo.GetOrCreate(playerName, userId);
 
+            survivor.Money += money; // You get to keep money even if dead.
+
             var inventoryItems = items.Select(x => x.ToInventoryItem()).ToList();
             survivor.ApplyEndGame(levelNumber, points, endType, inventoryItems);
 

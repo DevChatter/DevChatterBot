@@ -11,6 +11,7 @@ namespace DevChatter.Bot.Modules.WastefulGame.Data
         public DbSet<GameEndRecord> GameEndRecords { get; set; }
         public DbSet<Survivor> Survivors { get; set; }
         public DbSet<Team> Teams { get; set; }
+        public DbSet<ShopItem> ShopItems { get; set; }
 
         public GameDataContext()
         {
@@ -30,6 +31,11 @@ namespace DevChatter.Bot.Modules.WastefulGame.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder
+                .Entity<ShopItem>()
+                .Property(x => x.Name)
+                .IsRequired();
+
             modelBuilder
                 .Entity<GameEndRecord>()
                 .Property(x => x.EndType)

@@ -20,6 +20,9 @@ namespace DevChatter.Bot.Modules.WastefulGame.Startup
             builder.RegisterType<TeamCommand>()
                 .AsImplementedInterfaces().SingleInstance();
 
+            builder.RegisterType<ShopCommand>()
+                .AsImplementedInterfaces().SingleInstance();
+
             builder.RegisterType<WastefulDisplayNotification>()
                 .AsImplementedInterfaces().SingleInstance();
 

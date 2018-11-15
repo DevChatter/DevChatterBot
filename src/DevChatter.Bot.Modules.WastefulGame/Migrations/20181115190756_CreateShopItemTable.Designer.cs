@@ -4,14 +4,16 @@ using DevChatter.Bot.Modules.WastefulGame.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Migrations
 {
     [DbContext(typeof(GameDataContext))]
-    partial class GameDataContextModelSnapshot : ModelSnapshot
+    [Migration("20181115190756_CreateShopItemTable")]
+    partial class CreateShopItemTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,8 +74,6 @@ namespace DevChatter.Bot.Modules.WastefulGame.Migrations
                         .IsRequired();
 
                     b.Property<int>("Price");
-
-                    b.Property<int>("Uses");
 
                     b.HasKey("Id");
 
