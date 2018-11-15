@@ -24,7 +24,7 @@ export class ExitItem extends EffectItem {
     super('exit',game, sprite, type, pickupType, effectTypes, uses, effectPointMap);
 
     const location = this.game.grid.lowerRightCorner;
-    this.setLocation(location.x - 1, Math.ceil(location.y / 2));
+    this.setLocation(location.x - 1, Math.floor(location.y / 2));
   }
 
   /**
