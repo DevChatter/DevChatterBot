@@ -193,7 +193,7 @@ export class Wasteful {
   _drawGameOver() {
     this._context.fillStyle = hangryRed;
     this._context.font = '128px Arial';
-    this._context.fillText('Game Over', 20, this._canvas.height - 10);
+    this._context.fillText(this._endType, 20, this._canvas.height - 10);
   }
 
   /**
