@@ -1,11 +1,10 @@
-using System;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Modules.WastefulGame.Hubs.Dtos;
 using DevChatter.Bot.Modules.WastefulGame.Model;
+using DevChatter.Bot.Modules.WastefulGame.Model.Enums;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Modules.WastefulGame.Model.Enums;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Hubs
 {
@@ -23,9 +22,9 @@ namespace DevChatter.Bot.Modules.WastefulGame.Hubs
 
         public void GameEnd(int points, string playerName,
             string userId, EndTypes endType, int levelNumber,
-            List<HeldItemDto> items, int money)
+            List<HeldItemDto> items, int money, string escapeType)
         {
-            string itemDisplayText = items.Any()
+          string itemDisplayText = items.Any()
                 ? string.Join(", ", items.Select(x => x.Name))
                 : "nothing";
             string message = $"{playerName} has {endType} on level {levelNumber} with {points} points while holding {itemDisplayText} and {money} coins.";

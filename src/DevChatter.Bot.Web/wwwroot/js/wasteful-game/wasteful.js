@@ -127,9 +127,10 @@ export class Wasteful {
     }
   }
 
-  escape() {
+  escape(escapeType) {
     this._isGameOver = true;
     this._endType = EndTypes.escaped;
+    this._escapeType = escapeType;
   }
 
   /**
@@ -178,13 +179,14 @@ export class Wasteful {
         uses: item.remainingUses
     }));
 
-    this._hub.invoke('GameEnd', this.player.points, this._userInfo.displayName, this._userInfo.userId, this._endType, this.level.levelNumber, heldItems, this.player.money)
+    this._hub.invoke('GameEnd', this.player.points, this._userInfo.displayName, this._userInfo.userId, this._endType, this.level.levelNumber, heldItems, this.player.money, this._escapeType)
       .catch(err => console.error(err.toString()));
 
     this._isRunning = false;
     this._isGameOver = false;
     this._clearCanvas();
     this._endType = '';
+    this._escapeType = '';
   }
 
   /**

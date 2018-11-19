@@ -121,10 +121,7 @@ export class Level {
     return new ExitItem(
       this._game,
       new Sprite('/images/ZedChatter/ExitTile-0.png', 1, 1, 1),
-      ItemType.CONSUMABLE,
-      ItemPickupType.INSTANT,
       [ItemEffectType.HEALTH, ItemEffectType.POINTS],
-      1,
       [
         { [ItemEffectType.HEALTH]: 1 },
         { [ItemEffectType.POINTS]: 20 + this._levelNumber * 3 }
@@ -140,13 +137,11 @@ export class Level {
     return new EscapeItem(
       this._game,
       new Sprite('images/ZedChatter/HeliPad-0.png', 1, 1, 1),
-      ItemType.CONSUMABLE,
-      ItemPickupType.INSTANT,
       ItemEffectType.POINTS,
-      1,
       [
         { [ItemEffectType.POINTS]: 100 }
-      ]
+      ],
+      'helipad'
     );
   }
 
@@ -154,13 +149,11 @@ export class Level {
     let doorway = new EscapeItem(
       this._game,
       new Sprite(ExWall.blue.door, 1, 1, 1),
-      ItemType.CONSUMABLE,
-      ItemPickupType.INSTANT,
       ItemEffectType.POINTS,
-      1,
       [
         { [ItemEffectType.POINTS]: 100 }
-      ]
+      ],
+      'safehouse'
     );
 
     doorway.setLocation(10,0);

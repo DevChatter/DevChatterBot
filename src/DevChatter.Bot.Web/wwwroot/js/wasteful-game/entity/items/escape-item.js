@@ -1,4 +1,4 @@
-import { ItemEffectType } from '/js/wasteful-game/entity/items/item.js';
+import { ItemEffectType, ItemPickupType, ItemType } from '/js/wasteful-game/entity/items/item.js';
 import { EffectItem } from '/js/wasteful-game/entity/items/effect-item.js';
 import Mediator from '/js/wasteful-game/helpers/mediator.js';
 
@@ -12,18 +12,17 @@ export const EscapeItemMessages = Object.freeze({
 
 export class EscapeItem extends EffectItem {
   /**
-   * @param {Wasteful} game
-   * @param {Sprite|null} sprite
-   * @param {ItemType} type
-   * @param {ItemPickupType} pickupType
-   * @param {ItemEffectType|Array<ItemEffectType>|null} effectTypes
-   * @param {number} uses
-   * @param {Array<{ItemEffectType: number}>} effectPointMap
+   * @param {Wasteful} game wasteful game
+   * @param {Sprite|null} sprite sprite object to display
+   * @param {ItemEffectType|Array<ItemEffectType>|null} effectTypes effect type(s) of item
+   * @param {Array<{ItemEffectType: number}>} effectPointMap array of values for the specified effect(s)
+   * @param {string} escapeType type of escape
    */
-  constructor(game, sprite, type, pickupType, effectTypes, uses, effectPointMap) {
-    super('escape',game, sprite, type, pickupType, effectTypes, uses, effectPointMap);
+  constructor(game, sprite, effectTypes, effectPointMap, escapeType) {
+    super('escape', game, sprite, ItemType.CONSUMABLE, ItemPickupType.INSTANT, effectTypes, 1, effectPointMap);
     const location = this.game.grid.lowerRightCorner;
     this.setLocation(location.x - 1, Math.ceil(location.y / 2));
+    this._escapeType = escapeType;
   }
 
   /**
@@ -37,7 +36,7 @@ export class EscapeItem extends EffectItem {
     });
 
     if(event.process) {
-      this.game.escape();
+      this.game.escape(this._escapeType);
     }
   }
 }
