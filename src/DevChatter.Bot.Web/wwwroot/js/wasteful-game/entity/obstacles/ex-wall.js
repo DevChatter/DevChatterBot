@@ -14,6 +14,8 @@ export class ExWall extends Entity {
   /**
    * @param {Wasteful} game the game object
    * @param {string} imgSrc get source from static properties like: ExWall.blue.window
+   * @param {number} x x coordinate
+   * @param {number} y y coordinate
    */
   constructor(game, imgSrc, x, y) {
     super(game, new Sprite(imgSrc, 1, 1, 1));

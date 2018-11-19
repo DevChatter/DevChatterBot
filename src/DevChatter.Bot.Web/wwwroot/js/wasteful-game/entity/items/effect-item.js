@@ -11,14 +11,14 @@ export const EffectItemMessages = Object.freeze({
 
 export class EffectItem extends Item {
   /**
-   * @param {string} name
-   * @param {Wasteful} game
-   * @param {Sprite|null} sprite
-   * @param {ItemType} type
-   * @param {ItemPickupType} pickupType
-   * @param {ItemEffectType|Array<ItemEffectType>|null} effectTypes
-   * @param {number} uses
-   * @param {Array<{ItemEffectType: number}>} effectPointMap
+   * @param {string} name item name
+   * @param {Wasteful} game wasteful game
+   * @param {Sprite|null} sprite sprite for displaying entity
+   * @param {ItemType} type type of the item
+   * @param {ItemPickupType} pickupType type defining how it's picked up
+   * @param {ItemEffectType|Array<ItemEffectType>|null} effectTypes effect(s) of the item
+   * @param {number} uses number of uses it has
+   * @param {Array<{ItemEffectType: number}>} effectPointMap array mapping of the values of the effect(s)
    */
   constructor(name, game, sprite, type, pickupType, effectTypes, uses, effectPointMap) {
     super(name, game, sprite, type, pickupType, effectTypes, uses);
@@ -59,8 +59,8 @@ export class EffectItem extends Item {
 
   /**
    * @protected
-   * @param {ItemEffectType} effectType
-   * @returns {{number|null}}
+   * @param {ItemEffectType} effectType effect type to filter on
+   * @returns {number|null} value of the effect
    */
   _getAmountForEffect(effectType) {
     for(let i = 0, l = this._effectPointMap.length; i < l; i++) {
