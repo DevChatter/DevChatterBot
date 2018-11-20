@@ -1,16 +1,11 @@
-import { Info } from '/js/wasteful-game/info.js';
 import { Grid } from '/js/wasteful-game/grid.js';
-import { Background } from '/js/wasteful-game/background.js';
 import { Level } from '/js/wasteful-game/level.js';
 import { ItemBuilder } from '/js/wasteful-game/level-building/item-builder.js';
-import { MetaData, EndTypes } from '/js/wasteful-game/metadata.js';
+import { EndTypes } from '/js/wasteful-game/metadata.js';
 import { Player } from '/js/wasteful-game/entity/player.js';
 import { MovableComponent } from '/js/wasteful-game/entity/components/movableComponent.js';
 import { AttackableComponent } from '/js/wasteful-game/entity/components/attackableComponent.js';
 import { EntityManager } from '/js/wasteful-game/entityManager.js';
-
-const wastefulGray = '#cccccc';
-const hangryRed = '#ff0000';
 
 export class Wasteful {
   /**
@@ -49,7 +44,6 @@ export class Wasteful {
     this._userInfo = userInfo;
     this._entityManager = new EntityManager();
     this._grid = new Grid(this._entityManager, this._canvas);
-    this._info = new Info(this._canvas, this._context, this._userInfo.displayName);
 
     let itemBuilder = new ItemBuilder(this);
     let items = [];
@@ -61,11 +55,10 @@ export class Wasteful {
     this._player = new Player(this, items);
 
     this._level = new Level(this, this._player, itemBuilder);
-    this._background = new Background(this._context, this._canvas.width - MetaData.wastefulInfoWidth, this._canvas.height);
 
     this._level.next();
 
-    this._animationHandle = window.requestAnimationFrame(() => this._updateFrame());
+    this._screenDisplay.start(userInfo, this._player);
     this._mouseDownHandle = this._onMouseDown.bind(this);
 
     document.addEventListener('mousedown', this._mouseDownHandle);
@@ -136,42 +129,10 @@ export class Wasteful {
   /**
    * @private
    */
-  _updateFrame() {
-    if (this._isGameOver) {
-      this._drawGameOver();
-      let delay = ms => new Promise(r => setTimeout(r, ms));
-      delay(5000).then(() => this._endGame());
-    } else {
-      this._clearCanvas();
-      this._drawBackground();
-
-      this._entityManager.update();
-      this._entityManager.all.forEach(entity => {
-        const location = entity.location;
-        if(entity.sprite !== null) {
-          this._context.drawImage(entity.sprite.image, location.x * MetaData.tileSize, location.y * MetaData.tileSize);
-        }
-      });
-
-      this._info.draw(this._player);
-      this._animationHandle = window.requestAnimationFrame(() => this._updateFrame());
-    }
-  }
-
-  /**
-   * @private
-   */
-  _clearCanvas() {
-    this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
-  }
-
-  /**
-   * @private
-   */
   _endGame() {
     document.removeEventListener('mousedown', this._mouseDownHandle);
     document.removeEventListener('keydown', this._keyDownHandle);
-    window.cancelAnimationFrame(this._animationHandle);
+    this._screenDisplay.stop();
 
     // TODO: Organize data better, so it's not coming from separate objects.
     let heldItems = this.player.inventory.items.map(item => ({
@@ -184,28 +145,8 @@ export class Wasteful {
 
     this._isRunning = false;
     this._isGameOver = false;
-    this._clearCanvas();
     this._endType = '';
     this._escapeType = '';
-  }
-
-  /**
-   * @private
-   */
-  _drawGameOver() {
-    this._context.fillStyle = hangryRed;
-    this._context.font = '128px Arial';
-    this._context.fillText(this._endType, 20, this._canvas.height - 10);
-  }
-
-  /**
-   * @private
-   */
-  _drawBackground() {
-    this._background.drawBackground();
-
-    this._context.fillStyle = wastefulGray;
-    this._context.fillRect(this._canvas.width - MetaData.wastefulInfoWidth, 0, MetaData.wastefulInfoWidth, this._canvas.height);
   }
 
   /**
