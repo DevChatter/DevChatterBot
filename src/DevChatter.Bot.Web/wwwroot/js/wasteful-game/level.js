@@ -1,11 +1,12 @@
 import { SimpleZombie } from '/js/wasteful-game/entity/enemies/simple-zombie.js';
 import { BarrelFire } from '/js/wasteful-game/entity/obstacles/barrel-fire.js';
+import { CampFire } from '/js/wasteful-game/entity/obstacles/camp-fire.js';
 import { ExWall } from '/js/wasteful-game/entity/obstacles/ex-wall.js';
 import { AutonomousComponent } from '/js/wasteful-game/entity/components/autonomousComponent.js';
 import { ExitItem } from '/js/wasteful-game/entity/items/exit-item.js';
 import { EscapeItem } from '/js/wasteful-game/entity/items/escape-item.js';
 import { Sprite } from '/js/wasteful-game/entity/sprite.js';
-import { ItemEffectType, ItemPickupType, ItemType } from '/js/wasteful-game/entity/items/item.js';
+import { ItemEffectType } from '/js/wasteful-game/entity/items/item.js';
 
 export class Level {
   /**
@@ -59,10 +60,16 @@ export class Level {
       this._game.entityManager.add(items[i]);
     }
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 8; i++) {
       const barrel = new BarrelFire(this._game);
       barrel.setLocation(this._game.grid.getRandomOpenLocation());
       this._game.entityManager.add(barrel);
+    }
+
+    for (let i = 0; i < 2; i++) {
+      const campFire = new CampFire(this._game);
+      campFire.setLocation(this._game.grid.getRandomOpenLocation());
+      this._game.entityManager.add(campFire);
     }
 
     let requiredEntity = this._game.entityManager.getFirstByClass(ExitItem)

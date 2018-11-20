@@ -126,11 +126,12 @@ export class MovableComponent extends Component {
    */
   _move(x, y) {
     let result = false;
+    const toLocation = { x, y };
     if (this.game.grid.canMoveTo(x, y)) {
       const event = Mediator.publish(MovableComponentMessages.MOVE, {
         source: this.entity,
         fromLocation: this.entity.location,
-        toLocation: {x, y},
+        toLocation: toLocation,
       });
       if(event.process) {
         this.entity.setLocation(event.args.toLocation.x, event.args.toLocation.y);
@@ -140,7 +141,8 @@ export class MovableComponent extends Component {
       Mediator.publish(MovableComponentMessages.BLOCKED, {
         source: this.entity,
         fromLocation: this.entity.location,
-        toLocation: {x, y},
+        toLocation: toLocation,
+        blockedBy: this.game.entityManager.getAtLocation(toLocation)
       });
     }
     return result;

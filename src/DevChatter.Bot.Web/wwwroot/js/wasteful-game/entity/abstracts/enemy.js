@@ -1,5 +1,5 @@
 import { Entity } from '/js/wasteful-game/entity/entity.js';
-import { MovableComponent } from '/js/wasteful-game/entity/components/movableComponent.js';
+import { MovableComponent, MovableComponentMessages } from '/js/wasteful-game/entity/components/movableComponent.js';
 import { AttackableComponent } from '/js/wasteful-game/entity/components/attackableComponent.js';
 import { AttackingComponent } from '/js/wasteful-game/entity/components/attackingComponent.js';
 import { AutonomousComponent, AutonomousComponentMessages } from '/js/wasteful-game/entity/components/autonomousComponent.js';
@@ -37,6 +37,7 @@ export class Enemy extends Entity {
     ]);
 
     Mediator.subscribe(AutonomousComponentMessages.TURN, this._onTurn.bind(this));
+    Mediator.subscribe(MovableComponentMessages.BLOCKED, this._onMoveBlocked.bind(this));
   }
 
   /**
@@ -60,6 +61,23 @@ export class Enemy extends Entity {
       this._attackingComponent.attack(player);
     } else {
       this._movableComponent.moveTowardsTarget(player, false);
+    }
+  }
+
+  /**
+   * @private
+   * @param {Event} event
+   */
+  _onMoveBlocked(event) {
+    if (event.args.source === this) {
+      event.args.blockedBy.filter(target => {
+        return !(target instanceof Enemy);
+      }).forEach(target => {
+        const tAttackingComponent = target.getComponent(AttackingComponent);
+          if(tAttackingComponent !== null) {
+            tAttackingComponent.attack(this);
+          }
+      });
     }
   }
 }
