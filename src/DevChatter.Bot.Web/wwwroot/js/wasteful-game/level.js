@@ -1,7 +1,6 @@
 import { SimpleZombie } from '/js/wasteful-game/entity/enemies/simple-zombie.js';
-import { BarrelFire } from '/js/wasteful-game/entity/obstacles/barrel-fire.js';
-import { CampFire } from '/js/wasteful-game/entity/obstacles/camp-fire.js';
-import { ExWall } from '/js/wasteful-game/entity/obstacles/ex-wall.js';
+import { BarrelFire, CampFire } from '/js/wasteful-game/entity/obstacles.js';
+import { ExWall } from '/js/wasteful-game/entity/structure/ex-wall.js';
 import { AutonomousComponent } from '/js/wasteful-game/entity/components/autonomousComponent.js';
 import { ExitItem } from '/js/wasteful-game/entity/items/exit-item.js';
 import { EscapeItem } from '/js/wasteful-game/entity/items/escape-item.js';

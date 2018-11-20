@@ -14,3 +14,12 @@ export class CampFire extends Entity {
     this.addComponent(this._attackingComponent);
   }
 }
+
+export class BarrelFire extends Entity {
+  /**
+   * @param {Wasteful} game
+   */
+  constructor(game) {
+    super(game, new Sprite('/images/ZedChatter/BarrelFires-0.png', 1, 1, 1));
+  }
+}
