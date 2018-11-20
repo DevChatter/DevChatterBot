@@ -29,22 +29,28 @@ export class Grid {
 
   /**
    * @public
-   * @param {{x: number, y: number}} startLocation starting location
-   * @param {{x: number, y: number}} endLocation ending location
+   * @param {{x: number, y: number}} startLoc starting location
+   * @param {{x: number, y: number}} endLoc ending location
    * @returns {Array<Array<number>>} path from start to end location
    */
-  findPath(startLocation, endLocation) {
+  findPath(startLoc, endLoc) {
     let gridArray = [];
     for (let y = 0; y < this._max_y; y++) {
       gridArray[y] = [];
       for (let x = 0; x < this._max_x; x++) {
-        gridArray[y][x] = this._canWalkOn(x,y) ? 0 : 1;
+        const isEndLoc = endLoc.x === x && endLoc.y === y;
+        if (this._canWalkOn(x,y) || isEndLoc) {
+          gridArray[y][x] = 0;
+        } else {
+          gridArray[y][x] = 1;
+        }
       }
     }
     let pathGrid = new PF.Grid(gridArray);
     let finder = new PF.AStarFinder();
-    let path = finder.findPath(startLocation.x, startLocation.y, endLocation.x, endLocation.y, pathGrid);
-    return path;
+    let path = finder.findPath(startLoc.x, startLoc.y, endLoc.x, endLoc.y, pathGrid);
+    path.shift();
+    return path.map(step => ({ x: step[0], y:step[1] }));
   }
 
   /**

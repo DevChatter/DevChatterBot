@@ -16,13 +16,15 @@ export class Enemy extends Entity {
    * @param {boolean} diagonal
    * @param {number} range
    * @param {number} damage
+   * @param {boolean} advanced
    */
-  constructor(game, sprite, steps, turns, health, diagonal, range, damage) {
+  constructor(game, sprite, steps, turns, health, diagonal, range, damage, advanced = false) {
     if (new.target === Enemy) {
       throw new TypeError('Cannot construct Enemy instances directly.');
     }
-
     super(game, sprite);
+
+    this._advanced = advanced
 
     this._movableComponent = new MovableComponent(game, this, steps);
     this._autonomousComponent = new AutonomousComponent(game, this, turns);
@@ -60,7 +62,7 @@ export class Enemy extends Entity {
     if(this._attackingComponent.canAttack(player)) {
       this._attackingComponent.attack(player);
     } else {
-      this._movableComponent.moveTowardsTarget(player, false);
+      this._movableComponent.moveTowardsTarget(player, this._advanced);
     }
   }
 

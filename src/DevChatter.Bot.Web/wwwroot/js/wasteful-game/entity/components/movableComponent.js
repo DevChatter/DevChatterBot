@@ -48,8 +48,13 @@ export class MovableComponent extends Component {
    */
   moveTowardsLocation(x, y, advanced = false) {
     if(advanced) {
-      // TODO: A* Pathfinding
-      throw new Error('Advanced pathfinding is not implemented yet.');
+      let path = this.game.grid.findPath(this.entity.location, { x, y });
+      if (path.length > 0) {
+        const firstStep = path[0];
+        this._move(firstStep.x, firstStep.y);
+      } else {
+        // Don't go anywhere. No path to target.
+      }
     } else {
       const location = this.entity.location;
       for(let i = 0; i < this.steps; i++) {
