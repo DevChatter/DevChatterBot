@@ -6,6 +6,7 @@ import { Player } from '/js/wasteful-game/entity/player.js';
 import { MovableComponent } from '/js/wasteful-game/entity/components/movableComponent.js';
 import { AttackableComponent } from '/js/wasteful-game/entity/components/attackableComponent.js';
 import { EntityManager } from '/js/wasteful-game/entityManager.js';
+import { ScreenDisplay } from '/js/wasteful-game/screen-display.js';
 
 export class Wasteful {
   /**
@@ -17,9 +18,7 @@ export class Wasteful {
     this._keyDownHandle = this._onKeyDown.bind(this);
     this._canvas = canvas;
     this._hub = hub;
-    this._context = canvas.getContext('2d');
     this._isRunning = false;
-    this._isGameOver = false;
     this._endType = '';
     this._lastMouseTarget = null;
 
@@ -58,6 +57,7 @@ export class Wasteful {
 
     this._level.next();
 
+    this._screenDisplay = new ScreenDisplay(this, this._entityManager, this._canvas)
     this._screenDisplay.start(userInfo, this._player);
     this._mouseDownHandle = this._onMouseDown.bind(this);
 
@@ -109,8 +109,8 @@ export class Wasteful {
       this._level.update();
 
       if (this._player.getComponent(AttackableComponent).isDead) {
-        this._isGameOver = true;
         this._endType = EndTypes.died;
+        this._endGame();
         return;
       }
 
@@ -121,9 +121,9 @@ export class Wasteful {
   }
 
   escape(escapeType) {
-    this._isGameOver = true;
     this._endType = EndTypes.escaped;
     this._escapeType = escapeType;
+    this._endGame();
   }
 
   /**
@@ -132,7 +132,7 @@ export class Wasteful {
   _endGame() {
     document.removeEventListener('mousedown', this._mouseDownHandle);
     document.removeEventListener('keydown', this._keyDownHandle);
-    this._screenDisplay.stop();
+    this._screenDisplay.stop(this._endType);
 
     // TODO: Organize data better, so it's not coming from separate objects.
     let heldItems = this.player.inventory.items.map(item => ({
@@ -144,7 +144,6 @@ export class Wasteful {
       .catch(err => console.error(err.toString()));
 
     this._isRunning = false;
-    this._isGameOver = false;
     this._endType = '';
     this._escapeType = '';
   }

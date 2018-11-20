@@ -1,4 +1,5 @@
 import { MetaData } from '/js/wasteful-game/metadata.js';
+import { Background } from '/js/wasteful-game/background.js';
 import { AttackableComponent } from '/js/wasteful-game/entity/components/attackableComponent.js';
 
 const wastefulGray = '#cccccc';
@@ -31,34 +32,30 @@ export class ScreenDisplay {
   /**
    * @public
    */
-  stop() {
-    this._clearCanvas();
+  stop(textToDisplay) {
     window.cancelAnimationFrame(this._animationHandle);
+    this._drawGameOver(textToDisplay);
+    let delay = ms => new Promise(r => setTimeout(r, ms));
+    delay(5000).then(() => this._clearCanvas());
   }
 
   /**
    * @private
    */
   _updateFrame() {
-    if (this._game._isGameOver) {
-      this._drawGameOver();
-      let delay = ms => new Promise(r => setTimeout(r, ms));
-      delay(5000).then(() => this._game._endGame());
-    } else {
-      this._clearCanvas();
-      this._drawBackground();
+    this._clearCanvas();
+    this._drawBackground();
 
-      this._entityManager.update();
-      this._entityManager.all.forEach(entity => {
-        const location = entity.location;
-        if(entity.sprite !== null) {
-          this._context.drawImage(entity.sprite.image, location.x * MetaData.tileSize, location.y * MetaData.tileSize);
-        }
-      });
+    this._entityManager.update();
+    this._entityManager.all.forEach(entity => {
+      const location = entity.location;
+      if(entity.sprite !== null) {
+        this._context.drawImage(entity.sprite.image, location.x * MetaData.tileSize, location.y * MetaData.tileSize);
+      }
+    });
 
-      this._drawInfo();
-      this._animationHandle = window.requestAnimationFrame(() => this._updateFrame());
-    }
+    this._drawInfo();
+    this._animationHandle = window.requestAnimationFrame(() => this._updateFrame());
   }
 
   /**
@@ -71,10 +68,10 @@ export class ScreenDisplay {
   /**
    * @private
    */
-  _drawGameOver() {
+  _drawGameOver(textToDisplay) {
     this._context.fillStyle = hangryRed;
     this._context.font = '128px Arial';
-    this._context.fillText(this._endType, 20, this._gridHeight - 10);
+    this._context.fillText(textToDisplay, 20, this._gridHeight - 10);
   }
 
   /**
@@ -130,5 +127,4 @@ export class ScreenDisplay {
       this._context.fillText(item.remainingUses.toString(), x + 10, y);
     });
   }
-
 }
