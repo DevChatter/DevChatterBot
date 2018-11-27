@@ -17,6 +17,9 @@
                 @Html.DisplayNameFor(model => model.CommandEntity[0].FullTypeName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.CommandEntity[0].Cooldown)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CommandEntity[0].IsEnabled)
             </th>
             <th></th>
@@ -30,6 +33,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FullTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cooldown)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsEnabled)
