@@ -25,7 +25,7 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands.Operations
             if (int.TryParse(itemRequested, out int itemId) && itemId > 0)
             {
                 ShopItem shopItem =
-                    _gameRepository.Single(GameDataPolicy<ShopItem>.ById(itemId));
+                    _gameRepository.Single(ShopItemPolicy.ById(itemId));
                 if (shopItem != null)
                 {
                     if (survivor.BuyItem(shopItem))

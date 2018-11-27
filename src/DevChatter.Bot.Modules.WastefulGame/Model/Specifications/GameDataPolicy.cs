@@ -12,16 +12,6 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model.Specifications
             Criteria = expression;
         }
 
-        public static GameDataPolicy<T> All()
-        {
-            return new GameDataPolicy<T>(x => true);
-        }
-
-        public static GameDataPolicy<T> ById(int id)
-        {
-            return new GameDataPolicy<T>(x => x.Id == id);
-        }
-
         public Expression<Func<T, bool>> Criteria { get; }
 
         public IList<Expression<Func<T, object>>> Includes { get; }

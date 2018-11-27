@@ -3,6 +3,7 @@ using DevChatter.Bot.Modules.WastefulGame.Data;
 using DevChatter.Bot.Modules.WastefulGame.Model;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Modules.WastefulGame.Model.Specifications;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Commands.Operations
 {
@@ -21,7 +22,7 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands.Operations
 
         public override string TryToExecute(CommandReceivedEventArgs eventArgs, Survivor survivor)
         {
-            List<Team> teams = _gameRepository.List<Team>();
+            List<Team> teams = _gameRepository.List(TeamPolicy.All());
 
             var teamStats = teams
                 .Select(t => new {t.Name, Total = t.Members.Sum(m => m.Money)})

@@ -4,7 +4,6 @@ using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Modules.WastefulGame.Commands.Operations;
 using DevChatter.Bot.Modules.WastefulGame.Data;
-using DevChatter.Bot.Modules.WastefulGame.Model;
 using DevChatter.Bot.Modules.WastefulGame.Model.Specifications;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +41,7 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands
             }
             else
             {
-                var items = _gameRepository.List(GameDataPolicy<ShopItem>.All());
+                var items = _gameRepository.List(ShopItemPolicy.All());
                 string itemDisplay = string.Join(", ", items.Select(x => $"{x.Id}:{x.Name}-{x.Price}"));
                 chatClient.SendMessage($"Buy somethin' will ya! For sale: {itemDisplay}");
             }
