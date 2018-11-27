@@ -40,7 +40,8 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
             return false;
         }
 
-        public void ApplyEndGame(int levelNumber, int points, EndTypes endType, IList<InventoryItem> items)
+        public void ApplyEndGame(int levelNumber, int points,
+            EndTypes endType, IList<InventoryItem> items, Location location)
         {
             var gameEndRecord = new GameEndRecord
             {
@@ -51,9 +52,13 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
 
             GameEndRecords.Add(gameEndRecord);
             InventoryItems.Clear();
-            if (endType != EndTypes.Died && items.Any())
+            if (endType != EndTypes.Died)
             {
-                InventoryItems.AddRange(items);
+                Location = location;
+                if (items.Any())
+                {
+                    InventoryItems.AddRange(items);
+                }
             }
         }
 

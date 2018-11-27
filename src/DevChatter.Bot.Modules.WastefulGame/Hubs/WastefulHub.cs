@@ -1,7 +1,9 @@
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Modules.WastefulGame.Data;
 using DevChatter.Bot.Modules.WastefulGame.Hubs.Dtos;
 using DevChatter.Bot.Modules.WastefulGame.Model;
 using DevChatter.Bot.Modules.WastefulGame.Model.Enums;
+using DevChatter.Bot.Modules.WastefulGame.Model.Specifications;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +12,15 @@ namespace DevChatter.Bot.Modules.WastefulGame.Hubs
 {
     public class WastefulHub : Hub<IWastefulDisplay>
     {
+        private readonly IGameRepository _repo;
         private readonly SurvivorRepo _survivorRepo;
         private readonly List<IChatClient> _chatClients;
 
         public WastefulHub(IList<IChatClient> chatClients,
+            IGameRepository repo,
             SurvivorRepo survivorRepo)
         {
+            _repo = repo;
             _survivorRepo = survivorRepo;
             _chatClients = chatClients.ToList();
         }
@@ -31,11 +36,13 @@ namespace DevChatter.Bot.Modules.WastefulGame.Hubs
             _chatClients.ForEach(c => c.SendMessage(message));
 
             Survivor survivor = _survivorRepo.GetOrCreate(playerName, userId);
+            Location location = _repo.Single(LocationSpecification.ByEscapeType(escapeType));
 
             survivor.Money += money; // You get to keep money even if dead.
 
             var inventoryItems = items.Select(x => x.ToInventoryItem()).ToList();
-            survivor.ApplyEndGame(levelNumber, points, endType, inventoryItems);
+            survivor.ApplyEndGame(levelNumber, points, endType,
+                inventoryItems, location);
 
             _survivorRepo.Save(survivor);
         }
