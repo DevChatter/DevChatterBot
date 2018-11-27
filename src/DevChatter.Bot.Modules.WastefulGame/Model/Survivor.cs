@@ -20,7 +20,7 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
         public string UserId { get; set; }
         public string DisplayName { get; set; }
         public Team Team { get; set; }
-        public long Money { get; set; }
+        public long Money { get; set; } = 100;
         public List<GameEndRecord> GameEndRecords { get; set; }
             = new List<GameEndRecord>();
 
@@ -70,6 +70,17 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
                 return true;
             }
             return false;
+        }
+
+        public bool LeaveTeam()
+        {
+            if (Team == null)
+            {
+                return false;
+            }
+
+            Team = null;
+            return true;
         }
     }
 }

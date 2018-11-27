@@ -7,8 +7,11 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands.Operations
 {
     public class LeaveTeamOperation : BaseGameCommandOperation
     {
+        private readonly IGameRepository _gameRepository;
+
         public LeaveTeamOperation(IGameRepository gameRepository)
         {
+            _gameRepository = gameRepository;
         }
 
         public override List<string> OperandWords { get; }
@@ -17,7 +20,20 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands.Operations
         public override string TryToExecute(CommandReceivedEventArgs eventArgs,
             Survivor survivor)
         {
-            return "You cannot leave teams yet. Please wait for this feature.";
+            Team team = survivor.Team;
+
+            if (team == null)
+            {
+                return "You are not currently on a team.";
+            }
+
+            if (survivor.LeaveTeam())
+            {
+                _gameRepository.Update(survivor);
+                return $"You left the {team.Name} team.";
+            }
+
+            return $"Failed to leave the team.";
         }
     }
 }
