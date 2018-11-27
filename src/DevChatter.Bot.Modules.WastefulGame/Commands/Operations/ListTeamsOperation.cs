@@ -1,9 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
-using DevChatter.Bot.Core.Commands.Operations;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Modules.WastefulGame.Data;
 using DevChatter.Bot.Modules.WastefulGame.Model;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Commands.Operations
 {

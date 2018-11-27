@@ -23,6 +23,7 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands
                 new LeaveTeamOperation(gameRepository),
                 new JoinTeamOperation(gameRepository),
                 new ListTeamsOperation(gameRepository),
+                new RankTeamsOperation(gameRepository),
             };
         }
 
