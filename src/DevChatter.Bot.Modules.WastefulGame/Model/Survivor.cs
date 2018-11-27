@@ -27,6 +27,8 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
         public List<InventoryItem> InventoryItems { get; set; }
             = new List<InventoryItem>();
 
+        public Location Location { get; set; }
+
         public bool TryPay(int amount)
         {
             if (Money >= amount)

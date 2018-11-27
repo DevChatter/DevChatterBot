@@ -4,14 +4,16 @@ using DevChatter.Bot.Modules.WastefulGame.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Migrations
 {
     [DbContext(typeof(GameDataContext))]
-    partial class GameDataContextModelSnapshot : ModelSnapshot
+    [Migration("20181127193116_AddLocationsTable")]
+    partial class AddLocationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,8 +104,6 @@ namespace DevChatter.Bot.Modules.WastefulGame.Migrations
 
                     b.Property<string>("DisplayName");
 
-                    b.Property<int?>("LocationId");
-
                     b.Property<long>("Money");
 
                     b.Property<int?>("TeamId");
@@ -111,8 +111,6 @@ namespace DevChatter.Bot.Modules.WastefulGame.Migrations
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LocationId");
 
                     b.HasIndex("TeamId");
 
@@ -148,10 +146,6 @@ namespace DevChatter.Bot.Modules.WastefulGame.Migrations
 
             modelBuilder.Entity("DevChatter.Bot.Modules.WastefulGame.Model.Survivor", b =>
                 {
-                    b.HasOne("DevChatter.Bot.Modules.WastefulGame.Model.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
-
                     b.HasOne("DevChatter.Bot.Modules.WastefulGame.Model.Team", "Team")
                         .WithMany("Members")
                         .HasForeignKey("TeamId");

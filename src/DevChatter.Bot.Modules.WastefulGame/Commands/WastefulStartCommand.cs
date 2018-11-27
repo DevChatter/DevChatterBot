@@ -1,10 +1,10 @@
-using System.Linq;
 using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Modules.WastefulGame.Hubs.Dtos;
 using DevChatter.Bot.Modules.WastefulGame.Model;
+using System.Linq;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Commands
 {
