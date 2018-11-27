@@ -43,6 +43,11 @@ namespace DevChatter.Bot.Modules.WastefulGame.Data
                 .IsRequired();
 
             modelBuilder
+                .Entity<Location>()
+                .HasIndex(x => x.EscapeType)
+                .IsUnique();
+
+            modelBuilder
                 .Entity<ShopItem>()
                 .Property(x => x.Name)
                 .IsRequired();
