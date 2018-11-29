@@ -24,7 +24,8 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands
             var items = survivor.InventoryItems;
 
             string itemText = items.Any()
-                ? string.Join(", ", items.Select(item => $"{item.Name}({item.Uses})"))
+                ? string.Join(", ", items
+                    .Select((item, index) => $"({(char)('A' + index)}){item.Name}-Uses:{item.Uses}"))
                 : "none";
             string message = $"You have these items: {itemText}.";
             chatClient.SendDirectMessage(eventArgs.ChatUser.DisplayName, message);
