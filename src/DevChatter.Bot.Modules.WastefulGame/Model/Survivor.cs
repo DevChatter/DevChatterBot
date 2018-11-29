@@ -62,18 +62,15 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
             }
         }
 
-        public bool SellItem(int inventoryIndex)
+        public InventoryItem SellItem(int inventoryIndex)
         {
             InventoryItem item = InventoryItems.ElementAtOrDefault(inventoryIndex);
-            if (item == null)
+            if (item != null)
             {
-                return false;
+                InventoryItems.RemoveAt(inventoryIndex);
+                Money += 25;
             }
-
-            InventoryItems.RemoveAt(inventoryIndex);
-            Money += 25;
-
-            return true;
+            return item;
         }
 
         public bool BuyItem(ShopItem shopItem)

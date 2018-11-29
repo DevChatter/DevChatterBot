@@ -12,7 +12,7 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands.Operations
             = "Please specify the item you wish to sell using its inventory letter.";
 
         public const string OUT_OF_RANGE_MESSAGE = "Which item did you want to sell?";
-        public const string SOLD_MESSAGE = "Item sold for 25 coins.";
+        public const string SOLD_FORMAT_STRING = "Sold {0} for 25 coins.";
 
         private readonly IGameRepository _repository;
 
@@ -38,10 +38,11 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands.Operations
                 return OUT_OF_RANGE_MESSAGE;
             }
 
-            if (survivor.SellItem(itemIndex))
+            InventoryItem soldItem = survivor.SellItem(itemIndex);
+            if (soldItem != null)
             {
                 _repository.Update(survivor);
-                return SOLD_MESSAGE;
+                return string.Format(SOLD_FORMAT_STRING, soldItem.Name);
             }
 
             return OUT_OF_RANGE_MESSAGE;

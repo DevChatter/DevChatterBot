@@ -8,39 +8,40 @@ namespace WastefulGame.UnitTests.Model.SurvivorTests
     public class SellItemShould
     {
         [Fact]
-        public void ReturnFalse_GivenNoItems()
+        public void ReturnNull_GivenNoItems()
         {
             var survivor = new Survivor();
 
-            bool result = survivor.SellItem(0);
+            InventoryItem result = survivor.SellItem(0);
 
-            result.Should().BeFalse();
+            result.Should().BeNull();
         }
 
         [Fact]
-        public void ReturnFalse_WhenTryingToSellOutOfRange()
+        public void ReturnNull_WhenTryingToSellOutOfRange()
         {
             var survivor = new Survivor
             {
                 InventoryItems = new List<InventoryItem> { new InventoryItem() }
             };
 
-            bool result = survivor.SellItem(5);
+            InventoryItem result = survivor.SellItem(5);
 
-            result.Should().BeFalse();
+            result.Should().BeNull();
         }
 
         [Fact]
-        public void ReturnTrue_GivenSellingOnlyItem()
+        public void ReturnItem_GivenSellingOnlyItem()
         {
+            var item = new InventoryItem();
             var survivor = new Survivor
             {
-                InventoryItems = new List<InventoryItem> {new InventoryItem()}
+                InventoryItems = new List<InventoryItem> {item}
             };
 
-            bool result = survivor.SellItem(0);
+            InventoryItem result = survivor.SellItem(0);
 
-            result.Should().BeTrue();
+            result.Should().Be(item);
         }
 
         [Fact]
@@ -57,7 +58,7 @@ namespace WastefulGame.UnitTests.Model.SurvivorTests
                 }
             };
 
-            bool result = survivor.SellItem(2);
+            survivor.SellItem(2);
 
             survivor.InventoryItems.Count.Should().Be(2);
             survivor.InventoryItems.Should().NotContain(itemToSell);
@@ -71,7 +72,7 @@ namespace WastefulGame.UnitTests.Model.SurvivorTests
                 InventoryItems = new List<InventoryItem> {new InventoryItem()}
             };
 
-            bool result = survivor.SellItem(0);
+            survivor.SellItem(0);
 
             survivor.InventoryItems.Should().BeEmpty();
         }
@@ -85,7 +86,7 @@ namespace WastefulGame.UnitTests.Model.SurvivorTests
                 InventoryItems = new List<InventoryItem> {new InventoryItem {}}
             };
 
-            bool result = survivor.SellItem(0);
+            survivor.SellItem(0);
 
             survivor.Money.Should().Be(125);
         }

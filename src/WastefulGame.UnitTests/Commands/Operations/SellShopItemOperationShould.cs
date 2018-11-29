@@ -55,10 +55,11 @@ namespace WastefulGame.UnitTests.Commands.Operations
         public void ShowSuccess_GivenItemSold()
         {
             var (operation, eventArgs, survivor, _) = SetUpTest(1, "sell", "A");
+            string expected = string.Format(SellShopItemOperation.SOLD_FORMAT_STRING, survivor.InventoryItems[0].Name);
 
             string result = operation.TryToExecute(eventArgs, survivor);
 
-            result.Should().Be(SellShopItemOperation.SOLD_MESSAGE);
+            result.Should().Be(expected);
         }
 
         [Fact]
@@ -80,9 +81,12 @@ namespace WastefulGame.UnitTests.Commands.Operations
             {
                 Arguments = arguments
             };
+
             var survivor = new Survivor();
-            var itemsToAdd = Enumerable.Repeat(new InventoryItem(), numberOfItems);
-            survivor.InventoryItems.AddRange(itemsToAdd);
+            for (int i = 0; i < numberOfItems; i++)
+            {
+                survivor.InventoryItems.Add(new InventoryItem{Name = i.ToString()});
+            }
 
             return (operation, eventArgs, survivor, repo);
         }
