@@ -26,5 +26,10 @@ namespace DevChatter.Bot.Modules.WastefulGame
         {
             await _wastefulHubContext.Clients.All.StartGame(chatUserDisplayName, chatUserUserId, inventoryItems);
         }
+
+        public async Task DisplaySurvivorRankings(SurvivorRankingDataDto survivorRankingData)
+        {
+            await _wastefulHubContext.Clients.All.DisplaySurvivorRankings(survivorRankingData);
+        }
     }
 }

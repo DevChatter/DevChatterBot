@@ -8,9 +8,8 @@ const heartIcon = '\u{1F499}';
 const fontSize = 16;
 
 export class ScreenDisplay {
-  constructor(game, entityManager, canvas) {
+  constructor(game, canvas) {
     this._game = game;
-    this._entityManager = entityManager;
     this._canvas = canvas;
     this._context = canvas.getContext('2d');
     this._gridWidth = this._canvas.width - MetaData.wastefulInfoWidth;
@@ -22,7 +21,8 @@ export class ScreenDisplay {
   /**
    * @public
    */
-  start(userInfo, player) {
+  start(userInfo, player, entityManager) {
+    this._entityManager = entityManager;
     this._playerName = userInfo.displayName;
     this._player = player;
     this._background = new Background(this._context, this._gridWidth, this._gridHeight);
@@ -37,6 +37,28 @@ export class ScreenDisplay {
     this._drawGameOver(textToDisplay);
     let delay = ms => new Promise(r => setTimeout(r, ms));
     delay(5000).then(() => this._clearCanvas());
+  }
+
+  showSurvivorRankings(survivorRankingData) {
+    this._clearCanvas();
+
+    this._context.fillStyle = wastefulGray;
+    this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
+    const lineHeight = fontSize + 4;
+    const headerHeight = 36;
+
+    this._context.fillStyle = '#000000';
+    this._context.font = `32px Arial`;
+    this._context.fillText('Greatest Survivors', 4, headerHeight);
+
+    this._context.font = `${fontSize}px Arial`;
+
+    survivorRankingData.overall.forEach((record, index) => {
+      const rank = index + 1;
+      const text = `${rank}) ${record.name}-${record.money}`;
+      this._context.fillText(text, 4, lineHeight * rank + headerHeight);
+    });
+
   }
 
   /**

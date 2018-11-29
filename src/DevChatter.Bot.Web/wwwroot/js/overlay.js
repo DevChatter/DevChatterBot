@@ -134,6 +134,10 @@ var overlay = (function () {
       async (displayName, userId, inventoryItems) => {
         myWasteful.startGame({ displayName, userId }, inventoryItems);
       });
+    wastefulHubConn.on("DisplaySurvivorRankings",
+      async (survivorRankingData) => {
+        myWasteful.displaySurvivorRankings(survivorRankingData);
+      });
   };
 }());
 
