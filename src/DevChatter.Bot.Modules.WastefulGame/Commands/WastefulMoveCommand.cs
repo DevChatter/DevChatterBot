@@ -10,7 +10,7 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands
     public class WastefulMoveCommand : BaseCommand
     {
         private readonly List<string> _validDirections =
-            new List<string> { "left", "right", "up", "down", "l", "r", "u", "d" };
+            new List<string> { "left", "right", "up", "down", "l", "r", "u", "d", "w", "e", "n", "s" };
         private readonly IWastefulDisplayNotification _notification;
 
         public WastefulMoveCommand(IRepository repository,

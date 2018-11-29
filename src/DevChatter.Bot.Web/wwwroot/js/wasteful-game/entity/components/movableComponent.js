@@ -73,23 +73,27 @@ export class MovableComponent extends Component {
 
   /**
    * @public
-   * @param {string} direction Ex: 'left', 'right', 'up', 'down', 'l', 'r', 'u', 'd'
+   * @param {string} direction Ex: 'left', 'right', 'up', 'down', 'l', 'r', 'u', 'd', 'w', 'e', 'n', 's'
    */
   move(direction) {
     switch (direction.toLowerCase()) {
       case 'l':
+      case 'w':
       case 'left':
         this.moveLeft();
         break;
       case 'u':
+      case 'n':
       case 'up':
         this.moveUp();
         break;
       case 'd':
+      case 's':
       case 'down':
         this.moveDown();
         break;
       case 'r':
+      case 'e':
       case 'right':
         this.moveRight();
         break;
