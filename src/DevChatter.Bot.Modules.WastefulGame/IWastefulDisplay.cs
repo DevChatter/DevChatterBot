@@ -8,5 +8,6 @@ namespace DevChatter.Bot.Modules.WastefulGame
     {
         Task MovePlayer(string direction, int moveNumber);
         Task StartGame(string chatUserDisplayName, string chatUserUserId, IEnumerable<HeldItemDto> inventoryItems);
+        Task DisplaySurvivorRankings(SurvivorRankingDataDto survivorRankingData);
     }
 }

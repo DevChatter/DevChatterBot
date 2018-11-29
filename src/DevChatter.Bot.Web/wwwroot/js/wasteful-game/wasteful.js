@@ -57,12 +57,29 @@ export class Wasteful {
 
     this._level.next();
 
-    this._screenDisplay = new ScreenDisplay(this, this._entityManager, this._canvas)
-    this._screenDisplay.start(userInfo, this._player);
+    this._screenDisplay = new ScreenDisplay(this, this._canvas);
+    this._screenDisplay.start(userInfo, this._player, this._entityManager);
     this._mouseDownHandle = this._onMouseDown.bind(this);
 
     document.addEventListener('mousedown', this._mouseDownHandle);
     document.addEventListener('keydown', this._keyDownHandle);
+  }
+
+  displaySurvivorRankings(survivorRankingData) {
+    if (this._isRunning) {
+      return;
+    }
+    this._isRunning = true;
+
+    this._screenDisplay = new ScreenDisplay(this, this._canvas);
+    this._screenDisplay.showSurvivorRankings(survivorRankingData);
+
+    // TODO: This is terrible; get rid of it.
+    let delay = ms => new Promise(r => setTimeout(r, ms));
+    delay(30000).then(() => {
+      this._isRunning = false;
+      this._screenDisplay._clearCanvas(); // Remove this once it works correctly.
+    });
   }
 
   /**

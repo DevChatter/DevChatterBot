@@ -14,6 +14,9 @@ namespace DevChatter.Bot.Modules.WastefulGame.Startup
             builder.RegisterType<SurvivorRepo>()
                 .AsSelf();
 
+            builder.RegisterType<WastefulRankCommand>()
+                .AsImplementedInterfaces().SingleInstance();
+
             builder.RegisterType<WastefulMoveCommand>()
                 .AsImplementedInterfaces().SingleInstance();
 
