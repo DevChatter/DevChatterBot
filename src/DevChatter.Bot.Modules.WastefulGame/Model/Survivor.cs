@@ -1,7 +1,7 @@
+using System;
+using DevChatter.Bot.Modules.WastefulGame.Model.Enums;
 using System.Collections.Generic;
 using System.Linq;
-using DevChatter.Bot.Modules.WastefulGame.Hubs.Dtos;
-using DevChatter.Bot.Modules.WastefulGame.Model.Enums;
 
 namespace DevChatter.Bot.Modules.WastefulGame.Model
 {
@@ -60,6 +60,20 @@ namespace DevChatter.Bot.Modules.WastefulGame.Model
                     InventoryItems.AddRange(items);
                 }
             }
+        }
+
+        public bool SellItem(int inventoryIndex)
+        {
+            InventoryItem item = InventoryItems.ElementAtOrDefault(inventoryIndex);
+            if (item == null)
+            {
+                return false;
+            }
+
+            InventoryItems.RemoveAt(inventoryIndex);
+            Money += 25;
+
+            return true;
         }
 
         public bool BuyItem(ShopItem shopItem)

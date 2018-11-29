@@ -23,7 +23,8 @@ namespace DevChatter.Bot.Modules.WastefulGame.Commands
             _survivorRepo = survivorRepo;
             _operations = new List<IGameCommandOperation>
             {
-                new BuyShopItemOperation(_gameRepository)
+                new BuyShopItemOperation(_gameRepository),
+                new SellShopItemOperation(_gameRepository)
             };
         }
 
