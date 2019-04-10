@@ -87,7 +87,7 @@ namespace DevChatter.Bot.Core.Commands.Trackers
             }
             catch (Exception e)
             {
-                _loggerAdapter.LogError(e, "Failed to Purge Expried User Command Cooldowns");
+                _loggerAdapter.LogError(e, "Failed to Purge Expired User Command Cooldowns");
             }
 
             List<CommandUsage> global = GetUsagesByUserSubjectToCooldown(chatUser.DisplayName, DateTimeOffset.UtcNow);

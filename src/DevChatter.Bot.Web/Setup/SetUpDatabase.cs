@@ -15,10 +15,10 @@ namespace DevChatter.Bot.Web.Setup
 {
     public static class SetUpDatabase
     {
-        public static IRepository SetUpRepository(string connectionString)
+        public static IRepository SetUpRepository(BotConfiguration botConfig)
         {
             DbContextOptions<AppDataContext> options = new DbContextOptionsBuilder<AppDataContext>()
-                .UseSqlServer(connectionString)
+                .UseSqlServer(botConfig.ConnectionStrings.DefaultDatabase)
                 .Options;
 
             var appDataContext = new AppDataContext(options);
@@ -75,7 +75,7 @@ namespace DevChatter.Bot.Web.Setup
             CreateDefaultSettingsIfNeeded(repository);
 
             // TODO: Remove static call, so it's more testable.
-            SetUpCommandData.UpdateCommandData(repository);
+            CommandDataInitializer.UpdateCommandData(repository);
         }
 
         private static List<CanvasProperties> GetInitialCanvasProperties()

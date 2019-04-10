@@ -25,14 +25,6 @@ namespace DevChatter.Bot.Core.Commands
             string userToCheck = eventArgs?.ChatUser?.DisplayName;
             try
             {
-                //TODO: Sanitize this.
-                //string specifiedUser = eventArgs?.Arguments?.FirstOrDefault()?.NoAt();
-
-                //if (specifiedUser != null)
-                //{
-                //    userToCheck = specifiedUser;
-                //}
-
                 ChatUser chatUser = Repository.Single(ChatUserPolicy.ByDisplayName(userToCheck));
 
                 chatClient.SendMessage($"User {userToCheck} has {chatUser?.Tokens ?? 0} tokens!");
