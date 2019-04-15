@@ -99,6 +99,10 @@
     {
       "FullTypeName": "DevChatter.Bot.Core.BotModules.DuelingModule.DuelCommand",
       "HelpText": "Use \"!duel Brendoneus\" to start a duel with Brendoneus. Once it begins you will each be whispered instructions."
+    },
+    {
+      "FullTypeName": "DevChatter.Bot.Core.BotModules.WastefulModule.WastefulMoveCommand",
+      "Cooldown": "00:00:20"
     }
   ]
 }

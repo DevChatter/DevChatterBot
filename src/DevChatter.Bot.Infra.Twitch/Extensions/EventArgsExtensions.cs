@@ -29,6 +29,7 @@ namespace DevChatter.Bot.Infra.Twitch.Extensions
             {
                 CommandWord = src.Command.CommandText,
                 Arguments = src.Command.ArgumentsAsList,
+                RoomId = src.Command.ChatMessage.Channel,
                 ChatUser = new ChatUser
                 {
                     UserId = commandChatMessage.UserId,

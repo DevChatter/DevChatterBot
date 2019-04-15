@@ -28,6 +28,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DevChatter.Bot.Core.Messaging;
+using DevChatter.Bot.Modules.WastefulGame;
+using DevChatter.Bot.Modules.WastefulGame.Hubs;
+using DevChatter.Bot.Modules.WastefulGame.Startup;
 using DevChatter.Bot.Web.Setup;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -99,7 +102,7 @@ namespace DevChatter.Bot.Web
                 .AsSelf().SingleInstance();
 
 
-            IRepository repository = SetUpDatabase.SetUpRepository(fullConfig.DatabaseConnectionString);
+            IRepository repository = SetUpDatabase.SetUpRepository(fullConfig);
 
             builder.RegisterInstance(repository).SingleInstance();
 
@@ -155,6 +158,8 @@ namespace DevChatter.Bot.Web
             builder.Register(p =>
                 new CommandList(p.Resolve<IList<IBotCommand>>().ToList()));
 
+            builder.RegisterModule<WastefulAutofacModule>();
+
             builder.RegisterModule<CoreRegistrationModule>();
 
             builder.RegisterModule(new TwitchModule(fullConfig.TwitchClientSettings));
@@ -204,6 +209,7 @@ namespace DevChatter.Bot.Web
                 routes.MapHub<BotHub>("/BotHub");
                 routes.MapHub<VotingHub>("/VotingHub");
                 routes.MapHub<HangmanHub>("/HangmanHub");
+                routes.MapHub<WastefulHub>("/WastefulHub");
             });
 
             app.UseMvc();

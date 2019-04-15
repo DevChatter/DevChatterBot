@@ -36,7 +36,7 @@ namespace DevChatter.Bot.Core.Commands
                     return;
                 }
 
-                _currencyGenerator.AddCurrencyTo(bonusReceiver, amount); // TODO: prevent overflow
+                _currencyGenerator.AddCurrencyTo(bonusReceiver, amount);
                 chatClient.SendMessage($"Added {amount} coins to @{bonusReceiver}.");
             }
         }

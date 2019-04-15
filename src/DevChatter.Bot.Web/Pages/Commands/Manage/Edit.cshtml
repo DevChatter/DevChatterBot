@@ -24,6 +24,11 @@
                 <span asp-validation-for="CommandEntity.FullTypeName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CommandEntity.Cooldown" class="control-label"></label>
+                <input asp-for="CommandEntity.Cooldown" class="form-control" />
+                <span asp-validation-for="CommandEntity.Cooldown" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <div class="checkbox">
                     <label>
                         <input asp-for="CommandEntity.IsEnabled" /> @Html.DisplayNameFor(model => model.CommandEntity.IsEnabled)

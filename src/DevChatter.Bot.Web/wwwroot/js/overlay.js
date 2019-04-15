@@ -1,3 +1,5 @@
+import { Wasteful } from '/js/wasteful-game/wasteful.js';
+
 var overlay = (function () {
 
   let notificationOptions = {
@@ -29,6 +31,12 @@ var overlay = (function () {
 
     let hangmanHubConn = createHubConnection("HangmanHub");
 
+    let wastefulHubConn = createHubConnection("WastefulHub");
+
+    let wastefulCanvas = document.getElementById('wastefulCanvas');
+    let myWasteful = new Wasteful(wastefulCanvas, wastefulHubConn);
+
+
     function createHubConnection(hubName) {
       let hubConn = new signalR.HubConnectionBuilder()
         .withUrl(`/${hubName}`)
@@ -44,6 +52,7 @@ var overlay = (function () {
     startHubConn(botHubConn);
     startHubConn(votingHubConn);
     startHubConn(hangmanHubConn);
+    startHubConn(wastefulHubConn);
 
     function startHubConn(hubToConnect, retryInterval = 2000) {
       console.log(`[${new Date()}] Connecting to ${hubToConnect.hubName}`);
@@ -64,6 +73,10 @@ var overlay = (function () {
 
     votingHubConn.onclose(() => {
       setTimeout(() => startHubConn(votingHubConn), 2000);
+    });
+
+    wastefulHubConn.onclose(() => {
+      setTimeout(() => startHubConn(wastefulHubConn), 2000);
     });
 
     function doBlast(imagePath) {
@@ -112,6 +125,18 @@ var overlay = (function () {
     hangmanHubConn.on("HangmanShowGuessedLetters",
       async (availableLetters, livesRemaining, maskedWord) => {
         hangman.displayInfo(hangmanContext, availableLetters, livesRemaining, maskedWord);
+      });
+    wastefulHubConn.on("MovePlayer",
+      async (direction, moveNumber) => {
+        myWasteful.movePlayer(direction, moveNumber);
+      });
+    wastefulHubConn.on("StartGame",
+      async (displayName, userId, inventoryItems) => {
+        myWasteful.startGame({ displayName, userId }, inventoryItems);
+      });
+    wastefulHubConn.on("DisplaySurvivorRankings",
+      async (survivorRankingData) => {
+        myWasteful.displaySurvivorRankings(survivorRankingData);
       });
   };
 }());

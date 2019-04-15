@@ -2,12 +2,12 @@ using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Core.Systems.Chat;
+using DevChatter.Bot.Core.Util;
 using DevChatter.Bot.Infra.Twitch.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DevChatter.Bot.Core.Util;
 using TwitchLib.Api.Core.Models.Undocumented.Chatters;
 using TwitchLib.Api.Interfaces;
 using TwitchLib.Client;
@@ -87,6 +87,21 @@ namespace DevChatter.Bot.Infra.Twitch
             _isReady = true;
             _connectionCompletionTask.SetResult(true);
             _disconnectionCompletionTask = new TaskCompletionSource<bool>();
+
+            JoinChannelRoom(_settings.TwitchRoomId);
+        }
+
+        private void JoinChannelRoom(string roomId)
+        {
+            try
+            {
+                _twitchClient.JoinRoom(_settings.TwitchChannelId, roomId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task Disconnect()

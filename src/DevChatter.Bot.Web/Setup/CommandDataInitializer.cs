@@ -12,8 +12,12 @@ using Newtonsoft.Json;
 
 namespace DevChatter.Bot.Web.Setup
 {
-    public static class SetUpCommandData
+    public class CommandDataInitializer
     {
+        public CommandDataInitializer()
+        {
+
+        }
 
         public static void UpdateCommandData(IRepository repository)
         {

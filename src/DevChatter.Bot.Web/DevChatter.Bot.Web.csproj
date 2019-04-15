@@ -11,7 +11,7 @@
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" />
   </ItemGroup>
 
 
@@ -29,6 +29,7 @@
     <ProjectReference Include="..\DevChatter.Bot.Infra.GoogleApi\DevChatter.Bot.Infra.GoogleApi.csproj" />
     <ProjectReference Include="..\DevChatter.Bot.Infra.Twitch\DevChatter.Bot.Infra.Twitch.csproj" />
     <ProjectReference Include="..\DevChatter.Bot.Infra.Web\DevChatter.Bot.Infra.Web.csproj" />
+    <ProjectReference Include="..\DevChatter.Bot.Modules.WastefulGame\DevChatter.Bot.Modules.WastefulGame.csproj" />
   </ItemGroup>
 
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using DevChatter.Bot.Core.Data.Model;
 
 namespace DevChatter.Bot.Core.Events.Args
@@ -8,5 +8,6 @@ namespace DevChatter.Bot.Core.Events.Args
         public string CommandWord { get; set; }
         public IList<string> Arguments { get; set; } = new List<string>();
         public ChatUser ChatUser { get; set; } = new ChatUser();
+        public string RoomId { get; set; }
     }
 }

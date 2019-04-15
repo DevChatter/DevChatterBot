@@ -286,3 +286,12 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# VSCode Settings
+.vscode/
+
+# Piskel Art Files
+*.piskel
+
+#Paint.NET Art Files
+*.pdn
