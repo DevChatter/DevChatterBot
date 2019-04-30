@@ -64,7 +64,7 @@ namespace DevChatter.Bot.Web
 
             services.AddDbContext<AppDataContext>(ServiceLifetime.Transient);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSignalR();
 
