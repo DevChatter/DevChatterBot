@@ -49,7 +49,10 @@ namespace DevChatter.Bot.Core.Commands.Trackers
         {
             var searcher = new BkTreeSearcher<string, (IBotCommand command, IList<string> arguments)>(BkTree);
 
-            var command = searcher.Search(keyword, FuzzySearchMaxDistance).FirstOrDefault();
+            var command = searcher
+                .Search(keyword, FuzzySearchMaxDistance)
+                .FirstOrDefault(it => it.MatchValue.command.IsEnabled);
+
             if (command == null)
             {
                 args = new List<string>();
