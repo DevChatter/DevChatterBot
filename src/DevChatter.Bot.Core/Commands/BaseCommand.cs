@@ -17,7 +17,7 @@ namespace DevChatter.Bot.Core.Commands
     {
         protected readonly IRepository Repository;
         protected DateTimeOffset _timeCommandLastInvoked;
-        private bool _isEnabled;
+        public bool IsEnabled { get; private set; }
         public UserRole RoleRequired { get; private set; }
         public TimeSpan Cooldown { get; private set; } = TimeSpan.Zero;
         public string PrimaryCommandText => CommandWords.FirstOrDefault().Word;
@@ -42,7 +42,7 @@ namespace DevChatter.Bot.Core.Commands
             cmdInfo.Insert(0, (command.CommandWord, new List<string>()));
 
             RoleRequired = command.RequiredRole;
-            _isEnabled = command.IsEnabled;
+            IsEnabled = command.IsEnabled;
             HelpText = command.HelpText;
             Cooldown = command.Cooldown;
             CommandWords = cmdInfo;
@@ -53,7 +53,7 @@ namespace DevChatter.Bot.Core.Commands
         public bool ShouldExecute(string commandText, out IList<string> args)
         {
             args = new List<string>();
-            if (_isEnabled)
+            if (IsEnabled)
             {
                 if (CommandWords.Any(x => x.Word.EqualsIns(commandText)))
                 {

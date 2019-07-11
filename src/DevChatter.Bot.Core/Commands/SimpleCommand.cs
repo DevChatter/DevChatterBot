@@ -38,6 +38,7 @@ namespace DevChatter.Bot.Core.Commands
         public string HelpText { get; protected set; } = "No help text for this command yet.";
         public string FullHelpText => HelpText;
         public IList<(string Word, IList<string> Args)> CommandWords { get; }
+        public Boolean IsEnabled => true;
 
         public bool ShouldExecute(string commandText, out IList<string> args)
         {
