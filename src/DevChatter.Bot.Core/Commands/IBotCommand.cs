@@ -18,5 +18,6 @@ namespace DevChatter.Bot.Core.Commands
         CommandUsage Process(IChatClient chatClient, CommandReceivedEventArgs eventArgs);
         TimeSpan GetCooldownTimeRemaining();
         bool IsActiveGame();
+        IList<(string Word, IList<string> Args)> CommandWords { get; }
     }
 }
