@@ -11,6 +11,8 @@ namespace DevChatter.Bot.Core.Commands.Operations
     public class DeleteCommandOperation : BaseCommandOperation
     {
         private readonly IRepository _repository;
+        
+        // todo refactor to DevChatter.Bot.Core.Commands.Trackers.CommandList to allow fuzzy search
         private readonly IList<IBotCommand> _allCommands;
 
         public DeleteCommandOperation(IRepository repository, IList<IBotCommand> allCommands)

@@ -25,6 +25,10 @@ namespace DevChatter.Bot.Core.Commands
             StaticResponse = staticResponse;
             RoleRequired = roleRequired;
             CommandText = commandText;
+            CommandWords = new List<(string Word, IList<string> Args)>
+            {
+                (commandText, new List<string>())
+            };
         }
 
         public string StaticResponse { get; protected set; }
@@ -33,6 +37,8 @@ namespace DevChatter.Bot.Core.Commands
         public string CommandText { get; protected set; }
         public string HelpText { get; protected set; } = "No help text for this command yet.";
         public string FullHelpText => HelpText;
+        public IList<(string Word, IList<string> Args)> CommandWords { get; }
+        public Boolean IsEnabled => true;
 
         public bool ShouldExecute(string commandText, out IList<string> args)
         {
