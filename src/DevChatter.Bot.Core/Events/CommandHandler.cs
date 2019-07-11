@@ -61,7 +61,7 @@ namespace DevChatter.Bot.Core.Events
             }
 
             IList<string> args = new List<string>();
-            IBotCommand botCommand = _commandList.FirstOrDefault(c => c.ShouldExecute(e.CommandWord, out args));
+            IBotCommand botCommand = _commandList.FindCommandByKeyword(e.CommandWord, out args);
             if (botCommand == null)
             {
                 return;
