@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DevChatter.Bot.Core.Commands.Trackers;
 
 namespace DevChatter.Bot.Core.Commands
 {
@@ -20,6 +21,8 @@ namespace DevChatter.Bot.Core.Commands
         }
 
         private IList<IBotCommand> _allCommands;
+
+        // todo refactor to DevChatter.Bot.Core.Commands.Trackers.CommandList to allow fuzzy search
         public IList<IBotCommand> AllCommands
         {
             get { return _allCommands ?? (_allCommands = _provider.GetService<IList<IBotCommand>>()); }
