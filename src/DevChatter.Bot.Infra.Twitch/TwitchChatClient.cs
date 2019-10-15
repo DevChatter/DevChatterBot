@@ -43,6 +43,18 @@ namespace DevChatter.Bot.Infra.Twitch
             _twitchClient.OnUserJoined += TwitchClientOnOnUserJoined;
             _twitchClient.OnUserLeft += TwitchClientOnOnUserLeft;
             _twitchClient.OnWhisperReceived += TwitchWhisperReceived;
+            _twitchClient.OnLeftChannel += _twitchClient_OnLeftChannel;
+            _twitchClient.OnJoinedChannel += _twitchClient_OnJoinedChannel;
+        }
+
+        private void _twitchClient_OnJoinedChannel(object sender, OnJoinedChannelArgs e)
+        {
+            Console.WriteLine($"Joined Channel: {e.Channel}.");
+        }
+
+        private void _twitchClient_OnLeftChannel(object sender, OnLeftChannelArgs e)
+        {
+            Console.WriteLine($"Left Channel: {e.Channel}.");
         }
 
         private void TwitchWhisperReceived(object sender, OnWhisperReceivedArgs e)
@@ -87,21 +99,6 @@ namespace DevChatter.Bot.Infra.Twitch
             _isReady = true;
             _connectionCompletionTask.SetResult(true);
             _disconnectionCompletionTask = new TaskCompletionSource<bool>();
-
-            JoinChannelRoom(_settings.TwitchRoomId);
-        }
-
-        private void JoinChannelRoom(string roomId)
-        {
-            try
-            {
-                _twitchClient.JoinRoom(_settings.TwitchChannelId, roomId);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
         }
 
         public async Task Disconnect()

@@ -101,10 +101,10 @@ namespace DevChatter.Bot.Web
             builder.RegisterInstance(fullConfig.GoogleCloudSettings)
                 .AsSelf().SingleInstance();
 
+            builder.RegisterType<EfGenericRepo>()
+                .AsImplementedInterfaces();
 
-            IRepository repository = SetUpDatabase.SetUpRepository(fullConfig);
-
-            builder.RegisterInstance(repository).SingleInstance();
+            var setupRepo = SetUpDatabase.SetUpRepository(fullConfig);
 
             RegisterTimezoneLookupClasses(builder);
 
@@ -151,7 +151,7 @@ namespace DevChatter.Bot.Web
 
             builder.AddAllGames();
 
-            builder.AddSimpleCommandsFromRepository(repository);
+            builder.AddSimpleCommandsFromRepository(setupRepo);
 
             builder.AddCommandSystem();
 

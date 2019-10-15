@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{39E5EB68-E595-4A62-81CC-A88FE9B418E2}"
 EndProject
@@ -26,7 +26,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WastefulGame", "WastefulGam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevChatter.Bot.Modules.WastefulGame", "DevChatter.Bot.Modules.WastefulGame\DevChatter.Bot.Modules.WastefulGame.csproj", "{8B05963D-A350-4045-B3C4-6A2D9B5CE52C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WastefulGame.UnitTests", "WastefulGame.UnitTests\WastefulGame.UnitTests.csproj", "{A11F383B-6287-4304-83B4-7C6F99F92417}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WastefulGame.UnitTests", "WastefulGame.UnitTests\WastefulGame.UnitTests.csproj", "{A11F383B-6287-4304-83B4-7C6F99F92417}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevChatter.Bot.Wpf", "DevChatter.Bot.Wpf\DevChatter.Bot.Wpf.csproj", "{A2E0C8DA-EF4F-40DA-B901-C036988E2236}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +72,10 @@ Global
 		{A11F383B-6287-4304-83B4-7C6F99F92417}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A11F383B-6287-4304-83B4-7C6F99F92417}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A11F383B-6287-4304-83B4-7C6F99F92417}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2E0C8DA-EF4F-40DA-B901-C036988E2236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2E0C8DA-EF4F-40DA-B901-C036988E2236}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2E0C8DA-EF4F-40DA-B901-C036988E2236}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2E0C8DA-EF4F-40DA-B901-C036988E2236}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

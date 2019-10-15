@@ -29,7 +29,7 @@ namespace DevChatter.Bot.Web.Modules
 
             var api = new TwitchAPI();
             api.Settings.ClientId = _twitchClientSettings.TwitchClientId;
-            api.Settings.AccessToken = _twitchClientSettings.TwitchChannelOAuth;
+            api.Settings.AccessToken = _twitchClientSettings.TwitchBotOAuth;
 
             builder.RegisterInstance(api).As<ITwitchAPI>().SingleInstance();
 
