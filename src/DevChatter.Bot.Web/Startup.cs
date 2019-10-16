@@ -6,6 +6,7 @@ using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Commands.Trackers;
 using DevChatter.Bot.Core.Data;
 using DevChatter.Bot.Core.Events;
+using DevChatter.Bot.Core.Messaging;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Core.Util;
 using DevChatter.Bot.Infra.Ef;
@@ -13,8 +14,11 @@ using DevChatter.Bot.Infra.GoogleApi;
 using DevChatter.Bot.Infra.Twitch;
 using DevChatter.Bot.Infra.Web;
 using DevChatter.Bot.Infra.Web.Hubs;
+using DevChatter.Bot.Modules.WastefulGame.Hubs;
+using DevChatter.Bot.Modules.WastefulGame.Startup;
 using DevChatter.Bot.Web.Extensions;
 using DevChatter.Bot.Web.Modules;
+using DevChatter.Bot.Web.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -27,18 +31,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DevChatter.Bot.Core.Messaging;
-using DevChatter.Bot.Modules.WastefulGame;
-using DevChatter.Bot.Modules.WastefulGame.Hubs;
-using DevChatter.Bot.Modules.WastefulGame.Startup;
-using DevChatter.Bot.Web.Setup;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace DevChatter.Bot.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -188,7 +186,7 @@ namespace DevChatter.Bot.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -204,15 +202,16 @@ namespace DevChatter.Bot.Web
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseSignalR(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapHub<BotHub>("/BotHub");
-                routes.MapHub<VotingHub>("/VotingHub");
-                routes.MapHub<HangmanHub>("/HangmanHub");
-                routes.MapHub<WastefulHub>("/WastefulHub");
-            });
+                endpoints.MapHub<BotHub>("/BotHub");
+                endpoints.MapHub<VotingHub>("/VotingHub");
+                endpoints.MapHub<HangmanHub>("/HangmanHub");
+                endpoints.MapHub<WastefulHub>("/WastefulHub");
 
-            app.UseMvc();
+                endpoints.MapControllers();
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 
