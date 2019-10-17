@@ -1,7 +1,10 @@
+using DevChatter.Bot.Core.Extensions;
 using DevChatter.Bot.Web;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using System.ComponentModel;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
 using System.Windows;
 
 namespace DevChatter.Bot.Wpf
@@ -11,30 +14,38 @@ namespace DevChatter.Bot.Wpf
     /// </summary>
     public partial class App : Application
     {
-        private readonly BackgroundWorker worker = new BackgroundWorker();
-        private IWebHost _webHost;
+        private readonly IHost _webHost;
 
         public App()
         {
-            _webHost = WebHost.CreateDefaultBuilder()
-                .UseStartup<Startup>()
+            _webHost = Host.CreateDefaultBuilder()
+                .ConfigureWebHostDefaults(
+                    hostBuilder =>
+                    {
+                        hostBuilder.UseStartup<Startup>();
+                    })
+                .ConfigureAppConfiguration(configBuilder => configBuilder
+                    .AddJsonFile("appsettings.json",
+                        optional: false,
+                        reloadOnChange: true)
+                    .AddEnvironmentVariables()
+                    .AddUserSecrets<App>())
                 .Build();
+
             _webHost.Start();
 
-            //worker.DoWork += worker_DoWork;
-            //worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-            //worker.RunWorkerAsync();
+            Exit += OnExit;
         }
 
-        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        private void OnExit(object sender, ExitEventArgs e)
         {
-            // run all background tasks here
+            _webHost.Services.GetService<IHostApplicationLifetime>().StopApplication();
+            _webHost.StopAsync().RunInBackgroundSafely(HandleException);
         }
 
-        private void worker_RunWorkerCompleted(object sender,
-                                                   RunWorkerCompletedEventArgs e)
+        private void HandleException(Exception obj)
         {
-            //update ui once worker complete his work
+            // TODO: Do something with this.
         }
     }
 }

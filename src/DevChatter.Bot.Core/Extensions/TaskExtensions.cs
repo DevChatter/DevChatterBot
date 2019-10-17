@@ -23,5 +23,19 @@ namespace DevChatter.Bot.Core.Extensions
                 return await TryGetResult(task, retryCount - 1, ex);
             }
         }
+
+        public static async void RunInBackgroundSafely(
+            this Task task, Action<Exception> onException = null)
+        {
+            try
+            {
+                await task.ConfigureAwait(false);
+            }
+            catch (Exception ex) when (!(onException is null))
+            {
+                onException(ex);
+            }
+        }
     }
+
 }
