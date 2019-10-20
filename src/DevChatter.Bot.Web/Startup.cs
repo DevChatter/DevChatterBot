@@ -9,6 +9,7 @@ using DevChatter.Bot.Infra.Web.Hubs;
 using DevChatter.Bot.Modules.WastefulGame.Hubs;
 using DevChatter.Bot.Modules.WastefulGame.Startup;
 using DevChatter.Bot.Web.Modules;
+using DevChatter.Bot.Web.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -49,6 +50,10 @@ namespace DevChatter.Bot.Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddSignalR();
+
+            var fullConfig = Configuration.Get<BotConfiguration>();
+
+            Repository = SetUpDatabase.SetUpRepository(fullConfig);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
