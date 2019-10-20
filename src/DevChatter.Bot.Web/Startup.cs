@@ -92,6 +92,8 @@ namespace DevChatter.Bot.Web
                 app.UseHsts();
             }
 
+            app.UseRouting();
+
             AutofacContainer = app.ApplicationServices.GetAutofacRoot();
 
             app.UseHttpsRedirection();
