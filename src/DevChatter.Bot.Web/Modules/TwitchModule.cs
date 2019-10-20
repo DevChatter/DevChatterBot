@@ -1,5 +1,4 @@
 using Autofac;
-using DevChatter.Bot.Core.Events;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
 using DevChatter.Bot.Infra.Twitch;

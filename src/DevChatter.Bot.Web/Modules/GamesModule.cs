@@ -4,18 +4,16 @@ using DevChatter.Bot.Core.Games.Heist;
 using DevChatter.Bot.Core.Games.Quiz;
 using DevChatter.Bot.Core.Games.RockPaperScissors;
 
-namespace DevChatter.Bot.Web.Extensions
+namespace DevChatter.Bot.Web.Modules
 {
-    public static class GameRegistrationExtensions
+    public class GamesModule : Module
     {
-        public static ContainerBuilder AddAllGames(this ContainerBuilder builder)
+        protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<HeistGame>().SingleInstance();
             builder.RegisterType<HangmanGame>().SingleInstance();
             builder.RegisterType<RockPaperScissorsGame>().SingleInstance();
             builder.RegisterType<QuizGame>().SingleInstance();
-
-            return builder;
         }
     }
 }

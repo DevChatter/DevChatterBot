@@ -1,6 +1,5 @@
 using Autofac;
 using DevChatter.Bot.Core.Automation;
-using DevChatter.Bot.Core.Commands;
 using DevChatter.Bot.Core.Events;
 
 namespace DevChatter.Bot.Web.Modules

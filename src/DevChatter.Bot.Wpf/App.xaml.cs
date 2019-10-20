@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Windows;
+using Autofac.Extensions.DependencyInjection;
 
 namespace DevChatter.Bot.Wpf
 {
@@ -19,6 +20,7 @@ namespace DevChatter.Bot.Wpf
         public App()
         {
             _webHost = Host.CreateDefaultBuilder()
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(
                     hostBuilder =>
                     {
