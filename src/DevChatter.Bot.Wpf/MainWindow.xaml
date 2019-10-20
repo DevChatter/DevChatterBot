@@ -6,6 +6,16 @@
         xmlns:local="clr-namespace:DevChatter.Bot.Wpf"
         mc:Ignorable="d"
         Title="DevChatter Bot" Height="450" Width="800">
-    <Grid>
-    </Grid>
+    <DockPanel>
+        <Grid Height="40" DockPanel.Dock="Top" Background="#555">
+            <Label Content="Header"></Label>
+        </Grid>
+        <Grid Height="40" DockPanel.Dock="Bottom" Background="#555">
+            <Label Content="Footer"></Label>
+        </Grid>
+        <Grid Width="200" DockPanel.Dock="Left" Background="#444">
+            <Label Content="Sidebar"></Label>
+        </Grid>
+        <Grid Background="#666"></Grid>
+    </DockPanel>
 </Window>

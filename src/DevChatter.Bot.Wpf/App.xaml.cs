@@ -1,12 +1,10 @@
-using DevChatter.Bot.Core.Extensions;
+using Autofac.Extensions.DependencyInjection;
 using DevChatter.Bot.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 using System.Windows;
-using Autofac.Extensions.DependencyInjection;
 
 namespace DevChatter.Bot.Wpf
 {
