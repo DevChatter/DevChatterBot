@@ -33,21 +33,20 @@ namespace DevChatter.Bot.Wpf
                     .AddEnvironmentVariables()
                     .AddUserSecrets<App>())
                 .Build();
+        }
 
+        private void App_OnStartup(object sender, StartupEventArgs e)
+        {
             _webHost.Start();
 
-            Exit += OnExit;
+            _webHost.Services.GetRequiredService<MainWindow>().Show();
         }
 
-        private void OnExit(object sender, ExitEventArgs e)
+        private async void App_OnExit(object sender, ExitEventArgs e)
         {
             _webHost.Services.GetService<IHostApplicationLifetime>().StopApplication();
-            _webHost.StopAsync().RunInBackgroundSafely(HandleException);
-        }
-
-        private void HandleException(Exception obj)
-        {
-            // TODO: Do something with this.
+            await _webHost.StopAsync();
+            _webHost.Dispose();
         }
     }
 }

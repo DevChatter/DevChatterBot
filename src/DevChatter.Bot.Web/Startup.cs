@@ -100,13 +100,12 @@ namespace DevChatter.Bot.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
+
                 endpoints.MapHub<BotHub>("/BotHub");
                 endpoints.MapHub<VotingHub>("/VotingHub");
                 endpoints.MapHub<HangmanHub>("/HangmanHub");
                 endpoints.MapHub<WastefulHub>("/WastefulHub");
-
-                endpoints.MapControllers();
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
