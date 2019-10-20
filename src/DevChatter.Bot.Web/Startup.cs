@@ -72,8 +72,6 @@ namespace DevChatter.Bot.Web
 
             builder.RegisterModule(new TwitchModule(fullConfig.TwitchClientSettings));
 
-            builder.RegisterModule<DefaultAutofacModule>();
-
             builder.RegisterModule<GamesModule>();
 
             builder.RegisterModule<CurrencyModule>();
