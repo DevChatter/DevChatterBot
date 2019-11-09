@@ -17,20 +17,27 @@ namespace DevChatter.Bot.Wpf
 
         public App()
         {
-            _webHost = Host.CreateDefaultBuilder()
+            _webHost = CreateWebHostBuilder().Build();
+        }
+
+        public static IHostBuilder CreateWebHostBuilder()
+        {
+            return Host.CreateDefaultBuilder()
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(
-                    hostBuilder =>
+                    webBuilder =>
                     {
-                        hostBuilder.UseStartup<Startup>();
+                        webBuilder.UseStartup<Startup>();
                     })
-                .ConfigureAppConfiguration(configBuilder => configBuilder
-                    .AddJsonFile("appsettings.json",
-                        optional: false,
-                        reloadOnChange: true)
-                    .AddEnvironmentVariables()
-                    .AddUserSecrets<App>())
-                .Build();
+                .ConfigureAppConfiguration(configBuilder =>
+                {
+                    configBuilder
+                        .AddJsonFile("appsettings.json",
+                            optional: false,
+                            reloadOnChange: true)
+                        .AddEnvironmentVariables()
+                        .AddUserSecrets<App>();
+                });
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
