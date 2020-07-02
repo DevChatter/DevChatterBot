@@ -6,7 +6,7 @@ namespace DevChatter.Bot.Core.Events
     {
         void AddCurrencyTo(IEnumerable<string> listOfNames, int tokensToAdd);
         void AddCurrencyTo(string displayName, int tokensToAdd);
-        bool RemoveCurrencyFrom(string userName, int tokensToRemove);
+        int RemoveCurrencyFrom(string userName, int tokensToRemove, bool takeAllIfInsufficient = false);
         void UpdateCurrency();
     }
 }

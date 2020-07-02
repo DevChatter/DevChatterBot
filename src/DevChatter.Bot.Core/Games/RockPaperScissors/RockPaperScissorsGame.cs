@@ -43,15 +43,13 @@ namespace DevChatter.Bot.Core.Games.RockPaperScissors
             }
             else
             {
-                if (_currencyGenerator.RemoveCurrencyFrom(userChoice.username, _settings.TokensRequiredToPlay))
-                {
-                    chatClient.SendMessage(Messages.GetJoinedMessage(userChoice.username, userChoice.choice));
-                }
-                else
+                if (_currencyGenerator.RemoveCurrencyFrom(userChoice.username, _settings.TokensRequiredToPlay) == 0)
                 {
                     chatClient.SendMessage(Messages.GetShortCoinsMessage(userChoice.username));
                     return;
                 }
+
+                chatClient.SendMessage(Messages.GetJoinedMessage(userChoice.username, userChoice.choice));
             }
 
             _competitors[userChoice.username] = userChoice.choice;

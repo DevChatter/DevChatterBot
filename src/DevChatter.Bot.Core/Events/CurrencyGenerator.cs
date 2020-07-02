@@ -76,19 +76,27 @@ namespace DevChatter.Bot.Core.Events
 
         public void AddCurrencyTo(string displayName, int tokensToAdd)
         {
-            AddCurrencyTo(new List<string> {displayName}, tokensToAdd);
+            AddCurrencyTo(new List<string> { displayName }, tokensToAdd);
         }
 
-        public bool RemoveCurrencyFrom(string userName, int tokensToRemove)
+        public int RemoveCurrencyFrom(string userName, int tokensToRemove, bool takeAllIfInsufficient = false)
         {
-            if (!_chatUserCollection.UserHasAtLeast(userName, tokensToRemove))
+            if (_chatUserCollection.UserHasAtLeast(userName, tokensToRemove))
             {
-                return false;
+                _chatUserCollection.UpdateSpecificChatters(x => x.Tokens -= tokensToRemove,
+                    ChatUserPolicy.ByDisplayName(userName));
+                return tokensToRemove;
             }
 
-            _chatUserCollection.UpdateSpecificChatters(x => x.Tokens -= tokensToRemove,
-                ChatUserPolicy.ByDisplayName(userName));
-            return true;
+            if (takeAllIfInsufficient)
+            {
+                tokensToRemove = _chatUserCollection.GetOrCreateChatUser(userName).Tokens;
+                _chatUserCollection.UpdateSpecificChatters(x => x.Tokens -= tokensToRemove,
+                    ChatUserPolicy.ByDisplayName(userName));
+                return tokensToRemove;
+            }
+
+            return 0;
         }
     }
 }
