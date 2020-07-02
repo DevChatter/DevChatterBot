@@ -37,7 +37,7 @@ namespace DevChatter.Bot.Infra.Twitch
             _logger = logger;
             var credentials = new ConnectionCredentials(settings.TwitchUsername, settings.TwitchBotOAuth);
             _twitchClient = new TwitchClient();
-            _twitchClient.Initialize(credentials, channel:settings.TwitchChannel);
+            _twitchClient.Initialize(credentials, channel: settings.TwitchChannel);
             _twitchClient.OnChatCommandReceived += ChatCommandReceived;
             _twitchClient.OnNewSubscriber += NewSubscriber;
             _twitchClient.OnUserJoined += TwitchClientOnOnUserJoined;
@@ -87,8 +87,6 @@ namespace DevChatter.Bot.Infra.Twitch
             _isReady = true;
             _connectionCompletionTask.SetResult(true);
             _disconnectionCompletionTask = new TaskCompletionSource<bool>();
-
-            JoinChannelRoom(_settings.TwitchRoomId);
         }
 
         private void JoinChannelRoom(string roomId)
