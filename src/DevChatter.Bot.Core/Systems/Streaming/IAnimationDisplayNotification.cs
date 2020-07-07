@@ -5,5 +5,6 @@ namespace DevChatter.Bot.Core.Systems.Streaming
     public interface IAnimationDisplayNotification
     {
         Task Blast(string imagePath);
+        Task Fireworks();
     }
 }

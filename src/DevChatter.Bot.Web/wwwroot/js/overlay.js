@@ -19,6 +19,11 @@ var overlay = (function () {
     let animationContext = animationCanvas.getContext('2d');
     animations.init(animationCanvas, animationContext);
 
+    const fireworksCanvas = document.getElementById('fireworksCanvas');
+    const fireworksCtx = fireworksCanvas.getContext('2d');
+    fireworks.init(fireworksCanvas, fireworksCtx);
+
+
     let hangmanCanvas = document.getElementById('hangmanCanvas');
     let hangmanContext = hangmanCanvas.getContext('2d');
 
@@ -57,7 +62,7 @@ var overlay = (function () {
     function startHubConn(hubToConnect, retryInterval = 2000) {
       console.log(`[${new Date()}] Connecting to ${hubToConnect.hubName}`);
       hubToConnect.start().then(() => {
-        },
+      },
         err => {
           console.error(err.toString());
           let i = Math.min(retryInterval * 1.5, maxRetryInterval);
@@ -85,6 +90,19 @@ var overlay = (function () {
     }
 
     botHubConn.on("Blast", doBlast);
+    botHubConn.on("Fireworks",
+      async function () {
+        fireworks.addFireworks(fireworksCanvas);
+        function step() {
+          fireworks.render();
+          window.requestAnimationFrame(step);
+        }
+        window.requestAnimationFrame(step);
+        for (let i = 0; i < 9; i++) {
+          await sleep(250);
+          fireworks.addFireworks(fireworksCanvas);
+        }
+      });
     votingHubConn.on("VoteStart",
       (choices) => {
         $(votingCanvas).show();
@@ -109,14 +127,14 @@ var overlay = (function () {
         hangman.wrongAnswer(hangmanContext);
       });
     hangmanHubConn.on("HangmanLose",
-      async function() {
+      async function () {
         hangman.displayGameOver(hangmanContext);
         await sleep(4000);
         hangman.endGame(hangmanContext);
         doBlast('/images/DevchaFailEmote.png');
       });
     hangmanHubConn.on("HangmanWin",
-      async function() {
+      async function () {
         hangman.displayVictory(hangmanContext);
         await sleep(4000);
         hangman.endGame(hangmanContext);

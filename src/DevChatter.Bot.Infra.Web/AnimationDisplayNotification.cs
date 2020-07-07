@@ -19,5 +19,10 @@ namespace DevChatter.Bot.Infra.Web
         {
             await _botHubContext.Clients.All.Blast(imagePath);
         }
+
+        public async Task Fireworks()
+        {
+            await _botHubContext.Clients.All.Fireworks();
+        }
     }
 }

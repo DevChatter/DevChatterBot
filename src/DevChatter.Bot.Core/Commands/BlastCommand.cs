@@ -1,10 +1,8 @@
 using DevChatter.Bot.Core.Data;
-using DevChatter.Bot.Core.Data.Model;
 using DevChatter.Bot.Core.Data.Specifications;
 using DevChatter.Bot.Core.Events.Args;
 using DevChatter.Bot.Core.Systems.Chat;
 using DevChatter.Bot.Core.Systems.Streaming;
-using System;
 using System.Linq;
 
 namespace DevChatter.Bot.Core.Commands
