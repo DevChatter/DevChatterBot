@@ -13,7 +13,7 @@ function Particle(theColor, theVelocity, startX, startY) {
     this.render = function (context) {
         this.renderCount++;
         context.fillStyle = this.color;
-        context.fillRect(this.x, this.y, 4, 4)
+        context.fillRect(this.x, this.y, 4, 4);
     }
 
     this.isDone = function () {

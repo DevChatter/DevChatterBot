@@ -94,8 +94,10 @@ var overlay = (function () {
       async function () {
         fireworks.addFireworks(fireworksCanvas);
         function step() {
-          fireworks.render();
-          window.requestAnimationFrame(step);
+          const keepGoing = fireworks.render();
+          if (keepGoing) {
+            window.requestAnimationFrame(step);
+          }
         }
         window.requestAnimationFrame(step);
         for (let i = 0; i < 9; i++) {

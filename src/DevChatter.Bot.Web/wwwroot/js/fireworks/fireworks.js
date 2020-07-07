@@ -30,6 +30,7 @@ var fireworks = (function () {
         fireworks.splice(i, 1);
       }
     });
+    return fireworks.length > 0;
   }
 
   return {
